@@ -1,0 +1,17 @@
+.t_container {
+  display: flex;
+  flex-direction: column;
+  /* position: relative; */
+  width: 99vw;
+  margin: auto;
+  text-align: center;
+}
+
+.loadingIndicatorCentered {
+  width: 150px;
+  height: 100px;
+  position: absolute;
+  top: 27%;
+  left: 50%;
+  margin: -25px 0 0 -75px;
+}

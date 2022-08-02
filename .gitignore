@@ -1,0 +1,6 @@
+target/
+src/js/node_modules/
+src/js/node/
+src/js/build
+src/js/package-lock.json
+src/js/yarn.lock
