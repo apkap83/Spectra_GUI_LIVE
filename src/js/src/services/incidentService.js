@@ -162,10 +162,10 @@ export const getAdHocOutages = async () => {
   }
 };
 
-export async function downloadFile(dirName1, fileName) {
+export const downloadFile = async (dirName1, fileName) => {
   return await axios({
     url: "api/incidents/downloadfile/" + dirName1 + "/Test_Env/" + fileName,
     method: "GET",
     responseType: "blob",
   });
-}
+};

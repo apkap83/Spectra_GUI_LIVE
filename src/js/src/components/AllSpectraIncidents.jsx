@@ -71,23 +71,13 @@ const AllSpectraIncidents = (props) => {
       key: (Math.random() + 1).toString(36).substring(7),
       render: (incident) => {
         return (
-          <Popover
-            content={
-              <div>
-                <p>Outage Affected Voice: {incident.outageAffectedVoice}</p>
-                <p>Outage Affected Data : {incident.outageAffectedData}</p>
-                <p>Outage Affected IPTV : {incident.outageAffectedIPTV}</p>
-                <p>Outage Affected CLIs : {incident.outageAffectedCLI}</p>
-              </div>
-            }
-            title={`Details for Outage: ${incident.outageId}`}
-            trigger="hover"
-          >
+          <div>
             {/*
 							Download Outage File:
 							 Spectra_CLIs_Affected_INC_INC000002017506_OutageID_12697_Voice_20210310.csv */}
             <button
               className="btn btn-outline-info"
+              style={{ fontSize: "12px" }}
               onClick={() => {
                 // "10 Mar 2021 03:00:00"
                 let currentDateString = incident.requestTimestamp.split(" ");
@@ -138,7 +128,7 @@ const AllSpectraIncidents = (props) => {
             >
               {incident.outageId}
             </button>
-          </Popover>
+          </div>
         );
       },
     },
@@ -505,6 +495,7 @@ const AllSpectraIncidents = (props) => {
           setSelectedIncident(incident);
           setShowModalAlterBackup(true);
         }}
+        style={{ fontSize: "12px" }}
       >
         Backup Policy
       </Button>
@@ -522,6 +513,7 @@ const AllSpectraIncidents = (props) => {
             setSelectedIncident(incident);
             setShowModalAlterMessage(true);
           }}
+          style={{ fontSize: "12px" }}
         >
           Alter Message
         </Button>
@@ -541,6 +533,7 @@ const AllSpectraIncidents = (props) => {
           }}
           type="primary"
           danger
+          style={{ fontSize: "12px" }}
         >
           Disable Publishing
         </Button>
@@ -553,6 +546,7 @@ const AllSpectraIncidents = (props) => {
           }}
           disabled={incident.incidentStatus === "OPEN" ? false : true}
           type="primary"
+          style={{ fontSize: "12px" }}
         >
           Enable Publishing
         </Button>
