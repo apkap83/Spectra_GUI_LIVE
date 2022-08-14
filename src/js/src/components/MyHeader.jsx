@@ -38,6 +38,9 @@ function MyHeader() {
               <LinkContainer to="/adhocoutages">
                 <Nav.Link>AdHoc Outages</Nav.Link>
               </LinkContainer>
+              <LinkContainer to="/stats">
+                <Nav.Link>Stats</Nav.Link>
+              </LinkContainer>
             </Nav>
 
             <Nav>

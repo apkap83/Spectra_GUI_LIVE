@@ -1,0 +1,38 @@
+{
+  "apiURL_DEV": "http://localhost:3500/api/charts",
+
+  "apiURL": "/api/charts",
+  "requestsPerMethodCharts": {
+    "nluActivePos": [
+      "Positive Responses (Voice/Data/IPTV)",
+      "Requests",
+      "Date",
+      ["NLU_Active_Pos_Voice", "NLU_Active_Pos_Data", "NLU_Active_Pos_IPTV"]
+    ],
+    "nluActiveNeg": [
+      "Negative Responses",
+      "Requests",
+      "Date",
+      ["NLU_Active_Neg"]
+    ],
+    "nluActivePosVoice": [
+      "Positive Voice Responses",
+      "Requests",
+      "Date",
+      ["NLU_Active_Pos_Voice"]
+    ],
+    "nluActivePosData": [
+      "Positive Data Responses",
+      "Requests",
+      "Date",
+      ["NLU_Active_Pos_Data"]
+    ],
+    "nluActivePosIPTV": [
+      "Positive IPTV Responses",
+      "Requests",
+      "Date",
+      ["NLU_Active_Pos_IPTV"]
+    ],
+    "adHocPos": ["AdHoc Positive Responses", "Requests", "Date", ["AdHoc_Pos"]]
+  }
+}

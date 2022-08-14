@@ -11,6 +11,7 @@ import { OpenSpectraIncidents } from "./components/OpenSpectraIncidents";
 import { OpenCdrDBIncidents } from "./components/OpenCdrDBIncidents";
 import { ClosedCdrDBIncidents } from "./components/ClosedCdrDBIncidents";
 import { AdHocOutages } from "./components/AdHocOutages";
+import Stats from "./components/stats/stats.component";
 
 import MyHeader from "./components/MyHeader";
 import { getCurrentYear } from "./utills/myutils";
@@ -49,10 +50,12 @@ class App extends Component {
               path="/closedcdrdbincidents"
               element={<ClosedCdrDBIncidents />}
             />
+            <Route path="/stats" element={<Stats />} />
             <Route
               path="/"
               element={<Navigate replace to="/allspectraincidents" />}
             />
+
             <Route path="/adhocoutages" element={<AdHocOutages />} />
             {/* Not Found Page */}
             <Route path="*" element={<NotFound />} />
