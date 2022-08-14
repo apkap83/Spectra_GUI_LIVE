@@ -6,7 +6,7 @@ import * as moment from "moment";
 export default class Stats extends Component {
   state = {
     dateRange: {
-      startDate: moment().startOf("day").subtract(20, "months"),
+      startDate: moment().startOf("day").subtract(1, "months"),
       endDate: moment().startOf("day"),
     },
   };
