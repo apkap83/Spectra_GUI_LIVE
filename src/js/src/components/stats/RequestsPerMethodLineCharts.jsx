@@ -155,6 +155,23 @@ class RequestsPerMethodLineCharts extends Component {
         <div style={{ marginBottom: "3rem" }}>
           <CanvasJSChart
             title="Hello"
+            options={this.getOptions(
+              ...conf.requestsPerMethodCharts.cdr_db_neg
+            )}
+          />
+        </div>
+
+        <div style={{ marginBottom: "3rem" }}>
+          <CanvasJSChart
+            title="Hello"
+            options={this.getOptions(
+              ...conf.requestsPerMethodCharts.cdr_db_pos
+            )}
+          />
+        </div>
+        <div style={{ marginBottom: "3rem" }}>
+          <CanvasJSChart
+            title="Hello"
             options={this.getOptions(...conf.requestsPerMethodCharts.adHocPos)}
           />
         </div>

@@ -33,6 +33,18 @@
       "Date",
       ["NLU_Active_Pos_IPTV"]
     ],
+    "cdr_db_neg": [
+      "CDR-DB Negative Responses",
+      "Requests",
+      "Date",
+      ["CDR_DB_Neg"]
+    ],
+    "cdr_db_pos": [
+      "CDR-DB Positive Responses",
+      "Requests",
+      "Date",
+      ["CDR_DB_Pos"]
+    ],
     "adHocPos": ["AdHoc Positive Responses", "Requests", "Date", ["AdHoc_Pos"]]
   }
 }
