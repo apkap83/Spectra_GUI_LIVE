@@ -10,14 +10,18 @@ import org.springframework.boot.CommandLineRunner;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.boot.context.properties.EnableConfigurationProperties;
+import org.springframework.boot.web.servlet.error.ErrorController;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.ComponentScan;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.stereotype.Controller;
+import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.servlet.config.annotation.EnableWebMvc;
 
+@Controller
 @SpringBootApplication
 @EnableConfigurationProperties(StorageProperties.class)
-public class FullStackSpringReviewApplication {
+public class FullStackSpringReviewApplication implements ErrorController {
 
 	private static final Logger logger = LogManager.getLogger(FullStackSpringReviewApplication.class);
 
@@ -32,5 +36,15 @@ public class FullStackSpringReviewApplication {
 			};
 		}
 
+	private static final String PATH = "/error";
 
+	@RequestMapping(value = PATH)
+	public String error() {
+		return "forward:/index.html";
+	}
+
+	@Override
+	public String getErrorPath() {
+		return PATH;
+	}
 }
