@@ -1,6 +1,7 @@
 import httpService from "./httpService";
 import axios from "axios";
-const apiEndPoint = "/api/incidents";
+import config from "../config.json";
+const apiEndPoint = config.apiPrefix + "/api/incidents";
 
 export const getAllSpectraIncidents = async () => {
   try {

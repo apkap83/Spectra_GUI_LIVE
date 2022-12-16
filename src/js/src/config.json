@@ -1,3 +1,4 @@
 {
-  "appTitle": "Spectra Test"
+  "appTitle": "Spectra Test",
+  "apiPrefix": "http://localhost:3500"
 }

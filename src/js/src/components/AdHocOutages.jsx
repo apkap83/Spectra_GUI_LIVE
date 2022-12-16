@@ -7,6 +7,9 @@ import { errorNotification } from "../Notification";
 // Antd Library
 import { Table, Button } from "antd";
 
+// MUI Icons
+import CloudUploadIcon from "@mui/icons-material/CloudUpload";
+
 export function AdHocOutages() {
   const [designatedFile, setDesignatedFile] = useState("");
   const [currentAdHocIsFetching, setCurrentAdHocIsFetching] = useState(false);

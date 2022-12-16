@@ -9,6 +9,11 @@ import "antd/dist/antd.min.css";
 import "./myStyles.css";
 import "bootstrap/dist/css/bootstrap.css";
 
+import "@fontsource/roboto/300.css";
+import "@fontsource/roboto/400.css";
+import "@fontsource/roboto/500.css";
+import "@fontsource/roboto/700.css";
+
 document.title = config.appTitle;
 
 const container = document.getElementById("root");

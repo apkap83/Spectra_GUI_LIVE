@@ -3,6 +3,13 @@
   "version": "0.1.0",
   "private": true,
   "dependencies": {
+    "@emotion/react": "^11.10.5",
+    "@emotion/styled": "^11.10.5",
+    "@fontsource/roboto": "^4.5.8",
+    "@mui/icons-material": "^5.11.0",
+    "@mui/material": "^5.11.0",
+    "@mui/styled-engine-sc": "^5.11.0",
+    "@mui/x-data-grid": "^5.17.14",
     "@testing-library/jest-dom": "^5.16.4",
     "@testing-library/react": "^13.3.0",
     "@testing-library/user-event": "^13.5.0",
@@ -11,6 +18,7 @@
     "bootstrap": "^5.2.0",
     "formik": "^2.2.6",
     "js-file-download": "^0.4.12",
+    "material-ui-popup-state": "^5.0.4",
     "moment": "^2.29.1",
     "npm-cli": "^0.1.0",
     "randomcolor": "^0.6.2",
@@ -22,6 +30,8 @@
     "react-router-dom": "^6.3.0",
     "react-scripts": "^5.0.1",
     "react-toastify": "^9.0.7",
+    "string-to-color": "^2.2.2",
+    "styled-components": "^5.3.6",
     "unfetch": "^4.2.0",
     "use-force-update": "^1.0.9",
     "web-vitals": "^2.1.4"
@@ -31,13 +41,6 @@
     "build": "react-scripts build",
     "test": "react-scripts test",
     "eject": "react-scripts eject"
-  },
-  "proxy": "https://localhost:3500/",
-  "eslintConfig": {
-    "extends": [
-      "react-app",
-      "react-app/jest"
-    ]
   },
   "browserslist": {
     "production": [

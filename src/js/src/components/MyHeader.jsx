@@ -12,6 +12,9 @@ import { useLocation } from "react-router-dom";
 
 // const { appTitle } = Conf;
 
+// MUI Icons
+import BorderOuterIcon from "@mui/icons-material/BorderOuter";
+import HistoryToggleOffIcon from "@mui/icons-material/HistoryToggleOff";
 function MyHeader() {
   return (
     <>
@@ -29,10 +32,16 @@ function MyHeader() {
               </LinkContainer>
               <NavDropdown title="CDR-DB" id="collasible-nav-dropdown">
                 <LinkContainer to="/opencdrdbincidents">
-                  <NavDropdown.Item>Open Issues</NavDropdown.Item>
+                  <NavDropdown.Item>
+                    <BorderOuterIcon />
+                    &nbsp;Open DSLAM Outages
+                  </NavDropdown.Item>
                 </LinkContainer>
                 <LinkContainer to="/closedcdrdbincidents">
-                  <NavDropdown.Item>Closed Issues</NavDropdown.Item>
+                  <NavDropdown.Item>
+                    <HistoryToggleOffIcon />
+                    &nbsp;Closed DSLAM Outages
+                  </NavDropdown.Item>
                 </LinkContainer>
               </NavDropdown>
               <LinkContainer to="/adhocoutages">

@@ -4,11 +4,12 @@ import httpService from "../../services/httpService";
 import randomColor from "randomcolor";
 import { Spin } from "antd";
 import conf from "./config.json";
+import envConf from "../../config.json";
 
 import CanvasJSReact from "./assets/canvasjs.react";
 var CanvasJSChart = CanvasJSReact.CanvasJSChart;
 
-const apiURL = conf.apiURL;
+const apiURL = envConf.apiPrefix + conf.apiURL;
 
 class RequestsPerMethodLineCharts extends Component {
   constructor(props) {

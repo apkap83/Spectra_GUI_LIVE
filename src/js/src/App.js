@@ -12,6 +12,9 @@ import { OpenCdrDBIncidents } from "./components/OpenCdrDBIncidents";
 import { ClosedCdrDBIncidents } from "./components/ClosedCdrDBIncidents";
 import { AdHocOutages } from "./components/AdHocOutages";
 import Stats from "./components/stats/stats.component";
+import DataTable from "./components/MUITableExample.component";
+
+import ScopedCssBaseline from "@mui/material/ScopedCssBaseline";
 
 import MyHeader from "./components/MyHeader";
 import { getCurrentYear } from "./utills/myutils";
@@ -26,10 +29,11 @@ class App extends Component {
 
   render() {
     return (
-      <React.Fragment>
+      <ScopedCssBaseline>
         <Router>
           <MyHeader />
           <Routes>
+            <Route exact path="/muitable" element={<DataTable />} />
             <Route
               exact
               path="/allspectraincidents"
@@ -64,7 +68,7 @@ class App extends Component {
             WIND - NMS Team {getCurrentYear()}
           </Footer>
         </Router>
-      </React.Fragment>
+      </ScopedCssBaseline>
     );
   }
 }
