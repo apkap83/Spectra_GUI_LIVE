@@ -34,7 +34,7 @@ function MyHeader() {
                 <LinkContainer to="/opencdrdbincidents">
                   <NavDropdown.Item>
                     <BorderOuterIcon />
-                    &nbsp;Open DSLAM Outages
+                    &nbsp;Opened DSLAM Outages
                   </NavDropdown.Item>
                 </LinkContainer>
                 <LinkContainer to="/closedcdrdbincidents">

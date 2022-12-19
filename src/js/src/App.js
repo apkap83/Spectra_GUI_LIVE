@@ -17,7 +17,7 @@ import DataTable from "./components/MUITableExample.component";
 import ScopedCssBaseline from "@mui/material/ScopedCssBaseline";
 
 import MyHeader from "./components/MyHeader";
-import { getCurrentYear } from "./utills/myutils";
+import { getCurrentYear } from "./utils/myutils";
 import { Layout } from "antd";
 const { Footer } = Layout;
 

@@ -1,5 +1,5 @@
 import { useState, useEffect } from "react";
-import { monthNameToNumber, yyyymmdd } from "../utills/myutils";
+import { monthNameToNumber, yyyymmdd } from "../utils/myutils";
 import {
   getAllSpectraIncidents,
   getOpenSpectraIncidents,

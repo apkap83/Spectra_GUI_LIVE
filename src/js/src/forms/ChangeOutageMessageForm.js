@@ -2,7 +2,19 @@ import React from "react";
 import { useState, useEffect } from "react";
 import { changeMsgForIncidentId } from "../services/incidentService";
 import { errorNotification } from "../Notification";
-import { Button, message, Checkbox, Select } from "antd";
+import { message } from "antd";
+
+// MUI
+import Button from "@mui/material/Button";
+import Checkbox from "@mui/material/Checkbox";
+import FormGroup from "@mui/material/FormGroup";
+import FormControlLabel from "@mui/material/FormControlLabel";
+
+import Box from "@mui/material/Box";
+import InputLabel from "@mui/material/InputLabel";
+import MenuItem from "@mui/material/MenuItem";
+import FormControl from "@mui/material/FormControl";
+import Select from "@mui/material/Select";
 
 const { Option } = Select;
 
@@ -62,6 +74,18 @@ export default function ChangeOutageMessageForm({
         <b> {selectedIncident.outageId}</b>
       </label>
       <br />
+      {/* <Box sx={{ minWidth: 220 }}>
+        <FormControl fullWidth>
+          <InputLabel id="demo-simple-select-label">Message</InputLabel>
+          <Select labelId="label" value={selectedMsg} onChange={handleChange}>
+            <MenuItem value={"Default"}>Default</MenuItem>
+            <MenuItem value={"msg1"}>msg1</MenuItem>
+            <MenuItem value={"msg2"}>msg2</MenuItem>
+            <MenuItem value={"msg3"}>msg3</MenuItem>
+          </Select>
+        </FormControl>
+      </Box> */}
+
       <Select
         // defaultValue="Default MSG"
         style={{ width: 220 }}
@@ -84,26 +108,17 @@ export default function ChangeOutageMessageForm({
 
       <br />
       <div>
-        <Checkbox
-          onChange={onChange}
-          style={{
-            display: "flex",
-            flexDirection: "row",
-            alignItems: "center",
-            verticalAlign: "middle",
-          }}
-          defaultChecked={allOutagesCheckBox}
-          checked={true}
-        >
-          <span style={{ fontSize: "14px" }}>
-            Apply this action for all Outages of this Incident. (
-            <b>{selectedIncident.incidentId}</b>)
-          </span>
-        </Checkbox>
+        <FormGroup>
+          <FormControlLabel
+            control={<Checkbox onChange={onChange} defaultChecked />}
+            label="Apply this action for all Outages of this Incident."
+          />
+        </FormGroup>
       </div>
       <br />
       <div>
         <Button
+          variant="contained"
           style={{
             marginRight: "50px",
           }}
@@ -113,6 +128,7 @@ export default function ChangeOutageMessageForm({
           Apply
         </Button>
         <Button
+          variant="contained"
           style={{}}
           type="primary"
           onClick={() => {

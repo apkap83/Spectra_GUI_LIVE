@@ -1,4 +1,6 @@
-import { useState, useEffect } from "react";
+import { useState, useEffect, useContext } from "react";
+import { ErrorBoundary } from "./Errors/ErrorBoundary";
+
 import Table from "@mui/material/Table";
 import TableBody from "@mui/material/TableBody";
 import TableCell from "@mui/material/TableCell";
@@ -8,6 +10,7 @@ import TableRow from "@mui/material/TableRow";
 import Paper from "@mui/material/Paper";
 import DownloadIcon from "@mui/icons-material/Download";
 import Button from "@mui/material/Button";
+import { AllContext } from "../contexts/All.context";
 
 import {
   getAllSpectraIncidents,
@@ -21,17 +24,22 @@ import { ModalAlterPublish } from "./Modals/ModalAlterPublish";
 import { ModalAlterMessage } from "./Modals/ModalAlterMessage";
 import { ModalAlterBackup } from "./Modals/ModalAlterBackup";
 
+// MUI Modals
+import { MUI_ModalAlterPublish } from "./Modals/MUI_ModalAlterPublish";
+
 import ActionsMenu from "./MenuPopup/MenuPopup.component";
-import stringToColor from "../utills/stringToColor";
-import downloadAffectedUsers from "../utills/downloadAffectedUsers";
-import { getColorYesNo, getColorMsg } from "../utills/myutils";
+import stringToColor from "../utils/stringToColor";
+import downloadAffectedUsers from "../utils/downloadAffectedUsers";
+import { getColorYesNo, getColorMsg } from "../utils/myutils";
 
 const generateTableHeadAndColumns = (columnsArray) => {
   return (
     <TableHead>
       <TableRow>
-        {columnsArray.map((item) => (
-          <TableCell align="center">{item}</TableCell>
+        {columnsArray.map((item, id) => (
+          <TableCell key={id} align="center">
+            {item}
+          </TableCell>
         ))}
       </TableRow>
     </TableHead>
@@ -53,7 +61,8 @@ const columnsNamesDesc = [
   "User ID",
 ];
 
-const TableBodyForIncidents = (incidents) => {
+const TableBodyForIncidents = () => {
+  const { incidents, ...restContextProperties } = useContext(AllContext);
   return (
     <TableBody>
       {incidents.map((incident) => (
@@ -61,6 +70,7 @@ const TableBodyForIncidents = (incidents) => {
           key={incident.id}
           sx={{
             "&:last-child td, &:last-child th": { border: 0 },
+            background: stringToColor(incident.incidentId) + "45", // Add Opacity in Color
           }}
         >
           <TableCell
@@ -68,7 +78,6 @@ const TableBodyForIncidents = (incidents) => {
             component="th"
             scope="row"
             sx={{
-              background: stringToColor(incident.incidentId),
               fontWeight: 700,
             }}
           >
@@ -104,7 +113,9 @@ const TableBodyForIncidents = (incidents) => {
           <TableCell align="center">{incident.endTime}</TableCell>
           <TableCell align="center">{incident.duration}</TableCell>
           <TableCell align="center">{incident.userId}</TableCell>
-          <TableCell align="center">{ActionsMenu(incident)}</TableCell>
+          <TableCell align="center">
+            {ActionsMenu(incident, restContextProperties)}
+          </TableCell>
         </TableRow>
       ))}
     </TableBody>
@@ -112,57 +123,58 @@ const TableBodyForIncidents = (incidents) => {
 };
 
 export default function DenseTable() {
-  const [isFetching, setIsFetching] = useState("");
-  const [incidents, setIncidents] = useState([]);
-  const [showModalAlterPublish, setshowModalAlterPublish] = useState(false);
-  const [showModalAlterMessage, setShowModalAlterMessage] = useState(false);
-  const [showModalAlterBackup, setShowModalAlterBackup] = useState(false);
-  const [selectedIncident, setSelectedIncident] = useState("");
-  const [filteredIncidents, setFilteredIncidents] = useState(incidents);
+  // State downloaded from Context
+  const { incidents, setIncidents } = useContext(AllContext);
+  const { isFetching, setIsFetching } = useContext(AllContext);
+  const { showModalAlterPublish, setshowModalAlterPublish } =
+    useContext(AllContext);
+  const { showModalAlterMessage, setShowModalAlterMessage } =
+    useContext(AllContext);
+  const { showModalAlterBackup, setShowModalAlterBackup } =
+    useContext(AllContext);
+  const { selectedIncident } = useContext(AllContext);
 
   useEffect(() => {
     const getIncidents = async () => {
+      setIsFetching(true);
       const { data } = await getOpenSpectraIncidents();
-      // setColumns(columnsForSpectraIncidents);
       setIncidents(data);
-      // setIsFetching(false);
+      setIsFetching(false);
     };
 
     getIncidents();
   }, []);
 
-  const modalAlterPublishProps = {
-    visible: showModalAlterPublish,
-    setshowModalAlterPublish,
-    selectedIncident,
-    incidents: filteredIncidents,
-    setIncidents,
-  };
-  const modalAlterMessageProps = {
-    visible: showModalAlterMessage,
-    setShowModalAlterMessage,
-    selectedIncident,
-    incidents: filteredIncidents,
-    setIncidents,
-  };
   const modalAlterBackupProps = {
     visible: showModalAlterBackup,
     setShowModalAlterBackup,
     selectedIncident,
-    incidents: filteredIncidents,
+    incidents,
     setIncidents,
   };
 
   return (
     <LoadingSpinnerCentered isFetching={isFetching}>
-      <ModalAlterPublish {...modalAlterPublishProps} />
-      <ModalAlterMessage {...modalAlterMessageProps} />
+      <MUI_ModalAlterPublish
+        visible={showModalAlterPublish}
+        setshowModalAlterPublish={setshowModalAlterPublish}
+        selectedIncident={selectedIncident}
+        incidents={incidents}
+        setIncidents={setIncidents}
+      />
+      <ModalAlterMessage
+        visible={showModalAlterMessage}
+        setShowModalAlterMessage={setShowModalAlterMessage}
+        selectedIncident={selectedIncident}
+        incidents={incidents}
+        setIncidents={setIncidents}
+      />
       <ModalAlterBackup {...modalAlterBackupProps} />
       <TableContainer component={Paper}>
         <Table sx={{ minWidth: 650 }} size="small" aria-label="a dense table">
           {generateTableHeadAndColumns(columnsNamesDesc)}
 
-          {TableBodyForIncidents(incidents)}
+          {TableBodyForIncidents()}
         </Table>
       </TableContainer>
     </LoadingSpinnerCentered>

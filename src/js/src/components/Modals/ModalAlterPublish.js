@@ -1,6 +1,7 @@
 import { Modal } from "antd";
 import BroadcastingOutageForm from "../../forms/BroadcastingOutageForm";
-import { capitalizeFirstLetter } from "../../utills/myutils";
+import { capitalizeFirstLetter } from "../../utils/myutils";
+
 export const ModalAlterPublish = ({
   visible,
   setshowModalAlterPublish,

@@ -1,5 +1,5 @@
-// MUI
 import * as React from "react";
+import { useContext } from "react";
 import MuiButton from "@mui/material/Button";
 import Menu from "@mui/material/Menu";
 import MenuItem from "@mui/material/MenuItem";
@@ -23,7 +23,13 @@ const ColorButton = styled(MuiButton)(({ theme }) => ({
   },
 }));
 
-export default function MenuPopupState(incident) {
+export default function MenuPopupState(incident, restContextProperties) {
+  const {
+    setSelectedIncident,
+    setshowModalAlterPublish,
+    setShowModalAlterMessage,
+    setShowModalAlterBackup,
+  } = restContextProperties;
   return (
     <PopupState variant="popover" popupId="demo-popup-menu">
       {(popupState) => (

@@ -1,4 +1,4 @@
-const a = () => {
+const downloadAffectedUsers = (outageId) => {
   // "10 Mar 2021 03:00:00"
   let currentDateString = incident.requestTimestamp.split(" ");
   let mydate = new Date(
@@ -45,3 +45,5 @@ const a = () => {
     FileDownload(response.data, fileName);
   });
 };
+
+export default downloadAffectedUsers;
