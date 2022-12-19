@@ -31,46 +31,42 @@ export const MUI_ModalAlterPublish = ({
     return selectedIncident.willBePublished === "Yes" ? "disable" : "enable";
   }
   return (
-    <ErrorBoundary>
-      <Modal
-        open={visible}
-        onClose={() => setshowModalAlterPublish(false)}
-        aria-labelledby="modal-modal-title"
-        aria-describedby="modal-modal-description"
-      >
-        <Box sx={style}>
-          <Typography id="modal-modal-title" variant="h6" component="h2">
-            {`${capitalizeFirstLetter(
-              enableOrDisableText(selectedIncident)
-            )} Outage Broadcasting`}
-          </Typography>
-          <br />
-          <BroadcastingOutageForm
-            onOutageSuccess={(outageId, label) => {
-              const incCopy = [...incidents];
-              let objIndex = incCopy.findIndex(
-                (obj) => obj.outageId === outageId
-              );
-              incCopy[objIndex].willBePublished = label;
+    <Modal
+      open={visible}
+      onClose={() => setshowModalAlterPublish(false)}
+      aria-labelledby="modal-modal-title"
+      aria-describedby="modal-modal-description"
+    >
+      <Box sx={style}>
+        <Typography id="modal-modal-title" variant="h6" component="h2">
+          {`${capitalizeFirstLetter(
+            enableOrDisableText(selectedIncident)
+          )} Outage Broadcasting`}
+        </Typography>
+        <br />
+        <BroadcastingOutageForm
+          onOutageSuccess={(outageId, label) => {
+            const incCopy = [...incidents];
+            let objIndex = incCopy.findIndex(
+              (obj) => obj.outageId === outageId
+            );
+            incCopy[objIndex].willBePublished = label;
 
-              setIncidents(incCopy);
-              setshowModalAlterPublish(false);
-            }}
-            onIncidentSuccess={(incidentId, label) => {
-              const foundOutages = incidents.filter(
-                (inc) => inc.incidentId === incidentId
-              );
-              foundOutages.forEach(
-                (outage) => (outage.willBePublished = label)
-              );
-              setIncidents(incidents);
-              setshowModalAlterPublish(false);
-            }}
-            selectedIncident={selectedIncident}
-            setShowModalDisOutage={(item) => setshowModalAlterPublish(item)}
-          />
-        </Box>
-      </Modal>
-    </ErrorBoundary>
+            setIncidents(incCopy);
+            setshowModalAlterPublish(false);
+          }}
+          onIncidentSuccess={(incidentId, label) => {
+            const foundOutages = incidents.filter(
+              (inc) => inc.incidentId === incidentId
+            );
+            foundOutages.forEach((outage) => (outage.willBePublished = label));
+            setIncidents(incidents);
+            setshowModalAlterPublish(false);
+          }}
+          selectedIncident={selectedIncident}
+          setShowModalDisOutage={(item) => setshowModalAlterPublish(item)}
+        />
+      </Box>
+    </Modal>
   );
 };

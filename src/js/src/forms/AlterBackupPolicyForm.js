@@ -2,7 +2,23 @@ import React, { useEffect } from "react";
 import { useState } from "react";
 import { alterBackupPolicyforIncidentId } from "../services/incidentService";
 import { errorNotification } from "../Notification";
-import { Button, message, Checkbox, Select } from "antd";
+import { message } from "antd";
+
+// MUI
+import Button from "@mui/material/Button";
+import Stack from "@mui/material/Stack";
+import Snackbar from "@mui/material/Snackbar";
+import MuiAlert from "@mui/material/Alert";
+import Checkbox from "@mui/material/Checkbox";
+import FormGroup from "@mui/material/FormGroup";
+import FormControlLabel from "@mui/material/FormControlLabel";
+import InputLabel from "@mui/material/InputLabel";
+import MenuItem from "@mui/material/MenuItem";
+import FormHelperText from "@mui/material/FormHelperText";
+import FormControl from "@mui/material/FormControl";
+import Select from "@mui/material/Select";
+
+import { MUI_ModalAlterBackup } from "./../components/Modals/MUI_ModalAlterBackup";
 
 const { Option } = Select;
 
@@ -16,7 +32,7 @@ export default function AlterBackupPolicyForm({
 
   useEffect(() => {
     setSelectedBackupPolicy(selectedIncident.backupEligible);
-  }, []);
+  }, [selectedIncident]);
 
   const onChange = (e) => {
     alert(
@@ -56,41 +72,35 @@ export default function AlterBackupPolicyForm({
         <b> {selectedIncident.outageId}</b>
       </label>
       <br />
-      <Select
-        style={{ width: 220 }}
-        onChange={(msg) => setSelectedBackupPolicy(msg)}
-        value={selectedBackupPolicy}
-      >
-        <Option key="1" value="Yes">
-          Yes
-        </Option>
-        <Option key="2" value="No">
-          No
-        </Option>
-      </Select>
+      <FormControl sx={{ m: 1, minWidth: 220 }}>
+        <Select
+          // value={age}
+          value={selectedBackupPolicy}
+          onChange={(e) => setSelectedBackupPolicy(e.target.value)}
+          displayEmpty
+          inputProps={{ "aria-label": "Without label" }}
+        >
+          <MenuItem value={"Yes"}>Yes</MenuItem>
+          <MenuItem value={"No"}>No</MenuItem>
+        </Select>
+        <FormHelperText sx={{ textAlign: "center" }}>
+          Backup Eligible
+        </FormHelperText>
+      </FormControl>
 
       <br />
       <div>
-        <Checkbox
-          onChange={onChange}
-          style={{
-            display: "flex",
-            flexDirection: "row",
-            alignItems: "center",
-            verticalAlign: "middle",
-          }}
-          defaultChecked={allOutagesCheckBox}
-          checked={true}
-        >
-          <span style={{ fontSize: "14px" }}>
-            Apply this action for all Outages of this Incident. (
-            <b>{selectedIncident.incidentId}</b>)
-          </span>
-        </Checkbox>
+        <FormGroup>
+          <FormControlLabel
+            control={<Checkbox onChange={onChange} checked={true} />}
+            label="This action will be applied to all Outages of this Incident."
+          />
+        </FormGroup>
       </div>
       <br />
       <div>
         <Button
+          variant="contained"
           style={{
             marginRight: "50px",
           }}
@@ -100,6 +110,7 @@ export default function AlterBackupPolicyForm({
           Apply
         </Button>
         <Button
+          variant="contained"
           style={{}}
           type="primary"
           onClick={() => {
