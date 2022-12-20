@@ -3,7 +3,7 @@ import Typography from "@mui/material/Typography";
 import Modal from "@mui/material/Modal";
 import ChangeOutageMessageForm from "../../forms/ChangeOutageMessageForm";
 
-export const MUI_ModalAlterMessage = ({
+export const ModalAlterMessage = ({
   visible = false,
   setShowModalAlterMessage,
   selectedIncident,

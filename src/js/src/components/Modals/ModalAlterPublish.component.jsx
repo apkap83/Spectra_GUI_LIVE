@@ -3,7 +3,7 @@ import Button from "@mui/material/Button";
 import Typography from "@mui/material/Typography";
 import Modal from "@mui/material/Modal";
 
-import { ErrorBoundary } from "../Errors/ErrorBoundary";
+import { ErrorBoundary } from "../Errors/ErrorBoundary.component";
 
 import BroadcastingOutageForm from "../../forms/BroadcastingOutageForm";
 import { capitalizeFirstLetter } from "../../utils/myutils";
@@ -20,7 +20,7 @@ const style = {
   p: 4,
 };
 
-export const MUI_ModalAlterPublish = ({
+export const ModalAlterPublish = ({
   visible = false,
   setshowModalAlterPublish,
   selectedIncident,
@@ -28,7 +28,7 @@ export const MUI_ModalAlterPublish = ({
   setIncidents,
 }) => {
   function enableOrDisableText(incidentID) {
-    return selectedIncident.willBePublished === "Yes" ? "disable" : "enable";
+    return selectedIncident?.willBePublished === "Yes" ? "disable" : "enable";
   }
   return (
     <Modal

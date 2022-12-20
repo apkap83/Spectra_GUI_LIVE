@@ -18,9 +18,11 @@
     "bootstrap": "^5.2.0",
     "formik": "^2.2.6",
     "js-file-download": "^0.4.12",
+    "lodash": "^4.17.21",
     "material-ui-popup-state": "^5.0.4",
     "moment": "^2.29.1",
     "npm-cli": "^0.1.0",
+    "prop-types": "^15.8.1",
     "randomcolor": "^0.6.2",
     "react": "^18.2.0",
     "react-bootstrap": "^2.4.0",
@@ -34,6 +36,7 @@
     "styled-components": "^5.3.6",
     "unfetch": "^4.2.0",
     "use-force-update": "^1.0.9",
+    "use-state-with-callback": "^3.0.2",
     "web-vitals": "^2.1.4"
   },
   "scripts": {
@@ -53,5 +56,8 @@
       "last 1 firefox version",
       "last 1 safari version"
     ]
+  },
+  "devDependencies": {
+    "react-dev-tools": "^0.0.1"
   }
 }

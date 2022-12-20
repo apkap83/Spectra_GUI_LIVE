@@ -7,8 +7,8 @@ import Box from "@mui/material/Box";
 import Typography from "@mui/material/Typography";
 import Modal from "@mui/material/Modal";
 
-export const MUI_ModalAlterBackup = ({
-  visible,
+export const ModalAlterBackup = ({
+  visible = false,
   setShowModalAlterBackup,
   selectedIncident,
   incidents,

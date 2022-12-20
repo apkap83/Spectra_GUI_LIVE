@@ -12,7 +12,14 @@ export const AllProvider = ({ children }) => {
   const [selectedIncident, setSelectedIncident] = useState("");
   const [hideScheduled, setHideScheduled] = useState(false);
 
+  const [tableHeader, setTableHeader] = useState("");
+  const [tableBody, setTableBody] = useState("");
+
   const value = {
+    tableHeader,
+    setTableHeader,
+    tableBody,
+    setTableBody,
     isFetching,
     setIsFetching,
     incidents,

@@ -5,18 +5,22 @@ import {
   Routes,
   Navigate,
 } from "react-router-dom";
-import NotFound from "./components/NotFound";
-import AllSpectraIncidents from "./components/AllSpectraIncidents";
-import { OpenSpectraIncidents } from "./components/OpenSpectraIncidents";
-import { OpenCdrDBIncidents } from "./components/OpenCdrDBIncidents";
-import { ClosedCdrDBIncidents } from "./components/ClosedCdrDBIncidents";
-import { AdHocOutages } from "./components/AdHocOutages";
-import Stats from "./components/stats/stats.component";
-import DataTable from "./components/MUITableExample.component";
+import NotFound from "./components/Errors/NotFound.component";
 
+import { AllSpectraIncidents } from "./components/Routes/AllSpectraIncidents";
+import { OpenSpectraIncidents } from "./components/Routes/OpenSpectraIncidents";
+
+import { CdrDBOpenOutagesTable } from "./components/Routes/CdrDBOpenInc";
+import { CdrDBClosedOutagesTable } from "./components/Routes/CdrDBClosedInc";
+
+import { AdHocOutages } from "./components/AdHocOutages.component";
+
+import { DataTable } from "./components/DataTable/SpectraIncidentsDataTable.component";
+
+import Stats from "./components/stats/stats.component";
 import ScopedCssBaseline from "@mui/material/ScopedCssBaseline";
 
-import MyHeader from "./components/MyHeader";
+import MyHeader from "./components/Header/MyHeader.component";
 import { getCurrentYear } from "./utils/myutils";
 import { Layout } from "antd";
 const { Footer } = Layout;
@@ -33,7 +37,7 @@ class App extends Component {
         <Router>
           <MyHeader />
           <Routes>
-            <Route exact path="/muitable" element={<DataTable />} />
+            {/* <Route exact path="/test" element={<DataTable />} /> */}
             <Route
               exact
               path="/allspectraincidents"
@@ -47,12 +51,12 @@ class App extends Component {
             <Route
               exact
               path="/opencdrdbincidents"
-              element={<OpenCdrDBIncidents />}
+              element={<CdrDBOpenOutagesTable />}
             />
             <Route
               exact
               path="/closedcdrdbincidents"
-              element={<ClosedCdrDBIncidents />}
+              element={<CdrDBClosedOutagesTable />}
             />
             <Route path="/stats" element={<Stats />} />
             <Route

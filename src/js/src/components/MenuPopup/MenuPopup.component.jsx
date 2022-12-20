@@ -23,7 +23,11 @@ const ColorButton = styled(MuiButton)(({ theme }) => ({
   },
 }));
 
-export default function MenuPopupState(incident, restContextProperties) {
+export function ActionsMenu(
+  incident,
+  restContextProperties,
+  isDisabled = false
+) {
   const {
     setSelectedIncident,
     setshowModalAlterPublish,

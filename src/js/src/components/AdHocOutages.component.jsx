@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from "react";
 import axios from "axios";
-import LoadingSpinnerCentered from "./LoadingSpinnerCentered";
+import LoadingSpinnerCentered from "./Spinner/LoadingSpinnerCentered.component";
 import { getAdHocOutages } from "../services/incidentService";
 import { errorNotification } from "../Notification";
 

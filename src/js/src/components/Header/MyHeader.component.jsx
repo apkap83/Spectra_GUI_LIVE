@@ -24,6 +24,9 @@ function MyHeader() {
           <Navbar.Toggle aria-controls="responsive-navbar-nav" />
           <Navbar.Collapse id="responsive-navbar-nav">
             <Nav className="me-auto">
+              {/* <LinkContainer to="/test">
+                <Nav.Link>Test</Nav.Link>
+              </LinkContainer> */}
               <LinkContainer to="/allspectraincidents">
                 <Nav.Link>All Incidents</Nav.Link>
               </LinkContainer>
