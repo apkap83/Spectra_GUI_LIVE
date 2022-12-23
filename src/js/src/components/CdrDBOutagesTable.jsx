@@ -3,6 +3,8 @@ import { ErrorBoundary } from "./Errors/ErrorBoundary.component";
 
 import stringToColor from "../utils/stringToColor";
 
+import { ReactComponent as ReactLogo } from "../assets/noData.svg";
+
 // MUI Lib Imports
 import Table from "@mui/material/Table";
 import TableBody from "@mui/material/TableBody";
@@ -80,12 +82,33 @@ export function CdrDBOutagesTable(props) {
     );
   };
 
-  const emptyTableIndication = () => {
-    return (
-      <>
-        <h4 style={{ margin: "140px", textAlign: "center" }}>No data</h4>
-      </>
-    );
+  const emptyTableIndication = (incidentsList) => {
+    if (incidentsList && incidentsList.length === 0) {
+      return (
+        <div
+          style={{
+            height: "86vh",
+            display: "flex",
+            justifyContent: "center",
+            alignItems: "center",
+          }}
+        >
+          <div
+            style={{
+              display: "flex",
+              flexDirection: "column",
+              justifyContent: "center",
+              alignItems: "center",
+            }}
+          >
+            <ReactLogo />
+            <p style={{ marginTop: "20px" }}>No data</p>
+          </div>
+          {/* <h4 style={{ margin: "140px", textAlign: "center" }}>No data</h4> */}
+          {/* {emptyTableIndication()} */}
+        </div>
+      );
+    }
   };
 
   const TableBodyForOutages = (myIncidents) => {
@@ -240,6 +263,7 @@ export function CdrDBOutagesTable(props) {
           textAlign: "center",
           fontSize: "16px",
           fontWeight: 700,
+          textAlignLast: "center",
         }}
         onChange={handleNetworkDropDownChange}
       >
@@ -253,6 +277,29 @@ export function CdrDBOutagesTable(props) {
       </NativeSelect>
     </FormControl>
   );
+
+  // const ColorButton = styled(MuiButton)(({ theme }) => ({
+  //   color: theme.palette.getContrastText(grey[900]),
+  //   backgroundColor: green[500],
+  //   "&:hover": {
+  //     backgroundColor: green[700],
+  //   },
+  // }));
+
+  // const StyledTextField = styled(TextField)(({ theme }) => ({
+  //   root: {
+  //     "& label": {
+  //       // transformOrigin: "top right",
+  //       // right: "0",
+  //       // left: "auto",
+  //       textAlign: "center",
+  //     },
+  //   },
+  // }));
+
+  // export default function BasicTextField() {
+  //   return <StyledTextField id="standard-basic" label="Standard" />;
+  // }
 
   const dslamFilterComponent = () => {
     return (
@@ -345,18 +392,10 @@ export function CdrDBOutagesTable(props) {
     }
   }, [companySelected, dslamSelected]);
 
-  // useEffect(() => {
-  //   if (incidents) {
-  //     const filtered = incidents.filter((inc) =>
-  //       inc.dslam.toLowerCase().includes(dslamSelected)
-  //     );
-  //     setIncidents(filtered);
-  //   }
-  // }, [dslamSelected]);
-
   const handlePageChange = (e, value) => {
     setPageNumber(value);
   };
+
   if (isFetching) {
     return <LoadingSpinnerCentered isFetching={true} />;
   }
@@ -381,8 +420,7 @@ export function CdrDBOutagesTable(props) {
           {generateTableHeadAndColumns(columnsForCdrDBIncidents)}
           {TableBodyForOutages(paginatedList)}
         </Table>
-
-        {paginatedList.length === 0 ? emptyTableIndication() : ""}
+        {emptyTableIndication(paginatedList)}
       </div>
       <Pagination
         sx={{
