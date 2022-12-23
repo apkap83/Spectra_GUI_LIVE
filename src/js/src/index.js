@@ -5,7 +5,7 @@ import { createRoot } from "react-dom/client";
 
 import "bootstrap/dist/css/bootstrap.min.css";
 // import "antd/dist/antd.css";
-import "antd/dist/antd.min.css";
+// import "antd/dist/antd.min.css";
 import "./myStyles.css";
 import "bootstrap/dist/css/bootstrap.css";
 

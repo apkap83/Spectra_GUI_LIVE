@@ -1,7 +1,6 @@
 import { Spin } from "antd";
 const LoadingSpinnerCentered = (props) => {
   if (props.isFetching) {
-    console.log(4);
     return (
       <>
         <Spin className="loadingIndicatorCentered" size="large" />

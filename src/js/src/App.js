@@ -25,6 +25,8 @@ import { getCurrentYear } from "./utils/myutils";
 import { Layout } from "antd";
 const { Footer } = Layout;
 
+// import Test from "./components/Test";
+
 const footerClass =
   "p-2 bg-dark border-top border-2 border-secondary text-white d-flex justify-content-center fixed-bottom";
 
@@ -37,7 +39,11 @@ class App extends Component {
         <Router>
           <MyHeader />
           <Routes>
-            {/* <Route exact path="/test" element={<DataTable />} /> */}
+            {/* <Route exact path="/test" element={<Test />} /> */}
+            <Route
+              path="/"
+              element={<Navigate replace to="/allspectraincidents" />}
+            />
             <Route
               exact
               path="/allspectraincidents"
@@ -59,10 +65,6 @@ class App extends Component {
               element={<CdrDBClosedOutagesTable />}
             />
             <Route path="/stats" element={<Stats />} />
-            <Route
-              path="/"
-              element={<Navigate replace to="/allspectraincidents" />}
-            />
 
             <Route path="/adhocoutages" element={<AdHocOutages />} />
             {/* Not Found Page */}

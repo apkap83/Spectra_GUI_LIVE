@@ -18,6 +18,14 @@ import FormControlLabel from "@mui/material/FormControlLabel";
 import Checkbox from "@mui/material/Checkbox";
 import Pagination from "@mui/material/Pagination";
 import { styled } from "@mui/system";
+import TextField from "@mui/material/TextField";
+
+import Box from "@mui/material/Box";
+import InputLabel from "@mui/material/InputLabel";
+import MenuItem from "@mui/material/MenuItem";
+import FormControl from "@mui/material/FormControl";
+import Select from "@mui/material/Select";
+import NativeSelect from "@mui/material/NativeSelect";
 
 import { errorNotification } from "../Notification";
 
@@ -33,11 +41,21 @@ import {
 import LoadingSpinnerCentered from "./Spinner/LoadingSpinnerCentered.component";
 
 export function CdrDBOutagesTable(props) {
+  const COMPANY = {
+    WINDplusNova: "WIND+NOVA",
+    WIND: "WIND",
+    NOVA: "NOVA",
+  };
+
+  const MENU_COMPANY_ITEMS = [COMPANY.WINDplusNova, COMPANY.WIND, COMPANY.NOVA];
+
   const pageSize = 18;
+  const [isFetching, setIsFetching] = useState(false);
   const [pageNumber, setPageNumber] = useState(1);
-  const [columns, setColumns] = useState([]);
   const [incidents, setIncidents] = useState();
-  const [isFetching, setIsFetching] = useState(true);
+  const [retrievedIncidents, setRetrievedIncidents] = useState();
+  const [companySelected, setCompanySelected] = useState(COMPANY.WINDplusNova);
+  const [dslamSelected, setDslamSelected] = useState();
 
   const StyledTableRow = styled(TableRow)(({ theme }) => ({
     // "&:nth-of-type(odd)": {
@@ -62,6 +80,14 @@ export function CdrDBOutagesTable(props) {
     );
   };
 
+  const emptyTableIndication = () => {
+    return (
+      <>
+        <h4 style={{ margin: "140px", textAlign: "center" }}>No data</h4>
+      </>
+    );
+  };
+
   const TableBodyForOutages = (myIncidents) => {
     return (
       <TableBody>
@@ -79,42 +105,189 @@ export function CdrDBOutagesTable(props) {
               scope="row"
               sx={{
                 fontWeight: 700,
+                fontSize: "15px",
               }}
             >
               {incident.outage_ID}
             </TableCell>
-            <TableCell align="center">{incident.status}</TableCell>
-            <TableCell align="center">{incident.capture_Date}</TableCell>
-            <TableCell align="center">{incident.dslam}</TableCell>
-            <TableCell align="center">{incident.dslam_Owner}</TableCell>
-            <TableCell align="center">{incident.last_Occured}</TableCell>
-            <TableCell align="center">{incident.duration_Pretty}</TableCell>
-            <TableCell align="center">{incident.duration_Sec}</TableCell>
-            <TableCell align="center">{incident.dslam_Users}</TableCell>
-            <TableCell align="center">{incident.disconnected_Users}</TableCell>
-            <TableCell align="center">
+            <TableCell
+              align="center"
+              sx={{
+                fontWeight: 700,
+                fontSize: "15px",
+              }}
+            >
+              {incident.status}
+            </TableCell>
+            <TableCell
+              align="center"
+              sx={{
+                fontWeight: 700,
+                fontSize: "15px",
+              }}
+            >
+              {incident.capture_Date}
+            </TableCell>
+            <TableCell
+              align="center"
+              sx={{
+                fontWeight: 700,
+                fontSize: "15px",
+              }}
+            >
+              {incident.network}
+            </TableCell>
+            <TableCell
+              align="center"
+              sx={{
+                fontWeight: 700,
+                fontSize: "15px",
+              }}
+            >
+              {incident.dslam}
+            </TableCell>
+            <TableCell
+              align="center"
+              sx={{
+                fontWeight: 700,
+                fontSize: "15px",
+              }}
+            >
+              {incident.dslam_Owner}
+            </TableCell>
+            <TableCell
+              align="center"
+              sx={{
+                fontWeight: 700,
+                fontSize: "15px",
+              }}
+            >
+              {incident.last_Occured}
+            </TableCell>
+            <TableCell
+              align="center"
+              sx={{
+                fontWeight: 700,
+                fontSize: "15px",
+              }}
+            >
+              {incident.duration_Pretty}
+            </TableCell>
+            <TableCell
+              align="center"
+              sx={{
+                fontWeight: 700,
+                fontSize: "15px",
+              }}
+            >
+              {incident.duration_Sec}
+            </TableCell>
+            <TableCell
+              align="center"
+              sx={{
+                fontWeight: 700,
+                fontSize: "15px",
+              }}
+            >
+              {incident.dslam_Users}
+            </TableCell>
+            <TableCell
+              align="center"
+              sx={{
+                fontWeight: 700,
+                fontSize: "15px",
+              }}
+            >
+              {incident.disconnected_Users}
+            </TableCell>
+            <TableCell
+              align="center"
+              sx={{
+                fontWeight: 700,
+                fontSize: "15px",
+              }}
+            >
               {incident.disconnections_Ratio}
             </TableCell>
-            <TableCell align="center">{incident.total_Users_Called}</TableCell>
+            <TableCell
+              align="center"
+              sx={{
+                fontWeight: 700,
+                fontSize: "15px",
+              }}
+            >
+              {incident.total_Users_Called}
+            </TableCell>
           </TableRow>
         ))}
       </TableBody>
     );
   };
 
-  const formatDurationPrettyString = (text) => (
-    <span
-      style={{ fontWeight: "500", whiteSpace: "pre-wrap", textAlign: "center" }}
-    >
-      {text}
-    </span>
+  const handleNetworkDropDownChange = (e) => {
+    const { value: network } = e.target;
+    setCompanySelected(network);
+  };
+
+  const companySelectorComponent = () => (
+    <FormControl fullWidth>
+      <InputLabel id="demo-simple-select-label">
+        <b>Network</b>
+      </InputLabel>
+      <NativeSelect
+        sx={{
+          width: "130px",
+          textAlign: "center",
+          fontSize: "16px",
+          fontWeight: 700,
+        }}
+        onChange={handleNetworkDropDownChange}
+      >
+        {MENU_COMPANY_ITEMS.map((company, i) => {
+          return (
+            <option key={i} value={company}>
+              {company}
+            </option>
+          );
+        })}
+      </NativeSelect>
+    </FormControl>
   );
 
+  const dslamFilterComponent = () => {
+    return (
+      <Box
+        component="form"
+        sx={{
+          "& > :not(style)": { m: 0, width: "15ch", fontSize: "25px" },
+        }}
+        noValidate
+        autoComplete="off"
+      >
+        <TextField
+          id="standard-basic"
+          label="DSLAM Name"
+          variant="standard"
+          inputProps={{
+            min: 0,
+            style: { textAlign: "center" },
+          }}
+          onChange={handleDslamFilter}
+        />
+      </Box>
+    );
+  };
+
+  const handleDslamFilter = (e) => {
+    const { value: dlsamName } = e.target;
+    setDslamSelected(dlsamName);
+  };
   const columnsForCdrDBIncidents = [
     "Outage ID",
     "Status",
     "Capture Date",
-    "DSLAM Name",
+    companySelectorComponent(),
+    dslamFilterComponent(),
     "DSLAM Owner",
     "Last Occured",
     "Duration Pretty",
@@ -132,14 +305,14 @@ export function CdrDBOutagesTable(props) {
       try {
         if (props.specificRequest === "getOpenCdrDBIncidents") {
           const { data } = await getOpenCDR_DBIncidents();
-          setColumns(columnsForCdrDBIncidents);
           setIncidents(data);
-          console.log("CDR Open", data);
+          setRetrievedIncidents(data);
+          setIsFetching(false);
         } else if (props.specificRequest === "getClosedCdrDBIncidents") {
           const { data } = await getClosedCDR_DBIncidents();
-          setColumns(columnsForCdrDBIncidents);
-          console.log("CDR Close", data);
           setIncidents(data);
+          setRetrievedIncidents(data);
+          setIsFetching(false);
         } else {
           throw new Error(
             "Not implemented specific request in CdrDBOutagesTable component"
@@ -150,16 +323,47 @@ export function CdrDBOutagesTable(props) {
       }
     };
 
-    fetchData().then(() => {
-      setTimeout(() => {
-        setIsFetching(false);
-      }, 250);
-    });
+    fetchData();
   }, []);
+
+  useEffect(() => {
+    let filteredFromDslamName = retrievedIncidents;
+
+    if (dslamSelected) {
+      filteredFromDslamName = retrievedIncidents.filter((inc) =>
+        inc.dslam.toLowerCase().includes(dslamSelected.toLowerCase())
+      );
+    }
+
+    if (companySelected === COMPANY.WINDplusNova) {
+      setIncidents(filteredFromDslamName);
+    } else {
+      const filteredFromNetwork = filteredFromDslamName.filter(
+        (inc) => inc.network === companySelected
+      );
+      setIncidents(filteredFromNetwork);
+    }
+  }, [companySelected, dslamSelected]);
+
+  // useEffect(() => {
+  //   if (incidents) {
+  //     const filtered = incidents.filter((inc) =>
+  //       inc.dslam.toLowerCase().includes(dslamSelected)
+  //     );
+  //     setIncidents(filtered);
+  //   }
+  // }, [dslamSelected]);
 
   const handlePageChange = (e, value) => {
     setPageNumber(value);
   };
+  if (isFetching) {
+    return <LoadingSpinnerCentered isFetching={true} />;
+  }
+
+  if (!incidents) {
+    return;
+  }
 
   const getPagedData = () => {
     let filtered = incidents;
@@ -167,20 +371,18 @@ export function CdrDBOutagesTable(props) {
     // console.log("filtered:", paginatedList);
   };
 
-  if (!incidents || incidents.length === 0) {
-    return;
-  }
-
   const pagesCount = Math.ceil(incidents.length / pageSize);
   let paginatedList = getPagedData();
 
   return (
-    <LoadingSpinnerCentered isFetching={isFetching}>
+    <>
       <div style={{ maxHeight: "86vh", overflowY: "auto" }}>
         <Table sx={{ minWidth: 650 }} size="large" aria-label="a dense table">
-          {generateTableHeadAndColumns(columns)}
+          {generateTableHeadAndColumns(columnsForCdrDBIncidents)}
           {TableBodyForOutages(paginatedList)}
         </Table>
+
+        {paginatedList.length === 0 ? emptyTableIndication() : ""}
       </div>
       <Pagination
         sx={{
@@ -195,9 +397,9 @@ export function CdrDBOutagesTable(props) {
         shape="rounded"
         onChange={handlePageChange}
       />
-      <p style={{ position: "fixed", bottom: "20px", right: "10px" }}>
+      <p style={{ marginTop: "20px" }}>
         <b>Total Records: {incidents.length}</b>
       </p>
-    </LoadingSpinnerCentered>
+    </>
   );
 }

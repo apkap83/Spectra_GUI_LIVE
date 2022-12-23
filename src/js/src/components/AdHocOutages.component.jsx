@@ -23,7 +23,6 @@ export function AdHocOutages() {
   const [isPreviewButtonEnabled, setIsPreviewButtonEnabled] = useState(false);
 
   const handleFileSelect = (event) => {
-    console.log(event);
     setDesignatedFile(event.target.files[0]);
     setIsPreviewButtonEnabled(true);
   };

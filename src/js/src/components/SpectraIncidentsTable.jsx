@@ -73,8 +73,6 @@ export default function DenseTable(props) {
   const pageSize = 18;
   // State
   const [pageNumber, setPageNumber] = useState(1);
-  const [isFetching, setIsFetching] = useState(false);
-  const [columns, setColumns] = useState([]);
   const [incidents, setIncidents] = useState([]);
   const [retrievedIncidents, setRetrievedIncidents] = useState();
   const [hideScheduled, setHideScheduled] = useState();
@@ -245,23 +243,17 @@ export default function DenseTable(props) {
 
   // Retrieval of Incidents
   useEffect(() => {
-    setIsFetching(true);
-    console.log("First setIsFetching true", isFetching);
     const fetchData = async () => {
       try {
         // The same Component (AllSpectraIncidents) serves All & Open Incidents
         if (props.specificRequest === "getOpenSpectraIncidents") {
           const { data } = await getOpenSpectraIncidents();
-          setColumns(columnsForOpenSpectraIncidents);
           setIncidents(data);
           setRetrievedIncidents(data);
-          setIsFetching(false);
         } else if (props.specificRequest === "getAllSpectraIncidents") {
           const { data } = await getAllSpectraIncidents();
-          setColumns(columnsForClosedSpectraIncidents);
           setIncidents(data);
           setRetrievedIncidents(data);
-          setIsFetching(false);
         } else {
           throw new Error(
             "Not implemented specific request in SpectraIncidentsTable component"
@@ -302,15 +294,15 @@ export default function DenseTable(props) {
     // console.log("filtered:", paginatedList);
   };
 
-  if (!incidents || incidents.length === 0) {
-    return;
+  if (!incidents || incidents?.length === 0) {
+    return <LoadingSpinnerCentered isFetching={true} />;
   }
-  const myTrue = true;
+
   const pagesCount = Math.ceil(incidents.length / pageSize);
   let paginatedList = getPagedData();
 
   return (
-    <LoadingSpinnerCentered isFetching={isFetching}>
+    <>
       <ModalAlterPublish
         visible={showModalAlterPublish}
         setshowModalAlterPublish={setshowModalAlterPublish}
@@ -335,7 +327,7 @@ export default function DenseTable(props) {
 
       <div style={{ maxHeight: "86vh", overflowY: "auto" }}>
         <Table sx={{ minWidth: 650 }} size="large" aria-label="a dense table">
-          {generateTableHeadAndColumns(columns)}
+          {generateTableHeadAndColumns(columnsForOpenSpectraIncidents)}
           {TableBodyForIncidents(paginatedList)}
         </Table>
       </div>
@@ -346,9 +338,9 @@ export default function DenseTable(props) {
         shape="rounded"
         onChange={handlePageChange}
       />
-      <p style={{ position: "fixed", bottom: "20px", right: "10px" }}>
+      <p style={{}}>
         <b>Total Records: {incidents.length}</b>
       </p>
-    </LoadingSpinnerCentered>
+    </>
   );
 }
