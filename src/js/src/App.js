@@ -10,8 +10,8 @@ import NotFound from "./components/Errors/NotFound.component";
 import { AllSpectraIncidents } from "./components/Routes/AllSpectraIncidents";
 import { OpenSpectraIncidents } from "./components/Routes/OpenSpectraIncidents";
 
-import { CdrDBOpenOutagesTable } from "./components/Routes/CdrDBOpenInc";
-import { CdrDBClosedOutagesTable } from "./components/Routes/CdrDBClosedInc";
+import { CdrDBOpenOutages } from "./components/Routes/CdrDBOpenInc";
+import { CdrDBClosedOutages } from "./components/Routes/CdrDBClosedInc";
 
 import { AdHocOutages } from "./components/AdHocOutages.component";
 
@@ -57,12 +57,12 @@ class App extends Component {
             <Route
               exact
               path="/opencdrdbincidents"
-              element={<CdrDBOpenOutagesTable />}
+              element={<CdrDBOpenOutages />}
             />
             <Route
               exact
               path="/closedcdrdbincidents"
-              element={<CdrDBClosedOutagesTable />}
+              element={<CdrDBClosedOutages />}
             />
             <Route path="/stats" element={<Stats />} />
 

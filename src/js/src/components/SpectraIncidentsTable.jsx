@@ -1,6 +1,8 @@
 import { useState, useEffect, useContext } from "react";
 import { ErrorBoundary } from "./Errors/ErrorBoundary.component";
 
+import { ReactComponent as NoDataLogo } from "../assets/noData.svg";
+
 import Pagination from "@mui/material/Pagination";
 import Stack from "@mui/material/Stack";
 
@@ -26,8 +28,6 @@ import { errorNotification } from "../Notification";
 import {
   getAllSpectraIncidents,
   getOpenSpectraIncidents,
-  getOpenCDR_DBIncidents,
-  getClosedCDR_DBIncidents,
 } from "../services/incidentService";
 
 import LoadingSpinnerCentered from "./Spinner/LoadingSpinnerCentered.component";
@@ -69,9 +69,10 @@ function renderHideScheduledCheckBox(setHideScheduled) {
   );
 }
 
-export default function DenseTable(props) {
+export default function SpectraIncidentsTable(props) {
   const pageSize = 18;
   // State
+  const [isFetching, setIsFetching] = useState(false);
   const [pageNumber, setPageNumber] = useState(1);
   const [incidents, setIncidents] = useState([]);
   const [retrievedIncidents, setRetrievedIncidents] = useState();
@@ -95,21 +96,6 @@ export default function DenseTable(props) {
     "Duration",
     "User ID",
     renderHideScheduledCheckBox(setHideScheduled),
-  ];
-
-  const columnsForClosedSpectraIncidents = [
-    "Incident ID",
-    "Outage ID",
-    "Outage is Published",
-    "Outage Msg",
-    "Backup Eligible",
-    "Hierarchy Selected",
-    "Affected Services",
-    "Scheduled",
-    "Start Time",
-    "End Time",
-    "Duration",
-    "User ID",
   ];
 
   const TableBodyForIncidents = (incidents) => {
@@ -233,16 +219,9 @@ export default function DenseTable(props) {
     );
   };
 
-  const formatDurationPrettyString = (text) => (
-    <span
-      style={{ fontWeight: "500", whiteSpace: "pre-wrap", textAlign: "center" }}
-    >
-      {text}
-    </span>
-  );
-
   // Retrieval of Incidents
   useEffect(() => {
+    setIsFetching(true);
     const fetchData = async () => {
       try {
         // The same Component (AllSpectraIncidents) serves All & Open Incidents
@@ -250,10 +229,12 @@ export default function DenseTable(props) {
           const { data } = await getOpenSpectraIncidents();
           setIncidents(data);
           setRetrievedIncidents(data);
+          setIsFetching(false);
         } else if (props.specificRequest === "getAllSpectraIncidents") {
           const { data } = await getAllSpectraIncidents();
           setIncidents(data);
           setRetrievedIncidents(data);
+          setIsFetching(false);
         } else {
           throw new Error(
             "Not implemented specific request in SpectraIncidentsTable component"
@@ -291,12 +272,40 @@ export default function DenseTable(props) {
   const getPagedData = () => {
     let filtered = incidents;
     return paginate(filtered, pageNumber, pageSize);
-    // console.log("filtered:", paginatedList);
   };
 
-  if (!incidents || incidents?.length === 0) {
+  if (isFetching) {
     return <LoadingSpinnerCentered isFetching={true} />;
   }
+
+  const emptyTableIndication = (incidentsList) => {
+    if (incidentsList && incidentsList.length === 0) {
+      return (
+        <div
+          style={{
+            height: "86vh",
+            display: "flex",
+            justifyContent: "center",
+            alignItems: "center",
+          }}
+        >
+          <div
+            style={{
+              display: "flex",
+              flexDirection: "column",
+              justifyContent: "center",
+              alignItems: "center",
+            }}
+          >
+            <NoDataLogo />
+            <p style={{ marginTop: "20px" }}>No data</p>
+          </div>
+          {/* <h4 style={{ margin: "140px", textAlign: "center" }}>No data</h4> */}
+          {/* {emptyTableIndication()} */}
+        </div>
+      );
+    }
+  };
 
   const pagesCount = Math.ceil(incidents.length / pageSize);
   let paginatedList = getPagedData();
@@ -330,6 +339,8 @@ export default function DenseTable(props) {
           {generateTableHeadAndColumns(columnsForOpenSpectraIncidents)}
           {TableBodyForIncidents(paginatedList)}
         </Table>
+
+        {emptyTableIndication(paginatedList)}
       </div>
       <Pagination
         sx={{ width: "350px", marginLeft: "auto", marginTop: "10px" }}

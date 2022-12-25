@@ -3,30 +3,21 @@ import { ErrorBoundary } from "./Errors/ErrorBoundary.component";
 
 import stringToColor from "../utils/stringToColor";
 
-import { ReactComponent as ReactLogo } from "../assets/noData.svg";
+import { ReactComponent as NoDataLogo } from "../assets/noData.svg";
 
 // MUI Lib Imports
 import Table from "@mui/material/Table";
 import TableBody from "@mui/material/TableBody";
 import TableCell from "@mui/material/TableCell";
-import TableContainer from "@mui/material/TableContainer";
 import TableHead from "@mui/material/TableHead";
 import TableRow from "@mui/material/TableRow";
-import Paper from "@mui/material/Paper";
-import DownloadIcon from "@mui/icons-material/Download";
-import Button from "@mui/material/Button";
-import FormGroup from "@mui/material/FormGroup";
-import FormControlLabel from "@mui/material/FormControlLabel";
-import Checkbox from "@mui/material/Checkbox";
 import Pagination from "@mui/material/Pagination";
 import { styled } from "@mui/system";
 import TextField from "@mui/material/TextField";
 
 import Box from "@mui/material/Box";
 import InputLabel from "@mui/material/InputLabel";
-import MenuItem from "@mui/material/MenuItem";
 import FormControl from "@mui/material/FormControl";
-import Select from "@mui/material/Select";
 import NativeSelect from "@mui/material/NativeSelect";
 
 import { errorNotification } from "../Notification";
@@ -34,15 +25,13 @@ import { errorNotification } from "../Notification";
 import { paginate } from "../utils/paginate";
 
 import {
-  getAllSpectraIncidents,
-  getOpenSpectraIncidents,
   getOpenCDR_DBIncidents,
   getClosedCDR_DBIncidents,
 } from "../services/incidentService";
 
 import LoadingSpinnerCentered from "./Spinner/LoadingSpinnerCentered.component";
 
-export function CdrDBOutagesTable(props) {
+export function CdrDBOutages(props) {
   const COMPANY = {
     WINDplusNova: "WIND+NOVA",
     WIND: "WIND",
@@ -101,7 +90,7 @@ export function CdrDBOutagesTable(props) {
               alignItems: "center",
             }}
           >
-            <ReactLogo />
+            <NoDataLogo />
             <p style={{ marginTop: "20px" }}>No data</p>
           </div>
           {/* <h4 style={{ margin: "140px", textAlign: "center" }}>No data</h4> */}

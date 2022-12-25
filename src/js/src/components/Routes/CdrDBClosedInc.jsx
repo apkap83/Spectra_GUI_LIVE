@@ -1,5 +1,5 @@
-import { CdrDBOutagesTable } from "../CdrDBOutagesTable";
+import { CdrDBOutages } from "../CdrDBOutages.component";
 
-export const CdrDBClosedOutagesTable = () => {
-  return <CdrDBOutagesTable specificRequest="getClosedCdrDBIncidents" />;
+export const CdrDBClosedOutages = () => {
+  return <CdrDBOutages specificRequest="getClosedCdrDBIncidents" />;
 };
