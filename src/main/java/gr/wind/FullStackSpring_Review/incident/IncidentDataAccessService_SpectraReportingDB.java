@@ -3,6 +3,7 @@ package gr.wind.FullStackSpring_Review.incident;
 import gr.wind.FullStackSpring_Review.exception.ApiRequestException;
 import gr.wind.FullStackSpring_Review.model.AdHocOutageSubscriber;
 import org.springframework.beans.factory.annotation.Qualifier;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.jdbc.core.BatchPreparedStatementSetter;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.stereotype.Repository;
@@ -17,6 +18,8 @@ import java.util.List;
 @Repository
 public class IncidentDataAccessService_SpectraReportingDB {
 
+    @Value("${app.TablePrefix}")
+    private String TablePrefix;
     private final JdbcTemplate jdbcTemplate;
 
     public IncidentDataAccessService_SpectraReportingDB(@Qualifier("jdbcTemplateForReportingDB") JdbcTemplate jdbcTemplate) {
@@ -25,7 +28,7 @@ public class IncidentDataAccessService_SpectraReportingDB {
 
    public int setWillBePublishedNOForOutageID(int outageID) {
         String sql = "" +
-                "update Test_SubmittedIncidents " +
+                "update " + TablePrefix + "SubmittedIncidents " +
                 "set WillBePublished = 'No' " +
                 "where OutageID = ?";
 
@@ -37,7 +40,7 @@ public class IncidentDataAccessService_SpectraReportingDB {
 
     public int setWillBePublishedYESForOutageID(int outageID) {
         String sql = "" +
-                "update Test_SubmittedIncidents " +
+                "update " + TablePrefix + "SubmittedIncidents " +
                 "set WillBePublished = 'Yes' " +
                 "where OutageID = ?";
 
@@ -49,7 +52,7 @@ public class IncidentDataAccessService_SpectraReportingDB {
 
     public int setWillBePublishedNOForIncidentID(String incidentId) {
         String sql = "" +
-                "update Test_SubmittedIncidents " +
+                "update " + TablePrefix + "SubmittedIncidents " +
                 "set WillBePublished = 'No' " +
                 "where IncidentID = ?";
 
@@ -61,7 +64,7 @@ public class IncidentDataAccessService_SpectraReportingDB {
 
     public int setWillBePublishedYESForIncidentID(String incidentId) {
         String sql = "" +
-                "update Test_SubmittedIncidents " +
+                "update " + TablePrefix + "SubmittedIncidents " +
                 "set WillBePublished = 'Yes' " +
                 "where IncidentID = ?";
 
@@ -77,7 +80,7 @@ public class IncidentDataAccessService_SpectraReportingDB {
             message = null;
         }
         String sql = "" +
-                "update Test_SubmittedIncidents " +
+                "update " + TablePrefix + "SubmittedIncidents " +
                 "set OutageMsg = ? " +
                 "where OutageID = ?";
 
@@ -95,7 +98,7 @@ public class IncidentDataAccessService_SpectraReportingDB {
         }
 
         String sql = "" +
-                "update Test_SubmittedIncidents " +
+                "update " + TablePrefix + "SubmittedIncidents " +
                 "set OutageMsg = ? " +
                 "where incidentId = ?";
 
@@ -113,7 +116,7 @@ public class IncidentDataAccessService_SpectraReportingDB {
 
         if (yesorno.equals("Yes") || yesorno.equals("No")) {
             String sql = "" +
-                    "update Test_SubmittedIncidents " +
+                    "update " + TablePrefix + "SubmittedIncidents " +
                     "set BackupEligible = ? " +
                     "where IncidentID = ?";
 
@@ -129,7 +132,7 @@ public class IncidentDataAccessService_SpectraReportingDB {
     }
 
     public void insertMultipleAdHocOutageSubscribers(List<AdHocOutageSubscriber> adHocOutageSubs) {
-        String SQL_STUDENT_INSERT = "INSERT INTO Test_AdHocOutage_CLIS(CliValue,Start_DateTime,End_DateTime,BackupEligible,Message) values(?,?,?,?,?)";
+        String SQL_STUDENT_INSERT = "INSERT INTO " + TablePrefix + "AdHocOutage_CLIS(CliValue,Start_DateTime,End_DateTime,BackupEligible,Message) values(?,?,?,?,?)";
 
         jdbcTemplate.batchUpdate(SQL_STUDENT_INSERT, new BatchPreparedStatementSetter() {
 

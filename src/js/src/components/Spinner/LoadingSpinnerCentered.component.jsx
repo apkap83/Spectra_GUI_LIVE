@@ -13,7 +13,6 @@ const LoadingSpinnerCentered = (props) => {
       </>
     );
   } else {
-    console.log(17);
     return props.children;
   }
 };

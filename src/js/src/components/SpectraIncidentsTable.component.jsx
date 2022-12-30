@@ -10,15 +10,15 @@ import Stack from "@mui/material/Stack";
 import Table from "@mui/material/Table";
 import TableBody from "@mui/material/TableBody";
 import TableCell from "@mui/material/TableCell";
-import TableContainer from "@mui/material/TableContainer";
 import TableHead from "@mui/material/TableHead";
 import TableRow from "@mui/material/TableRow";
-import Paper from "@mui/material/Paper";
-import DownloadIcon from "@mui/icons-material/Download";
+
 import Button from "@mui/material/Button";
 import FormGroup from "@mui/material/FormGroup";
 import FormControlLabel from "@mui/material/FormControlLabel";
 import Checkbox from "@mui/material/Checkbox";
+
+import { MenuPopupDownloads } from "./MenuPopup/MenuPopupDownloads.component";
 
 import { errorNotification } from "../Notification";
 
@@ -39,9 +39,10 @@ import { ModalAlterPublish } from "./Modals/ModalAlterPublish.component";
 import { ModalAlterMessage } from "./Modals/ModalAlterMessage.component";
 import { ModalAlterBackup } from "./Modals/ModalAlterBackup.component";
 
-import { ActionsMenu } from "./MenuPopup/MenuPopup.component";
+import { ActionsMenu } from "./MenuPopup/MenuPopupActions.component";
 import stringToColor from "../utils/stringToColor";
-import downloadAffectedUsers from "../utils/downloadAffectedUsers";
+import { downloadAffectedUsersForIncident } from "../utils/downloadAffectedUsersForIncident";
+import { downloadAffectedUsersForOutage } from "../utils/downloadAffectedUsersForOutage";
 import { getColorYesNo, getColorMsg } from "../utils/myutils";
 
 const generateTableHeadAndColumns = (columnsArray) => {
@@ -121,10 +122,7 @@ export default function SpectraIncidentsTable(props) {
               {incident.incidentId}
             </TableCell>
             <TableCell align="center">
-              <Button variant="contained" onClick={downloadAffectedUsers}>
-                <DownloadIcon fontSize="small" />
-                &nbsp;{incident.outageId}
-              </Button>
+              <MenuPopupDownloads incident={incident} />
             </TableCell>
             <TableCell
               align="center"

@@ -14,6 +14,9 @@ import TableRow from "@mui/material/TableRow";
 import Pagination from "@mui/material/Pagination";
 import { styled } from "@mui/system";
 import TextField from "@mui/material/TextField";
+// MUI Icons
+import BorderOuterIcon from "@mui/icons-material/BorderOuter";
+import HistoryToggleOffIcon from "@mui/icons-material/HistoryToggleOff";
 
 import Box from "@mui/material/Box";
 import InputLabel from "@mui/material/InputLabel";
@@ -30,7 +33,7 @@ import {
 } from "../services/incidentService";
 
 import LoadingSpinnerCentered from "./Spinner/LoadingSpinnerCentered.component";
-
+let Title = () => {};
 export function CdrDBOutages(props) {
   const COMPANY = {
     WINDplusNova: "WIND+NOVA",
@@ -40,7 +43,7 @@ export function CdrDBOutages(props) {
 
   const MENU_COMPANY_ITEMS = [COMPANY.WINDplusNova, COMPANY.WIND, COMPANY.NOVA];
 
-  const pageSize = 18;
+  const pageSize = 16;
   const [isFetching, setIsFetching] = useState(false);
   const [pageNumber, setPageNumber] = useState(1);
   const [incidents, setIncidents] = useState();
@@ -340,11 +343,25 @@ export function CdrDBOutages(props) {
     const fetchData = async () => {
       try {
         if (props.specificRequest === "getOpenCdrDBIncidents") {
+          Title = () => {
+            return (
+              <>
+                <BorderOuterIcon /> <span>Opened DSLAM Outages</span>
+              </>
+            );
+          };
           const { data } = await getOpenCDR_DBIncidents();
           setIncidents(data);
           setRetrievedIncidents(data);
           setIsFetching(false);
         } else if (props.specificRequest === "getClosedCdrDBIncidents") {
+          Title = () => {
+            return (
+              <>
+                <HistoryToggleOffIcon /> <span>Closed DSLAM Outages</span>
+              </>
+            );
+          };
           const { data } = await getClosedCDR_DBIncidents();
           setIncidents(data);
           setRetrievedIncidents(data);
@@ -390,7 +407,7 @@ export function CdrDBOutages(props) {
   }
 
   if (!incidents) {
-    return;
+    return null;
   }
 
   const getPagedData = () => {
@@ -401,9 +418,11 @@ export function CdrDBOutages(props) {
 
   const pagesCount = Math.ceil(incidents.length / pageSize);
   let paginatedList = getPagedData();
-
   return (
     <>
+      <h3 className="m-2">
+        <Title />
+      </h3>
       <div style={{ maxHeight: "86vh", overflowY: "auto" }}>
         <Table sx={{ minWidth: 650 }} size="large" aria-label="a dense table">
           {generateTableHeadAndColumns(columnsForCdrDBIncidents)}

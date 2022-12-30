@@ -3,6 +3,7 @@ package gr.wind.FullStackSpring_Review.incident;
 import gr.wind.FullStackSpring_Review.model.AdHocOutageSubscriber;
 import gr.wind.FullStackSpring_Review.model.Incident;
 import org.springframework.beans.factory.annotation.Qualifier;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.jdbc.core.BatchPreparedStatementSetter;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.stereotype.Repository;
@@ -16,6 +17,9 @@ import java.util.List;
 
 @Repository
 public class IncidentDataAccessService {
+
+    @Value("${app.TablePrefix}")
+    private String TablePrefix;
 
     private final JdbcTemplate jdbcTemplate;
 
@@ -47,7 +51,7 @@ public class IncidentDataAccessService {
                 "IncidentAffectedVoiceCustomers, " +
                 "IncidentAffectedDataCustomers, " +
                 "IncidentAffectedIPTVCustomers " +
-                "from Test_SubmittedIncidents order by ID DESC LIMIT 1000";
+                "from " + TablePrefix + "SubmittedIncidents order by ID DESC LIMIT 1000";
 
         List<Incident> incidents = jdbcTemplate.query(sql, (resultSet, i) -> {
             int id = resultSet.getInt("ID");
@@ -144,7 +148,7 @@ public class IncidentDataAccessService {
                 "IncidentAffectedVoiceCustomers, " +
                 "IncidentAffectedDataCustomers, " +
                 "IncidentAffectedIPTVCustomers " +
-                "from Test_SubmittedIncidents WHERE IncidentStatus = 'OPEN' order by ID DESC LIMIT 1000";
+                "from " + TablePrefix + "SubmittedIncidents WHERE IncidentStatus = 'OPEN' order by ID DESC LIMIT 1000";
 
         List<Incident> incidents = jdbcTemplate.query(sql, (resultSet, i) -> {
             int id = resultSet.getInt("ID");
@@ -195,7 +199,7 @@ public class IncidentDataAccessService {
 
     public int setWillBePublishedNOForOutageID(int outageID) {
         String sql = "" +
-                "update Test_SubmittedIncidents " +
+                "update " + TablePrefix + "SubmittedIncidents " +
                 "set WillBePublished = 'No' " +
                 "where OutageID = ?";
 
@@ -207,7 +211,7 @@ public class IncidentDataAccessService {
 
     public int setWillBePublishedYESForOutageID(int outageID) {
         String sql = "" +
-                "update Test_SubmittedIncidents " +
+                "update " + TablePrefix + "SubmittedIncidents " +
                 "set WillBePublished = 'Yes' " +
                 "where OutageID = ?";
 
@@ -219,7 +223,7 @@ public class IncidentDataAccessService {
 
     public int setWillBePublishedNOForIncidentID(String incidentId) {
         String sql = "" +
-                "update Test_SubmittedIncidents " +
+                "update " + TablePrefix + "SubmittedIncidents " +
                 "set WillBePublished = 'No' " +
                 "where IncidentID = ?";
 
@@ -231,7 +235,7 @@ public class IncidentDataAccessService {
 
     public int setWillBePublishedYESForIncidentID(String incidentId) {
         String sql = "" +
-                "update Test_SubmittedIncidents " +
+                "update " + TablePrefix + "SubmittedIncidents " +
                 "set WillBePublished = 'Yes' " +
                 "where IncidentID = ?";
 
@@ -265,7 +269,7 @@ public class IncidentDataAccessService {
                 "IncidentAffectedVoiceCustomers, " +
                 "IncidentAffectedDataCustomers, " +
                 "IncidentAffectedIPTVCustomers " +
-                "from Test_SubmittedIncidents WHERE IncidentStatus = 'OPEN' and Scheduled = 'No' order by ID DESC LIMIT 1000";
+                "from " + TablePrefix + "SubmittedIncidents WHERE IncidentStatus = 'OPEN' and Scheduled = 'No' order by ID DESC LIMIT 1000";
 
         List<Incident> incidents = jdbcTemplate.query(sql, (resultSet, i) -> {
             int id = resultSet.getInt("ID");
@@ -338,7 +342,7 @@ public class IncidentDataAccessService {
                 "IncidentAffectedVoiceCustomers, " +
                 "IncidentAffectedDataCustomers, " +
                 "IncidentAffectedIPTVCustomers " +
-                "from Test_SubmittedIncidents WHERE Scheduled = 'No' order by ID DESC LIMIT 1000";
+                "from " + TablePrefix + "SubmittedIncidents WHERE Scheduled = 'No' order by ID DESC LIMIT 1000";
 
         List<Incident> incidents = jdbcTemplate.query(sql, (resultSet, i) -> {
             int id = resultSet.getInt("ID");
@@ -392,7 +396,7 @@ public class IncidentDataAccessService {
             message = null;
         }
         String sql = "" +
-                "update Test_SubmittedIncidents " +
+                "update " + TablePrefix + "SubmittedIncidents " +
                 "set OutageMsg = ? " +
                 "where OutageID = ?";
 
@@ -410,7 +414,7 @@ public class IncidentDataAccessService {
         }
 
         String sql = "" +
-                "update Test_SubmittedIncidents " +
+                "update " + TablePrefix + "SubmittedIncidents " +
                 "set OutageMsg = ? " +
                 "where incidentId = ?";
 
@@ -426,7 +430,7 @@ public class IncidentDataAccessService {
             yesorno = "No";
         }
         String sql = "" +
-                "update Test_SubmittedIncidents " +
+                "update " + TablePrefix + "SubmittedIncidents " +
                 "set BackupEligible = ? " +
                 "where IncidentID = ?";
 
@@ -438,7 +442,7 @@ public class IncidentDataAccessService {
     }
 
     public void insertMultipleAdHocOutageSubscribers(List<AdHocOutageSubscriber> adHocOutageSubs) {
-        String SQL_STUDENT_INSERT = "INSERT INTO Test_AdHocOutage_CLIS(CliValue,Start_DateTime,End_DateTime,BackupEligible,Message) values(?,?,?,?,?)";
+        String SQL_STUDENT_INSERT = "INSERT INTO " + TablePrefix + "AdHocOutage_CLIS(CliValue,Start_DateTime,End_DateTime,BackupEligible,Message) values(?,?,?,?,?)";
 
         jdbcTemplate.batchUpdate(SQL_STUDENT_INSERT, new BatchPreparedStatementSetter() {
 
@@ -467,7 +471,7 @@ public class IncidentDataAccessService {
                 "End_DateTime, " +
                 "BackupEligible, " +
                 "Message " +
-                "FROM Test_AdHocOutage_CLIS ORDER BY id DESC;";
+                "FROM " + TablePrefix + "AdHocOutage_CLIS ORDER BY id DESC;";
 
         List<AdHocOutageSubscriber> adHocOutages = jdbcTemplate.query(sql, (resultSet, i) -> {
             int id = resultSet.getInt("id");
@@ -496,7 +500,7 @@ public class IncidentDataAccessService {
 
     public int deleteAdHocIncidentById(int id) {
         String sql = "" +
-                "delete from Test_AdHocOutage_CLIS " +
+                "delete from " + TablePrefix + "AdHocOutage_CLIS " +
                 "where id = ?";
         System.out.println("id =" +id);
         return jdbcTemplate.update(

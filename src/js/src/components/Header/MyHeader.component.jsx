@@ -4,10 +4,6 @@ import Navbar from "react-bootstrap/Navbar";
 import NavDropdown from "react-bootstrap/NavDropdown";
 // import * as Conf from "../config.json";
 import { LinkContainer } from "react-router-bootstrap";
-import ToggleButton from "react-bootstrap/ToggleButton";
-import Form from "react-bootstrap/Form";
-import Stack from "react-bootstrap/Stack";
-import Button from "react-bootstrap/Button";
 import { useLocation } from "react-router-dom";
 
 // const { appTitle } = Conf;
@@ -48,7 +44,7 @@ function MyHeader() {
                 </LinkContainer>
               </NavDropdown>
               <LinkContainer to="/adhocoutages">
-                <Nav.Link>AdHoc Outages</Nav.Link>
+                <Nav.Link>Ad Hoc Outages</Nav.Link>
               </LinkContainer>
               <LinkContainer to="/stats">
                 <Nav.Link>Stats</Nav.Link>

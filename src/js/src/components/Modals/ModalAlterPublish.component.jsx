@@ -1,9 +1,6 @@
 import Box from "@mui/material/Box";
-import Button from "@mui/material/Button";
 import Typography from "@mui/material/Typography";
 import Modal from "@mui/material/Modal";
-
-import { ErrorBoundary } from "../Errors/ErrorBoundary.component";
 
 import BroadcastingOutageForm from "../../forms/BroadcastingOutageForm";
 import { capitalizeFirstLetter } from "../../utils/myutils";

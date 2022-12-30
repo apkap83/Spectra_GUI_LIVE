@@ -5,6 +5,7 @@ import com.google.common.collect.Sets;
 import gr.wind.FullStackSpring_Review.security.ApplicationUserRole;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.crypto.password.PasswordEncoder;
@@ -22,6 +23,9 @@ import static gr.wind.FullStackSpring_Review.security.ApplicationUserRole.*;
 public class ApplicationUserDaoService implements ApplicationUserDao {
     private final PasswordEncoder passwordEncoder;
     private final JdbcTemplate jdbcTemplate;
+
+    @Value("${app.TablePrefix}")
+    private String TablePrefix;
 
     @Autowired
     public ApplicationUserDaoService(PasswordEncoder passwordEncoder, @Qualifier("jdbcTemplateForLiveDB") JdbcTemplate jdbcTemplate) {
@@ -77,7 +81,7 @@ public class ApplicationUserDaoService implements ApplicationUserDao {
                 "active, " +
                 "password, " +
                 "role " +
-                "FROM Test_Spectra_GUI_Users";
+                "FROM " + TablePrefix + "_Spectra_GUI_Users";
 
         List<ApplicationUser> appUsers = jdbcTemplate.query(sqlQuery, (resultSet, i) -> {
             String userName = resultSet.getString("userName");

@@ -3,22 +3,29 @@ package gr.wind.FullStackSpring_Review.controllers;
 import gr.wind.FullStackSpring_Review.model.CDR_DB_Incident;
 import gr.wind.FullStackSpring_Review.incident.IncidentService;
 import gr.wind.FullStackSpring_Review.model.Incident;
+import gr.wind.FullStackSpring_Review.util.SearchFileByWildcard;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.core.io.ByteArrayResource;
 import org.springframework.core.io.Resource;
 import org.springframework.http.HttpHeaders;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.stereotype.Component;
 import org.springframework.web.bind.annotation.*;
 
+import java.io.ByteArrayOutputStream;
 import java.io.File;
 import java.io.IOException;
-import java.nio.file.Files;
-import java.nio.file.Path;
-import java.nio.file.Paths;
+import java.io.ObjectOutputStream;
+import java.nio.charset.Charset;
+import java.nio.charset.StandardCharsets;
+import java.nio.file.*;
 import java.text.ParseException;
+import java.util.ArrayList;
 import java.util.List;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
@@ -29,13 +36,14 @@ import org.springframework.web.multipart.MultipartFile;
 public class IncidentController {
 
     // Download
-    private static final String SERVER_LOCATION = "/opt/ExportedFiles";
+
+    @Value("${app.ExportedFilesMainPath}")
+    private String SERVER_LOCATION;
     private final IncidentService incidentService;
     private String userNameLoggedIn;
     private static final Logger logger = LogManager.getLogger(IncidentController.class);
-
-    // TODO: Change for Live Environment
-    private static String Environment = "TEST Environment ";
+    @Value("${app.MyEnvironmentDescription}")
+    private String Environment;
 
     @Autowired
     public IncidentController(IncidentService incidentService) {
@@ -47,7 +55,7 @@ public class IncidentController {
     public List<Incident> getAllIncidents() {
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
         userNameLoggedIn = authentication.getName();
-        logger.info(Environment + userNameLoggedIn + " -> GET all Incidents");
+        logger.info(Environment + " " + userNameLoggedIn + " -> GET all Incidents");
         return incidentService.getAllIncidents();
     }
 
@@ -57,7 +65,7 @@ public class IncidentController {
 
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
         userNameLoggedIn = authentication.getName();
-        logger.info(Environment + userNameLoggedIn + " -> GET open Incidents");
+        logger.info(Environment + " " + userNameLoggedIn + " -> GET open Incidents");
 
         return incidentService.getOpenIncidents();
     }
@@ -68,7 +76,7 @@ public class IncidentController {
 
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
         userNameLoggedIn = authentication.getName();
-        logger.info(Environment + userNameLoggedIn + " -> GET all non scheduled Incidents");
+        logger.info(Environment + " " + userNameLoggedIn + " -> GET all non scheduled Incidents");
 
         return incidentService.getAllNonScheduledIncidents();
     }
@@ -78,7 +86,7 @@ public class IncidentController {
 
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
         userNameLoggedIn = authentication.getName();
-        logger.info(Environment + userNameLoggedIn + " -> GET all open non scheduled Incidents");
+        logger.info(Environment + " " + userNameLoggedIn + " -> GET all open non scheduled Incidents");
 
         return incidentService.getOpenNonScheduledIncidents();
     }
@@ -87,10 +95,9 @@ public class IncidentController {
     @PutMapping("/willbepublishednoforoutageid/{id}")
     public void setWillBePublishedNOforOutageId(@PathVariable int id) {
 
-        System.out.println("HERE!!!");
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
         userNameLoggedIn = authentication.getName();
-        logger.info(Environment + userNameLoggedIn + " -> Changing Will be published = NO for OutageID = " + id);
+        logger.info(Environment + " " + userNameLoggedIn + " -> Changing Will be published = NO for OutageID = " + id);
 
         incidentService.setWillBePublishedNOForOutageId(id);
     }
@@ -101,7 +108,7 @@ public class IncidentController {
 
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
         userNameLoggedIn = authentication.getName();
-        logger.info(Environment + userNameLoggedIn + " -> Changing Will be published = YES for OutageID = " + id);
+        logger.info(Environment + " " + userNameLoggedIn + " -> Changing Will be published = YES for OutageID = " + id);
 
         incidentService.setWillBePublishedYESforOutageId(id);
     }
@@ -112,7 +119,7 @@ public class IncidentController {
 
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
         userNameLoggedIn = authentication.getName();
-        logger.info(Environment + userNameLoggedIn + " -> Changing Will be published = NO for IncidentID = " + incidentId);
+        logger.info(Environment + " " + userNameLoggedIn + " -> Changing Will be published = NO for IncidentID = " + incidentId);
 
         incidentService.setWillBePublishedNOForIncidentId(incidentId);
     }
@@ -123,7 +130,7 @@ public class IncidentController {
 
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
         userNameLoggedIn = authentication.getName();
-        logger.info(Environment + userNameLoggedIn + " -> Changing Will be published = YES for IncidentID = " + incidentId);
+        logger.info(Environment + " " + userNameLoggedIn + " -> Changing Will be published = YES for IncidentID = " + incidentId);
 
         incidentService.setWillBePublishedYESforIncidentId(incidentId);
     }
@@ -134,7 +141,7 @@ public class IncidentController {
 
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
         userNameLoggedIn = authentication.getName();
-        logger.info(Environment + userNameLoggedIn + " -> Changing to Message " + message + " for OutageID = " + outageId);
+        logger.info(Environment + " " + userNameLoggedIn + " -> Changing to Message " + message + " for OutageID = " + outageId);
 
         incidentService.changeMessageForOutageId(outageId, message);
     }
@@ -145,7 +152,7 @@ public class IncidentController {
 
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
         userNameLoggedIn = authentication.getName();
-        logger.info(Environment + userNameLoggedIn + " -> Changing to Message " + message + " for IncidentID = " + incidentId);
+        logger.info(Environment + " " + userNameLoggedIn + " -> Changing to Message " + message + " for IncidentID = " + incidentId);
 
         incidentService.changeMessageForIncidentId(incidentId, message);
     }
@@ -156,37 +163,86 @@ public class IncidentController {
 
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
         userNameLoggedIn = authentication.getName();
-        logger.info(Environment + userNameLoggedIn + " -> Altering backup policy to " + yesorno + " for IncidentID = " + incidentId);
+        logger.info(Environment + " " + userNameLoggedIn + " -> Altering backup policy to " + yesorno + " for IncidentID = " + incidentId);
 
         incidentService.alterBackupPolicyForIncidentId(incidentId, yesorno);
     }
 
 
     @CrossOrigin
-    @RequestMapping(path = "/downloadfile/{dirname1}/{dirname2}/{filename}", method = RequestMethod.GET)
-    public ResponseEntity<Resource> download(@PathVariable String dirname1, @PathVariable String dirname2, @PathVariable String filename) throws IOException {
-        File file = new File(SERVER_LOCATION + File.separator + dirname1 + File.separator + dirname2 + File.separator + filename);
-
-        HttpHeaders header = new HttpHeaders();
-        header.add(HttpHeaders.CONTENT_DISPOSITION, "attachment; filename=img.jpg");
-        header.add("Cache-Control", "no-cache, no-store, must-revalidate");
-        header.add("Pragma", "no-cache");
-        header.add("Expires", "0");
-
-        Path path = Paths.get(file.getAbsolutePath());
-        ByteArrayResource resource = new ByteArrayResource(Files.readAllBytes(path));
-
-
+    @RequestMapping(path = "/downloadfile/{dirname1}/{dirname2}/{fileNamePattern}", method = RequestMethod.GET)
+    public ResponseEntity<Resource> download(@PathVariable String dirname1, @PathVariable String dirname2, @PathVariable String fileNamePattern) throws IOException {
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
         userNameLoggedIn = authentication.getName();
-        logger.info(Environment + userNameLoggedIn + " -> Downloading file: " + filename);
+
+        String fileNameToBeDownloaded = "";
+        Path fileToBeDownloadedFullPath = null;
+        ByteArrayResource resource = null;
+        Path fileDirPath = Paths.get(SERVER_LOCATION, dirname1, dirname2);
+
+        // Find actual files from Glob pattern
+        SearchFileByWildcard sfbw = new SearchFileByWildcard();
+        List<String> listofFilesMatchedForGlob = sfbw.searchWithWc(fileDirPath, "glob:" + fileNamePattern);
+
+        // File Was Found
+        if (listofFilesMatchedForGlob.size() == 1)
+        {
+            fileNameToBeDownloaded = listofFilesMatchedForGlob.get(0);
+            fileToBeDownloadedFullPath = Paths.get(fileDirPath.toString(), fileNameToBeDownloaded);
+            resource = new ByteArrayResource(Files.readAllBytes(fileToBeDownloadedFullPath));
+
+            logger.info(Environment + " " + userNameLoggedIn + " -> Downloading file: " + fileToBeDownloadedFullPath);
+
+            HttpHeaders header = new HttpHeaders();
+            header.add(HttpHeaders.CONTENT_DISPOSITION, "attachment; filename=img.jpg");
+            header.add("Cache-Control", "no-cache, no-store, must-revalidate");
+            header.add("Pragma", "no-cache");
+            header.add("Expires", "0");
 
 
-        return ResponseEntity.ok()
-                .headers(header)
-                .contentLength(file.length())
-                .contentType(MediaType.parseMediaType("application/octet-stream"))
-                .body(resource);
+            return ResponseEntity.ok()
+                    .headers(header)
+                    .contentLength(fileToBeDownloadedFullPath.toFile().length())
+                    .contentType(MediaType.parseMediaType("application/octet-stream"))
+                    .body(resource);
+
+        } else if (listofFilesMatchedForGlob.size() > 1) { // Many Outage files are compacted into one
+            Charset charset = StandardCharsets.UTF_8;
+            List<String> allLines = new ArrayList<>();
+            for (String fileName : listofFilesMatchedForGlob) {
+                List<String> lines = Files.readAllLines( Paths.get(fileDirPath.toString(), fileName), charset);
+                allLines.addAll(lines);
+            }
+
+            String totalStringStream = "";
+
+            for (String item : allLines) {
+                totalStringStream += item + System.lineSeparator();
+            }
+
+            logger.info(Environment + " " + userNameLoggedIn + " -> Downloading files matching pattern: " + fileDirPath.toString() + File.separator +  fileNamePattern);
+
+            HttpHeaders header = new HttpHeaders();
+            header.add(HttpHeaders.CONTENT_DISPOSITION, "attachment; filename=img.jpg");
+            header.add("Cache-Control", "no-cache, no-store, must-revalidate");
+            header.add("Pragma", "no-cache");
+            header.add("Expires", "0");
+
+            resource = new ByteArrayResource(totalStringStream.getBytes(charset));
+
+            return ResponseEntity.ok()
+                    .headers(header)
+                    .contentLength(totalStringStream.getBytes(charset).length)
+                    .contentType(MediaType.parseMediaType("application/octet-stream"))
+                    .body(resource);
+
+        } else  {
+            // File was not found
+            logger.error(Environment + " " + userNameLoggedIn + " -> Cannot Download file: " + Paths.get(fileDirPath.toString(), fileNamePattern.replace("*", "MYDATE")).toString());
+            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+        }
+
+
     }
 
     /* CDR DB Methods */
@@ -198,7 +254,7 @@ public class IncidentController {
 
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
         userNameLoggedIn = authentication.getName();
-        logger.info(Environment + userNameLoggedIn + " -> GET all CDRDB Incidents");
+        logger.info(Environment + " " + userNameLoggedIn + " -> GET all CDRDB Incidents");
         return incidentService.getAllCDR_DBIncidents();
     }
 
@@ -210,7 +266,7 @@ public class IncidentController {
 
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
         userNameLoggedIn = authentication.getName();
-        logger.info(Environment + userNameLoggedIn + " -> GET all Open CDRDB Incidents");
+        logger.info(Environment + " " + userNameLoggedIn + " -> GET all Open CDRDB Incidents");
         return incidentService.getOpenCDR_DBIncidents();
     }
 
@@ -222,7 +278,7 @@ public class IncidentController {
 
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
         userNameLoggedIn = authentication.getName();
-        logger.info(Environment + userNameLoggedIn + " -> GET all Closed CDRDB Incidents");
+        logger.info(Environment + " " + userNameLoggedIn + " -> GET all Closed CDRDB Incidents");
         return incidentService.getClosedCDR_DBIncidents();
     }
 
@@ -234,7 +290,7 @@ public class IncidentController {
 
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
         userNameLoggedIn = authentication.getName();
-        logger.info(Environment + userNameLoggedIn + " -> GET all Closed CDRDB Incidents");
+        logger.info(Environment + " " + userNameLoggedIn + " -> GET all Closed CDRDB Incidents");
         return incidentService.getClosedCDR_DBIncidents();
     }
 }

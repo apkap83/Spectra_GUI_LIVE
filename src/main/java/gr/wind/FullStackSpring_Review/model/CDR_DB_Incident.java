@@ -5,6 +5,7 @@ public class CDR_DB_Incident {
     private final Long Outage_ID;
     private final String Status;
     private final String Capture_Date;
+    private final String Network;
     private final String DSLAM;
     private final String DSLAM_Owner;
     private final String Last_Occurred;
@@ -20,9 +21,12 @@ public class CDR_DB_Incident {
     private final int Total_Users_Called;
 
 
+
+
     public CDR_DB_Incident(Long outage_ID,
                            String status,
                            String capture_date,
+                           String network,
                            String DSLAM,
                            String dslam_owner,
                            String last_occurred,
@@ -37,6 +41,7 @@ public class CDR_DB_Incident {
         Outage_ID = outage_ID;
         Status = status;
         Capture_Date = capture_date;
+        this.Network = network;
         this.DSLAM = DSLAM;
         DSLAM_Owner = dslam_owner;
         Last_Occurred = last_occurred;
@@ -75,7 +80,9 @@ public class CDR_DB_Incident {
     public String getCapture_Date() {
         return Capture_Date;
     }
-
+    public String getNetwork() {
+        return Network;
+    }
     public String getDSLAM() {
         return DSLAM;
     }

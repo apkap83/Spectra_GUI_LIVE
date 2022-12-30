@@ -71,7 +71,7 @@ class App extends Component {
             <Route path="*" element={<NotFound />} />
           </Routes>
           <Footer className={footerClass}>
-            WIND - NMS Team {getCurrentYear()}
+            NOVA - NMS Team {getCurrentYear()}
           </Footer>
         </Router>
       </ScopedCssBaseline>

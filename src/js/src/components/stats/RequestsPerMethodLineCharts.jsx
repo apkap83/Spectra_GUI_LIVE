@@ -111,7 +111,7 @@ class RequestsPerMethodLineCharts extends Component {
 
   getAllCharts() {
     return (
-      <div>
+      <div style={{ width: "100%" }}>
         <div style={{ marginTop: "1.3rem", marginBottom: "3rem" }}>
           <CanvasJSChart
             title="Hello"
