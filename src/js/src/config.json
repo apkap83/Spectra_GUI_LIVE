@@ -1,4 +1,4 @@
 {
   "appTitle": "Spectra Test",
-  "apiPrefix": "https://localhost:3500"
+  "apiPrefix": "https://10.10.18.120:3500"
 }

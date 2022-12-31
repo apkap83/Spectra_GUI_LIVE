@@ -71,7 +71,7 @@ function renderHideScheduledCheckBox(setHideScheduled) {
 }
 
 export default function SpectraIncidentsTable(props) {
-  const pageSize = 18;
+  const pageSize = 9;
   // State
   const [isFetching, setIsFetching] = useState(false);
   const [pageNumber, setPageNumber] = useState(1);
@@ -116,7 +116,7 @@ export default function SpectraIncidentsTable(props) {
               scope="row"
               sx={{
                 fontWeight: 700,
-                fontSize: "15px",
+                fontSize: "12px",
               }}
             >
               {incident.incidentId}
@@ -153,7 +153,7 @@ export default function SpectraIncidentsTable(props) {
               sx={{
                 // background: stringToColor(incident.incidentId),
                 fontWeight: 700,
-                fontSize: "15px",
+                fontSize: "12px",
               }}
             >
               {incident.hierarchySelected}
@@ -161,7 +161,7 @@ export default function SpectraIncidentsTable(props) {
             <TableCell
               align="center"
               sx={{
-                fontSize: "15px",
+                fontSize: "12px",
               }}
             >
               {incident.affectedServices}
@@ -169,7 +169,7 @@ export default function SpectraIncidentsTable(props) {
             <TableCell
               align="center"
               sx={{
-                fontSize: "15px",
+                fontSize: "12px",
               }}
             >
               {incident.scheduled}
@@ -177,7 +177,7 @@ export default function SpectraIncidentsTable(props) {
             <TableCell
               align="center"
               sx={{
-                fontSize: "15px",
+                fontSize: "12px",
               }}
             >
               {incident.startTime}
@@ -185,7 +185,7 @@ export default function SpectraIncidentsTable(props) {
             <TableCell
               align="center"
               sx={{
-                fontSize: "15px",
+                fontSize: "12px",
               }}
             >
               {incident.endTime}
@@ -193,7 +193,7 @@ export default function SpectraIncidentsTable(props) {
             <TableCell
               align="center"
               sx={{
-                fontSize: "15px",
+                fontSize: "12px",
               }}
             >
               {incident.duration}
@@ -201,7 +201,7 @@ export default function SpectraIncidentsTable(props) {
             <TableCell
               align="center"
               sx={{
-                fontSize: "15px",
+                fontSize: "12px",
               }}
             >
               {incident.userId}
@@ -332,22 +332,23 @@ export default function SpectraIncidentsTable(props) {
         setIncidents={setIncidents}
       />
 
-      <div style={{ maxHeight: "86vh", overflowY: "auto" }}>
-        <Table sx={{ minWidth: 650 }} size="large" aria-label="a dense table">
+      <div style={{ marginBottom: "20px" }}>
+        <Table sx={{ minWidth: 650 }} size="medium" aria-label="a dense table">
           {generateTableHeadAndColumns(columnsForOpenSpectraIncidents)}
           {TableBodyForIncidents(paginatedList)}
         </Table>
 
         {emptyTableIndication(paginatedList)}
+        <Pagination
+          sx={{ width: "350px", marginLeft: "auto", marginTop: "10px" }}
+          count={pagesCount}
+          variant="outlined"
+          shape="rounded"
+          onChange={handlePageChange}
+        />
       </div>
-      <Pagination
-        sx={{ width: "350px", marginLeft: "auto", marginTop: "10px" }}
-        count={pagesCount}
-        variant="outlined"
-        shape="rounded"
-        onChange={handlePageChange}
-      />
-      <p style={{}}>
+
+      <p style={{ marginΒottom: "15px" }}>
         <b>Total Records: {incidents.length}</b>
       </p>
     </>

@@ -43,7 +43,7 @@ export function CdrDBOutages(props) {
 
   const MENU_COMPANY_ITEMS = [COMPANY.WINDplusNova, COMPANY.WIND, COMPANY.NOVA];
 
-  const pageSize = 16;
+  const pageSize = 9;
   const [isFetching, setIsFetching] = useState(false);
   const [pageNumber, setPageNumber] = useState(1);
   const [incidents, setIncidents] = useState();
@@ -120,7 +120,7 @@ export function CdrDBOutages(props) {
               scope="row"
               sx={{
                 fontWeight: 700,
-                fontSize: "15px",
+                fontSize: "12px",
               }}
             >
               {incident.outage_ID}
@@ -129,7 +129,7 @@ export function CdrDBOutages(props) {
               align="center"
               sx={{
                 fontWeight: 700,
-                fontSize: "15px",
+                fontSize: "12px",
               }}
             >
               {incident.status}
@@ -138,7 +138,7 @@ export function CdrDBOutages(props) {
               align="center"
               sx={{
                 fontWeight: 700,
-                fontSize: "15px",
+                fontSize: "12px",
               }}
             >
               {incident.capture_Date}
@@ -147,7 +147,7 @@ export function CdrDBOutages(props) {
               align="center"
               sx={{
                 fontWeight: 700,
-                fontSize: "15px",
+                fontSize: "12px",
               }}
             >
               {incident.network}
@@ -156,7 +156,7 @@ export function CdrDBOutages(props) {
               align="center"
               sx={{
                 fontWeight: 700,
-                fontSize: "15px",
+                fontSize: "12px",
               }}
             >
               {incident.dslam}
@@ -165,7 +165,7 @@ export function CdrDBOutages(props) {
               align="center"
               sx={{
                 fontWeight: 700,
-                fontSize: "15px",
+                fontSize: "12px",
               }}
             >
               {incident.dslam_Owner}
@@ -174,7 +174,7 @@ export function CdrDBOutages(props) {
               align="center"
               sx={{
                 fontWeight: 700,
-                fontSize: "15px",
+                fontSize: "12px",
               }}
             >
               {incident.last_Occured}
@@ -183,7 +183,7 @@ export function CdrDBOutages(props) {
               align="center"
               sx={{
                 fontWeight: 700,
-                fontSize: "15px",
+                fontSize: "12px",
               }}
             >
               {incident.duration_Pretty}
@@ -192,7 +192,7 @@ export function CdrDBOutages(props) {
               align="center"
               sx={{
                 fontWeight: 700,
-                fontSize: "15px",
+                fontSize: "12px",
               }}
             >
               {incident.duration_Sec}
@@ -201,7 +201,7 @@ export function CdrDBOutages(props) {
               align="center"
               sx={{
                 fontWeight: 700,
-                fontSize: "15px",
+                fontSize: "12px",
               }}
             >
               {incident.dslam_Users}
@@ -210,7 +210,7 @@ export function CdrDBOutages(props) {
               align="center"
               sx={{
                 fontWeight: 700,
-                fontSize: "15px",
+                fontSize: "12px",
               }}
             >
               {incident.disconnected_Users}
@@ -219,7 +219,7 @@ export function CdrDBOutages(props) {
               align="center"
               sx={{
                 fontWeight: 700,
-                fontSize: "15px",
+                fontSize: "12px",
               }}
             >
               {incident.disconnections_Ratio}
@@ -228,7 +228,7 @@ export function CdrDBOutages(props) {
               align="center"
               sx={{
                 fontWeight: 700,
-                fontSize: "15px",
+                fontSize: "12px",
               }}
             >
               {incident.total_Users_Called}
@@ -423,27 +423,29 @@ export function CdrDBOutages(props) {
       <h3 className="m-2">
         <Title />
       </h3>
-      <div style={{ maxHeight: "86vh", overflowY: "auto" }}>
-        <Table sx={{ minWidth: 650 }} size="large" aria-label="a dense table">
+      <div style={{ marginBottom: "20px" }}>
+        <Table sx={{ minWidth: 650 }} size="medium" aria-label="a dense table">
           {generateTableHeadAndColumns(columnsForCdrDBIncidents)}
           {TableBodyForOutages(paginatedList)}
         </Table>
         {emptyTableIndication(paginatedList)}
+
+        <Pagination
+          sx={{
+            width: "auto",
+            marginLeft: "auto",
+            marginRight: "10px",
+            marginTop: "10px",
+            float: "right",
+          }}
+          count={pagesCount}
+          variant="outlined"
+          shape="rounded"
+          onChange={handlePageChange}
+        />
       </div>
-      <Pagination
-        sx={{
-          width: "auto",
-          marginLeft: "auto",
-          marginRight: "10px",
-          marginTop: "10px",
-          float: "right",
-        }}
-        count={pagesCount}
-        variant="outlined"
-        shape="rounded"
-        onChange={handlePageChange}
-      />
-      <p style={{ marginTop: "20px" }}>
+
+      <p style={{ marginΒottom: "15px" }}>
         <b>Total Records: {incidents.length}</b>
       </p>
     </>
