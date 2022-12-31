@@ -6,6 +6,7 @@ import NavDropdown from "react-bootstrap/NavDropdown";
 import { LinkContainer } from "react-router-bootstrap";
 import { useLocation } from "react-router-dom";
 
+import config from "../../config.json";
 // const { appTitle } = Conf;
 
 // MUI Icons
@@ -16,7 +17,7 @@ function MyHeader() {
     <>
       <Navbar collapseOnSelect expand="lg" bg="dark" variant="dark">
         <Container>
-          <Navbar.Brand href="/">Spectra Test</Navbar.Brand>
+          <Navbar.Brand href="/">{config.appTitle}</Navbar.Brand>
           <Navbar.Toggle aria-controls="responsive-navbar-nav" />
           <Navbar.Collapse id="responsive-navbar-nav">
             <Nav className="me-auto">

@@ -81,7 +81,7 @@ public class ApplicationUserDaoService implements ApplicationUserDao {
                 "active, " +
                 "password, " +
                 "role " +
-                "FROM " + TablePrefix + "_Spectra_GUI_Users";
+                "FROM " + TablePrefix + "Spectra_GUI_Users";
 
         List<ApplicationUser> appUsers = jdbcTemplate.query(sqlQuery, (resultSet, i) -> {
             String userName = resultSet.getString("userName");
