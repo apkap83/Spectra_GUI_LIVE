@@ -39,6 +39,7 @@ public class IncidentController {
 
     @Value("${app.ExportedFilesMainPath}")
     private String SERVER_LOCATION;
+
     private final IncidentService incidentService;
     private String userNameLoggedIn;
     private static final Logger logger = LogManager.getLogger(IncidentController.class);
@@ -170,15 +171,15 @@ public class IncidentController {
 
 
     @CrossOrigin
-    @RequestMapping(path = "/downloadfile/{dirname1}/{dirname2}/{fileNamePattern}", method = RequestMethod.GET)
-    public ResponseEntity<Resource> download(@PathVariable String dirname1, @PathVariable String dirname2, @PathVariable String fileNamePattern) throws IOException {
+    @RequestMapping(path = "/downloadfile/{dirname1}/{fileNamePattern}", method = RequestMethod.GET)
+    public ResponseEntity<Resource> download(@PathVariable String dirname1, @PathVariable String fileNamePattern) throws IOException {
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
         userNameLoggedIn = authentication.getName();
 
         String fileNameToBeDownloaded = "";
         Path fileToBeDownloadedFullPath = null;
         ByteArrayResource resource = null;
-        Path fileDirPath = Paths.get(SERVER_LOCATION, dirname1, dirname2);
+        Path fileDirPath = Paths.get(SERVER_LOCATION, dirname1);
 
         // Find actual files from Glob pattern
         SearchFileByWildcard sfbw = new SearchFileByWildcard();
@@ -238,7 +239,7 @@ public class IncidentController {
 
         } else  {
             // File was not found
-            logger.error(Environment + " " + userNameLoggedIn + " -> Cannot Download file: " + Paths.get(fileDirPath.toString(), fileNamePattern.replace("*", "MYDATE")).toString());
+            logger.error(Environment + " " + userNameLoggedIn + " -> Cannot Download file: " + Paths.get(fileDirPath.toString(), fileNamePattern));
             return new ResponseEntity<>(HttpStatus.NOT_FOUND);
         }
 

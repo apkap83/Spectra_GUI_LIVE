@@ -127,7 +127,7 @@ export default function SpectraIncidentsTable(props) {
             <TableCell
               align="center"
               sx={{
-                fontSize: "16px",
+                fontSize: "14px",
               }}
             >
               {getColorYesNo(incident.willBePublished)}
@@ -135,7 +135,7 @@ export default function SpectraIncidentsTable(props) {
             <TableCell
               align="center"
               sx={{
-                fontSize: "16px",
+                fontSize: "14px",
               }}
             >
               {getColorMsg(incident.outageMsg)}
@@ -143,7 +143,7 @@ export default function SpectraIncidentsTable(props) {
             <TableCell
               align="center"
               sx={{
-                fontSize: "16px",
+                fontSize: "14px",
               }}
             >
               {getColorYesNo(incident.backupEligible)}

@@ -21,6 +21,7 @@ export const MenuPopupDownloads = ({ incident }) => {
   return (
     <div>
       <Button
+        size="small"
         id="basic-button"
         variant="outlined"
         aria-controls={open ? "basic-menu" : undefined}
