@@ -9,9 +9,9 @@
         <relativePath/> <!-- lookup parent from repository -->
     </parent>
     <groupId>gr.wind</groupId>
-    <artifactId>Spectra_Test_Server_Port_3500</artifactId>
+    <artifactId>Spectra_Live_Server_Port_4000</artifactId>
     <version>1.0.1</version>
-    <name>Spectra_Test_Server_Port_3500</name>
+    <name>Spectra_Live_Server_Port_4000</name>
     <description>Spectra Test Web GUI</description>
     <properties>
         <java.version>8</java.version>
