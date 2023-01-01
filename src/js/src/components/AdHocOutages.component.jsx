@@ -1,11 +1,16 @@
 import React, { useState, useEffect } from "react";
 import axios from "axios";
-import LoadingSpinnerCentered from "./LoadingSpinnerCentered";
+import LoadingSpinnerCentered from "./Spinner/LoadingSpinnerCentered.component";
 import { getAdHocOutages } from "../services/incidentService";
 import { errorNotification } from "../Notification";
 
 // Antd Library
 import { Table, Button } from "antd";
+
+// MUI Icons
+import CloudUploadIcon from "@mui/icons-material/CloudUpload";
+import PlaylistAddCheckIcon from "@mui/icons-material/PlaylistAddCheck";
+import StorageIcon from "@mui/icons-material/Storage";
 
 export function AdHocOutages() {
   const [designatedFile, setDesignatedFile] = useState("");
@@ -20,7 +25,6 @@ export function AdHocOutages() {
   const [isPreviewButtonEnabled, setIsPreviewButtonEnabled] = useState(false);
 
   const handleFileSelect = (event) => {
-    console.log(event);
     setDesignatedFile(event.target.files[0]);
     setIsPreviewButtonEnabled(true);
   };
@@ -255,11 +259,13 @@ export function AdHocOutages() {
     fetchData();
   }, []);
 
-  console.log("render");
   return (
     <div className="row">
       <div className="col-6 border">
-        <h3 className="p-2">Current Ad-Hoc Outages (Latest first)</h3>
+        <h3 className="p-2">
+          <PlaylistAddCheckIcon fontSize="large" />
+          &nbsp;Ad Hoc Outages
+        </h3>
         <div className="row">
           <div className="col-6">
             {tableData.length ? (
@@ -296,7 +302,10 @@ export function AdHocOutages() {
         </div>
       </div>
       <div className="col-6">
-        <h3 className="p-2">Upload New Excel File</h3>
+        <h3 className="p-2">
+          <CloudUploadIcon fontSize="large" />
+          &nbsp; Upload New Excel File
+        </h3>
         <form
           onSubmit={handlePreview}
           className="border mb-2 p-2 d-inline-block"

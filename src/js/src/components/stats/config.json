@@ -1,5 +1,5 @@
 {
-  "apiURL_DEV": "http://localhost:3500/api/charts",
+  "apiURL_DEV": "/api/charts",
 
   "apiURL": "/api/charts",
   "requestsPerMethodCharts": {

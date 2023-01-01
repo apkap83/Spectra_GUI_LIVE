@@ -17,3 +17,31 @@ export function yyyymmdd(dateIn) {
 export function capitalizeFirstLetter(string) {
   return string.charAt(0).toUpperCase() + string.slice(1);
 }
+
+export const getColorYesNo = (text) => {
+  if (text === "Yes") {
+    return (
+      <span style={{ color: "green" }}>
+        <b>{text}</b>
+      </span>
+    );
+  }
+
+  return (
+    <span style={{ color: "red" }}>
+      <b>{text}</b>
+    </span>
+  );
+};
+
+export const getColorMsg = (text) => {
+  if (text.startsWith("msg")) {
+    return (
+      <span style={{ color: "#1890ff" }}>
+        <b>{text}</b>
+      </span>
+    );
+  } else {
+    return <span>{text}</span>;
+  }
+};

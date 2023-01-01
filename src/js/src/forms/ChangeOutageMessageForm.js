@@ -2,9 +2,23 @@ import React from "react";
 import { useState, useEffect } from "react";
 import { changeMsgForIncidentId } from "../services/incidentService";
 import { errorNotification } from "../Notification";
-import { Button, message, Checkbox, Select } from "antd";
+import { message } from "antd";
 
-const { Option } = Select;
+// MUI
+import Button from "@mui/material/Button";
+import Stack from "@mui/material/Stack";
+import Snackbar from "@mui/material/Snackbar";
+import MuiAlert from "@mui/material/Alert";
+import Checkbox from "@mui/material/Checkbox";
+import FormGroup from "@mui/material/FormGroup";
+import FormControlLabel from "@mui/material/FormControlLabel";
+import InputLabel from "@mui/material/InputLabel";
+import MenuItem from "@mui/material/MenuItem";
+import FormHelperText from "@mui/material/FormHelperText";
+import FormControl from "@mui/material/FormControl";
+import Select from "@mui/material/Select";
+
+// const { Option } = Select;
 
 export default function ChangeOutageMessageForm({
   onIncidentSuccess,
@@ -23,8 +37,9 @@ export default function ChangeOutageMessageForm({
     setselectedMsg(selectedIncident.outageMsg);
   }, []);
 
-  const handleChange = (msg) => {
-    setselectedMsg(msg);
+  const handleChange = (e) => {
+    // console.log(41, msg);
+    setselectedMsg(e.target.value);
   };
 
   function onApplyActions() {
@@ -62,48 +77,35 @@ export default function ChangeOutageMessageForm({
         <b> {selectedIncident.outageId}</b>
       </label>
       <br />
-      <Select
-        // defaultValue="Default MSG"
-        style={{ width: 220 }}
-        onChange={(msg) => handleChange(msg)}
-        value={selectedMsg}
-      >
-        <Option key="default" value="Default">
-          Default MSG
-        </Option>
-        <Option key="MSG_1" value="msg1">
-          msg1
-        </Option>
-        <Option key="MSG_2" value="msg2">
-          msg2
-        </Option>
-        <Option key="MSG_3 " value="msg3">
-          msg3
-        </Option>
-      </Select>
+      <FormControl sx={{ m: 1, minWidth: 220 }}>
+        <Select
+          // value={age}
+          value={selectedMsg}
+          onChange={handleChange}
+          displayEmpty
+          inputProps={{ "aria-label": "Without label" }}
+        >
+          <MenuItem value={"Default"}>Default</MenuItem>
+          <MenuItem value={"msg1"}>msg1</MenuItem>
+          <MenuItem value={"msg2"}>msg2</MenuItem>
+          <MenuItem value={"msg3"}>msg3</MenuItem>
+        </Select>
+        <FormHelperText sx={{ textAlign: "center" }}>Message</FormHelperText>
+      </FormControl>
 
       <br />
       <div>
-        <Checkbox
-          onChange={onChange}
-          style={{
-            display: "flex",
-            flexDirection: "row",
-            alignItems: "center",
-            verticalAlign: "middle",
-          }}
-          defaultChecked={allOutagesCheckBox}
-          checked={true}
-        >
-          <span style={{ fontSize: "14px" }}>
-            Apply this action for all Outages of this Incident. (
-            <b>{selectedIncident.incidentId}</b>)
-          </span>
-        </Checkbox>
+        <FormGroup>
+          <FormControlLabel
+            control={<Checkbox onChange={onChange} checked={true} />}
+            label="This action will be applied to all Outages of this Incident."
+          />
+        </FormGroup>
       </div>
       <br />
       <div>
         <Button
+          variant="contained"
           style={{
             marginRight: "50px",
           }}
@@ -113,7 +115,7 @@ export default function ChangeOutageMessageForm({
           Apply
         </Button>
         <Button
-          style={{}}
+          variant="contained"
           type="primary"
           onClick={() => {
             closeModal();

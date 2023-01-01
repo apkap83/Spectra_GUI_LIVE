@@ -1,3 +1,4 @@
 {
-  "appTitle": "Spectra Test"
+  "appTitle": "Spectra Live",
+  "apiPrefix": "https://10.10.18.120:4000"
 }

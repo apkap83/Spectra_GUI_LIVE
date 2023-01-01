@@ -1,5 +1,5 @@
 import { useState, useEffect } from "react";
-import { monthNameToNumber, yyyymmdd } from "../utills/myutils";
+import { monthNameToNumber, yyyymmdd } from "../utils/myutils";
 import {
   getAllSpectraIncidents,
   getOpenSpectraIncidents,
@@ -18,11 +18,27 @@ import { Table, Button, Popover, Layout } from "antd";
 
 import { downloadFile } from "../services/incidentService";
 
+// MUI
+import * as React from "react";
+import MuiButton from "@mui/material/Button";
+import Menu from "@mui/material/Menu";
+import MenuItem from "@mui/material/MenuItem";
+import PopupState, { bindTrigger, bindMenu } from "material-ui-popup-state";
+import { styled } from "@mui/material/styles";
+import { purple, green, grey } from "@mui/material/colors";
+
+// MUI Icons
+import SettingsIcon from "@mui/icons-material/Settings";
+import DisabledByDefaultIcon from "@mui/icons-material/DisabledByDefault";
+import CheckIcon from "@mui/icons-material/Check";
+import MessageIcon from "@mui/icons-material/Message";
+import BackupIcon from "@mui/icons-material/Backup";
+import DownloadIcon from "@mui/icons-material/Download";
+
 const { Content } = Layout;
 const FileDownload = require("js-file-download");
 
 const AllSpectraIncidents = (props) => {
-  console.log("rendered");
   const [isFetching, setIsFetching] = useState("");
   const [columns, setColumns] = useState([]);
   const [incidents, setIncidents] = useState([]);
@@ -34,6 +50,86 @@ const AllSpectraIncidents = (props) => {
   const [selectedIncident, setSelectedIncident] = useState("");
   const [hideScheduled, setHideScheduled] = useState(false);
   const [searchField, setSearchField] = useState("");
+
+  const ColorButton = styled(MuiButton)(({ theme }) => ({
+    color: theme.palette.getContrastText(grey[900]),
+    backgroundColor: green[500],
+    "&:hover": {
+      backgroundColor: green[700],
+    },
+  }));
+
+  function MenuPopupState(incident) {
+    return (
+      <PopupState variant="popover" popupId="demo-popup-menu">
+        {(popupState) => (
+          <React.Fragment>
+            <ColorButton
+              style={{
+                width: "110px",
+                padding: "0.5em",
+                display: "flex",
+                flexDirection: "row",
+                justifyContent: "space-between",
+              }}
+              variant="contained"
+              {...bindTrigger(popupState)}
+            >
+              <span>Actions</span>
+              <SettingsIcon />
+            </ColorButton>
+            <Menu {...bindMenu(popupState)}>
+              <MenuItem
+                onClick={() => {
+                  popupState.close();
+                  setshowModalAlterPublish(true);
+                  setSelectedIncident(incident);
+                }}
+              >
+                {incident.willBePublished === "Yes" ? (
+                  <span style={{ color: "red" }}>
+                    <DisabledByDefaultIcon />
+                    &nbsp;
+                    <b>Disable&nbsp;Publishing</b>
+                  </span>
+                ) : (
+                  <span style={{ color: "green" }}>
+                    <CheckIcon />
+                    &nbsp;<b>Enable&nbsp;Publishing</b>
+                  </span>
+                )}
+              </MenuItem>
+              <MenuItem
+                onClick={() => {
+                  popupState.close();
+                  setShowModalAlterMessage(true);
+                  setSelectedIncident(incident);
+                }}
+              >
+                <span style={{ color: "#1890ff" }}>
+                  <MessageIcon />
+                  &nbsp;
+                  <b>Alter&nbsp;Message</b>
+                </span>
+              </MenuItem>
+              <MenuItem
+                onClick={() => {
+                  popupState.close();
+                  setShowModalAlterBackup(true);
+                  setSelectedIncident(incident);
+                }}
+              >
+                <span>
+                  <BackupIcon />
+                  &nbsp; Alter Backup Policy
+                </span>
+              </MenuItem>
+            </Menu>
+          </React.Fragment>
+        )}
+      </PopupState>
+    );
+  }
 
   const formatDurationPrettyString = (text) => (
     <span
@@ -77,7 +173,7 @@ const AllSpectraIncidents = (props) => {
 							 Spectra_CLIs_Affected_INC_INC000002017506_OutageID_12697_Voice_20210310.csv */}
             <button
               className="btn btn-outline-info"
-              style={{ fontSize: "12px" }}
+              style={{ width: "70px", fontSize: "12px" }}
               onClick={() => {
                 // "10 Mar 2021 03:00:00"
                 let currentDateString = incident.requestTimestamp.split(" ");
@@ -126,7 +222,8 @@ const AllSpectraIncidents = (props) => {
                 });
               }}
             >
-              {incident.outageId}
+              <DownloadIcon fontSize="small" />
+              &nbsp;{incident.outageId}
             </button>
           </div>
         );
@@ -259,18 +356,19 @@ const AllSpectraIncidents = (props) => {
     {
       title: renderHideScheduledCheckBox(),
       key: (Math.random() + 1).toString(36).substring(7),
-      render: (incident) => renderPublishingButton(incident),
+      // render: (incident) => renderPublishingButton(incident),
+      render: (incident) => MenuPopupState(incident),
     },
-    {
-      title: renderInputTypeText(),
-      key: (Math.random() + 1).toString(36).substring(7),
-      render: (incident) => renderAlterMessageButton(incident),
-    },
-    {
-      title: "",
-      key: (Math.random() + 1).toString(36).substring(7),
-      render: (incident) => renderAlterBackupPolicyButton(incident),
-    },
+    // {
+    //   title: renderInputTypeText(),
+    //   key: (Math.random() + 1).toString(36).substring(7),
+    //   render: (incident) => renderAlterMessageButton(incident),
+    // },
+    // {
+    //   title: "",
+    //   key: (Math.random() + 1).toString(36).substring(7),
+    //   render: (incident) => renderAlterBackupPolicyButton(incident),
+    // },
   ];
   const columnsForCdrDBIncidents = [
     {

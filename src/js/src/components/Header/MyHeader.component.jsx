@@ -4,23 +4,26 @@ import Navbar from "react-bootstrap/Navbar";
 import NavDropdown from "react-bootstrap/NavDropdown";
 // import * as Conf from "../config.json";
 import { LinkContainer } from "react-router-bootstrap";
-import ToggleButton from "react-bootstrap/ToggleButton";
-import Form from "react-bootstrap/Form";
-import Stack from "react-bootstrap/Stack";
-import Button from "react-bootstrap/Button";
 import { useLocation } from "react-router-dom";
 
+import config from "../../config.json";
 // const { appTitle } = Conf;
 
+// MUI Icons
+import BorderOuterIcon from "@mui/icons-material/BorderOuter";
+import HistoryToggleOffIcon from "@mui/icons-material/HistoryToggleOff";
 function MyHeader() {
   return (
     <>
       <Navbar collapseOnSelect expand="lg" bg="dark" variant="dark">
         <Container>
-          <Navbar.Brand href="#home">Spectra Test</Navbar.Brand>
+          <Navbar.Brand href="/">{config.appTitle}</Navbar.Brand>
           <Navbar.Toggle aria-controls="responsive-navbar-nav" />
           <Navbar.Collapse id="responsive-navbar-nav">
             <Nav className="me-auto">
+              {/* <LinkContainer to="/test">
+                <Nav.Link>Test</Nav.Link>
+              </LinkContainer> */}
               <LinkContainer to="/allspectraincidents">
                 <Nav.Link>All Incidents</Nav.Link>
               </LinkContainer>
@@ -29,14 +32,20 @@ function MyHeader() {
               </LinkContainer>
               <NavDropdown title="CDR-DB" id="collasible-nav-dropdown">
                 <LinkContainer to="/opencdrdbincidents">
-                  <NavDropdown.Item>Open Issues</NavDropdown.Item>
+                  <NavDropdown.Item>
+                    <BorderOuterIcon />
+                    &nbsp;Opened DSLAM Outages
+                  </NavDropdown.Item>
                 </LinkContainer>
                 <LinkContainer to="/closedcdrdbincidents">
-                  <NavDropdown.Item>Closed Issues</NavDropdown.Item>
+                  <NavDropdown.Item>
+                    <HistoryToggleOffIcon />
+                    &nbsp;Closed DSLAM Outages
+                  </NavDropdown.Item>
                 </LinkContainer>
               </NavDropdown>
               <LinkContainer to="/adhocoutages">
-                <Nav.Link>AdHoc Outages</Nav.Link>
+                <Nav.Link>Ad Hoc Outages</Nav.Link>
               </LinkContainer>
               <LinkContainer to="/stats">
                 <Nav.Link>Stats</Nav.Link>

@@ -3,6 +3,7 @@ package gr.wind.FullStackSpring_Review.stats;
 import gr.wind.FullStackSpring_Review.model.NumOfRequestsPerMethod;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.stereotype.Repository;
 
@@ -11,6 +12,8 @@ import java.util.List;
 @Repository
 public class StatsDataAccessService {
 
+    @Value("${app.TablePrefix}")
+    private String TablePrefix;
     private final JdbcTemplate jdbcTemplate;
 
     public StatsDataAccessService(@Qualifier("jdbcTemplateForLiveDB") JdbcTemplate jdbcTemplate) {
@@ -32,7 +35,7 @@ public class StatsDataAccessService {
         // "CDR_DB_Neg":0,
         // "CDR_DB_Pos":0}
 
-        String sql = "SELECT * from Test_Stats_NumOfRequestsPerMethod " +
+        String sql = "SELECT * from " + TablePrefix + "Stats_NumOfRequestsPerMethod " +
                 "WHERE Date Between ? and ?";
 
         List<NumOfRequestsPerMethod> stats = jdbcTemplate.query(sql,

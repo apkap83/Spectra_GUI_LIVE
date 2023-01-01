@@ -49,6 +49,7 @@ public class IncidentDataAccessService_CDRDB {
 
             String formattedCaptureDate = "null";
             Date CaptureDate = resultSet.getTimestamp("CAPTURE_DATE");
+            String Network = resultSet.getString("NETWORK");
             if (CaptureDate != null)
             {
                 formattedCaptureDate = new SimpleDateFormat("dd MMM yyyy HH:mm:ss").format(CaptureDate);
@@ -84,7 +85,7 @@ public class IncidentDataAccessService_CDRDB {
 
             return new CDR_DB_Incident(Outage_ID,
                    Status,
-                   formattedCaptureDate, DSLAM, dslam_owner, formattedLastOccurred, formattedCleared_on, duration_pretty, duration_sec, disconnected_users, reconnected_users, dslam_users, disconnections_ratio, reconnections_ratio, total_calls, total_users_called);
+                   formattedCaptureDate, Network, DSLAM, dslam_owner, formattedLastOccurred, formattedCleared_on, duration_pretty, duration_sec, disconnected_users, reconnected_users, dslam_users, disconnections_ratio, reconnections_ratio, total_calls, total_users_called);
         });
 
         return incidents;
@@ -94,6 +95,7 @@ public class IncidentDataAccessService_CDRDB {
         String sql = "SELECT OUTAGE_ID, " +
                 "STATUS, " +
                 "CAPTURE_DATE, " +
+                "NETWORK, " +
                 "DSLAM, " +
                 "DSLAM_OWNER, " +
                 "LAST_OCCURRED, " +
@@ -117,6 +119,7 @@ public class IncidentDataAccessService_CDRDB {
 
             String formattedCaptureDate = "null";
             Date CaptureDate = resultSet.getTimestamp("CAPTURE_DATE");
+            String Network = resultSet.getString("NETWORK");
             if (CaptureDate != null)
             {
                 formattedCaptureDate = new SimpleDateFormat("dd MMM yyyy HH:mm:ss").format(CaptureDate);
@@ -152,7 +155,7 @@ public class IncidentDataAccessService_CDRDB {
 
             return new CDR_DB_Incident(Outage_ID,
                     Status,
-                    formattedCaptureDate, DSLAM, dslam_owner, formattedLastOccurred, formattedCleared_on, duration_pretty, duration_sec, disconnected_users, reconnected_users, dslam_users, disconnections_ratio, reconnections_ratio, total_calls, total_users_called);
+                    formattedCaptureDate, Network, DSLAM, dslam_owner, formattedLastOccurred, formattedCleared_on, duration_pretty, duration_sec, disconnected_users, reconnected_users, dslam_users, disconnections_ratio, reconnections_ratio, total_calls, total_users_called);
         });
 
         return incidents;
@@ -164,6 +167,7 @@ public class IncidentDataAccessService_CDRDB {
                 "(SELECT OUTAGE_ID, " +
                 "STATUS, " +
                 "CAPTURE_DATE, " +
+                "NETWORK, " +
                 "DSLAM, " +
                 "DSLAM_OWNER, " +
                 "LAST_OCCURRED, " +
@@ -188,6 +192,7 @@ public class IncidentDataAccessService_CDRDB {
 
             String formattedCaptureDate = "null";
             Date CaptureDate = resultSet.getTimestamp("CAPTURE_DATE");
+            String Network = resultSet.getString("NETWORK");
             if (CaptureDate != null)
             {
                 formattedCaptureDate = new SimpleDateFormat("dd MMM yyyy HH:mm:ss").format(CaptureDate);
@@ -223,7 +228,7 @@ public class IncidentDataAccessService_CDRDB {
 
             return new CDR_DB_Incident(Outage_ID,
                     Status,
-                    formattedCaptureDate, DSLAM, dslam_owner, formattedLastOccurred, formattedCleared_on, duration_pretty, duration_sec, disconnected_users, reconnected_users, dslam_users, disconnections_ratio, reconnections_ratio, total_calls, total_users_called);
+                    formattedCaptureDate, Network, DSLAM, dslam_owner, formattedLastOccurred, formattedCleared_on, duration_pretty, duration_sec, disconnected_users, reconnected_users, dslam_users, disconnections_ratio, reconnections_ratio, total_calls, total_users_called);
         });
 
         return incidents;

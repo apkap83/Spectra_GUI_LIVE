@@ -6,14 +6,22 @@
         <sourceOutputDir name="target/generated-sources/annotations" />
         <sourceTestOutputDir name="target/generated-test-sources/test-annotations" />
         <outputRelativeToContentRoot value="true" />
+<<<<<<< HEAD
         <module name="Spectra_Live_Server_Port_4000" />
+=======
+        <module name="Spectra_GUI_TEST" />
+>>>>>>> AddMaterialUI
         <module name="Spectra_Test_Server_Port_3500" />
       </profile>
     </annotationProcessing>
   </component>
   <component name="JavacSettings">
     <option name="ADDITIONAL_OPTIONS_OVERRIDE">
+<<<<<<< HEAD
       <module name="Spectra_Live_Server_Port_4000" options="-parameters" />
+=======
+      <module name="Spectra_GUI_TEST" options="-parameters" />
+>>>>>>> AddMaterialUI
       <module name="Spectra_Test_Server_Port_3500" options="-parameters" />
     </option>
   </component>

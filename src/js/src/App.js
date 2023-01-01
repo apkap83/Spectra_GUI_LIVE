@@ -5,18 +5,27 @@ import {
   Routes,
   Navigate,
 } from "react-router-dom";
-import NotFound from "./components/NotFound";
-import AllSpectraIncidents from "./components/AllSpectraIncidents";
-import { OpenSpectraIncidents } from "./components/OpenSpectraIncidents";
-import { OpenCdrDBIncidents } from "./components/OpenCdrDBIncidents";
-import { ClosedCdrDBIncidents } from "./components/ClosedCdrDBIncidents";
-import { AdHocOutages } from "./components/AdHocOutages";
-import Stats from "./components/stats/stats.component";
+import NotFound from "./components/Errors/NotFound.component";
 
-import MyHeader from "./components/MyHeader";
-import { getCurrentYear } from "./utills/myutils";
+import { AllSpectraIncidents } from "./components/Routes/AllSpectraIncidents";
+import { OpenSpectraIncidents } from "./components/Routes/OpenSpectraIncidents";
+
+import { CdrDBOpenOutages } from "./components/Routes/CdrDBOpenInc";
+import { CdrDBClosedOutages } from "./components/Routes/CdrDBClosedInc";
+
+import { AdHocOutages } from "./components/AdHocOutages.component";
+
+import { DataTable } from "./components/DataTable/SpectraIncidentsDataTable.component";
+
+import Stats from "./components/stats/stats.component";
+import ScopedCssBaseline from "@mui/material/ScopedCssBaseline";
+
+import MyHeader from "./components/Header/MyHeader.component";
+import { getCurrentYear } from "./utils/myutils";
 import { Layout } from "antd";
 const { Footer } = Layout;
+
+// import Test from "./components/Test";
 
 const footerClass =
   "p-2 bg-dark border-top border-2 border-secondary text-white d-flex justify-content-center fixed-bottom";
@@ -26,10 +35,15 @@ class App extends Component {
 
   render() {
     return (
-      <React.Fragment>
+      <ScopedCssBaseline>
         <Router>
           <MyHeader />
           <Routes>
+            {/* <Route exact path="/test" element={<Test />} /> */}
+            <Route
+              path="/"
+              element={<Navigate replace to="/allspectraincidents" />}
+            />
             <Route
               exact
               path="/allspectraincidents"
@@ -43,28 +57,24 @@ class App extends Component {
             <Route
               exact
               path="/opencdrdbincidents"
-              element={<OpenCdrDBIncidents />}
+              element={<CdrDBOpenOutages />}
             />
             <Route
               exact
               path="/closedcdrdbincidents"
-              element={<ClosedCdrDBIncidents />}
+              element={<CdrDBClosedOutages />}
             />
             <Route path="/stats" element={<Stats />} />
-            <Route
-              path="/"
-              element={<Navigate replace to="/allspectraincidents" />}
-            />
 
             <Route path="/adhocoutages" element={<AdHocOutages />} />
             {/* Not Found Page */}
             <Route path="*" element={<NotFound />} />
           </Routes>
           <Footer className={footerClass}>
-            WIND - NMS Team {getCurrentYear()}
+            NOVA - NMS Team {getCurrentYear()}
           </Footer>
         </Router>
-      </React.Fragment>
+      </ScopedCssBaseline>
     );
   }
 }

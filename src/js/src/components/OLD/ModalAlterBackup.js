@@ -1,7 +1,7 @@
 import { Modal } from "antd";
 import BroadcastingOutageForm from "../../forms/BroadcastingOutageForm";
 import AlterBackupPolicyForm from "../../forms/AlterBackupPolicyForm";
-import { capitalizeFirstLetter } from "../../utills/myutils";
+import { capitalizeFirstLetter } from "../../utils/myutils";
 export const ModalAlterBackup = ({
   visible,
   setShowModalAlterBackup,
