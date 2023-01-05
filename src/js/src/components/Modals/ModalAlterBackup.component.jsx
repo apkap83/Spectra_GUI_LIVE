@@ -13,6 +13,7 @@ export const ModalAlterBackup = ({
   selectedIncident,
   incidents,
   setIncidents,
+  company,
 }) => {
   function enableOrDisableText(incidentID) {
     return selectedIncident.willBePublished === "Yes" ? "disable" : "enable";
@@ -55,6 +56,7 @@ export const ModalAlterBackup = ({
           }}
           selectedIncident={selectedIncident}
           closeModal={() => setShowModalAlterBackup(false)}
+          company={company}
         />
       </Box>
     </Modal>

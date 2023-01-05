@@ -23,6 +23,7 @@ export const ModalAlterPublish = ({
   selectedIncident,
   incidents,
   setIncidents,
+  company,
 }) => {
   function enableOrDisableText(incidentID) {
     return selectedIncident?.willBePublished === "Yes" ? "disable" : "enable";
@@ -42,6 +43,7 @@ export const ModalAlterPublish = ({
         </Typography>
         <br />
         <BroadcastingOutageForm
+          company={company}
           onOutageSuccess={(outageId, label) => {
             const incCopy = [...incidents];
             let objIndex = incCopy.findIndex(

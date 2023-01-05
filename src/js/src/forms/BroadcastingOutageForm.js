@@ -26,6 +26,7 @@ export default function BroadcastingOutageForm({
   onIncidentSuccess,
   selectedIncident,
   setShowModalDisOutage,
+  company,
 }) {
   const [allOutagesCheckBox, setAllOutagesCheckBox] = useState(true);
 
@@ -47,7 +48,7 @@ export default function BroadcastingOutageForm({
     // From Yes to No
     if (selectedIncident.willBePublished === "Yes") {
       if (allOutagesCheckBox) {
-        willBePublishedNoByIncidentId(incidentId)
+        willBePublishedNoByIncidentId(incidentId, company)
           .then(() => {
             onIncidentSuccess(incidentId, "No");
             message.success(
@@ -58,7 +59,7 @@ export default function BroadcastingOutageForm({
           .catch((error) => errorNotification("ERROR", error.message));
       } else {
         // For Disable - From Yes to No for Outage
-        willBePublishedNoByOutageId(outageID)
+        willBePublishedNoByOutageId(outageID, company, company)
           .then(() => {
             onOutageSuccess(outageID, "No");
             message.success("Successfully updated OutageID: " + outageID, 4);
@@ -68,7 +69,7 @@ export default function BroadcastingOutageForm({
     } else {
       // For Enable - From No to Yes for Incident
       if (allOutagesCheckBox) {
-        willBePublishedYesByIncidentId(incidentId)
+        willBePublishedYesByIncidentId(incidentId, company)
           .then(() => {
             onIncidentSuccess(incidentId, "Yes");
             message.success(
@@ -79,7 +80,7 @@ export default function BroadcastingOutageForm({
           .catch((error) => errorNotification("ERROR", error.message));
       } else {
         // For Enable - From No to Yes for Outage
-        willBePublishedYesByOutageId(outageID)
+        willBePublishedYesByOutageId(outageID, company)
           .then(() => {
             onOutageSuccess(outageID, "Yes");
             message.success("Successfully updated OutageID: " + outageID, 4);

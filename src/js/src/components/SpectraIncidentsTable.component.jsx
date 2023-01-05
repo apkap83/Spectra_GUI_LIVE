@@ -2,6 +2,8 @@ import { useState, useEffect, useContext } from "react";
 import { ErrorBoundary } from "./Errors/ErrorBoundary.component";
 
 import { ReactComponent as NoDataLogo } from "../assets/noData.svg";
+import { ReactComponent as NovaLogo } from "../assets/novaLogo.svg";
+import { ReactComponent as WindLogo } from "../assets/windLogo.svg";
 
 import Pagination from "@mui/material/Pagination";
 import Stack from "@mui/material/Stack";
@@ -13,10 +15,11 @@ import TableCell from "@mui/material/TableCell";
 import TableHead from "@mui/material/TableHead";
 import TableRow from "@mui/material/TableRow";
 
-import Button from "@mui/material/Button";
+import Box from "@mui/material/Box";
 import FormGroup from "@mui/material/FormGroup";
 import FormControlLabel from "@mui/material/FormControlLabel";
 import Checkbox from "@mui/material/Checkbox";
+import BorderOuterIcon from "@mui/icons-material/BorderOuter";
 
 import { MenuPopupDownloads } from "./MenuPopup/MenuPopupDownloads.component";
 
@@ -28,6 +31,8 @@ import { errorNotification } from "../Notification";
 import {
   getAllSpectraIncidents,
   getOpenSpectraIncidents,
+  getAllNovaSpectraIncidents,
+  getNovaOpenSpectraIncidents,
 } from "../services/incidentService";
 
 import LoadingSpinnerCentered from "./Spinner/LoadingSpinnerCentered.component";
@@ -71,8 +76,10 @@ function renderHideScheduledCheckBox(setHideScheduled) {
 }
 
 export default function SpectraIncidentsTable(props) {
-  const pageSize = 9;
+  const pageSize = 20;
   // State
+  const [title, setTitle] = useState();
+  const [company, setCompany] = useState();
   const [isFetching, setIsFetching] = useState(false);
   const [pageNumber, setPageNumber] = useState(1);
   const [incidents, setIncidents] = useState([]);
@@ -83,8 +90,38 @@ export default function SpectraIncidentsTable(props) {
   const [showModalAlterBackup, setShowModalAlterBackup] = useState();
   const [selectedIncident, setSelectedIncident] = useState();
 
+  const renderLogoAndTitle = (company) => {
+    if (company === "WIND") {
+      return (
+        <div className="p-1 d-flex flex-column justify-content-start align-items-start">
+          <div
+            className="d-flex flex-column justify-content-center align-items-center"
+            style={{ height: "65px" }}
+          >
+            <WindLogo style={{ width: "100px", marginBottom: "8px" }} />
+            <span className="font-weight-bold">{title}</span>
+          </div>
+        </div>
+      );
+    }
+
+    if (company === "NOVA") {
+      return (
+        <div className="p-1 d-flex flex-column justify-content-start align-items-start">
+          <div
+            className="d-flex flex-column justify-content-center align-items-center"
+            style={{ height: "65px" }}
+          >
+            <NovaLogo style={{ width: "100px", marginBottom: "8px" }} />
+            <span className="font-weight-bold">{title}</span>
+          </div>
+        </div>
+      );
+    }
+  };
+
   const columnsForOpenSpectraIncidents = [
-    "Incident ID",
+    renderLogoAndTitle(company),
     "Outage ID",
     "Outage is Published",
     "Outage Msg",
@@ -107,7 +144,7 @@ export default function SpectraIncidentsTable(props) {
             key={incident.id}
             sx={{
               "&:last-child td, &:last-child th": { border: 0 },
-              background: stringToColor(incident.incidentId) + "27", // Add Opacity in Color
+              background: stringToColor(incident.incidentId) + "22", // Add Opacity in Color
             }}
           >
             <TableCell
@@ -223,16 +260,36 @@ export default function SpectraIncidentsTable(props) {
     const fetchData = async () => {
       try {
         // The same Component (AllSpectraIncidents) serves All & Open Incidents
-        if (props.specificRequest === "getOpenSpectraIncidents") {
+        if (props.specificRequest === "getOpenSpectraIncidents_forWind") {
           const { data } = await getOpenSpectraIncidents();
           setIncidents(data);
           setRetrievedIncidents(data);
           setIsFetching(false);
-        } else if (props.specificRequest === "getAllSpectraIncidents") {
+          setCompany("WIND");
+          setTitle("Open Spectra Incidents");
+        } else if (props.specificRequest === "getAllSpectraIncidents_forWind") {
           const { data } = await getAllSpectraIncidents();
           setIncidents(data);
           setRetrievedIncidents(data);
           setIsFetching(false);
+          setCompany("WIND");
+          setTitle("All Spectra Incidents");
+        } else if (
+          props.specificRequest === "getOpenSpectraIncidents_forNova"
+        ) {
+          const { data } = await getNovaOpenSpectraIncidents();
+          setIncidents(data);
+          setRetrievedIncidents(data);
+          setIsFetching(false);
+          setCompany("NOVA");
+          setTitle("Open Spectra Incidents");
+        } else if (props.specificRequest === "getAllSpectraIncidents_forNova") {
+          const { data } = await getAllNovaSpectraIncidents();
+          setIncidents(data);
+          setRetrievedIncidents(data);
+          setIsFetching(false);
+          setCompany("NOVA");
+          setTitle("All Spectra Incidents");
         } else {
           throw new Error(
             "Not implemented specific request in SpectraIncidentsTable component"
@@ -311,6 +368,7 @@ export default function SpectraIncidentsTable(props) {
   return (
     <>
       <ModalAlterPublish
+        company={company}
         visible={showModalAlterPublish}
         setshowModalAlterPublish={setshowModalAlterPublish}
         selectedIncident={selectedIncident}
@@ -318,6 +376,7 @@ export default function SpectraIncidentsTable(props) {
         setIncidents={setIncidents}
       />
       <ModalAlterMessage
+        company={company}
         visible={showModalAlterMessage}
         setShowModalAlterMessage={setShowModalAlterMessage}
         selectedIncident={selectedIncident}
@@ -325,6 +384,7 @@ export default function SpectraIncidentsTable(props) {
         setIncidents={setIncidents}
       />
       <ModalAlterBackup
+        company={company}
         visible={showModalAlterBackup}
         setShowModalAlterBackup={setShowModalAlterBackup}
         selectedIncident={selectedIncident}
@@ -332,25 +392,37 @@ export default function SpectraIncidentsTable(props) {
         setIncidents={setIncidents}
       />
 
-      <div style={{ marginBottom: "20px" }}>
+      <div>
         <Table sx={{ minWidth: 650 }} size="medium" aria-label="a dense table">
           {generateTableHeadAndColumns(columnsForOpenSpectraIncidents)}
           {TableBodyForIncidents(paginatedList)}
         </Table>
 
         {emptyTableIndication(paginatedList)}
-        <Pagination
-          sx={{ width: "350px", marginLeft: "auto", marginTop: "10px" }}
-          count={pagesCount}
-          variant="outlined"
-          shape="rounded"
-          onChange={handlePageChange}
-        />
-      </div>
+        <Box
+          float="right"
+          display="flex"
+          width="auto"
+          height="80px"
+          marginLeft="1rem"
+          marginTop="20px"
+          marginBottom="50px"
+          // bgcolor="lightgreen"
+          alignItems="flex-start"
+          justifyContent="space-between"
+        >
+          <p>
+            <b>Total Records: {incidents.length}</b>
+          </p>
 
-      <p style={{ marginΒottom: "15px" }}>
-        <b>Total Records: {incidents.length}</b>
-      </p>
+          <Pagination
+            count={pagesCount}
+            variant="outlined"
+            shape="rounded"
+            onChange={handlePageChange}
+          />
+        </Box>
+      </div>
     </>
   );
 }

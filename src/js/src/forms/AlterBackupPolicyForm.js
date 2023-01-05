@@ -24,6 +24,7 @@ export default function AlterBackupPolicyForm({
   onIncidentSuccess,
   selectedIncident,
   closeModal,
+  company,
 }) {
   const [allOutagesCheckBox] = useState(true);
   const [selectedBackupPolicy, setSelectedBackupPolicy] = useState("");
@@ -41,7 +42,8 @@ export default function AlterBackupPolicyForm({
   function onApplyActions() {
     alterBackupPolicyforIncidentId(
       selectedIncident.incidentId,
-      selectedBackupPolicy === "Yes" ? "Yes" : "No"
+      selectedBackupPolicy === "Yes" ? "Yes" : "No",
+      company
     )
       .then(() => {
         onIncidentSuccess(selectedIncident.incidentId, selectedBackupPolicy);

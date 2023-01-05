@@ -9,6 +9,7 @@ export const ModalAlterMessage = ({
   selectedIncident,
   incidents,
   setIncidents,
+  company,
 }) => {
   const style = {
     position: "absolute",
@@ -45,6 +46,7 @@ export const ModalAlterMessage = ({
           }}
           closeModal={() => setShowModalAlterMessage(false)}
           selectedIncident={selectedIncident}
+          company={company}
         />
       </Box>
 

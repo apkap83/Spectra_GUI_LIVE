@@ -12,6 +12,23 @@ export const getAllSpectraIncidents = async () => {
   }
 };
 
+export const getAllNovaSpectraIncidents = async () => {
+  try {
+    // throw new Error("My Error Message");
+    return await httpService.get(`${apiEndPoint}/nova_getallincidents`);
+  } catch (error) {
+    return Promise.reject(error);
+  }
+};
+
+export const getNovaOpenSpectraIncidents = async () => {
+  try {
+    return await httpService.get(`${apiEndPoint}/nova_getopenincidents`);
+  } catch (error) {
+    return Promise.reject(error);
+  }
+};
+
 export const getOpenSpectraIncidents = async () => {
   try {
     return await httpService.get(`${apiEndPoint}/getopenincidents`);
@@ -20,10 +37,13 @@ export const getOpenSpectraIncidents = async () => {
   }
 };
 
-export const willBePublishedNoByOutageId = async (outageId) => {
+export const willBePublishedNoByOutageId = async (outageId, company) => {
+  let prefix = "";
+  if (company === "NOVA") prefix = "nova_";
+
   try {
     return await httpService.put(
-      `${apiEndPoint}/willbepublishednoforoutageid/` + outageId,
+      `${apiEndPoint}/${prefix}willbepublishednoforoutageid/` + outageId,
       null,
       {
         headers: {
@@ -36,10 +56,13 @@ export const willBePublishedNoByOutageId = async (outageId) => {
   }
 };
 
-export const willBePublishedYesByOutageId = async (outageId) => {
+export const willBePublishedYesByOutageId = async (outageId, company) => {
+  let prefix = "";
+  if (company === "NOVA") prefix = "nova_";
+
   try {
     return await httpService.put(
-      `${apiEndPoint}/willbepublishedyesforoutageid/` + outageId,
+      `${apiEndPoint}/${prefix}willbepublishedyesforoutageid/` + outageId,
       null,
       {
         headers: {
@@ -52,10 +75,13 @@ export const willBePublishedYesByOutageId = async (outageId) => {
   }
 };
 
-export const willBePublishedYesByIncidentId = async (incidentId) => {
+export const willBePublishedYesByIncidentId = async (incidentId, company) => {
+  let prefix = "";
+  if (company === "NOVA") prefix = "nova_";
+
   try {
     return await httpService.put(
-      `${apiEndPoint}/willbepublishedyesforincidentid/` + incidentId,
+      `${apiEndPoint}/${prefix}willbepublishedyesforincidentid/` + incidentId,
       null,
       {
         headers: {
@@ -68,10 +94,13 @@ export const willBePublishedYesByIncidentId = async (incidentId) => {
   }
 };
 
-export const willBePublishedNoByIncidentId = async (incidentId) => {
+export const willBePublishedNoByIncidentId = async (incidentId, company) => {
+  let prefix = "";
+  if (company === "NOVA") prefix = "nova_";
+
   try {
     return await httpService.put(
-      `${apiEndPoint}/willbepublishednoforincidentid/` + incidentId,
+      `${apiEndPoint}/${prefix}willbepublishednoforincidentid/` + incidentId,
       null,
       {
         headers: {
@@ -85,10 +114,17 @@ export const willBePublishedNoByIncidentId = async (incidentId) => {
   }
 };
 
-export const changeMsgForIncidentId = async (incidentId, newMessage) => {
+export const changeMsgForIncidentId = async (
+  incidentId,
+  newMessage,
+  company
+) => {
+  let prefix = "";
+  if (company === "NOVA") prefix = "nova_";
+
   try {
     return await httpService.put(
-      `${apiEndPoint}/changemessageforincidentid/` +
+      `${apiEndPoint}/${prefix}changemessageforincidentid/` +
         incidentId +
         "/" +
         newMessage,
@@ -104,10 +140,16 @@ export const changeMsgForIncidentId = async (incidentId, newMessage) => {
   }
 };
 
-export const changeMsgForOutageId = async (outageId, newMessage) => {
+export const changeMsgForOutageId = async (outageId, newMessage, company) => {
+  let prefix = "";
+  if (company === "NOVA") prefix = "nova_";
+
   try {
     return await httpService.put(
-      `${apiEndPoint}/changemessageforoutageid/` + outageId + "/" + newMessage,
+      `${apiEndPoint}/${prefix}changemessageforoutageid/` +
+        outageId +
+        "/" +
+        newMessage,
       null,
       {
         headers: {
@@ -120,10 +162,17 @@ export const changeMsgForOutageId = async (outageId, newMessage) => {
   }
 };
 
-export const alterBackupPolicyforIncidentId = async (incidentId, yesOrNo) => {
+export const alterBackupPolicyforIncidentId = async (
+  incidentId,
+  yesOrNo,
+  company
+) => {
+  let prefix = "";
+  if (company === "NOVA") prefix = "nova_";
+
   try {
     return await httpService.put(
-      `${apiEndPoint}/alterbackuppolicyforincidentid/` +
+      `${apiEndPoint}/${prefix}alterbackuppolicyforincidentid/` +
         incidentId +
         "/" +
         yesOrNo,
@@ -155,9 +204,12 @@ export const getClosedCDR_DBIncidents = async (incidentId, yesOrNo) => {
   }
 };
 
-export const getAdHocOutages = async () => {
+export const getAdHocOutages = async (company) => {
+  let prefix = "";
+  if (company === "NOVA") prefix = "nova_";
+
   try {
-    return await httpService.get(`${apiEndPoint}/getalladhocoutages/`);
+    return await httpService.get(`${apiEndPoint}/${prefix}getalladhocoutages/`);
   } catch (error) {
     return Promise.reject(error);
   }

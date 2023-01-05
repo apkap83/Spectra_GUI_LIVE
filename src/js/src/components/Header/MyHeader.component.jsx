@@ -2,12 +2,13 @@ import Container from "react-bootstrap/Container";
 import Nav from "react-bootstrap/Nav";
 import Navbar from "react-bootstrap/Navbar";
 import NavDropdown from "react-bootstrap/NavDropdown";
-// import * as Conf from "../config.json";
 import { LinkContainer } from "react-router-bootstrap";
 import { useLocation } from "react-router-dom";
 
 import config from "../../config.json";
 // const { appTitle } = Conf;
+
+import { ReactComponent as WindLogo } from "../../assets/windLogo.svg";
 
 // MUI Icons
 import BorderOuterIcon from "@mui/icons-material/BorderOuter";
@@ -21,15 +22,40 @@ function MyHeader() {
           <Navbar.Toggle aria-controls="responsive-navbar-nav" />
           <Navbar.Collapse id="responsive-navbar-nav">
             <Nav className="me-auto">
-              {/* <LinkContainer to="/test">
-                <Nav.Link>Test</Nav.Link>
-              </LinkContainer> */}
-              <LinkContainer to="/allspectraincidents">
-                <Nav.Link>All Incidents</Nav.Link>
-              </LinkContainer>
-              <LinkContainer to="/openspectraincidents">
-                <Nav.Link>Open Incidents</Nav.Link>
-              </LinkContainer>
+              <NavDropdown title="WIND" id="collasible-nav-dropdown">
+                <LinkContainer to="/allspectraincidents">
+                  <NavDropdown.Item>All Spectra Incidents</NavDropdown.Item>
+                </LinkContainer>
+
+                <LinkContainer to="/openspectraincidents">
+                  <NavDropdown.Item>Open Spectra Incidents</NavDropdown.Item>
+                </LinkContainer>
+
+                <LinkContainer to="/adhocoutages">
+                  <NavDropdown.Item>Ad Hoc Outages</NavDropdown.Item>
+                </LinkContainer>
+                <LinkContainer to="/stats">
+                  <NavDropdown.Item>Stats</NavDropdown.Item>
+                </LinkContainer>
+              </NavDropdown>
+
+              <NavDropdown title="Nova" id="collasible-nav-dropdown">
+                <LinkContainer to="/nova_allspectraincidents">
+                  <NavDropdown.Item>All Spectra Incidents</NavDropdown.Item>
+                </LinkContainer>
+
+                <LinkContainer to="/nova_openspectraincidents">
+                  <NavDropdown.Item>Open Spectra Incidents</NavDropdown.Item>
+                </LinkContainer>
+
+                <LinkContainer to="/nova_adhocoutages">
+                  <NavDropdown.Item>Ad Hoc Outages</NavDropdown.Item>
+                </LinkContainer>
+                <LinkContainer to="/nova_stats">
+                  <NavDropdown.Item>Stats</NavDropdown.Item>
+                </LinkContainer>
+              </NavDropdown>
+
               <NavDropdown title="CDR-DB" id="collasible-nav-dropdown">
                 <LinkContainer to="/opencdrdbincidents">
                   <NavDropdown.Item>
@@ -44,12 +70,6 @@ function MyHeader() {
                   </NavDropdown.Item>
                 </LinkContainer>
               </NavDropdown>
-              <LinkContainer to="/adhocoutages">
-                <Nav.Link>Ad Hoc Outages</Nav.Link>
-              </LinkContainer>
-              <LinkContainer to="/stats">
-                <Nav.Link>Stats</Nav.Link>
-              </LinkContainer>
             </Nav>
 
             <Nav>

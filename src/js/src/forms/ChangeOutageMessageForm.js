@@ -24,6 +24,7 @@ export default function ChangeOutageMessageForm({
   onIncidentSuccess,
   selectedIncident,
   closeModal,
+  company,
 }) {
   const [allOutagesCheckBox] = useState(true);
   const [selectedMsg, setselectedMsg] = useState("");
@@ -46,7 +47,8 @@ export default function ChangeOutageMessageForm({
     if (allOutagesCheckBox) {
       changeMsgForIncidentId(
         selectedIncident.incidentId,
-        selectedMsg === "Default" ? "null" : selectedMsg
+        selectedMsg === "Default" ? "null" : selectedMsg,
+        company
       )
         .then(() => {
           onIncidentSuccess(selectedIncident.incidentId, selectedMsg);

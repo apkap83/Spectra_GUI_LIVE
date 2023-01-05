@@ -3,7 +3,7 @@ import axios from "axios";
 import LoadingSpinnerCentered from "./Spinner/LoadingSpinnerCentered.component";
 import { getAdHocOutages } from "../services/incidentService";
 import { errorNotification } from "../Notification";
-import { ReactComponent as WindLogo } from "../assets/windLogo.svg";
+import { ReactComponent as NovaLogo } from "../assets/novaLogo.svg";
 
 import config from "../config.json";
 const apiEndPoint = config.apiPrefix + "/api/incidents";
@@ -16,7 +16,7 @@ import CloudUploadIcon from "@mui/icons-material/CloudUpload";
 import PlaylistAddCheckIcon from "@mui/icons-material/PlaylistAddCheck";
 import StorageIcon from "@mui/icons-material/Storage";
 
-export function AdHocOutages() {
+export function NovaAdHocOutages() {
   const [designatedFile, setDesignatedFile] = useState("");
   const [currentAdHocIsFetching, setCurrentAdHocIsFetching] = useState(false);
   const [newAdHocIsFetching, setNewAdHocIsFetching] = useState(false);
@@ -44,7 +44,7 @@ export function AdHocOutages() {
         setNewAdHocIsFetching(true);
         const response = await axios({
           method: "post",
-          url: `${apiEndPoint}/previewadhocfile`,
+          url: `${apiEndPoint}/nova_previewadhocfile`,
           data: formData,
           headers: { "Content-Type": "multipart/form-data" },
         });
@@ -74,7 +74,7 @@ export function AdHocOutages() {
         setErrorMessage(false);
         const response = await axios({
           method: "post",
-          url: `${apiEndPoint}/uploadadhocfile`,
+          url: `${apiEndPoint}/nova_uploadadhocfile`,
           data: formData,
           headers: { "Content-Type": "multipart/form-data" },
         });
@@ -178,7 +178,7 @@ export function AdHocOutages() {
     console.log("Deleting");
     const response = await axios({
       method: "delete",
-      url: `${apiEndPoint}/deleteadhocincident/${incident.id}`,
+      url: `${apiEndPoint}/nova_deleteadhocincident/${incident.id}`,
     });
 
     const copyOfCurrentAdHoc = [...tableData];
@@ -252,7 +252,7 @@ export function AdHocOutages() {
     const fetchData = async () => {
       setCurrentAdHocIsFetching(true);
       try {
-        const { data } = await getAdHocOutages();
+        const { data } = await getAdHocOutages("NOVA");
         setTableData(data);
         setCurrentAdHocIsFetching(false);
       } catch (error) {
@@ -270,7 +270,7 @@ export function AdHocOutages() {
           className="p-2 d-flex flex-column justify-content-center align-items-start"
           style={{ height: "80px" }}
         >
-          <WindLogo style={{ width: "100px" }} />
+          <NovaLogo style={{ width: "100px" }} />
           <b>Ad Hoc Outages</b>
         </div>
         <div className="row p-1">
@@ -317,14 +317,6 @@ export function AdHocOutages() {
           onSubmit={handlePreview}
           className="border mb-2 p-2 d-inline-block"
         >
-          {/* <FileUploader
-            handleChange={handleChange2}
-            name="file"
-            types={fileTypes}
-            multiple={false}
-            label="Drag your file here"
-          /> */}
-
           <input
             type="file"
             onChange={handleFileSelect}

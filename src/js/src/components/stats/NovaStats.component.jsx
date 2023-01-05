@@ -1,8 +1,9 @@
 import React, { useState, useEffect } from "react";
-import RequestsPerMethodLineCharts from "./RequestsPerMethodLineCharts";
+import RequestsPerMethodLineCharts from "./NovaRequestsPerMethodLineCharts";
 import dayjs from "dayjs";
 import { DatePicker } from "antd";
 import locale from "antd/es/date-picker/locale/en_GB";
+import { ReactComponent as NovaLogo } from "../../assets/novaLogo.svg";
 
 const { RangePicker } = DatePicker;
 
@@ -47,6 +48,8 @@ export default function Stats() {
   return (
     <div className="container">
       <div className="d-flex flex-column justify-content-center align-items-center">
+        <NovaLogo className="mt-3" style={{ width: "200px" }} />
+        <span>Spectra</span>
         <RangePicker
           className="w-50"
           locale={locale}

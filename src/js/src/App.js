@@ -7,17 +7,23 @@ import {
 } from "react-router-dom";
 import NotFound from "./components/Errors/NotFound.component";
 
-import { AllSpectraIncidents } from "./components/Routes/AllSpectraIncidents";
-import { OpenSpectraIncidents } from "./components/Routes/OpenSpectraIncidents";
+import { AllWindSpectraIncidents } from "./components/Routes/WindAllSpectraIncidents";
+import { WindOpenSpectraIncidents } from "./components/Routes/WindOpenSpectraIncidents";
+
+import { AllNovaSpectraIncidents } from "./components/Routes/NovaAllSpectraIncidents";
+import { NovaOpenSpectraIncidents } from "./components/Routes/NovaOpenSpectraIncidents";
 
 import { CdrDBOpenOutages } from "./components/Routes/CdrDBOpenInc";
 import { CdrDBClosedOutages } from "./components/Routes/CdrDBClosedInc";
 
 import { AdHocOutages } from "./components/AdHocOutages.component";
+import { NovaAdHocOutages } from "./components/NovaAdHocOutages.component";
 
 import { DataTable } from "./components/DataTable/SpectraIncidentsDataTable.component";
 
-import Stats from "./components/stats/stats.component";
+import WindStats from "./components/stats/WindStats.component";
+import NovaStats from "./components/stats/NovaStats.component";
+
 import ScopedCssBaseline from "@mui/material/ScopedCssBaseline";
 
 import MyHeader from "./components/Header/MyHeader.component";
@@ -25,10 +31,12 @@ import { getCurrentYear } from "./utils/myutils";
 import { Layout } from "antd";
 const { Footer } = Layout;
 
+import { ReactComponent as NovaLogo } from "./assets/novaLogo.svg";
+
 // import Test from "./components/Test";
 
 const footerClass =
-  "p-2 bg-dark border-top border-2 border-secondary text-white d-flex justify-content-center fixed-bottom";
+  "p-1 bg-dark border-top border-2 border-secondary text-white d-flex flex-column justify-content-center align-items-center fixed-bottom";
 
 class App extends Component {
   state = {};
@@ -47,13 +55,25 @@ class App extends Component {
             <Route
               exact
               path="/allspectraincidents"
-              element={<AllSpectraIncidents />}
+              element={<AllWindSpectraIncidents />}
             />
             <Route
               exact
               path="/openspectraincidents"
-              element={<OpenSpectraIncidents />}
+              element={<WindOpenSpectraIncidents />}
             />
+
+            <Route
+              exact
+              path="/nova_openspectraincidents"
+              element={<NovaOpenSpectraIncidents />}
+            />
+            <Route
+              exact
+              path="/nova_allspectraincidents"
+              element={<AllNovaSpectraIncidents />}
+            />
+
             <Route
               exact
               path="/opencdrdbincidents"
@@ -64,14 +84,20 @@ class App extends Component {
               path="/closedcdrdbincidents"
               element={<CdrDBClosedOutages />}
             />
-            <Route path="/stats" element={<Stats />} />
+            <Route path="/stats" element={<WindStats />} />
+
+            <Route path="/nova_stats" element={<NovaStats />} />
 
             <Route path="/adhocoutages" element={<AdHocOutages />} />
+
+            <Route path="/nova_adhocoutages" element={<NovaAdHocOutages />} />
+
             {/* Not Found Page */}
             <Route path="*" element={<NotFound />} />
           </Routes>
           <Footer className={footerClass}>
-            NOVA - NMS Team {getCurrentYear()}
+            <NovaLogo style={{ width: "110px" }} fill="white" stroke="black" />
+            <span>NMS Team {getCurrentYear()}</span>
           </Footer>
         </Router>
       </ScopedCssBaseline>

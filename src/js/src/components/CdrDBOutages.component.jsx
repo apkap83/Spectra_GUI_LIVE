@@ -43,7 +43,7 @@ export function CdrDBOutages(props) {
 
   const MENU_COMPANY_ITEMS = [COMPANY.WINDplusNova, COMPANY.WIND, COMPANY.NOVA];
 
-  const pageSize = 9;
+  const pageSize = 20;
   const [isFetching, setIsFetching] = useState(false);
   const [pageNumber, setPageNumber] = useState(1);
   const [incidents, setIncidents] = useState();
@@ -423,31 +423,37 @@ export function CdrDBOutages(props) {
       <h3 className="m-2">
         <Title />
       </h3>
-      <div style={{ marginBottom: "20px" }}>
+      <div>
         <Table sx={{ minWidth: 650 }} size="medium" aria-label="a dense table">
           {generateTableHeadAndColumns(columnsForCdrDBIncidents)}
           {TableBodyForOutages(paginatedList)}
         </Table>
         {emptyTableIndication(paginatedList)}
 
-        <Pagination
-          sx={{
-            width: "auto",
-            marginLeft: "auto",
-            marginRight: "10px",
-            marginTop: "10px",
-            float: "right",
-          }}
-          count={pagesCount}
-          variant="outlined"
-          shape="rounded"
-          onChange={handlePageChange}
-        />
-      </div>
+        <Box
+          float="right"
+          display="flex"
+          width="auto"
+          height="50px"
+          marginLeft="1rem"
+          marginTop="20px"
+          marginBottom="50px"
+          // bgcolor="lightgreen"
+          alignItems="flex-start"
+          justifyContent="space-between"
+        >
+          <p>
+            <b>Total Records: {incidents.length}</b>
+          </p>
 
-      <p style={{ marginΒottom: "15px" }}>
-        <b>Total Records: {incidents.length}</b>
-      </p>
+          <Pagination
+            count={pagesCount}
+            variant="outlined"
+            shape="rounded"
+            onChange={handlePageChange}
+          />
+        </Box>
+      </div>
     </>
   );
 }
