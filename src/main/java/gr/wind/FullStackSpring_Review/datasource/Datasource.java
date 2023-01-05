@@ -42,6 +42,15 @@ public class Datasource {
 
     }
 
+    @Bean(name="nova_db")
+    @ConfigurationProperties("app.datasourcenova")
+    public HikariDataSource hikariDataSource_NOVA_DB() {
+        return DataSourceBuilder.create()
+                .type(HikariDataSource.class)
+                .build();
+
+    }
+
     @Bean("jdbcTemplateForLiveDB")
     public JdbcTemplate jdbcTemplate_live(@Qualifier("spectraLiveDB") DataSource ccbsDataSource) {
         return new JdbcTemplate(ccbsDataSource);
@@ -54,6 +63,11 @@ public class Datasource {
 
     @Bean("jdbcTemplateForCDRDB")
     public JdbcTemplate jdbcTemplate_CDR_DB(@Qualifier("cdr_db") DataSource ccbsDataSource) {
+        return new JdbcTemplate(ccbsDataSource);
+    }
+
+    @Bean("jdbcTemplateForNovaDB")
+    public JdbcTemplate jdbcTemplate_Nova_DB(@Qualifier("nova_db") DataSource ccbsDataSource) {
         return new JdbcTemplate(ccbsDataSource);
     }
 

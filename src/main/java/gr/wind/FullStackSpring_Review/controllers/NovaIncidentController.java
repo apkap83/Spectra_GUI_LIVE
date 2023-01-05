@@ -1,9 +1,12 @@
 package gr.wind.FullStackSpring_Review.controllers;
 
-import gr.wind.FullStackSpring_Review.model.CDR_DB_Incident;
 import gr.wind.FullStackSpring_Review.incident.IncidentService;
+import gr.wind.FullStackSpring_Review.incident.NovaIncidentService;
+import gr.wind.FullStackSpring_Review.model.CDR_DB_Incident;
 import gr.wind.FullStackSpring_Review.model.Incident;
 import gr.wind.FullStackSpring_Review.util.SearchFileByWildcard;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.core.io.ByteArrayResource;
@@ -14,164 +17,159 @@ import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
-import org.springframework.stereotype.Component;
 import org.springframework.web.bind.annotation.*;
 
-import java.io.ByteArrayOutputStream;
 import java.io.File;
 import java.io.IOException;
-import java.io.ObjectOutputStream;
 import java.nio.charset.Charset;
 import java.nio.charset.StandardCharsets;
-import java.nio.file.*;
-import java.text.ParseException;
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.nio.file.Paths;
 import java.util.ArrayList;
 import java.util.List;
-import org.apache.logging.log4j.LogManager;
-import org.apache.logging.log4j.Logger;
-import org.springframework.web.multipart.MultipartFile;
 
 @RestController
 @RequestMapping("api/incidents")
-public class IncidentController {
+public class NovaIncidentController {
 
     // Download
 
     @Value("${app.ExportedFilesMainPath}")
     private String SERVER_LOCATION;
 
-    private final IncidentService incidentService;
+    private final NovaIncidentService novaIncidentService;
     private String userNameLoggedIn;
-    private static final Logger logger = LogManager.getLogger(IncidentController.class);
+    private static final Logger logger = LogManager.getLogger(NovaIncidentController.class);
     @Value("${app.MyEnvironmentDescription}")
     private String Environment;
 
     @Autowired
-    public IncidentController(IncidentService incidentService) {
-          this.incidentService = incidentService;
+    public NovaIncidentController(NovaIncidentService novaIncidentService) {
+          this.novaIncidentService = novaIncidentService;
     }
 
     @CrossOrigin
-    @GetMapping(path = "/getallincidents", produces = "application/json")
+    @GetMapping(path = "/nova_getallincidents", produces = "application/json")
     public List<Incident> getAllIncidents() {
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
         userNameLoggedIn = authentication.getName();
-        logger.info(Environment + " " + userNameLoggedIn + " -> GET all WIND Incidents");
-        return incidentService.getAllIncidents();
+        logger.info(Environment + " " + userNameLoggedIn + " -> GET NOVA all Incidents");
+        return novaIncidentService.getAllIncidents();
     }
 
     @CrossOrigin
-    @GetMapping(path = "/getopenincidents", produces = "application/json")
+    @GetMapping(path = "/nova_getopenincidents", produces = "application/json")
     public List<Incident> getOpenIncidents() {
 
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
         userNameLoggedIn = authentication.getName();
-        logger.info(Environment + " " + userNameLoggedIn + " -> GET WIND open Incidents");
+        logger.info(Environment + " " + userNameLoggedIn + " -> GET NOVA open Incidents");
 
-        return incidentService.getOpenIncidents();
+        return novaIncidentService.getOpenIncidents();
     }
 
     @CrossOrigin
-    @GetMapping(path = "/getallnonscheduledincidents", produces = "application/json")
+    @GetMapping(path = "/nova_getallnonscheduledincidents", produces = "application/json")
     public List<Incident> getAllNonScheduledIncidents() {
 
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
         userNameLoggedIn = authentication.getName();
         logger.info(Environment + " " + userNameLoggedIn + " -> GET all non scheduled Incidents");
 
-        return incidentService.getAllNonScheduledIncidents();
+        return novaIncidentService.getAllNonScheduledIncidents();
     }
     @CrossOrigin
-    @GetMapping(path = "/getopennonscheduledincidents", produces = "application/json")
+    @GetMapping(path = "/nova_getopennonscheduledincidents", produces = "application/json")
     public List<Incident> getOpenNonScheduledIncidents() {
 
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
         userNameLoggedIn = authentication.getName();
         logger.info(Environment + " " + userNameLoggedIn + " -> GET all open non scheduled Incidents");
 
-        return incidentService.getOpenNonScheduledIncidents();
+        return novaIncidentService.getOpenNonScheduledIncidents();
     }
 
     @CrossOrigin
-    @PutMapping("/willbepublishednoforoutageid/{id}")
+    @PutMapping("/nova_willbepublishednoforoutageid/{id}")
     public void setWillBePublishedNOforOutageId(@PathVariable int id) {
 
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
         userNameLoggedIn = authentication.getName();
         logger.info(Environment + " " + userNameLoggedIn + " -> Changing Will be published = NO for OutageID = " + id);
 
-        incidentService.setWillBePublishedNOForOutageId(id);
+        novaIncidentService.setWillBePublishedNOForOutageId(id);
     }
 
     @CrossOrigin
-    @PutMapping("/willbepublishedyesforoutageid/{id}")
+    @PutMapping("/nova_willbepublishedyesforoutageid/{id}")
     public void setWillBePublishedYESforOutageId(@PathVariable int id) {
 
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
         userNameLoggedIn = authentication.getName();
         logger.info(Environment + " " + userNameLoggedIn + " -> Changing Will be published = YES for OutageID = " + id);
 
-        incidentService.setWillBePublishedYESforOutageId(id);
+        novaIncidentService.setWillBePublishedYESforOutageId(id);
     }
 
     @CrossOrigin
-    @PutMapping("/willbepublishednoforincidentid/{incidentId}")
+    @PutMapping("/nova_willbepublishednoforincidentid/{incidentId}")
     public void setWillBePublishedNOforIncidentId(@PathVariable String incidentId) {
 
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
         userNameLoggedIn = authentication.getName();
         logger.info(Environment + " " + userNameLoggedIn + " -> Changing Will be published = NO for IncidentID = " + incidentId);
 
-        incidentService.setWillBePublishedNOForIncidentId(incidentId);
+        novaIncidentService.setWillBePublishedNOForIncidentId(incidentId);
     }
 
     @CrossOrigin
-    @PutMapping("/willbepublishedyesforincidentid/{incidentId}")
+    @PutMapping("/nova_willbepublishedyesforincidentid/{incidentId}")
     public void setWillBePublishedYESforIncidentId(@PathVariable String incidentId) {
 
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
         userNameLoggedIn = authentication.getName();
         logger.info(Environment + " " + userNameLoggedIn + " -> Changing Will be published = YES for IncidentID = " + incidentId);
 
-        incidentService.setWillBePublishedYESforIncidentId(incidentId);
+        novaIncidentService.setWillBePublishedYESforIncidentId(incidentId);
     }
 
     @CrossOrigin
-    @PutMapping("/changemessageforoutageid/{outageId}/{message}")
+    @PutMapping("/nova_changemessageforoutageid/{outageId}/{message}")
     public void changeMessageforOutageId(@PathVariable String outageId, @PathVariable String message) {
 
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
         userNameLoggedIn = authentication.getName();
         logger.info(Environment + " " + userNameLoggedIn + " -> Changing to Message " + message + " for OutageID = " + outageId);
 
-        incidentService.changeMessageForOutageId(outageId, message);
+        novaIncidentService.changeMessageForOutageId(outageId, message);
     }
 
     @CrossOrigin
-    @PutMapping("/changemessageforincidentid/{incidentId}/{message}")
+    @PutMapping("/nova_changemessageforincidentid/{incidentId}/{message}")
     public void changeMessageforIncidentId(@PathVariable String incidentId, @PathVariable String message) {
 
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
         userNameLoggedIn = authentication.getName();
         logger.info(Environment + " " + userNameLoggedIn + " -> Changing to Message " + message + " for IncidentID = " + incidentId);
 
-        incidentService.changeMessageForIncidentId(incidentId, message);
+        novaIncidentService.changeMessageForIncidentId(incidentId, message);
     }
 
     @CrossOrigin
-    @PutMapping("/alterbackuppolicyforincidentid/{incidentId}/{yesorno}")
+    @PutMapping("/nova_alterbackuppolicyforincidentid/{incidentId}/{yesorno}")
     public void changeBackupPolicyforIncidentId(@PathVariable String incidentId, @PathVariable String yesorno) {
 
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
         userNameLoggedIn = authentication.getName();
         logger.info(Environment + " " + userNameLoggedIn + " -> Altering backup policy to " + yesorno + " for IncidentID = " + incidentId);
 
-        incidentService.alterBackupPolicyForIncidentId(incidentId, yesorno);
+        novaIncidentService.alterBackupPolicyForIncidentId(incidentId, yesorno);
     }
 
 
     @CrossOrigin
-    @RequestMapping(path = "/downloadfile/{dirname1}/{fileNamePattern}", method = RequestMethod.GET)
+    @RequestMapping(path = "/nova_downloadfile/{dirname1}/{fileNamePattern}", method = RequestMethod.GET)
     public ResponseEntity<Resource> download(@PathVariable String dirname1, @PathVariable String fileNamePattern) throws IOException {
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
         userNameLoggedIn = authentication.getName();
@@ -244,54 +242,5 @@ public class IncidentController {
         }
 
 
-    }
-
-    /* CDR DB Methods */
-    @CrossOrigin
-    @GetMapping(path = "/getallcdrdbincidents", produces = "application/json")
-    public List<CDR_DB_Incident> getAllcdrdbIncidents() {
-//        throw new ApiRequestException("Error from my custom exception!");
-//        throw new IllegalStateException("Oops cannot get list of incidents!");
-
-        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
-        userNameLoggedIn = authentication.getName();
-        logger.info(Environment + " " + userNameLoggedIn + " -> GET all CDRDB Incidents");
-        return incidentService.getAllCDR_DBIncidents();
-    }
-
-    @CrossOrigin
-    @GetMapping(path = "/getopencdrdbincidents", produces = "application/json")
-    public List<CDR_DB_Incident> getOpencdrdbIncidents() {
-//        throw new ApiRequestException("Error from my custom exception!");
-//        throw new IllegalStateException("Oops cannot get list of incidents!");
-
-        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
-        userNameLoggedIn = authentication.getName();
-        logger.info(Environment + " " + userNameLoggedIn + " -> GET all Open CDRDB Incidents");
-        return incidentService.getOpenCDR_DBIncidents();
-    }
-
-    @CrossOrigin
-    @GetMapping(path = "/getclosedcdrdbincidents", produces = "application/json")
-    public List<CDR_DB_Incident> getClosedcdrdbIncidents() {
-//        throw new ApiRequestException("Error from my custom exception!");
-//        throw new IllegalStateException("Oops cannot get list of incidents!");
-
-        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
-        userNameLoggedIn = authentication.getName();
-        logger.info(Environment + " " + userNameLoggedIn + " -> GET all Closed CDRDB Incidents");
-        return incidentService.getClosedCDR_DBIncidents();
-    }
-
-    @CrossOrigin
-    @GetMapping(path = "/getclosedcdrdbincidentsafterdate/", produces = "application/json")
-    public List<CDR_DB_Incident> getClosedcdrdbIncidentsAfterDate() {
-//        throw new ApiRequestException("Error from my custom exception!");
-//        throw new IllegalStateException("Oops cannot get list of incidents!");
-
-        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
-        userNameLoggedIn = authentication.getName();
-        logger.info(Environment + " " + userNameLoggedIn + " -> GET all Closed CDRDB Incidents");
-        return incidentService.getClosedCDR_DBIncidents();
     }
 }

@@ -1,4 +1,4 @@
-package gr.wind.FullStackSpring_Review.excel;
+package gr.wind.FullStackSpring_Review.datasource.excel;
 
 import gr.wind.FullStackSpring_Review.exception.ApiRequestException;
 import gr.wind.FullStackSpring_Review.model.AdHocOutageSubscriber;

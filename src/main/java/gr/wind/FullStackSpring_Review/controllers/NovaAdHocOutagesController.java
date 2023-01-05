@@ -2,11 +2,13 @@ package gr.wind.FullStackSpring_Review.controllers;
 
 import gr.wind.FullStackSpring_Review.exception.ApiRequestException;
 import gr.wind.FullStackSpring_Review.incident.IncidentService;
+import gr.wind.FullStackSpring_Review.incident.NovaIncidentService;
 import gr.wind.FullStackSpring_Review.model.AdHocOutageSubscriber;
 import gr.wind.FullStackSpring_Review.uploadingfiles.StorageService;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.web.bind.annotation.*;
@@ -19,33 +21,33 @@ import java.util.List;
 
 @RestController
 @RequestMapping("api/incidents")
-public class AdHocOutagesController {
+public class NovaAdHocOutagesController {
 
     private final StorageService storageService;
-    private static final Logger logger = LogManager.getLogger(AdHocOutagesController.class);
-    private final IncidentService incidentService;
+    private static final Logger logger = LogManager.getLogger(NovaAdHocOutagesController.class);
+    private final NovaIncidentService novaIncidentService;
     private String userNameLoggedIn;
 
-    // TODO: Change for Live Environment
-    private static String Environment = "TEST Environment ";
+    @Value("${app.MyEnvironmentDescription}")
+    private String Environment;
 
     @Autowired
-    public AdHocOutagesController(StorageService storageService, IncidentService incidentService) {
+    public NovaAdHocOutagesController(StorageService storageService, NovaIncidentService novaIncidentService) {
         this.storageService = storageService;
-        this.incidentService = incidentService;
+        this.novaIncidentService = novaIncidentService;
     }
 
     @CrossOrigin
-    @GetMapping(path = "/getalladhocoutages", produces = "application/json")
+    @GetMapping(path = "/nova_getalladhocoutages", produces = "application/json")
     public List<AdHocOutageSubscriber> getAllIncidents() {
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
         userNameLoggedIn = authentication.getName();
-        logger.info(Environment + userNameLoggedIn + " -> GET WIND all AdHoc Outages");
-        return incidentService.getAllAdHocOutages();
+        logger.info(Environment + userNameLoggedIn + " -> GET NOVA all AdHoc Outages");
+        return novaIncidentService.getAllAdHocOutages();
     }
 
     @CrossOrigin
-    @PostMapping(path = "/previewadhocfile", produces = "application/json")
+    @PostMapping(path = "/nova_previewadhocfile", produces = "application/json")
     public List<AdHocOutageSubscriber> handleFilePreview(@RequestParam("file") MultipartFile file,
                                                          RedirectAttributes redirectAttributes) throws IOException, ParseException {
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
@@ -55,7 +57,7 @@ public class AdHocOutagesController {
         storageService.store(file);
         List<AdHocOutageSubscriber> adhocSubsList = null;
         try {
-            adhocSubsList = incidentService.previewExcelFile(file);
+            adhocSubsList = novaIncidentService.previewExcelFile(file);
         }
         catch (Exception e) {
             logger.error(Environment + userNameLoggedIn + e.getMessage());
@@ -68,12 +70,12 @@ public class AdHocOutagesController {
     }
 
     @CrossOrigin
-    @DeleteMapping("/deleteadhocincident/{id}")
+    @DeleteMapping("/nova_deleteadhocincident/{id}")
     public void deleteAdhocIncident(@PathVariable int id) {
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
         userNameLoggedIn = authentication.getName();
         logger.info(Environment + userNameLoggedIn + " -> Deleting AdHoc Incident with ID: " + id);
 
-        incidentService.deleteAdHocIncidentByID(id);
+        novaIncidentService.deleteAdHocIncidentByID(id);
     }
 }
