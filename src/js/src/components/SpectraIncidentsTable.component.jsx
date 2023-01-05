@@ -159,7 +159,7 @@ export default function SpectraIncidentsTable(props) {
               {incident.incidentId}
             </TableCell>
             <TableCell align="center">
-              <MenuPopupDownloads incident={incident} />
+              <MenuPopupDownloads incident={incident} company={company} />
             </TableCell>
             <TableCell
               align="center"

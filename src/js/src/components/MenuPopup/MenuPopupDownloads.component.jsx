@@ -9,7 +9,7 @@ import DownloadForOfflineIcon from "@mui/icons-material/DownloadForOffline";
 import { downloadAffectedUsersForIncident } from "../../utils/downloadAffectedUsersForIncident";
 import { downloadAffectedUsersForOutage } from "../../utils/downloadAffectedUsersForOutage";
 
-export const MenuPopupDownloads = ({ incident }) => {
+export const MenuPopupDownloads = ({ incident, company }) => {
   const [anchorEl, setAnchorEl] = useState(null);
   const open = Boolean(anchorEl);
   const handleClick = (event) => {
@@ -44,7 +44,7 @@ export const MenuPopupDownloads = ({ incident }) => {
       >
         <MenuItem
           onClick={() => {
-            downloadAffectedUsersForOutage(incident);
+            downloadAffectedUsersForOutage(incident, company);
             handleClose();
           }}
         >
@@ -54,7 +54,7 @@ export const MenuPopupDownloads = ({ incident }) => {
         </MenuItem>
         <MenuItem
           onClick={() => {
-            downloadAffectedUsersForIncident(incident);
+            downloadAffectedUsersForIncident(incident, company);
             handleClose();
           }}
         >

@@ -215,9 +215,12 @@ export const getAdHocOutages = async (company) => {
   }
 };
 
-export const downloadFile = async (dirName1, fileName) => {
+export const downloadFile = async (dirName1, fileName, company) => {
+  let prefix = "";
+  if (company === "NOVA") prefix = "nova_";
+
   return await axios({
-    url: `${apiEndPoint}/downloadfile/` + dirName1 + "/" + fileName,
+    url: `${apiEndPoint}/nova_downloadfile/` + dirName1 + "/" + fileName,
     method: "GET",
     responseType: "blob",
   });

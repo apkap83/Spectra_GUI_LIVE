@@ -5,7 +5,7 @@ import { errorNotification } from "../Notification";
 // Javascript function to trigger browser to save data to file as if it was downloaded.
 const FileDownload = require("js-file-download");
 
-export const downloadAffectedUsersForIncident = (incident) => {
+export const downloadAffectedUsersForIncident = (incident, company) => {
   /* Spectra_CLIs_Affected_INC_INC000002030409_OutageID_13150_IPTV_20210319.csv */
   // const fileNamePatternForOpennedINC =
   //   "Spectra_CLIs_Affected_INC_" +
@@ -69,9 +69,9 @@ export const downloadAffectedUsersForIncident = (incident) => {
       ? "AllOpenedOutages"
       : "AllClosedOutages";
 
-  downloadFile(dirName1, fileNamePattern)
+  downloadFile(dirName1, fileNamePattern, company)
     .then((response) => {
-      FileDownload(response.data, fileNamePattern);
+      FileDownload(response.data, fileNamePattern, company);
     })
     .catch((error) => {
       errorNotification(error.code, error.message);

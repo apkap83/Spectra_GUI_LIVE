@@ -35,6 +35,9 @@ public class NovaIncidentController {
 
     // Download
 
+    @Value("${app.NovaExportedFilesBaseDirName}")
+    private String NovaExportedFilesBaseDirName;
+
     @Value("${app.ExportedFilesMainPath}")
     private String SERVER_LOCATION;
 
@@ -177,7 +180,7 @@ public class NovaIncidentController {
         String fileNameToBeDownloaded = "";
         Path fileToBeDownloadedFullPath = null;
         ByteArrayResource resource = null;
-        Path fileDirPath = Paths.get(SERVER_LOCATION, dirname1);
+        Path fileDirPath = Paths.get(SERVER_LOCATION, dirname1, NovaExportedFilesBaseDirName);
 
         // Find actual files from Glob pattern
         SearchFileByWildcard sfbw = new SearchFileByWildcard();
