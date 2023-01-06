@@ -23,8 +23,8 @@ public class ChartsController {
     private String userNameLoggedIn;
     private static final Logger logger = LogManager.getLogger(ChartsController.class);
 
-    // TODO: Change for Live Environment
-    private static String Environment = "TEST Environment ";
+    @Value("${app.MyEnvironmentDescription}")
+    private String Environment;
 
     @Autowired
     public ChartsController(StatsService statsService) {
@@ -38,7 +38,7 @@ public class ChartsController {
 
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
         userNameLoggedIn = authentication.getName();
-        logger.info(Environment + userNameLoggedIn + " -> Getting WIND Stats from /num_of_requests_per_method controller path");
+        logger.info(Environment + " " + userNameLoggedIn + " -> Getting WIND Stats from /num_of_requests_per_method controller path");
 
         System.out.println(myDateRange.toString());
         return statsService.getStatsForDateRange(myDateRange.startDate(), myDateRange.endDate());

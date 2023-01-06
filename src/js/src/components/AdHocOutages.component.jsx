@@ -88,7 +88,7 @@ export function AdHocOutages() {
         setTimeout(async () => {
           try {
             setCurrentAdHocIsFetching(true);
-            const { data } = await getAdHocOutages();
+            const { data } = await getAdHocOutages("WIND");
             setTableData(data);
             setCurrentAdHocIsFetching(false);
           } catch (error) {
@@ -252,7 +252,7 @@ export function AdHocOutages() {
     const fetchData = async () => {
       setCurrentAdHocIsFetching(true);
       try {
-        const { data } = await getAdHocOutages();
+        const { data } = await getAdHocOutages("WIND");
         setTableData(data);
         setCurrentAdHocIsFetching(false);
       } catch (error) {

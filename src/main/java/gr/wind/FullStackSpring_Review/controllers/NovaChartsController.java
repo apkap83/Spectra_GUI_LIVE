@@ -7,6 +7,7 @@ import gr.wind.FullStackSpring_Review.stats.StatsService;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.web.bind.annotation.*;
@@ -22,8 +23,8 @@ public class NovaChartsController {
     private String userNameLoggedIn;
     private static final Logger logger = LogManager.getLogger(NovaChartsController.class);
 
-    // TODO: Change for Live Environment
-    private static String Environment = "TEST Environment ";
+    @Value("${app.MyEnvironmentDescription}")
+    private String Environment;
 
     @Autowired
     public NovaChartsController(NovaStatsService novaStatsService) {
@@ -37,7 +38,7 @@ public class NovaChartsController {
 
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
         userNameLoggedIn = authentication.getName();
-        logger.info(Environment + userNameLoggedIn + " -> Getting Nova Stats from /nova_num_of_requests_per_method controller path");
+        logger.info(Environment + " " + userNameLoggedIn + " -> Getting Nova Stats from /nova_num_of_requests_per_method controller path");
 
         System.out.println(myDateRange.toString());
         return novaStatsService.getStatsForDateRange(myDateRange.startDate(), myDateRange.endDate());

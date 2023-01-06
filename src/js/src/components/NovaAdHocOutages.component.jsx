@@ -88,7 +88,7 @@ export function NovaAdHocOutages() {
         setTimeout(async () => {
           try {
             setCurrentAdHocIsFetching(true);
-            const { data } = await getAdHocOutages();
+            const { data } = await getAdHocOutages("NOVA");
             setTableData(data);
             setCurrentAdHocIsFetching(false);
           } catch (error) {

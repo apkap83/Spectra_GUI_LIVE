@@ -7,6 +7,7 @@ import gr.wind.FullStackSpring_Review.uploadingfiles.StorageService;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.web.bind.annotation.*;
@@ -26,8 +27,8 @@ public class AdHocOutagesController {
     private final IncidentService incidentService;
     private String userNameLoggedIn;
 
-    // TODO: Change for Live Environment
-    private static String Environment = "TEST Environment ";
+    @Value("${app.MyEnvironmentDescription}")
+    private String Environment;
 
     @Autowired
     public AdHocOutagesController(StorageService storageService, IncidentService incidentService) {
@@ -40,7 +41,7 @@ public class AdHocOutagesController {
     public List<AdHocOutageSubscriber> getAllIncidents() {
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
         userNameLoggedIn = authentication.getName();
-        logger.info(Environment + userNameLoggedIn + " -> GET WIND all AdHoc Outages");
+        logger.info(Environment + " " + userNameLoggedIn + " -> GET WIND all AdHoc Outages");
         return incidentService.getAllAdHocOutages();
     }
 
@@ -50,7 +51,7 @@ public class AdHocOutagesController {
                                                          RedirectAttributes redirectAttributes) throws IOException, ParseException {
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
         userNameLoggedIn = authentication.getName();
-        logger.info(Environment + userNameLoggedIn + " -> Uploading AdHoc File: " + file.getOriginalFilename());
+        logger.info(Environment + " " + userNameLoggedIn + " -> Uploading AdHoc File: " + file.getOriginalFilename());
 
         storageService.store(file);
         List<AdHocOutageSubscriber> adhocSubsList = null;
@@ -58,7 +59,7 @@ public class AdHocOutagesController {
             adhocSubsList = incidentService.previewExcelFile(file);
         }
         catch (Exception e) {
-            logger.error(Environment + userNameLoggedIn + e.getMessage());
+            logger.error(Environment + " " + userNameLoggedIn + e.getMessage());
             throw new ApiRequestException("Error: " + e.getMessage());
         }
         redirectAttributes.addFlashAttribute("message",
@@ -72,7 +73,7 @@ public class AdHocOutagesController {
     public void deleteAdhocIncident(@PathVariable int id) {
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
         userNameLoggedIn = authentication.getName();
-        logger.info(Environment + userNameLoggedIn + " -> Deleting AdHoc Incident with ID: " + id);
+        logger.info(Environment + " " + userNameLoggedIn + " -> Deleting AdHoc Incident with ID: " + id);
 
         incidentService.deleteAdHocIncidentByID(id);
     }

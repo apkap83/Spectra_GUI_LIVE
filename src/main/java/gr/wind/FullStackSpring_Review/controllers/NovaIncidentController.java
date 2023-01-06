@@ -33,8 +33,6 @@ import java.util.List;
 @RequestMapping("api/incidents")
 public class NovaIncidentController {
 
-    // Download
-
     @Value("${app.NovaExportedFilesBaseDirName}")
     private String NovaExportedFilesBaseDirName;
 
@@ -44,6 +42,7 @@ public class NovaIncidentController {
     private final NovaIncidentService novaIncidentService;
     private String userNameLoggedIn;
     private static final Logger logger = LogManager.getLogger(NovaIncidentController.class);
+
     @Value("${app.MyEnvironmentDescription}")
     private String Environment;
 
@@ -78,7 +77,7 @@ public class NovaIncidentController {
 
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
         userNameLoggedIn = authentication.getName();
-        logger.info(Environment + " " + userNameLoggedIn + " -> GET all non scheduled Incidents");
+        logger.info(Environment + " " + userNameLoggedIn + " -> NOVA GET all non scheduled Incidents");
 
         return novaIncidentService.getAllNonScheduledIncidents();
     }
@@ -88,7 +87,7 @@ public class NovaIncidentController {
 
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
         userNameLoggedIn = authentication.getName();
-        logger.info(Environment + " " + userNameLoggedIn + " -> GET all open non scheduled Incidents");
+        logger.info(Environment + " " + userNameLoggedIn + " -> NOVA GET all open non scheduled Incidents");
 
         return novaIncidentService.getOpenNonScheduledIncidents();
     }
@@ -99,7 +98,7 @@ public class NovaIncidentController {
 
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
         userNameLoggedIn = authentication.getName();
-        logger.info(Environment + " " + userNameLoggedIn + " -> Changing Will be published = NO for OutageID = " + id);
+        logger.info(Environment + " " + userNameLoggedIn + " -> NOVA Changing Will be published = NO for OutageID = " + id);
 
         novaIncidentService.setWillBePublishedNOForOutageId(id);
     }
@@ -110,7 +109,7 @@ public class NovaIncidentController {
 
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
         userNameLoggedIn = authentication.getName();
-        logger.info(Environment + " " + userNameLoggedIn + " -> Changing Will be published = YES for OutageID = " + id);
+        logger.info(Environment + " " + userNameLoggedIn + " -> NOVA Changing Will be published = YES for OutageID = " + id);
 
         novaIncidentService.setWillBePublishedYESforOutageId(id);
     }
@@ -121,7 +120,7 @@ public class NovaIncidentController {
 
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
         userNameLoggedIn = authentication.getName();
-        logger.info(Environment + " " + userNameLoggedIn + " -> Changing Will be published = NO for IncidentID = " + incidentId);
+        logger.info(Environment + " " + userNameLoggedIn + " -> NOVA Changing Will be published = NO for IncidentID = " + incidentId);
 
         novaIncidentService.setWillBePublishedNOForIncidentId(incidentId);
     }
@@ -132,7 +131,7 @@ public class NovaIncidentController {
 
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
         userNameLoggedIn = authentication.getName();
-        logger.info(Environment + " " + userNameLoggedIn + " -> Changing Will be published = YES for IncidentID = " + incidentId);
+        logger.info(Environment + " " + userNameLoggedIn + " -> NOVA Changing Will be published = YES for IncidentID = " + incidentId);
 
         novaIncidentService.setWillBePublishedYESforIncidentId(incidentId);
     }
@@ -143,7 +142,7 @@ public class NovaIncidentController {
 
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
         userNameLoggedIn = authentication.getName();
-        logger.info(Environment + " " + userNameLoggedIn + " -> Changing to Message " + message + " for OutageID = " + outageId);
+        logger.info(Environment + " " + userNameLoggedIn + " -> NOVA Changing to Message " + message + " for OutageID = " + outageId);
 
         novaIncidentService.changeMessageForOutageId(outageId, message);
     }
@@ -154,7 +153,7 @@ public class NovaIncidentController {
 
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
         userNameLoggedIn = authentication.getName();
-        logger.info(Environment + " " + userNameLoggedIn + " -> Changing to Message " + message + " for IncidentID = " + incidentId);
+        logger.info(Environment + " " + userNameLoggedIn + " -> NOVA Changing to Message " + message + " for IncidentID = " + incidentId);
 
         novaIncidentService.changeMessageForIncidentId(incidentId, message);
     }
@@ -165,7 +164,7 @@ public class NovaIncidentController {
 
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
         userNameLoggedIn = authentication.getName();
-        logger.info(Environment + " " + userNameLoggedIn + " -> Altering backup policy to " + yesorno + " for IncidentID = " + incidentId);
+        logger.info(Environment + " " + userNameLoggedIn + " -> NOVA Altering backup policy to " + yesorno + " for IncidentID = " + incidentId);
 
         novaIncidentService.alterBackupPolicyForIncidentId(incidentId, yesorno);
     }
@@ -193,7 +192,7 @@ public class NovaIncidentController {
             fileToBeDownloadedFullPath = Paths.get(fileDirPath.toString(), fileNameToBeDownloaded);
             resource = new ByteArrayResource(Files.readAllBytes(fileToBeDownloadedFullPath));
 
-            logger.info(Environment + " " + userNameLoggedIn + " -> Downloading file: " + fileToBeDownloadedFullPath);
+            logger.info(Environment + " " + userNameLoggedIn + " -> NOVA Downloading file: " + fileToBeDownloadedFullPath);
 
             HttpHeaders header = new HttpHeaders();
             header.add(HttpHeaders.CONTENT_DISPOSITION, "attachment; filename=img.jpg");
@@ -222,7 +221,7 @@ public class NovaIncidentController {
                 totalStringStream += item + System.lineSeparator();
             }
 
-            logger.info(Environment + " " + userNameLoggedIn + " -> Downloading files matching pattern: " + fileDirPath.toString() + File.separator +  fileNamePattern);
+            logger.info(Environment + " " + userNameLoggedIn + " -> NOVA Downloading files matching pattern: " + fileDirPath.toString() + File.separator +  fileNamePattern);
 
             HttpHeaders header = new HttpHeaders();
             header.add(HttpHeaders.CONTENT_DISPOSITION, "attachment; filename=img.jpg");
@@ -240,7 +239,7 @@ public class NovaIncidentController {
 
         } else  {
             // File was not found
-            logger.error(Environment + " " + userNameLoggedIn + " -> Cannot Download file: " + Paths.get(fileDirPath.toString(), fileNamePattern));
+            logger.error(Environment + " " + userNameLoggedIn + " -> NOVA Cannot Download file: " + Paths.get(fileDirPath.toString(), fileNamePattern));
             return new ResponseEntity<>(HttpStatus.NOT_FOUND);
         }
 
