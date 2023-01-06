@@ -220,7 +220,7 @@ export const downloadFile = async (dirName1, fileName, company) => {
   if (company === "NOVA") prefix = "nova_";
 
   return await axios({
-    url: `${apiEndPoint}/nova_downloadfile/` + dirName1 + "/" + fileName,
+    url: `${apiEndPoint}/${prefix}downloadfile/` + dirName1 + "/" + fileName,
     method: "GET",
     responseType: "blob",
   });
