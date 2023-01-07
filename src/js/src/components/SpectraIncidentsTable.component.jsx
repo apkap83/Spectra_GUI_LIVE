@@ -123,6 +123,7 @@ export default function SpectraIncidentsTable(props) {
   const columnsForOpenSpectraIncidents = [
     renderLogoAndTitle(company),
     "Outage ID",
+    "Status",
     "Outage is Published",
     "Outage Msg",
     "Backup Eligible",
@@ -161,6 +162,7 @@ export default function SpectraIncidentsTable(props) {
             <TableCell align="center">
               <MenuPopupDownloads incident={incident} company={company} />
             </TableCell>
+            <TableCell align="center">{incident.incidentStatus}</TableCell>
             <TableCell
               align="center"
               sx={{
