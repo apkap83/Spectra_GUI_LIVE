@@ -42,7 +42,7 @@ public class NovaAdHocOutagesController {
     public List<AdHocOutageSubscriber> getAllIncidents() {
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
         userNameLoggedIn = authentication.getName();
-        logger.info(Environment + userNameLoggedIn + " -> GET NOVA all AdHoc Outages");
+        logger.info(Environment + " " + userNameLoggedIn + " -> GET NOVA all AdHoc Outages");
         return novaIncidentService.getAllAdHocOutages();
     }
 
@@ -52,7 +52,7 @@ public class NovaAdHocOutagesController {
                                                          RedirectAttributes redirectAttributes) throws IOException, ParseException {
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
         userNameLoggedIn = authentication.getName();
-        logger.info(Environment + userNameLoggedIn + " -> Uploading AdHoc File: " + file.getOriginalFilename());
+        logger.info(Environment + " " + userNameLoggedIn + " -> Uploading AdHoc File: " + file.getOriginalFilename());
 
         storageService.store(file);
         List<AdHocOutageSubscriber> adhocSubsList = null;
@@ -60,7 +60,7 @@ public class NovaAdHocOutagesController {
             adhocSubsList = novaIncidentService.previewExcelFile(file);
         }
         catch (Exception e) {
-            logger.error(Environment + userNameLoggedIn + e.getMessage());
+            logger.error(Environment + " " + userNameLoggedIn + e.getMessage());
             throw new ApiRequestException("Error: " + e.getMessage());
         }
         redirectAttributes.addFlashAttribute("message",
@@ -74,7 +74,7 @@ public class NovaAdHocOutagesController {
     public void deleteAdhocIncident(@PathVariable int id) {
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
         userNameLoggedIn = authentication.getName();
-        logger.info(Environment + userNameLoggedIn + " -> Deleting AdHoc Incident with ID: " + id);
+        logger.info(Environment + " " + userNameLoggedIn + " -> Deleting AdHoc Incident with ID: " + id);
 
         novaIncidentService.deleteAdHocIncidentByID(id);
     }
