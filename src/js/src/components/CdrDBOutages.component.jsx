@@ -450,6 +450,7 @@ export function CdrDBOutages(props) {
           </p>
 
           <Pagination
+            page={pageNumber}
             count={pagesCount}
             variant="outlined"
             shape="rounded"

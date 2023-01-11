@@ -307,6 +307,7 @@ export default function SpectraIncidentsTable(props) {
 
   // Filtering of Scheduled Incidents
   useEffect(() => {
+    setPageNumber(1);
     if (hideScheduled) {
       const scheduledInc = incidents.filter((inc) => inc.scheduled === "No");
       setIncidents(scheduledInc);
@@ -418,6 +419,7 @@ export default function SpectraIncidentsTable(props) {
           </p>
 
           <Pagination
+            page={pageNumber}
             count={pagesCount}
             variant="outlined"
             shape="rounded"
