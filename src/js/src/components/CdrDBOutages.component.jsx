@@ -380,6 +380,9 @@ export function CdrDBOutages(props) {
   }, []);
 
   useEffect(() => {
+    // Back to Page 1
+    setPageNumber(1);
+
     let filteredFromDslamName = retrievedIncidents;
 
     if (dslamSelected) {
