@@ -181,6 +181,8 @@ public class NovaIncidentController {
         ByteArrayResource resource = null;
         Path fileDirPath = Paths.get(SERVER_LOCATION, dirname1, NovaExportedFilesBaseDirName);
 
+        logger.info(Environment + " " + userNameLoggedIn + " -> Searching for pattern: " + fileNamePattern + " under " + fileDirPath.toString());
+
         // Find actual files from Glob pattern
         SearchFileByWildcard sfbw = new SearchFileByWildcard();
         List<String> listofFilesMatchedForGlob = sfbw.searchWithWc(fileDirPath, "glob:" + fileNamePattern);
