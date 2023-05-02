@@ -20,6 +20,9 @@ public class CDR_DB_Incident {
     private final int Total_Calls;
     private final int Total_Users_Called;
 
+    private final String OUTAGE_LEVEL;
+    private final String OTE_SITE_NAME;
+    private final String DSLAM_SLOT;
 
 
 
@@ -37,7 +40,7 @@ public class CDR_DB_Incident {
                            int reconnected_users,
                            int dslam_users,
                            String disconnections_ratio,
-                           String reconnections_ratio, int total_calls, int total_users_called) {
+                           String reconnections_ratio, int total_calls, int total_users_called, String outage_level, String ote_site_name, String dslam_slot) {
         Outage_ID = outage_ID;
         Status = status;
         Capture_Date = capture_date;
@@ -55,8 +58,22 @@ public class CDR_DB_Incident {
         Reconnections_Ratio = reconnections_ratio;
         Total_Calls = total_calls;
         Total_Users_Called = total_users_called;
+        OUTAGE_LEVEL = outage_level;
+        OTE_SITE_NAME = ote_site_name;
+        DSLAM_SLOT = dslam_slot;
     }
 
+    public String getOUTAGE_LEVEL() {
+        return OUTAGE_LEVEL;
+    }
+
+    public String getOTE_SITE_NAME() {
+        return OTE_SITE_NAME;
+    }
+
+    public String getDSLAM_SLOT() {
+        return DSLAM_SLOT;
+    }
     public String getLast_Occurred() {
         return Last_Occurred;
     }
@@ -133,16 +150,23 @@ public class CDR_DB_Incident {
                 "Outage_ID=" + Outage_ID +
                 ", Status='" + Status + '\'' +
                 ", Capture_Date='" + Capture_Date + '\'' +
+                ", Network='" + Network + '\'' +
                 ", DSLAM='" + DSLAM + '\'' +
                 ", DSLAM_Owner='" + DSLAM_Owner + '\'' +
-                ", Last_Occured='" + Last_Occurred + '\'' +
+                ", Last_Occurred='" + Last_Occurred + '\'' +
                 ", Cleared_On='" + Cleared_On + '\'' +
-                ", Duration_Sec='" + Duration_Sec + '\'' +
-                ", Disconnected_Users='" + Disconnected_Users + '\'' +
-                ", Reconnected_Users='" + Reconnected_Users + '\'' +
-                ", DSLAM_Users='" + DSLAM_Users + '\'' +
+                ", Duration_Pretty='" + Duration_Pretty + '\'' +
+                ", Duration_Sec=" + Duration_Sec +
+                ", Disconnected_Users=" + Disconnected_Users +
+                ", Reconnected_Users=" + Reconnected_Users +
+                ", DSLAM_Users=" + DSLAM_Users +
                 ", Disconnections_Ratio='" + Disconnections_Ratio + '\'' +
                 ", Reconnections_Ratio='" + Reconnections_Ratio + '\'' +
+                ", Total_Calls=" + Total_Calls +
+                ", Total_Users_Called=" + Total_Users_Called +
+                ", OUTAGE_LEVEL='" + OUTAGE_LEVEL + '\'' +
+                ", OTE_SITE_NAME='" + OTE_SITE_NAME + '\'' +
+                ", DSLAM_SLOT='" + DSLAM_SLOT + '\'' +
                 '}';
     }
 }

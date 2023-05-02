@@ -18,7 +18,15 @@ function MyHeader() {
     <>
       <Navbar collapseOnSelect expand="lg" bg="dark" variant="dark">
         <Container>
-          <Navbar.Brand href="/">{config.appTitle}</Navbar.Brand>
+          <Navbar.Brand
+            href="/"
+            style={{
+              fontFamily: "Nunito, sans-serif",
+              letterSpacing: 1.5,
+            }}
+          >
+            {config.appTitle}
+          </Navbar.Brand>
           <Navbar.Toggle aria-controls="responsive-navbar-nav" />
           <Navbar.Collapse id="responsive-navbar-nav">
             <Nav className="me-auto">

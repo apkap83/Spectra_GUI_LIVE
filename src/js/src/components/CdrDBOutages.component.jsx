@@ -50,6 +50,7 @@ export function CdrDBOutages(props) {
   const [retrievedIncidents, setRetrievedIncidents] = useState();
   const [companySelected, setCompanySelected] = useState(COMPANY.WINDplusNova);
   const [dslamSelected, setDslamSelected] = useState();
+  const [oteSiteSelected, setOteSiteSelected] = useState();
 
   const StyledTableRow = styled(TableRow)(({ theme }) => ({
     // "&:nth-of-type(odd)": {
@@ -111,7 +112,7 @@ export function CdrDBOutages(props) {
             key={(Math.random() + 1).toString(36).substring(7)}
             sx={{
               "&:last-child td, &:last-child th": { border: 0 },
-              background: stringToColor(incident.dslam_Owner) + "30",
+              background: stringToColor("ABC" + incident.dslam_Owner) + "30",
             }}
           >
             <TableCell
@@ -124,6 +125,17 @@ export function CdrDBOutages(props) {
               }}
             >
               {incident.outage_ID}
+            </TableCell>
+            <TableCell
+              align="center"
+              component="th"
+              scope="row"
+              sx={{
+                fontWeight: 700,
+                fontSize: "12px",
+              }}
+            >
+              {incident.outage_LEVEL}
             </TableCell>
             <TableCell
               align="center"
@@ -159,7 +171,25 @@ export function CdrDBOutages(props) {
                 fontSize: "12px",
               }}
             >
+              {incident.ote_SITE_NAME}
+            </TableCell>
+            <TableCell
+              align="center"
+              sx={{
+                fontWeight: 700,
+                fontSize: "12px",
+              }}
+            >
               {incident.dslam}
+            </TableCell>
+            <TableCell
+              align="center"
+              sx={{
+                fontWeight: 700,
+                fontSize: "12px",
+              }}
+            >
+              {incident.dslam_SLOT}
             </TableCell>
             <TableCell
               align="center"
@@ -317,16 +347,49 @@ export function CdrDBOutages(props) {
     );
   };
 
-  const handleDslamFilter = (e) => {
-    const { value: dlsamName } = e.target;
-    setDslamSelected(dlsamName);
+  const oteSiteFilterComponent = () => {
+    return (
+      <Box
+        component="form"
+        sx={{
+          "& > :not(style)": { m: 0, width: "15ch", fontSize: "25px" },
+        }}
+        noValidate
+        autoComplete="off"
+      >
+        <TextField
+          id="standard-basic"
+          label="Ote Site (Greek Name)"
+          variant="standard"
+          inputProps={{
+            min: 0,
+            style: { textAlign: "center" },
+          }}
+          onChange={handleOteSiteFilter}
+        />
+      </Box>
+    );
   };
+
+  const handleOteSiteFilter = (e) => {
+    const { value: oteSiteName } = e.target;
+    setOteSiteSelected(oteSiteName);
+  };
+
+  const handleDslamFilter = (e) => {
+    const { value: dslamName } = e.target;
+    setDslamSelected(dslamName);
+  };
+
   const columnsForCdrDBIncidents = [
     "Outage ID",
+    "Outage Level",
     "Status",
     "Capture Date",
     companySelectorComponent(),
+    oteSiteFilterComponent(),
     dslamFilterComponent(),
+    "DSLAM Slot",
     "DSLAM Owner",
     "Last Occured",
     "Duration Pretty",
@@ -346,7 +409,19 @@ export function CdrDBOutages(props) {
           Title = () => {
             return (
               <>
-                <BorderOuterIcon /> <span>Opened DSLAM Outages</span>
+                <BorderOuterIcon
+                  sx={{
+                    fontSize: "28px",
+                  }}
+                />{" "}
+                <span
+                  style={{
+                    fontFamily: "Nunito, sans-serif",
+                    letterSpacing: 1.2,
+                  }}
+                >
+                  Opened DSLAM Outages
+                </span>
               </>
             );
           };
@@ -358,7 +433,19 @@ export function CdrDBOutages(props) {
           Title = () => {
             return (
               <>
-                <HistoryToggleOffIcon /> <span>Closed DSLAM Outages</span>
+                <HistoryToggleOffIcon
+                  sx={{
+                    fontSize: "28px",
+                  }}
+                />{" "}
+                <span
+                  style={{
+                    fontFamily: "Nunito, sans-serif",
+                    letterSpacing: 1.2,
+                  }}
+                >
+                  Closed DSLAM Outages
+                </span>
               </>
             );
           };
@@ -383,23 +470,29 @@ export function CdrDBOutages(props) {
     // Back to Page 1
     setPageNumber(1);
 
-    let filteredFromDslamName = retrievedIncidents;
+    let filteredAll = retrievedIncidents;
 
     if (dslamSelected) {
-      filteredFromDslamName = retrievedIncidents.filter((inc) =>
+      filteredAll = filteredAll.filter((inc) =>
         inc.dslam.toLowerCase().includes(dslamSelected.toLowerCase())
       );
     }
 
+    if (oteSiteSelected) {
+      filteredAll = filteredAll.filter((inc) =>
+        inc.ote_SITE_NAME.toLowerCase().includes(oteSiteSelected.toLowerCase())
+      );
+    }
+
     if (companySelected === COMPANY.WINDplusNova) {
-      setIncidents(filteredFromDslamName);
+      setIncidents(filteredAll);
     } else {
-      const filteredFromNetwork = filteredFromDslamName.filter(
+      const filteredFromNetwork = filteredAll.filter(
         (inc) => inc.network === companySelected
       );
       setIncidents(filteredFromNetwork);
     }
-  }, [companySelected, dslamSelected]);
+  }, [companySelected, dslamSelected, oteSiteSelected]);
 
   const handlePageChange = (e, value) => {
     setPageNumber(value);
@@ -440,7 +533,7 @@ export function CdrDBOutages(props) {
           height="50px"
           marginLeft="1rem"
           marginTop="20px"
-          marginBottom="50px"
+          marginBottom="60px"
           // bgcolor="lightgreen"
           alignItems="flex-start"
           justifyContent="space-between"

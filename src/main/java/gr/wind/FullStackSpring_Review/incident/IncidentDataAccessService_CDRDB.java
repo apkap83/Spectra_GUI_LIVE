@@ -37,7 +37,10 @@ public class IncidentDataAccessService_CDRDB {
                         "DISCONNECTIONS_RATIO, " +
                         "RECONNECTIONS_RATIO, " +
                         "TOTAL_CALLS, " +
-                        "TOTAL_USERS_CALLED " +
+                        "TOTAL_USERS_CALLED, " +
+                        "OUTAGE_LEVEL, " +
+                        "OTE_SITE_NAME, " +
+                        "DSLAM_SLOT " +
                         "FROM Z_AAA_DSLAM_OUTAGES_GUI_V " +
                         "ORDER BY OUTAGE_ID DESC) " +
                         "WHERE ROWNUM <= 100000";
@@ -83,9 +86,13 @@ public class IncidentDataAccessService_CDRDB {
             int total_calls = resultSet.getInt("TOTAL_CALLS");
             int total_users_called = resultSet.getInt("TOTAL_USERS_CALLED");
 
+            String outage_level = resultSet.getString("OUTAGE_LEVEL");
+            String ote_site_name = resultSet.getString("OTE_SITE_NAME");
+            String dslam_slot = resultSet.getString("DSLAM_SLOT");
+
             return new CDR_DB_Incident(Outage_ID,
                    Status,
-                   formattedCaptureDate, Network, DSLAM, dslam_owner, formattedLastOccurred, formattedCleared_on, duration_pretty, duration_sec, disconnected_users, reconnected_users, dslam_users, disconnections_ratio, reconnections_ratio, total_calls, total_users_called);
+                   formattedCaptureDate, Network, DSLAM, dslam_owner, formattedLastOccurred, formattedCleared_on, duration_pretty, duration_sec, disconnected_users, reconnected_users, dslam_users, disconnections_ratio, reconnections_ratio, total_calls, total_users_called, outage_level, ote_site_name, dslam_slot);
         });
 
         return incidents;
@@ -108,7 +115,10 @@ public class IncidentDataAccessService_CDRDB {
                 "DISCONNECTIONS_RATIO, " +
                 "RECONNECTIONS_RATIO, " +
                 "TOTAL_CALLS, " +
-                "TOTAL_USERS_CALLED " +
+                "TOTAL_USERS_CALLED, " +
+                "OUTAGE_LEVEL, " +
+                "OTE_SITE_NAME, " +
+                "DSLAM_SLOT " +
                 "FROM Z_AAA_DSLAM_OUTAGES_GUI_V " +
                 "WHERE STATUS = 'Open'";
 
@@ -153,9 +163,13 @@ public class IncidentDataAccessService_CDRDB {
             int total_calls = resultSet.getInt("TOTAL_CALLS");
             int total_users_called = resultSet.getInt("TOTAL_USERS_CALLED");
 
+            String outage_level = resultSet.getString("OUTAGE_LEVEL");
+            String ote_site_name = resultSet.getString("OTE_SITE_NAME");
+            String dslam_slot = resultSet.getString("DSLAM_SLOT");
+
             return new CDR_DB_Incident(Outage_ID,
                     Status,
-                    formattedCaptureDate, Network, DSLAM, dslam_owner, formattedLastOccurred, formattedCleared_on, duration_pretty, duration_sec, disconnected_users, reconnected_users, dslam_users, disconnections_ratio, reconnections_ratio, total_calls, total_users_called);
+                    formattedCaptureDate, Network, DSLAM, dslam_owner, formattedLastOccurred, formattedCleared_on, duration_pretty, duration_sec, disconnected_users, reconnected_users, dslam_users, disconnections_ratio, reconnections_ratio, total_calls, total_users_called, outage_level, ote_site_name, dslam_slot);
         });
 
         return incidents;
@@ -180,7 +194,10 @@ public class IncidentDataAccessService_CDRDB {
                 "DISCONNECTIONS_RATIO, " +
                 "RECONNECTIONS_RATIO, " +
                 "TOTAL_CALLS, " +
-                "TOTAL_USERS_CALLED " +
+                "TOTAL_USERS_CALLED, " +
+                "OUTAGE_LEVEL, " +
+                "OTE_SITE_NAME, " +
+                "DSLAM_SLOT " +
                 "FROM Z_AAA_DSLAM_OUTAGES_GUI_V " +
                 "WHERE STATUS = 'Closed') " +
                 "WHERE ROWNUM <= 5000";
@@ -226,9 +243,13 @@ public class IncidentDataAccessService_CDRDB {
             int total_calls = resultSet.getInt("TOTAL_CALLS");
             int total_users_called = resultSet.getInt("TOTAL_USERS_CALLED");
 
+            String outage_level = resultSet.getString("OUTAGE_LEVEL");
+            String ote_site_name = resultSet.getString("OTE_SITE_NAME");
+            String dslam_slot = resultSet.getString("DSLAM_SLOT");
+
             return new CDR_DB_Incident(Outage_ID,
                     Status,
-                    formattedCaptureDate, Network, DSLAM, dslam_owner, formattedLastOccurred, formattedCleared_on, duration_pretty, duration_sec, disconnected_users, reconnected_users, dslam_users, disconnections_ratio, reconnections_ratio, total_calls, total_users_called);
+                    formattedCaptureDate, Network, DSLAM, dslam_owner, formattedLastOccurred, formattedCleared_on, duration_pretty, duration_sec, disconnected_users, reconnected_users, dslam_users, disconnections_ratio, reconnections_ratio, total_calls, total_users_called, outage_level, ote_site_name, dslam_slot);
         });
 
         return incidents;
