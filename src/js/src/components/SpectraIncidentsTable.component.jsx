@@ -50,6 +50,11 @@ import { downloadAffectedUsersForIncident } from "../utils/downloadAffectedUsers
 import { downloadAffectedUsersForOutage } from "../utils/downloadAffectedUsersForOutage";
 import { getColorYesNo, getColorMsg } from "../utils/myutils";
 
+import FormControl from "@mui/material/FormControl";
+import InputLabel from "@mui/material/InputLabel";
+import NativeSelect from "@mui/material/NativeSelect";
+import TextField from "@mui/material/TextField";
+
 const generateTableHeadAndColumns = (columnsArray) => {
   return (
     <TableHead>
@@ -89,39 +94,98 @@ export default function SpectraIncidentsTable(props) {
   const [showModalAlterMessage, setShowModalAlterMessage] = useState();
   const [showModalAlterBackup, setShowModalAlterBackup] = useState();
   const [selectedIncident, setSelectedIncident] = useState();
+  const [filteredIncidentID, setFilteredIncidentID] = useState("");
+
+  const incidentSelectorComponent = () => {
+    return (
+      <Box
+        component="form"
+        sx={{
+          "& > :not(style)": { m: 0, width: "25ch", fontSize: "12px" },
+        }}
+        noValidate
+        autoComplete="off"
+      >
+        <TextField
+          id="standard-basic"
+          label="Search Incident ID"
+          variant="standard"
+          sx={{
+            "&": {
+              height: "50px",
+            },
+          }}
+          inputProps={{
+            min: 0,
+            style: { textAlign: "center" },
+          }}
+          value={filteredIncidentID}
+          onChange={(e) => setFilteredIncidentID(e.target.value)}
+        />
+      </Box>
+    );
+  };
 
   const renderLogoAndTitle = (company) => {
     if (company === "WIND") {
       return (
-        <div className="p-1 d-flex flex-column justify-content-start align-items-start">
-          <div
-            className="d-flex flex-column justify-content-center align-items-center"
-            style={{ height: "65px" }}
-          >
-            <WindLogo style={{ width: "100px", marginBottom: "8px" }} />
-            <span className="font-weight-bold">{title}</span>
-          </div>
+        <div
+          style={{
+            display: "flex",
+            flexDirection: "column",
+            margin: "10px",
+            marginBottom: "15px",
+            justifyContent: "center",
+            alignItems: "center",
+            textAlign: "center",
+            width: "110px",
+          }}
+        >
+          <WindLogo style={{ width: "100px" }} />
+          {
+            <span
+              style={{
+                fontWeight: 600,
+                fontSize: "12px",
+              }}
+            >
+              {title}
+            </span>
+          }
         </div>
       );
     }
 
     if (company === "NOVA") {
       return (
-        <div className="p-1 d-flex flex-column justify-content-start align-items-start">
-          <div
-            className="d-flex flex-column justify-content-center align-items-center"
-            style={{ height: "65px" }}
+        <div
+          style={{
+            display: "flex",
+            flexDirection: "column",
+            margin: "10px",
+            marginBottom: "15px",
+            justifyContent: "center",
+            alignItems: "center",
+            textAlign: "center",
+            width: "110px",
+          }}
+        >
+          <NovaLogo style={{ width: "100px" }} />
+          <span
+            style={{
+              fontWeight: 600,
+              fontSize: "12px",
+            }}
           >
-            <NovaLogo style={{ width: "100px", marginBottom: "8px" }} />
-            <span className="font-weight-bold">{title}</span>
-          </div>
+            {title}
+          </span>
         </div>
       );
     }
   };
 
   const columnsForOpenSpectraIncidents = [
-    renderLogoAndTitle(company),
+    incidentSelectorComponent(),
     "Outage ID",
     "Status",
     "Outage is Published",
@@ -133,13 +197,26 @@ export default function SpectraIncidentsTable(props) {
     "Start Time",
     "End Time",
     "Duration",
+    "INC Affected Voice",
+    "INC Affected Data",
+    "INC Affected IPTV",
     "User ID",
     renderHideScheduledCheckBox(setHideScheduled),
   ];
 
   const TableBodyForIncidents = (incidents) => {
     return (
-      <TableBody>
+      <TableBody
+        style={
+          {
+            // backgroundColor: "red",
+            // overflowX: "scroll",
+            // overflow: "hidden",
+            // textOverflow: "ellipsis",
+            // wordWrap: "break-word",
+          }
+        }
+      >
         {incidents.map((incident) => (
           <TableRow
             key={incident.id}
@@ -162,7 +239,9 @@ export default function SpectraIncidentsTable(props) {
             <TableCell align="center">
               <MenuPopupDownloads incident={incident} company={company} />
             </TableCell>
-            <TableCell align="center">{incident.incidentStatus}</TableCell>
+            <TableCell align="center">
+              <span style={{ fontWeight: 600 }}>{incident.incidentStatus}</span>
+            </TableCell>
             <TableCell
               align="center"
               sx={{
@@ -211,7 +290,7 @@ export default function SpectraIncidentsTable(props) {
                 fontSize: "12px",
               }}
             >
-              {incident.scheduled}
+              <span style={{ fontWeight: 600 }}>{incident.scheduled}</span>
             </TableCell>
             <TableCell
               align="center"
@@ -237,6 +316,59 @@ export default function SpectraIncidentsTable(props) {
             >
               {incident.duration}
             </TableCell>
+
+            <TableCell
+              align="center"
+              sx={{
+                fontSize: "12px",
+              }}
+            >
+              {incident.incidentAffectedVoice}
+            </TableCell>
+            <TableCell
+              align="center"
+              sx={{
+                fontSize: "12px",
+              }}
+            >
+              {incident.incidentAffectedData}
+            </TableCell>
+            <TableCell
+              align="center"
+              sx={{
+                fontSize: "12px",
+              }}
+            >
+              {incident.incidentAffectedIPTV}
+            </TableCell>
+            {/*
+            <TableCell
+              align="center"
+              sx={{
+                fontSize: "12px",
+              }}
+            >
+              {incident.outageAffectedVoice}
+            </TableCell>
+
+            <TableCell
+              align="center"
+              sx={{
+                fontSize: "12px",
+              }}
+            >
+              {incident.outageAffectedData}
+            </TableCell>
+
+            <TableCell
+              align="center"
+              sx={{
+                fontSize: "12px",
+              }}
+            >
+              {incident.outageAffectedIPTV}
+            </TableCell> */}
+
             <TableCell
               align="center"
               sx={{
@@ -268,14 +400,14 @@ export default function SpectraIncidentsTable(props) {
           setRetrievedIncidents(data);
           setIsFetching(false);
           setCompany("WIND");
-          setTitle("Open Spectra Incidents");
+          setTitle("Open Incidents");
         } else if (props.specificRequest === "getAllSpectraIncidents_forWind") {
           const { data } = await getAllSpectraIncidents();
           setIncidents(data);
           setRetrievedIncidents(data);
           setIsFetching(false);
           setCompany("WIND");
-          setTitle("All Spectra Incidents");
+          setTitle("All Incidents");
         } else if (
           props.specificRequest === "getOpenSpectraIncidents_forNova"
         ) {
@@ -284,14 +416,14 @@ export default function SpectraIncidentsTable(props) {
           setRetrievedIncidents(data);
           setIsFetching(false);
           setCompany("NOVA");
-          setTitle("Open Spectra Incidents");
+          setTitle("Open Incidents");
         } else if (props.specificRequest === "getAllSpectraIncidents_forNova") {
           const { data } = await getAllNovaSpectraIncidents();
           setIncidents(data);
           setRetrievedIncidents(data);
           setIsFetching(false);
           setCompany("NOVA");
-          setTitle("All Spectra Incidents");
+          setTitle("All Incidents");
         } else {
           throw new Error(
             "Not implemented specific request in SpectraIncidentsTable component"
@@ -308,13 +440,27 @@ export default function SpectraIncidentsTable(props) {
   // Filtering of Scheduled Incidents
   useEffect(() => {
     setPageNumber(1);
-    if (hideScheduled) {
-      const scheduledInc = incidents.filter((inc) => inc.scheduled === "No");
-      setIncidents(scheduledInc);
+
+    let filteredAll = retrievedIncidents;
+
+    if (filteredIncidentID && filteredIncidentID.length > 0) {
+      filteredAll = filteredAll.filter((inc) =>
+        inc.incidentId
+          .toLowerCase()
+          .includes(filteredIncidentID.toLocaleLowerCase())
+      );
+      setIncidents(filteredAll);
     } else {
       setIncidents(retrievedIncidents);
     }
-  }, [hideScheduled]);
+
+    if (hideScheduled) {
+      filteredAll = filteredAll.filter((inc) => inc.scheduled === "No");
+      setIncidents(filteredAll);
+    } else {
+      setIncidents(filteredAll);
+    }
+  }, [hideScheduled, filteredIncidentID]);
 
   const restProperties = {
     setSelectedIncident,
@@ -396,7 +542,12 @@ export default function SpectraIncidentsTable(props) {
       />
 
       <div>
-        <Table sx={{ minWidth: 650 }} size="medium" aria-label="a dense table">
+        {renderLogoAndTitle(company)}
+        <Table
+          sx={{ minWidth: 650, marginTop: "-24px" }}
+          size="medium"
+          aria-label="a dense table"
+        >
           {generateTableHeadAndColumns(columnsForOpenSpectraIncidents)}
           {TableBodyForIncidents(paginatedList)}
         </Table>

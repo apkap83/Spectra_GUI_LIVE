@@ -46,7 +46,12 @@ class App extends Component {
       <ScopedCssBaseline>
         <Router>
           <MyHeader />
-          <div>
+          <div
+            style={{
+              width: "98vw",
+              margin: "auto",
+            }}
+          >
             <Routes>
               {/* <Route exact path="/test" element={<Test />} /> */}
               <Route

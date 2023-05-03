@@ -420,7 +420,7 @@ export function CdrDBOutages(props) {
                     letterSpacing: 1.2,
                   }}
                 >
-                  Opened DSLAM Outages
+                  Open DSLAM Outages
                 </span>
               </>
             );

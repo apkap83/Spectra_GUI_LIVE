@@ -16,7 +16,7 @@ import HistoryToggleOffIcon from "@mui/icons-material/HistoryToggleOff";
 function MyHeader() {
   return (
     <>
-      <Navbar collapseOnSelect expand="lg" bg="dark" variant="dark">
+      <Navbar bg="dark" variant="dark">
         <Container>
           <Navbar.Brand
             href="/"
