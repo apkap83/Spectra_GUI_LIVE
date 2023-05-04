@@ -2,6 +2,7 @@ package gr.wind.FullStackSpring_Review.incident;
 
 import gr.wind.FullStackSpring_Review.model.AdHocOutageSubscriber;
 import gr.wind.FullStackSpring_Review.model.Incident;
+import gr.wind.FullStackSpring_Review.model.IncidentCallerStats;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.jdbc.core.BatchPreparedStatementSetter;
@@ -502,10 +503,27 @@ public class IncidentDataAccessService {
         String sql = "" +
                 "delete from " + TablePrefix + "AdHocOutage_CLIS " +
                 "where id = ?";
-        System.out.println("id =" +id);
+
         return jdbcTemplate.update(
                 sql,
                 id
         );
+    }
+
+    public List<IncidentCallerStats> getIncidentCallerStats(String incidentID) {
+        String sql = "" +
+                "SELECT Requestor, count(*) as 'Positive Responses' " +
+                " FROM SmartOutageDB_Static_Tables.Caller_Data " +
+                " where Affected_by_IncidentID = ? " +
+                " group by Requestor";
+
+        List<IncidentCallerStats> incidentStats = jdbcTemplate.query(sql, (resultSet, i) -> {
+            String requestor = resultSet.getString("Requestor");
+            String positiveResponses = resultSet.getString("Positive Responses");
+
+            return new IncidentCallerStats(requestor, positiveResponses);
+        }, incidentID);
+
+        return incidentStats;
     }
 }

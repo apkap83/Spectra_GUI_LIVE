@@ -4,6 +4,7 @@ import gr.wind.FullStackSpring_Review.datasource.excel.ReadExcelFile;
 import gr.wind.FullStackSpring_Review.model.AdHocOutageSubscriber;
 import gr.wind.FullStackSpring_Review.model.CDR_DB_Incident;
 import gr.wind.FullStackSpring_Review.model.Incident;
+import gr.wind.FullStackSpring_Review.model.IncidentCallerStats;
 import gr.wind.FullStackSpring_Review.uploadingfiles.StorageProperties;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -132,8 +133,17 @@ public class IncidentService {
         return incidentDataAccessService_cdrdb.selectClosedIncidents();
     }
 
+    public List<IncidentCallerStats> getIncidentCallerStats(String incidentID) {
+        return incidentDataAccessService.getIncidentCallerStats(incidentID);
+    }
 
     public int deleteAdHocIncidentByID(int id) {
         return incidentDataAccessService.deleteAdHocIncidentById(id);
+    }
+
+
+    public List<IncidentCallerStats> getStatsForIncidentID(String incidentID) {
+        return incidentDataAccessService.getIncidentCallerStats(incidentID);
+
     }
 }

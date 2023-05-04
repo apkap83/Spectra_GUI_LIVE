@@ -3,6 +3,7 @@ package gr.wind.FullStackSpring_Review.controllers;
 import gr.wind.FullStackSpring_Review.model.CDR_DB_Incident;
 import gr.wind.FullStackSpring_Review.incident.IncidentService;
 import gr.wind.FullStackSpring_Review.model.Incident;
+import gr.wind.FullStackSpring_Review.model.IncidentCallerStats;
 import gr.wind.FullStackSpring_Review.util.SearchFileByWildcard;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
@@ -292,5 +293,17 @@ public class IncidentController {
         userNameLoggedIn = authentication.getName();
         logger.info(Environment + " " + userNameLoggedIn + " -> GET all Closed CDRDB Incidents");
         return incidentService.getClosedCDR_DBIncidents();
+    }
+
+
+    @CrossOrigin
+    @GetMapping(path="/getstatsforwindincidentid/{incidentId}", produces = "application/json")
+    public List<IncidentCallerStats> getStatsForIncidentID(@PathVariable String incidentId) {
+
+        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+        userNameLoggedIn = authentication.getName();
+        logger.info(Environment + " " + userNameLoggedIn + " -> WIND Getting Stats for IncidentID = " + incidentId);
+
+       return incidentService.getStatsForIncidentID(incidentId);
     }
 }
