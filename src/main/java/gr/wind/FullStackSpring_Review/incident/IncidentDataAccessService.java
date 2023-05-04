@@ -3,6 +3,7 @@ package gr.wind.FullStackSpring_Review.incident;
 import gr.wind.FullStackSpring_Review.model.AdHocOutageSubscriber;
 import gr.wind.FullStackSpring_Review.model.Incident;
 import gr.wind.FullStackSpring_Review.model.IncidentCallerStats;
+import gr.wind.FullStackSpring_Review.model.IncidentPosNLURequests;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.jdbc.core.BatchPreparedStatementSetter;
@@ -522,6 +523,27 @@ public class IncidentDataAccessService {
             String positiveResponses = resultSet.getString("Positive Responses");
 
             return new IncidentCallerStats(requestor, positiveResponses);
+        }, incidentID);
+
+        return incidentStats;
+    }
+
+    public List<IncidentPosNLURequests> getPositiveRequestsForIncident(String incidentID) {
+        String sql = "" +
+                "SELECT DateTime, Requestor, IncidentID, AffectedService, Scheduled, CliValue, TimesCalled " +
+                " FROM SmartOutageDB_Static_Tables.Stats_Pos_NLU_Requests " +
+                " WHERE IncidentID = ? order by DateTime ASC";
+
+        List<IncidentPosNLURequests> incidentStats = jdbcTemplate.query(sql, (resultSet, i) -> {
+            String dateTime = resultSet.getString("DateTime");
+            String requestor = resultSet.getString("Requestor");
+            String incidentId = resultSet.getString("IncidentID");
+            String affectedService = resultSet.getString("AffectedService");
+            String scheduled = resultSet.getString("Scheduled");
+            String cliValue = resultSet.getString("CliValue");
+            String timesCalled = resultSet.getString("TimesCalled");
+
+            return new IncidentPosNLURequests(dateTime, requestor, incidentId, affectedService, scheduled, cliValue, timesCalled);
         }, incidentID);
 
         return incidentStats;

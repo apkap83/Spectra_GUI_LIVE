@@ -4,10 +4,12 @@ import gr.wind.FullStackSpring_Review.model.CDR_DB_Incident;
 import gr.wind.FullStackSpring_Review.incident.IncidentService;
 import gr.wind.FullStackSpring_Review.model.Incident;
 import gr.wind.FullStackSpring_Review.model.IncidentCallerStats;
+import gr.wind.FullStackSpring_Review.model.IncidentPosNLURequests;
 import gr.wind.FullStackSpring_Review.util.SearchFileByWildcard;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.core.io.ByteArrayResource;
+import org.springframework.core.io.InputStreamResource;
 import org.springframework.core.io.Resource;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
@@ -18,10 +20,7 @@ import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Component;
 import org.springframework.web.bind.annotation.*;
 
-import java.io.ByteArrayOutputStream;
-import java.io.File;
-import java.io.IOException;
-import java.io.ObjectOutputStream;
+import java.io.*;
 import java.nio.charset.Charset;
 import java.nio.charset.StandardCharsets;
 import java.nio.file.*;
@@ -298,12 +297,50 @@ public class IncidentController {
 
     @CrossOrigin
     @GetMapping(path="/getstatsforwindincidentid/{incidentId}", produces = "application/json")
-    public List<IncidentCallerStats> getStatsForIncidentID(@PathVariable String incidentId) {
+    public List<IncidentCallerStats> getStatsForWindIncidentID(@PathVariable String incidentId) {
 
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
         userNameLoggedIn = authentication.getName();
         logger.info(Environment + " " + userNameLoggedIn + " -> WIND Getting Stats for IncidentID = " + incidentId);
 
-       return incidentService.getStatsForIncidentID(incidentId);
+       return incidentService.getStatsForWindIncidentID(incidentId);
+    }
+
+
+    @CrossOrigin
+    @RequestMapping(path = "/downloadcustomerscalledforwindincidentid/{incidentid}", method = RequestMethod.GET)
+    public ResponseEntity<Resource> downloadCustomersCalledForIncident(@PathVariable String incidentid) throws IOException {
+        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+        userNameLoggedIn = authentication.getName();
+
+        String filename = "Positive_Spectra_Requests_For_" + incidentid + ".csv";
+
+        logger.info(Environment + " " + userNameLoggedIn + " -> WIND Downloading file: " + filename);
+
+        HttpHeaders header = new HttpHeaders();
+        header.add(HttpHeaders.CONTENT_DISPOSITION, "attachment; filename=img.jpg");
+        header.add("Cache-Control", "no-cache, no-store, must-revalidate");
+        header.add("Pragma", "no-cache");
+        header.add("Expires", "0");
+
+        List<IncidentPosNLURequests> listOfPosRequestsForIncident = incidentService.getPositiveRequestsForWindIncidentID(incidentid);
+
+        // Convert the list of IncidentPosNLURequests objects to a CSV string
+        String csvData = "callerDate,requestor,incidentId,affectedService,scheduled,cliValue,timesCalled\n";
+        for (IncidentPosNLURequests d : listOfPosRequestsForIncident) {
+            csvData += d.getCallerDate() + "," + d.getRequestor() + "," + d.getIncidentId() + "," + d.getAffectedService() + ","
+                    + d.getScheduled() + "," + d.getCliValue() + "," + d.getTimesCalled() + "\n";
+        }
+
+        ByteArrayInputStream inputStream = new ByteArrayInputStream(csvData.getBytes(StandardCharsets.UTF_8));
+
+        HttpHeaders headers = new HttpHeaders();
+        headers.add(HttpHeaders.CONTENT_DISPOSITION, "attachment; filename=" + filename);
+        headers.add(HttpHeaders.CONTENT_TYPE, MediaType.TEXT_PLAIN_VALUE);
+
+        InputStreamResource resource = new InputStreamResource(inputStream);
+
+
+        return ResponseEntity.ok().headers(headers).contentLength(csvData.length()).contentType(MediaType.TEXT_PLAIN).body(resource);
     }
 }

@@ -4,12 +4,15 @@ import gr.wind.FullStackSpring_Review.incident.IncidentService;
 import gr.wind.FullStackSpring_Review.incident.NovaIncidentService;
 import gr.wind.FullStackSpring_Review.model.CDR_DB_Incident;
 import gr.wind.FullStackSpring_Review.model.Incident;
+import gr.wind.FullStackSpring_Review.model.IncidentCallerStats;
+import gr.wind.FullStackSpring_Review.model.IncidentPosNLURequests;
 import gr.wind.FullStackSpring_Review.util.SearchFileByWildcard;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.core.io.ByteArrayResource;
+import org.springframework.core.io.InputStreamResource;
 import org.springframework.core.io.Resource;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
@@ -19,6 +22,7 @@ import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.web.bind.annotation.*;
 
+import java.io.ByteArrayInputStream;
 import java.io.File;
 import java.io.IOException;
 import java.nio.charset.Charset;
@@ -246,5 +250,54 @@ public class NovaIncidentController {
         }
 
 
+    }
+
+    @CrossOrigin
+    @GetMapping(path="/getstatsfornovaincidentid/{incidentId}", produces = "application/json")
+    public List<IncidentCallerStats> getStatsForNovaIncidentID(@PathVariable String incidentId) {
+
+        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+        userNameLoggedIn = authentication.getName();
+        logger.info(Environment + " " + userNameLoggedIn + " -> NOVA Getting Stats for IncidentID = " + incidentId);
+
+        return novaIncidentService.getStatsForNovaIncidentID(incidentId);
+    }
+
+
+    @CrossOrigin
+    @RequestMapping(path = "/downloadcustomerscalledfornovaincidentid/{incidentid}", method = RequestMethod.GET)
+    public ResponseEntity<Resource> downloadCustomersCalledForIncident(@PathVariable String incidentid) throws IOException {
+        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+        userNameLoggedIn = authentication.getName();
+
+        String filename = "Positive_Spectra_Requests_For_" + incidentid + ".csv";
+
+        logger.info(Environment + " " + userNameLoggedIn + " -> NOVA Downloading file: " + filename);
+
+        HttpHeaders header = new HttpHeaders();
+        header.add(HttpHeaders.CONTENT_DISPOSITION, "attachment; filename=img.jpg");
+        header.add("Cache-Control", "no-cache, no-store, must-revalidate");
+        header.add("Pragma", "no-cache");
+        header.add("Expires", "0");
+
+        List<IncidentPosNLURequests> listOfPosRequestsForIncident = novaIncidentService.getPositiveRequestsForNovaIncidentID(incidentid);
+
+        // Convert the list of IncidentPosNLURequests objects to a CSV string
+        String csvData = "callerDate,incidentId,affectedService,scheduled,cliValue,timesCalled\n";
+        for (IncidentPosNLURequests d : listOfPosRequestsForIncident) {
+            csvData += d.getCallerDate() + "," + d.getIncidentId() + "," + d.getAffectedService() + ","
+                    + d.getScheduled() + "," + d.getCliValue() + "," + d.getTimesCalled() + "\n";
+        }
+
+        ByteArrayInputStream inputStream = new ByteArrayInputStream(csvData.getBytes(StandardCharsets.UTF_8));
+
+        HttpHeaders headers = new HttpHeaders();
+        headers.add(HttpHeaders.CONTENT_DISPOSITION, "attachment; filename=" + filename);
+        headers.add(HttpHeaders.CONTENT_TYPE, MediaType.TEXT_PLAIN_VALUE);
+
+        InputStreamResource resource = new InputStreamResource(inputStream);
+
+
+        return ResponseEntity.ok().headers(headers).contentLength(csvData.length()).contentType(MediaType.TEXT_PLAIN).body(resource);
     }
 }

@@ -1,9 +1,7 @@
 package gr.wind.FullStackSpring_Review.incident;
 
 import gr.wind.FullStackSpring_Review.datasource.excel.ReadExcelFile;
-import gr.wind.FullStackSpring_Review.model.AdHocOutageSubscriber;
-import gr.wind.FullStackSpring_Review.model.CDR_DB_Incident;
-import gr.wind.FullStackSpring_Review.model.Incident;
+import gr.wind.FullStackSpring_Review.model.*;
 import gr.wind.FullStackSpring_Review.uploadingfiles.StorageProperties;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -106,8 +104,14 @@ public class NovaIncidentService {
         novaIncidentDataAccessService.alterBackupPolicyForIncident(incidentId, yesorno);
     }
 
-
     public int deleteAdHocIncidentByID(int id) {
         return novaIncidentDataAccessService.deleteAdHocIncidentById(id);
+    }
+
+    public List<IncidentCallerStats> getStatsForNovaIncidentID(String incidentID) {
+        return novaIncidentDataAccessService.getIncidentCallerStats(incidentID);
+    }
+    public List<IncidentPosNLURequests> getPositiveRequestsForNovaIncidentID(String incidentID) {
+        return novaIncidentDataAccessService.getPositiveRequestsForIncident(incidentID);
     }
 }
