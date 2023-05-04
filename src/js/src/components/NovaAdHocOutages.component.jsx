@@ -267,11 +267,26 @@ export function NovaAdHocOutages() {
     <div className="row">
       <div className="col-6 border">
         <div
-          className="p-2 d-flex flex-column justify-content-center align-items-start"
-          style={{ height: "80px" }}
+          style={{
+            display: "flex",
+            flexDirection: "column",
+            margin: "10px",
+            marginBottom: "15px",
+            justifyContent: "center",
+            alignItems: "center",
+            textAlign: "center",
+            width: "110px",
+          }}
         >
           <NovaLogo style={{ width: "100px" }} />
-          <b>Ad Hoc Outages</b>
+          <span
+            style={{
+              fontWeight: 600,
+              fontSize: "12px",
+            }}
+          >
+            Ad Hoc Outages
+          </span>
         </div>
         <div className="row p-1">
           <div className="col-6">

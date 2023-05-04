@@ -43,71 +43,71 @@ class App extends Component {
 
   render() {
     return (
-      <ScopedCssBaseline>
-        <Router>
-          <MyHeader />
-          <div
-            style={{
-              width: "98vw",
-              margin: "auto",
-            }}
-          >
-            <Routes>
-              {/* <Route exact path="/test" element={<Test />} /> */}
-              <Route
-                path="/"
-                element={<Navigate replace to="/allspectraincidents" />}
-              />
-              <Route
-                exact
-                path="/allspectraincidents"
-                element={<AllWindSpectraIncidents />}
-              />
-              <Route
-                exact
-                path="/openspectraincidents"
-                element={<WindOpenSpectraIncidents />}
-              />
+      // <ScopedCssBaseline>
+      <Router>
+        <MyHeader />
+        <div
+          style={{
+            width: "98vw",
+            margin: "auto",
+          }}
+        >
+          <Routes>
+            {/* <Route exact path="/test" element={<Test />} /> */}
+            <Route
+              path="/"
+              element={<Navigate replace to="/allspectraincidents" />}
+            />
+            <Route
+              exact
+              path="/allspectraincidents"
+              element={<AllWindSpectraIncidents />}
+            />
+            <Route
+              exact
+              path="/openspectraincidents"
+              element={<WindOpenSpectraIncidents />}
+            />
 
-              <Route
-                exact
-                path="/nova_openspectraincidents"
-                element={<NovaOpenSpectraIncidents />}
-              />
-              <Route
-                exact
-                path="/nova_allspectraincidents"
-                element={<AllNovaSpectraIncidents />}
-              />
+            <Route
+              exact
+              path="/nova_openspectraincidents"
+              element={<NovaOpenSpectraIncidents />}
+            />
+            <Route
+              exact
+              path="/nova_allspectraincidents"
+              element={<AllNovaSpectraIncidents />}
+            />
 
-              <Route
-                exact
-                path="/opencdrdbincidents"
-                element={<CdrDBOpenOutages />}
-              />
-              <Route
-                exact
-                path="/closedcdrdbincidents"
-                element={<CdrDBClosedOutages />}
-              />
-              <Route path="/stats" element={<WindStats />} />
+            <Route
+              exact
+              path="/opencdrdbincidents"
+              element={<CdrDBOpenOutages />}
+            />
+            <Route
+              exact
+              path="/closedcdrdbincidents"
+              element={<CdrDBClosedOutages />}
+            />
+            <Route path="/stats" element={<WindStats />} />
 
-              <Route path="/nova_stats" element={<NovaStats />} />
+            <Route path="/nova_stats" element={<NovaStats />} />
 
-              <Route path="/adhocoutages" element={<AdHocOutages />} />
+            <Route path="/adhocoutages" element={<AdHocOutages />} />
 
-              <Route path="/nova_adhocoutages" element={<NovaAdHocOutages />} />
+            <Route path="/nova_adhocoutages" element={<NovaAdHocOutages />} />
 
-              {/* Not Found Page */}
-              <Route path="*" element={<NotFound />} />
-            </Routes>
-          </div>
-          <Footer className={footerClass}>
-            <NovaLogo style={{ width: "110px" }} fill="white" stroke="black" />
-            <span>NMS Team {getCurrentYear()}</span>
-          </Footer>
-        </Router>
-      </ScopedCssBaseline>
+            {/* Not Found Page */}
+            <Route path="*" element={<NotFound />} />
+          </Routes>
+        </div>
+        <Footer className={footerClass}>
+          <NovaLogo style={{ width: "110px" }} fill="white" stroke="black" />
+          <span className="nmsteam">NMS Team {getCurrentYear()}</span>
+        </Footer>
+      </Router>
+      // </ScopedCssBaseline>
     );
   }
 }

@@ -3,6 +3,8 @@ import App from "./App";
 import config from "./config.json";
 import { createRoot } from "react-dom/client";
 
+import "./styles.scss";
+
 import "bootstrap/dist/css/bootstrap.min.css";
 // import "antd/dist/antd.css";
 // import "antd/dist/antd.min.css";
