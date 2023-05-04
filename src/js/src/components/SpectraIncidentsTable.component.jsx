@@ -55,6 +55,14 @@ import InputLabel from "@mui/material/InputLabel";
 import NativeSelect from "@mui/material/NativeSelect";
 import TextField from "@mui/material/TextField";
 
+import {
+  getStatsForWindIncident,
+  getStatsForNovaIncident,
+} from "../services/incidentService";
+
+import Popover from "@mui/material/Popover";
+import Typography from "@mui/material/Typography";
+
 const generateTableHeadAndColumns = (columnsArray) => {
   return (
     <TableHead>
@@ -95,6 +103,8 @@ export default function SpectraIncidentsTable(props) {
   const [showModalAlterBackup, setShowModalAlterBackup] = useState();
   const [selectedIncident, setSelectedIncident] = useState();
   const [filteredIncidentID, setFilteredIncidentID] = useState("");
+  const [anchorEl, setAnchorEl] = useState(null);
+  const [popOverData, setPopOverData] = useState("");
 
   const incidentSelectorComponent = () => {
     return (
@@ -201,9 +211,11 @@ export default function SpectraIncidentsTable(props) {
     "INC Affected Data",
     "INC Affected IPTV",
     "User ID",
+    "",
     renderHideScheduledCheckBox(setHideScheduled),
   ];
 
+  const open = Boolean(anchorEl);
   const TableBodyForIncidents = (incidents) => {
     return (
       <TableBody
@@ -274,7 +286,7 @@ export default function SpectraIncidentsTable(props) {
                 fontSize: "12px",
               }}
             >
-              {incident.hierarchySelected}
+              {incident.hierarchySelected} &nbsp;
             </TableCell>
             <TableCell
               align="center"
@@ -376,6 +388,15 @@ export default function SpectraIncidentsTable(props) {
               }}
             >
               {incident.userId}
+            </TableCell>
+            <TableCell>
+              <button
+                className="mybtn"
+                onMouseEnter={(e) => handlePopoverOpen(e, incident.incidentId)}
+                onMouseLeave={handlePopoverClose}
+              >
+                S
+              </button>
             </TableCell>
             <TableCell align="center">
               {incident.incidentStatus === "OPEN"
@@ -514,8 +535,96 @@ export default function SpectraIncidentsTable(props) {
   const pagesCount = Math.ceil(incidents.length / pageSize);
   let paginatedList = getPagedData();
 
+  const showStats = (data) => {
+    return data.map((item) => {
+      return (
+        <ul key={item.requestor} className="mylist">
+          <li>
+            {item.requestor}: {item.positiveResponses}
+          </li>
+        </ul>
+      );
+    });
+  };
+
+  const getStatsForRespectiveCompanyAndIncident = async (incidentId) => {
+    if (company === "WIND") {
+      const { data } = await getStatsForWindIncident(incidentId);
+      return data;
+    }
+
+    if (company === "NOVA") {
+      const { data } = await getStatsForNovaIncident(incidentId);
+      return data;
+    }
+  };
+
+  const handlePopoverOpen = async (event, incidentId) => {
+    setAnchorEl(event.currentTarget);
+
+    const data = await getStatsForRespectiveCompanyAndIncident(incidentId);
+    let responseFormatted = () => {
+      return (
+        <>
+          <div className="popupForStatistics">
+            <div className="popupForStatistics__header">
+              Statistics for Incident {incidentId}
+            </div>
+            <Typography sx={{ p: 1 }}>
+              {data.length
+                ? "Total Positive Responses Per Requestor"
+                : "No positive responses yet"}
+            </Typography>
+            {showStats(data)}
+          </div>
+        </>
+      );
+    };
+    // let responseFormatted = data.map((item) => {
+    //   return (
+
+    //       <ul className="mylist">
+    //         <li>
+    //           {item.requestor}: {item.positiveResponses}
+    //         </li>
+    //       </ul>
+    //     </div>
+    //   );
+    // });
+    setPopOverData(responseFormatted);
+  };
+
+  const handlePopoverClose = () => {
+    setAnchorEl(null);
+  };
+
   return (
     <>
+      <Popover
+        id="mouse-over-popover"
+        tabIndex={0}
+        sx={{
+          pointerEvents: "none",
+          backgroundColor: "transparent",
+          borderRadius: "8px",
+          padding: "16px",
+          boxShadow: "0px 2px 8px rgba(0, 0, 0, 0.2)",
+        }}
+        open={open}
+        anchorEl={anchorEl}
+        anchorOrigin={{
+          vertical: "bottom",
+          horizontal: "left",
+        }}
+        transformOrigin={{
+          vertical: "top",
+          horizontal: "left",
+        }}
+        onClose={handlePopoverClose}
+        disableRestoreFocus
+      >
+        {popOverData}
+      </Popover>
       <ModalAlterPublish
         company={company}
         visible={showModalAlterPublish}

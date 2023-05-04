@@ -5,9 +5,11 @@ import MenuItem from "@mui/material/MenuItem";
 import DownloadIcon from "@mui/icons-material/Download";
 import DownloadingIcon from "@mui/icons-material/Downloading";
 import DownloadForOfflineIcon from "@mui/icons-material/DownloadForOffline";
+import AddIcCallIcon from "@mui/icons-material/AddIcCall";
 
 import { downloadAffectedUsersForIncident } from "../../utils/downloadAffectedUsersForIncident";
 import { downloadAffectedUsersForOutage } from "../../utils/downloadAffectedUsersForOutage";
+import { downloadPosSpectraForCompanyAndINC } from "../../utils/downloadPositiveForCompanyAndINC";
 
 export const MenuPopupDownloads = ({ incident, company }) => {
   const [anchorEl, setAnchorEl] = useState(null);
@@ -60,6 +62,16 @@ export const MenuPopupDownloads = ({ incident, company }) => {
         >
           <DownloadForOfflineIcon />
           &nbsp;Download Affected Customers for Incident:&nbsp;
+          {incident.incidentId}
+        </MenuItem>
+        <MenuItem
+          onClick={() => {
+            downloadPosSpectraForCompanyAndINC(incident, company);
+            handleClose();
+          }}
+        >
+          <AddIcCallIcon />
+          &nbsp;Download Positive Spectra Requests for Incident:&nbsp;
           {incident.incidentId}
         </MenuItem>
       </Menu>

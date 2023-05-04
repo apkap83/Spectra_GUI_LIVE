@@ -6,3 +6,31 @@ $color-fg-2: #ddd;
   background-color: $color-bg;
   color: $color-fg-2;
 }
+
+.mybtn {
+  width: 25px;
+  height: 25px;
+  border: none;
+  border-radius: 50%;
+  background-color: royalblue;
+  color: #fff;
+  box-shadow: 0 0px 10px rgba(0, 0, 0, 0.3);
+  transition: all 0.2s;
+
+  &:hover {
+    filter: brightness(0.8);
+  }
+}
+
+.mylist {
+  // list-style: none;
+}
+
+.popupForStatistics {
+  padding: 10px;
+
+  &__header {
+    font-size: "14px";
+    font-weight: 600;
+  }
+}

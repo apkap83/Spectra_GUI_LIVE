@@ -225,3 +225,41 @@ export const downloadFile = async (dirName1, fileName, company) => {
     responseType: "blob",
   });
 };
+
+export const downloadPosSpectra = async (company, incidentId) => {
+  if (company === "NOVA") {
+    return await axios({
+      url:
+        `${apiEndPoint}/downloadcustomerscalledfornovaincidentid/` + incidentId,
+      method: "GET",
+      responseType: "blob",
+    });
+  } else if (company === "WIND") {
+    return await axios({
+      url:
+        `${apiEndPoint}/downloadcustomerscalledforwindincidentid/` + incidentId,
+      method: "GET",
+      responseType: "blob",
+    });
+  }
+};
+
+export const getStatsForWindIncident = async (incidentId) => {
+  try {
+    return await httpService.get(
+      `${apiEndPoint}/getstatsforwindincidentid/${incidentId}`
+    );
+  } catch (error) {
+    return Promise.reject(error);
+  }
+};
+
+export const getStatsForNovaIncident = async (incidentId) => {
+  try {
+    return await httpService.get(
+      `${apiEndPoint}/getstatsfornovaincidentid/${incidentId}`
+    );
+  } catch (error) {
+    return Promise.reject(error);
+  }
+};
