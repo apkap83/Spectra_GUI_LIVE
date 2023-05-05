@@ -326,7 +326,7 @@ public class IncidentController {
         List<IncidentPosNLURequests> listOfPosRequestsForIncident = incidentService.getPositiveRequestsForWindIncidentID(incidentid);
 
         // Convert the list of IncidentPosNLURequests objects to a CSV string
-        String csvData = "callerDate,requestor,incidentId,affectedService,scheduled,cliValue,timesCalled\n";
+        String csvData = "Date,Requestor,Incident ID,Affected Service,Scheduled,CliValue,TimesCalled\n";
         for (IncidentPosNLURequests d : listOfPosRequestsForIncident) {
             csvData += d.getCallerDate() + "," + d.getRequestor() + "," + d.getIncidentId() + "," + d.getAffectedService() + ","
                     + d.getScheduled() + "," + d.getCliValue() + "," + d.getTimesCalled() + "\n";

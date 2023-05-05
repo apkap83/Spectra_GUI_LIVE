@@ -531,7 +531,7 @@ public class NovaIncidentDataAccessService {
 
     public List<IncidentPosNLURequests> getPositiveRequestsForIncident(String incidentID) {
         String sql = "" +
-                "SELECT DateTime, IncidentID, AffectedService, Scheduled, CliValue, TimesCalled " +
+                "SELECT DateTime, Requestor, IncidentID, AffectedService, Scheduled, CliValue, TimesCalled " +
                 " FROM Nova_SmartOutageDB_Static_Tables.Nova_Stats_Pos_NLU_Requests " +
                 " WHERE IncidentID = ? order by DateTime ASC";
 

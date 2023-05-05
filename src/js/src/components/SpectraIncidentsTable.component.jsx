@@ -568,11 +568,11 @@ export default function SpectraIncidentsTable(props) {
         <>
           <div className="popupForStatistics">
             <div className="popupForStatistics__header">
-              Statistics for Incident {incidentId}
+              Real Time Statistics for Incident {incidentId}
             </div>
             <Typography sx={{ p: 1 }}>
               {data.length
-                ? "Total Positive Responses Per Requestor"
+                ? "Total Positive Responses Per Requestor:"
                 : "No positive responses yet"}
             </Typography>
             {showStats(data)}
