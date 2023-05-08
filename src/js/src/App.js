@@ -5,7 +5,15 @@ import {
   Routes,
   Navigate,
 } from "react-router-dom";
+
+import UserContext from "./contexts/UserContext";
+
 import NotFound from "./components/Errors/NotFound.component";
+
+import { LoginPage } from "./loginPage";
+import { LogoutPage } from "./logoutPage";
+
+import ProtectedRoute from "./common/ProtectedRoute.component";
 
 import { AllWindSpectraIncidents } from "./components/Routes/WindAllSpectraIncidents";
 import { WindOpenSpectraIncidents } from "./components/Routes/WindOpenSpectraIncidents";
@@ -33,30 +41,40 @@ const { Footer } = Layout;
 
 import { ReactComponent as NovaLogo } from "./assets/novaLogo.svg";
 
-// import Test from "./components/Test";
+import auth from "./services/authService";
+import { AllSpectraIncidents } from "./components/Routes/AllSpectraIncidents";
 
 const footerClass =
   "p-1 bg-dark border-top border-2 border-secondary text-white d-flex flex-column justify-content-center align-items-center fixed-bottom";
 
 class App extends Component {
-  state = {};
+  state = {
+    userDetails: null,
+  };
+
+  componentDidMount() {
+    const userDetails = auth.getCurrentUser();
+    this.setState({ userDetails });
+  }
 
   render() {
     return (
-      <ScopedCssBaseline>
-        <Router>
-          <MyHeader />
-          <div
-            style={{
-              width: "98vw",
-              margin: "auto",
-            }}
-          >
+      <UserContext.Provider value={this.state.userDetails}>
+        <ScopedCssBaseline>
+          <Router>
+            <MyHeader />
             <Routes>
-              {/* <Route exact path="/test" element={<Test />} /> */}
+              <Route path="/login" element={<LoginPage />} />
+
+              <Route path="/logout" element={<LogoutPage />} />
+
               <Route
-                path="/"
-                element={<Navigate replace to="/allspectraincidents" />}
+                path="/allspectraincidents"
+                element={<AllWindSpectraIncidents />}
+              />
+              <Route
+                path="/allopenspectraincidents"
+                element={<WindOpenSpectraIncidents />}
               />
               <Route
                 exact
@@ -99,15 +117,19 @@ class App extends Component {
               <Route path="/nova_adhocoutages" element={<NovaAdHocOutages />} />
 
               {/* Not Found Page */}
-              <Route path="*" element={<NotFound />} />
+              <Route path="*" element={<Navigate to="/" />} />
             </Routes>
-          </div>
-          <Footer className={footerClass}>
-            <NovaLogo style={{ width: "110px" }} fill="white" stroke="black" />
-            <span className="nmsteam">NMS Team {getCurrentYear()}</span>
-          </Footer>
-        </Router>
-      </ScopedCssBaseline>
+            <Footer className={footerClass}>
+              <NovaLogo
+                style={{ width: "110px" }}
+                fill="white"
+                stroke="black"
+              />
+              <span className="nmsteam">NMS Team {getCurrentYear()}</span>
+            </Footer>
+          </Router>
+        </ScopedCssBaseline>
+      </UserContext.Provider>
     );
   }
 }

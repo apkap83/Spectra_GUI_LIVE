@@ -20,6 +20,7 @@ import FormGroup from "@mui/material/FormGroup";
 import FormControlLabel from "@mui/material/FormControlLabel";
 import Checkbox from "@mui/material/Checkbox";
 import BorderOuterIcon from "@mui/icons-material/BorderOuter";
+import QueryStatsIcon from "@mui/icons-material/QueryStats";
 
 import { MenuPopupDownloads } from "./MenuPopup/MenuPopupDownloads.component";
 
@@ -395,7 +396,7 @@ export default function SpectraIncidentsTable(props) {
                 onMouseEnter={(e) => handlePopoverOpen(e, incident.incidentId)}
                 onMouseLeave={handlePopoverClose}
               >
-                S
+                <QueryStatsIcon className="statsIcon" />
               </button>
             </TableCell>
             <TableCell align="center">

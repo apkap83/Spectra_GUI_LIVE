@@ -1,4 +1,7 @@
-import { useState } from "react";
+import { useState, useContext } from "react";
+import { PERMISSION } from "./../../roles/permissions";
+
+import UserContext from "../../contexts/UserContext";
 import Button from "@mui/material/Button";
 import Menu from "@mui/material/Menu";
 import MenuItem from "@mui/material/MenuItem";
@@ -12,6 +15,11 @@ import { downloadAffectedUsersForOutage } from "../../utils/downloadAffectedUser
 import { downloadPosSpectraForCompanyAndINC } from "../../utils/downloadPositiveForCompanyAndINC";
 
 export const MenuPopupDownloads = ({ incident, company }) => {
+  const userDetails = useContext(UserContext);
+  const IsDisabled = !userDetails.roles.includes(
+    PERMISSION.USER_CAN_DOWNLOAD_FILES
+  );
+
   const [anchorEl, setAnchorEl] = useState(null);
   const open = Boolean(anchorEl);
   const handleClick = (event) => {
@@ -23,6 +31,7 @@ export const MenuPopupDownloads = ({ incident, company }) => {
   return (
     <div>
       <Button
+        disabled={IsDisabled}
         size="small"
         id="basic-button"
         variant="outlined"

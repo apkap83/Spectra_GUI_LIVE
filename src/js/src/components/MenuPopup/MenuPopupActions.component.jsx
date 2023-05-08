@@ -1,5 +1,8 @@
-import * as React from "react";
-import { useContext } from "react";
+import { Fragment, useContext } from "react";
+
+import UserContext from "../../contexts/UserContext";
+import { PERMISSION } from "../../roles/permissions";
+
 import MuiButton from "@mui/material/Button";
 import Menu from "@mui/material/Menu";
 import MenuItem from "@mui/material/MenuItem";
@@ -28,6 +31,17 @@ export function ActionsMenu(
   restContextProperties,
   isDisabled = false
 ) {
+  const userDetails = useContext(UserContext);
+  const IsDisabledPublishing =
+    userDetails &&
+    !userDetails.roles.includes(PERMISSION.USER_CAN_DISABLE_PUBLISHING);
+  const IsDisabledAlterMessage =
+    userDetails &&
+    !userDetails.roles.includes(PERMISSION.USER_CAN_ALTER_MESSAGE);
+  const isDisabledAlterBackup =
+    userDetails &&
+    !userDetails.roles.includes(PERMISSION.USER_CAN_ALTER_BACKUP_POLICY);
+
   const {
     setSelectedIncident,
     setshowModalAlterPublish,
@@ -37,7 +51,7 @@ export function ActionsMenu(
   return (
     <PopupState variant="popover" popupId="demo-popup-menu">
       {(popupState) => (
-        <React.Fragment>
+        <Fragment>
           <ColorButton
             style={{
               width: "110px",
@@ -54,6 +68,7 @@ export function ActionsMenu(
           </ColorButton>
           <Menu {...bindMenu(popupState)}>
             <MenuItem
+              disabled={IsDisabledPublishing}
               onClick={() => {
                 popupState.close();
                 setshowModalAlterPublish(true);
@@ -74,6 +89,7 @@ export function ActionsMenu(
               )}
             </MenuItem>
             <MenuItem
+              disabled={IsDisabledAlterMessage}
               onClick={() => {
                 popupState.close();
                 setShowModalAlterMessage(true);
@@ -87,6 +103,7 @@ export function ActionsMenu(
               </span>
             </MenuItem>
             <MenuItem
+              disabled={isDisabledAlterBackup}
               onClick={() => {
                 popupState.close();
                 setShowModalAlterBackup(true);
@@ -99,7 +116,7 @@ export function ActionsMenu(
               </span>
             </MenuItem>
           </Menu>
-        </React.Fragment>
+        </Fragment>
       )}
     </PopupState>
   );

@@ -1,23 +1,14 @@
 package gr.wind.FullStackSpring_Review.auth;
 
-import com.google.common.collect.Lists;
-import com.google.common.collect.Sets;
-import gr.wind.FullStackSpring_Review.security.ApplicationUserRole;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.beans.factory.annotation.Value;
-import org.springframework.security.core.GrantedAuthority;
-import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Repository;
 import org.springframework.jdbc.core.JdbcTemplate;
 
-import java.util.Arrays;
 import java.util.List;
 import java.util.Optional;
-import java.util.stream.Collectors;
-
-import static gr.wind.FullStackSpring_Review.security.ApplicationUserRole.*;
 
 @Repository("UserRepoFromDatabase")
 public class ApplicationUserDaoService implements ApplicationUserDao {

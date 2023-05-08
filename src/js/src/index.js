@@ -1,5 +1,7 @@
 import React from "react";
 import App from "./App";
+import { LoginPage } from "./loginPage";
+
 import config from "./config.json";
 import { createRoot } from "react-dom/client";
 
@@ -24,3 +26,4 @@ document.title = config.appTitle;
 const container = document.getElementById("root");
 const root = createRoot(container);
 root.render(<App style={{ position: "relative" }} />);
+// root.render(<LoginPage />);

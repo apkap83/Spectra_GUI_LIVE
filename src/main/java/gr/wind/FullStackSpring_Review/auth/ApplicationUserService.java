@@ -24,5 +24,7 @@ public class ApplicationUserService implements UserDetailsService {
                 .orElseThrow(() ->
                         new UsernameNotFoundException(String.format("Username %s not found", username))
                 );
+
+
     }
 }

@@ -1,3 +1,7 @@
+import { useContext } from "react";
+import UserContext from "../../contexts/UserContext";
+import { PERMISSION } from "./../../roles/permissions";
+
 import Container from "react-bootstrap/Container";
 import Nav from "react-bootstrap/Nav";
 import Navbar from "react-bootstrap/Navbar";
@@ -8,12 +12,15 @@ import { useLocation } from "react-router-dom";
 import config from "../../config.json";
 // const { appTitle } = Conf;
 
-import { ReactComponent as WindLogo } from "../../assets/windLogo.svg";
-
 // MUI Icons
 import BorderOuterIcon from "@mui/icons-material/BorderOuter";
 import HistoryToggleOffIcon from "@mui/icons-material/HistoryToggleOff";
+
 function MyHeader() {
+  const userDetails = useContext(UserContext);
+  const isUserAdmin =
+    userDetails && userDetails.roles.includes(PERMISSION.USER_CAN_MANAGE_USERS);
+  console.log("isUserAdmin", isUserAdmin);
   return (
     <>
       <Navbar bg="dark" variant="dark">
@@ -30,6 +37,12 @@ function MyHeader() {
           <Navbar.Toggle aria-controls="responsive-navbar-nav" />
           <Navbar.Collapse id="responsive-navbar-nav">
             <Nav className="me-auto">
+              {isUserAdmin ? (
+                <Nav.Link href="/user_management">User Management</Nav.Link>
+              ) : (
+                ""
+              )}
+
               <NavDropdown title="WIND" id="collasible-nav-dropdown">
                 <LinkContainer to="/allspectraincidents">
                   <NavDropdown.Item>All Spectra Incidents</NavDropdown.Item>
@@ -81,9 +94,13 @@ function MyHeader() {
             </Nav>
 
             <Nav>
-              <Nav.Link eventKey={2} href="/logout">
-                Log Out
-              </Nav.Link>
+              {userDetails ? (
+                <Nav.Link eventKey={2} href="/logout">
+                  Log Out &mdash; {userDetails?.username}
+                </Nav.Link>
+              ) : (
+                ""
+              )}
             </Nav>
           </Navbar.Collapse>
         </Container>

@@ -1,4 +1,6 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useContext } from "react";
+import { PERMISSION } from "../roles/permissions";
+import UserContext from "../contexts/UserContext";
 import axios from "axios";
 import LoadingSpinnerCentered from "./Spinner/LoadingSpinnerCentered.component";
 import { getAdHocOutages } from "../services/incidentService";
@@ -193,6 +195,7 @@ export function AdHocOutages() {
   const renderEntryDeleteButton = (incident) => {
     return (
       <Button
+        disabled={IsDisabled}
         key={incident.id}
         onClick={() => {
           deleteSelectedAdHocIncident(incident);
@@ -262,6 +265,11 @@ export function AdHocOutages() {
 
     fetchData();
   }, []);
+
+  const userDetails = useContext(UserContext);
+  const IsDisabled =
+    userDetails &&
+    !userDetails.roles.includes(PERMISSION.USER_CAN_UPLOAD_ADHOC);
 
   return (
     <div className="row">
@@ -341,6 +349,7 @@ export function AdHocOutages() {
           /> */}
 
           <input
+            disabled={IsDisabled}
             type="file"
             onChange={handleFileSelect}
             style={{ height: "35.98px" }}

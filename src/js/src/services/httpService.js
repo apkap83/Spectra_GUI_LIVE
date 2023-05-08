@@ -16,11 +16,17 @@ axios.interceptors.response.use(null, (error) => {
   return Promise.reject(error);
 });
 
+const setJwtAuthHeader = (jwt) => {
+  console.log("Setting Header: Authorization: Bearer", jwt);
+  axios.defaults.headers.common["Authorization"] = `Bearer ${jwt}`;
+};
+
 const exportedObject = {
   get: axios.get,
   post: axios.post,
   put: axios.put,
   delete: axios.delete,
+  setJwtAuthHeader,
 };
 
 export default exportedObject;
