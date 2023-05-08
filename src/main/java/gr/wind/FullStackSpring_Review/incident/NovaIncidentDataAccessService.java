@@ -514,7 +514,7 @@ public class NovaIncidentDataAccessService {
 
     public List<IncidentCallerStats> getIncidentCallerStats(String incidentID) {
         String sql = "" +
-                "SELECT Requestor, count(*) as 'Positive Responses' " +
+                "SELECT Requestor, count(DISTINCT CliValue) as 'Positive Responses' " +
                 " FROM Nova_SmartOutageDB_Static_Tables.Nova_Caller_Data " +
                 " where Affected_by_IncidentID = ? " +
                 " group by Requestor";

@@ -8,10 +8,6 @@ $color-fg-2: #ddd;
 }
 
 .statsIcon {
-  // background-color: red;
-  fill: black;
-  font-size: 20px;
-
   &.css-i4bv87-MuiSvgIcon-root {
     fill: #fff;
     width: 22px;
@@ -27,7 +23,7 @@ $color-fg-2: #ddd;
   border-radius: 50%;
   background-color: royalblue;
   color: #fff;
-  box-shadow: 0 0px 10px rgba(0, 0, 0, 0.3);
+  box-shadow: 0 5px 10px rgba(#000, 0.3);
   transition: all 0.2s;
 
   &:hover {
@@ -40,11 +36,11 @@ $color-fg-2: #ddd;
 }
 
 .popupForStatistics {
-  padding: 15px;
+  padding: 12px;
 
   &__header {
     font-size: "14px";
     font-weight: 600;
-    margin-bottom: 20px;
+    margin-bottom: 12px;
   }
 }

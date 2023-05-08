@@ -513,7 +513,7 @@ public class IncidentDataAccessService {
 
     public List<IncidentCallerStats> getIncidentCallerStats(String incidentID) {
         String sql = "" +
-                "SELECT Requestor, count(*) as 'Positive Responses' " +
+                "SELECT Requestor, count(DISTINCT CliValue) as 'Positive Responses' " +
                 " FROM SmartOutageDB_Static_Tables.Caller_Data " +
                 " where Affected_by_IncidentID = ? " +
                 " group by Requestor";

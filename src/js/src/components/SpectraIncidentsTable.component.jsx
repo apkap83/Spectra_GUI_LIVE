@@ -573,7 +573,7 @@ export default function SpectraIncidentsTable(props) {
             </div>
             <Typography sx={{ p: 1 }}>
               {data.length
-                ? "Total Positive Responses Per Requestor:"
+                ? "Unique CLI Positive Responses Per Requestor:"
                 : "No positive responses yet"}
             </Typography>
             {showStats(data)}
