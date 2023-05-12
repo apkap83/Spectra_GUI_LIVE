@@ -29,6 +29,7 @@ export function AdHocOutages() {
   const [infoMessage, setInfoMessage] = useState("");
   const [isCommitButtonEnabled, setIsCommitButtonEnabled] = useState(false);
   const [isPreviewButtonEnabled, setIsPreviewButtonEnabled] = useState(false);
+  const userDetails = useContext(UserContext);
 
   const handleFileSelect = (event) => {
     setDesignatedFile(event.target.files[0]);
@@ -266,7 +267,6 @@ export function AdHocOutages() {
     fetchData();
   }, []);
 
-  const userDetails = useContext(UserContext);
   const IsDisabled =
     userDetails &&
     !userDetails.roles.includes(PERMISSION.USER_CAN_UPLOAD_ADHOC);

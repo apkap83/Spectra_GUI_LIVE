@@ -1,8 +1,6 @@
 package gr.wind.FullStackSpring_Review.util;
 
-import io.jsonwebtoken.Claims;
-import io.jsonwebtoken.Jwts;
-import io.jsonwebtoken.SignatureAlgorithm;
+import io.jsonwebtoken.*;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Service;
@@ -21,13 +19,21 @@ public class JwtUtil {
 
     public String extractUsername(String token) {
 //        return extractClaim(token, Claims::getSubject);
+        try {
+            Claims claims = Jwts.parser()
+                    .setSigningKey(SECRET_KEY)
+                    .parseClaimsJws(token)
+                    .getBody();
 
-        Claims claims = Jwts.parser()
-                .setSigningKey(SECRET_KEY)
-                .parseClaimsJws(token)
-                .getBody();
+            return claims.get("username", String.class);
+        } catch (ExpiredJwtException e) {
+            throw new JwtException("JWT token expired", e);
+        } catch (JwtException e) {
+            throw e;
+        } catch (Exception e) {
+            throw new JwtException("Invalid JWT token", e);
+        }
 
-        return claims.get("username", String.class);
     }
 
     public Date extractExpiration(String token) {

@@ -1,6 +1,5 @@
-import { Fragment, useContext } from "react";
+import { Fragment } from "react";
 
-import UserContext from "../../contexts/UserContext";
 import { PERMISSION } from "../../roles/permissions";
 
 import MuiButton from "@mui/material/Button";
@@ -26,12 +25,7 @@ const ColorButton = styled(MuiButton)(({ theme }) => ({
   },
 }));
 
-export function ActionsMenu(
-  incident,
-  restContextProperties,
-  isDisabled = false
-) {
-  const userDetails = useContext(UserContext);
+export function ActionsMenu(incident, restContextProperties, userDetails) {
   const IsDisabledPublishing =
     userDetails &&
     !userDetails.roles.includes(PERMISSION.USER_CAN_DISABLE_PUBLISHING);

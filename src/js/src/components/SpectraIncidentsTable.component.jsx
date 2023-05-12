@@ -24,6 +24,8 @@ import QueryStatsIcon from "@mui/icons-material/QueryStats";
 
 import { MenuPopupDownloads } from "./MenuPopup/MenuPopupDownloads.component";
 
+import UserContext from "../contexts/UserContext";
+
 import { errorNotification } from "../Notification";
 
 // React Context
@@ -62,6 +64,7 @@ import {
 } from "../services/incidentService";
 
 import Popover from "@mui/material/Popover";
+import { MyPopOver } from "./MenuPopup/PopOver";
 import Typography from "@mui/material/Typography";
 
 const generateTableHeadAndColumns = (columnsArray) => {
@@ -106,6 +109,9 @@ export default function SpectraIncidentsTable(props) {
   const [filteredIncidentID, setFilteredIncidentID] = useState("");
   const [anchorEl, setAnchorEl] = useState(null);
   const [popOverData, setPopOverData] = useState("");
+  const open = Boolean(anchorEl);
+
+  const userDetails = useContext(UserContext);
 
   const incidentSelectorComponent = () => {
     return (
@@ -216,7 +222,6 @@ export default function SpectraIncidentsTable(props) {
     renderHideScheduledCheckBox(setHideScheduled),
   ];
 
-  const open = Boolean(anchorEl);
   const TableBodyForIncidents = (incidents) => {
     return (
       <TableBody
@@ -401,7 +406,7 @@ export default function SpectraIncidentsTable(props) {
             </TableCell>
             <TableCell align="center">
               {incident.incidentStatus === "OPEN"
-                ? ActionsMenu(incident, restProperties, false)
+                ? ActionsMenu(incident, restProperties, userDetails)
                 : null}
             </TableCell>
           </TableRow>
@@ -562,25 +567,32 @@ export default function SpectraIncidentsTable(props) {
 
   const handlePopoverOpen = async (event, incidentId) => {
     setAnchorEl(event.currentTarget);
+    let responseFormatted = "";
 
-    const data = await getStatsForRespectiveCompanyAndIncident(incidentId);
-    let responseFormatted = () => {
-      return (
-        <>
-          <div className="popupForStatistics">
-            <div className="popupForStatistics__header">
-              Real Time Statistics for Incident {incidentId}
+    setPopOverData(<Typography sx={{ p: 1 }}>Loading...</Typography>);
+    setTimeout(async () => {
+      const data = await getStatsForRespectiveCompanyAndIncident(incidentId);
+      responseFormatted = () => {
+        return (
+          <>
+            <div className="popupForStatistics">
+              <div className="popupForStatistics__header">
+                Real Time Statistics for Incident {incidentId}
+              </div>
+              <Typography sx={{ p: 1 }}>
+                {data.length
+                  ? "Unique CLI Positive Responses Per Requestor:"
+                  : "No positive responses yet"}
+              </Typography>
+              {showStats(data)}
             </div>
-            <Typography sx={{ p: 1 }}>
-              {data.length
-                ? "Unique CLI Positive Responses Per Requestor:"
-                : "No positive responses yet"}
-            </Typography>
-            {showStats(data)}
-          </div>
-        </>
-      );
-    };
+          </>
+        );
+      };
+
+      setPopOverData(responseFormatted);
+    }, 450);
+
     // let responseFormatted = data.map((item) => {
     //   return (
 
@@ -592,15 +604,22 @@ export default function SpectraIncidentsTable(props) {
     //     </div>
     //   );
     // });
-    setPopOverData(responseFormatted);
   };
 
   const handlePopoverClose = () => {
     setAnchorEl(null);
   };
 
+  console.log(609, open, anchorEl);
   return (
     <>
+      {/* <MyPopOver
+        open={open}
+        anchorEl={anchorEl}
+        onClose={handlePopoverClose}
+      >
+        {popOverData}
+      </MyPopOver> */}
       <Popover
         id="mouse-over-popover"
         tabIndex={0}
