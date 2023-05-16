@@ -1,8 +1,12 @@
 import React from "react";
 import Popover from "@mui/material/Popover";
 
-export function MyPopOver(open, anchorEl, onClose, children) {
-  console.log(5, open, anchorEl, onClose, children);
+export const MyPopOver = ({
+  open,
+  anchorEl,
+  handlePopoverClose,
+  popOverData,
+}) => {
   return (
     <Popover
       id="mouse-over-popover"
@@ -24,10 +28,10 @@ export function MyPopOver(open, anchorEl, onClose, children) {
         vertical: "top",
         horizontal: "left",
       }}
-      onClose={onClose}
+      onClose={handlePopoverClose}
       disableRestoreFocus
     >
-      {children}
+      {popOverData}
     </Popover>
   );
-}
+};

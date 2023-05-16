@@ -1,13 +1,6 @@
 import { useState, useEffect, useContext } from "react";
 import { ErrorBoundary } from "./Errors/ErrorBoundary.component";
 
-import { ReactComponent as NoDataLogo } from "../assets/noData.svg";
-import { ReactComponent as NovaLogo } from "../assets/novaLogo.svg";
-import { ReactComponent as WindLogo } from "../assets/windLogo.svg";
-
-import Pagination from "@mui/material/Pagination";
-import Stack from "@mui/material/Stack";
-
 // MUI Lib Imports
 import Table from "@mui/material/Table";
 import TableBody from "@mui/material/TableBody";
@@ -15,27 +8,17 @@ import TableCell from "@mui/material/TableCell";
 import TableHead from "@mui/material/TableHead";
 import TableRow from "@mui/material/TableRow";
 
-import Box from "@mui/material/Box";
-import FormGroup from "@mui/material/FormGroup";
-import FormControlLabel from "@mui/material/FormControlLabel";
-import Checkbox from "@mui/material/Checkbox";
-import BorderOuterIcon from "@mui/icons-material/BorderOuter";
 import QueryStatsIcon from "@mui/icons-material/QueryStats";
-
 import { MenuPopupDownloads } from "./MenuPopup/MenuPopupDownloads.component";
-
 import UserContext from "../contexts/UserContext";
-
 import { errorNotification } from "../Notification";
-
-// React Context
-// import { AllContext } from "../contexts/All.context";
 
 import {
   getAllSpectraIncidents,
   getOpenSpectraIncidents,
   getAllNovaSpectraIncidents,
   getNovaOpenSpectraIncidents,
+  getStatsForRespectiveCompanyAndIncident,
 } from "../services/incidentService";
 
 import LoadingSpinnerCentered from "./Spinner/LoadingSpinnerCentered.component";
@@ -49,23 +32,15 @@ import { ModalAlterBackup } from "./Modals/ModalAlterBackup.component";
 
 import { ActionsMenu } from "./MenuPopup/MenuPopupActions.component";
 import stringToColor from "../utils/stringToColor";
-import { downloadAffectedUsersForIncident } from "../utils/downloadAffectedUsersForIncident";
-import { downloadAffectedUsersForOutage } from "../utils/downloadAffectedUsersForOutage";
 import { getColorYesNo, getColorMsg } from "../utils/myutils";
 
-import FormControl from "@mui/material/FormControl";
-import InputLabel from "@mui/material/InputLabel";
-import NativeSelect from "@mui/material/NativeSelect";
-import TextField from "@mui/material/TextField";
-
-import {
-  getStatsForWindIncident,
-  getStatsForNovaIncident,
-} from "../services/incidentService";
-
-import Popover from "@mui/material/Popover";
 import { MyPopOver } from "./MenuPopup/PopOver";
 import Typography from "@mui/material/Typography";
+import { PaginationAndTotalRecords } from "./common/PaginationAndTotalRecords.component";
+import { EmptyTableIndication } from "./common/EmptyTableIndication.component";
+import { HideScheduledCheckBox } from "./common/HideScheduledCheckBox.component";
+import { LogoAndTitle } from "./common/LogoAndTitle.component";
+import { IncidentSelector } from "./common/IncidentSelector.component";
 
 const generateTableHeadAndColumns = (columnsArray) => {
   return (
@@ -80,17 +55,6 @@ const generateTableHeadAndColumns = (columnsArray) => {
     </TableHead>
   );
 };
-
-function renderHideScheduledCheckBox(setHideScheduled) {
-  return (
-    <FormGroup>
-      <FormControlLabel
-        control={<Checkbox onClick={() => setHideScheduled((prev) => !prev)} />}
-        label="Hide Scheduled"
-      />
-    </FormGroup>
-  );
-}
 
 export default function SpectraIncidentsTable(props) {
   const pageSize = 20;
@@ -113,96 +77,11 @@ export default function SpectraIncidentsTable(props) {
 
   const userDetails = useContext(UserContext);
 
-  const incidentSelectorComponent = () => {
-    return (
-      <Box
-        component="form"
-        sx={{
-          "& > :not(style)": { m: 0, width: "25ch", fontSize: "12px" },
-        }}
-        noValidate
-        autoComplete="off"
-      >
-        <TextField
-          id="standard-basic"
-          label="Search Incident ID"
-          variant="standard"
-          sx={{
-            "&": {
-              height: "50px",
-            },
-          }}
-          inputProps={{
-            min: 0,
-            style: { textAlign: "center" },
-          }}
-          value={filteredIncidentID}
-          onChange={(e) => setFilteredIncidentID(e.target.value)}
-        />
-      </Box>
-    );
-  };
-
-  const renderLogoAndTitle = (company) => {
-    if (company === "WIND") {
-      return (
-        <div
-          style={{
-            display: "flex",
-            flexDirection: "column",
-            margin: "10px",
-            marginBottom: "15px",
-            justifyContent: "center",
-            alignItems: "center",
-            textAlign: "center",
-            width: "110px",
-          }}
-        >
-          <WindLogo style={{ width: "100px" }} />
-          {
-            <span
-              style={{
-                fontWeight: 600,
-                fontSize: "12px",
-              }}
-            >
-              {title}
-            </span>
-          }
-        </div>
-      );
-    }
-
-    if (company === "NOVA") {
-      return (
-        <div
-          style={{
-            display: "flex",
-            flexDirection: "column",
-            margin: "10px",
-            marginBottom: "15px",
-            justifyContent: "center",
-            alignItems: "center",
-            textAlign: "center",
-            width: "110px",
-          }}
-        >
-          <NovaLogo style={{ width: "100px" }} />
-          <span
-            style={{
-              fontWeight: 600,
-              fontSize: "12px",
-            }}
-          >
-            {title}
-          </span>
-        </div>
-      );
-    }
-  };
-
   const columnsForOpenSpectraIncidents = [
-    incidentSelectorComponent(),
+    <IncidentSelector
+      setFilteredIncidentID={setFilteredIncidentID}
+      filteredIncidentID={filteredIncidentID}
+    />,
     "Outage ID",
     "Status",
     "Outage is Published",
@@ -219,7 +98,7 @@ export default function SpectraIncidentsTable(props) {
     "INC Affected IPTV",
     "User ID",
     "",
-    renderHideScheduledCheckBox(setHideScheduled),
+    <HideScheduledCheckBox setHideScheduled={setHideScheduled} />,
   ];
 
   const TableBodyForIncidents = (incidents) => {
@@ -406,7 +285,7 @@ export default function SpectraIncidentsTable(props) {
             </TableCell>
             <TableCell align="center">
               {incident.incidentStatus === "OPEN"
-                ? ActionsMenu(incident, restProperties, userDetails)
+                ? ActionsMenu(incident, restActionMenuProperties, userDetails)
                 : null}
             </TableCell>
           </TableRow>
@@ -489,7 +368,7 @@ export default function SpectraIncidentsTable(props) {
     }
   }, [hideScheduled, filteredIncidentID]);
 
-  const restProperties = {
+  const restActionMenuProperties = {
     setSelectedIncident,
     setshowModalAlterPublish,
     setShowModalAlterMessage,
@@ -499,47 +378,6 @@ export default function SpectraIncidentsTable(props) {
   const handlePageChange = (e, value) => {
     setPageNumber(value);
   };
-
-  const getPagedData = () => {
-    let filtered = incidents;
-    return paginate(filtered, pageNumber, pageSize);
-  };
-
-  if (isFetching) {
-    return <LoadingSpinnerCentered isFetching={true} />;
-  }
-
-  const emptyTableIndication = (incidentsList) => {
-    if (incidentsList && incidentsList.length === 0) {
-      return (
-        <div
-          style={{
-            height: "86vh",
-            display: "flex",
-            justifyContent: "center",
-            alignItems: "center",
-          }}
-        >
-          <div
-            style={{
-              display: "flex",
-              flexDirection: "column",
-              justifyContent: "center",
-              alignItems: "center",
-            }}
-          >
-            <NoDataLogo />
-            <p style={{ marginTop: "20px" }}>No data</p>
-          </div>
-          {/* <h4 style={{ margin: "140px", textAlign: "center" }}>No data</h4> */}
-          {/* {emptyTableIndication()} */}
-        </div>
-      );
-    }
-  };
-
-  const pagesCount = Math.ceil(incidents.length / pageSize);
-  let paginatedList = getPagedData();
 
   const showStats = (data) => {
     return data.map((item) => {
@@ -553,25 +391,16 @@ export default function SpectraIncidentsTable(props) {
     });
   };
 
-  const getStatsForRespectiveCompanyAndIncident = async (incidentId) => {
-    if (company === "WIND") {
-      const { data } = await getStatsForWindIncident(incidentId);
-      return data;
-    }
-
-    if (company === "NOVA") {
-      const { data } = await getStatsForNovaIncident(incidentId);
-      return data;
-    }
-  };
-
   const handlePopoverOpen = async (event, incidentId) => {
     setAnchorEl(event.currentTarget);
     let responseFormatted = "";
 
     setPopOverData(<Typography sx={{ p: 1 }}>Loading...</Typography>);
     setTimeout(async () => {
-      const data = await getStatsForRespectiveCompanyAndIncident(incidentId);
+      const data = await getStatsForRespectiveCompanyAndIncident(
+        company,
+        incidentId
+      );
       responseFormatted = () => {
         return (
           <>
@@ -592,59 +421,32 @@ export default function SpectraIncidentsTable(props) {
 
       setPopOverData(responseFormatted);
     }, 450);
-
-    // let responseFormatted = data.map((item) => {
-    //   return (
-
-    //       <ul className="mylist">
-    //         <li>
-    //           {item.requestor}: {item.positiveResponses}
-    //         </li>
-    //       </ul>
-    //     </div>
-    //   );
-    // });
   };
 
   const handlePopoverClose = () => {
     setAnchorEl(null);
   };
 
-  console.log(609, open, anchorEl);
+  const getPagedData = () => {
+    let filtered = incidents;
+    return paginate(filtered, pageNumber, pageSize);
+  };
+
+  const pagesCount = incidents && Math.ceil(incidents.length / pageSize);
+  let paginatedList = getPagedData();
+
+  if (isFetching) {
+    return <LoadingSpinnerCentered isFetching={true} />;
+  }
+
   return (
     <>
-      {/* <MyPopOver
+      <MyPopOver
         open={open}
         anchorEl={anchorEl}
-        onClose={handlePopoverClose}
-      >
-        {popOverData}
-      </MyPopOver> */}
-      <Popover
-        id="mouse-over-popover"
-        tabIndex={0}
-        sx={{
-          pointerEvents: "none",
-          backgroundColor: "transparent",
-          borderRadius: "8px",
-          padding: "16px",
-          boxShadow: "0px 2px 8px rgba(0, 0, 0, 0.2)",
-        }}
-        open={open}
-        anchorEl={anchorEl}
-        anchorOrigin={{
-          vertical: "bottom",
-          horizontal: "left",
-        }}
-        transformOrigin={{
-          vertical: "top",
-          horizontal: "left",
-        }}
-        onClose={handlePopoverClose}
-        disableRestoreFocus
-      >
-        {popOverData}
-      </Popover>
+        handlePopoverClose={handlePopoverClose}
+        popOverData={popOverData}
+      />
       <ModalAlterPublish
         company={company}
         visible={showModalAlterPublish}
@@ -671,7 +473,7 @@ export default function SpectraIncidentsTable(props) {
       />
 
       <div>
-        {renderLogoAndTitle(company)}
+        <LogoAndTitle company={company} title={title} />
         <Table
           sx={{ minWidth: 650, marginTop: "-24px" }}
           size="medium"
@@ -681,31 +483,14 @@ export default function SpectraIncidentsTable(props) {
           {TableBodyForIncidents(paginatedList)}
         </Table>
 
-        {emptyTableIndication(paginatedList)}
-        <Box
-          float="right"
-          display="flex"
-          width="auto"
-          height="80px"
-          marginLeft="1rem"
-          marginTop="20px"
-          marginBottom="50px"
-          // bgcolor="lightgreen"
-          alignItems="flex-start"
-          justifyContent="space-between"
-        >
-          <p>
-            <b>Total Records: {incidents.length}</b>
-          </p>
+        <EmptyTableIndication recordsNumber={incidents && incidents.length} />
 
-          <Pagination
-            page={pageNumber}
-            count={pagesCount}
-            variant="outlined"
-            shape="rounded"
-            onChange={handlePageChange}
-          />
-        </Box>
+        <PaginationAndTotalRecords
+          recordsNumber={incidents && incidents.length}
+          pageNumber={pageNumber}
+          pagesCount={pagesCount}
+          handlePageChange={handlePageChange}
+        />
       </div>
     </>
   );

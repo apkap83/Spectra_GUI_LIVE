@@ -263,3 +263,18 @@ export const getStatsForNovaIncident = async (incidentId) => {
     return Promise.reject(error);
   }
 };
+
+export const getStatsForRespectiveCompanyAndIncident = async (
+  company,
+  incidentId
+) => {
+  if (company === "WIND") {
+    const { data } = await getStatsForWindIncident(incidentId);
+    return data;
+  }
+
+  if (company === "NOVA") {
+    const { data } = await getStatsForNovaIncident(incidentId);
+    return data;
+  }
+};

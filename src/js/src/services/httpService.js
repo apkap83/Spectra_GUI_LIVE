@@ -1,4 +1,5 @@
 import axios from "axios";
+import config from "../config.json";
 import { errorNotification } from "../Notification";
 
 axios.interceptors.response.use(null, (error) => {
@@ -13,6 +14,16 @@ axios.interceptors.response.use(null, (error) => {
   if (!expectedError) {
     errorNotification("An unexpected error occured");
   }
+
+  // Redirect the user to the login page (in case of HTTP 401 Unauthorized)
+  if (error.response.status === 401) {
+    // Remove JWT from Session
+    sessionStorage.removeItem(config.jwtTokenKeyName);
+
+    // Redirect to login page
+    window.location = "/login";
+  }
+
   return Promise.reject(error);
 });
 

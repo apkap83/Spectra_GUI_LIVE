@@ -2,7 +2,6 @@ package gr.wind.FullStackSpring_Review.filters;
 
 
 import gr.wind.FullStackSpring_Review.auth.ApplicationUserService;
-import gr.wind.FullStackSpring_Review.exception.ApiRequestException;
 import gr.wind.FullStackSpring_Review.util.JwtUtil;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
@@ -43,7 +42,7 @@ public class JwtRequestFilter extends OncePerRequestFilter {
 
             try {
                 username = jwtUtil.extractUsername(jwt);
-            } catch (ApiRequestException e) {
+            } catch (Exception e) {
                 response.setStatus(HttpServletResponse.SC_UNAUTHORIZED);
                 return;
             }
