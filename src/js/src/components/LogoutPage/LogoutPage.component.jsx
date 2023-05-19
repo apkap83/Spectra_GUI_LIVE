@@ -1,6 +1,6 @@
 import { Component } from "react";
 import { Navigate } from "react-router-dom";
-import { logout } from "./services/authService";
+import { logout } from "../../services/authService";
 
 export class LogoutPage extends Component {
   constructor(props) {

@@ -53,8 +53,12 @@ public class ApplicationSecurityConfig extends WebSecurityConfigurerAdapter {
     @Override
     protected void configure(HttpSecurity http) throws Exception {
         http.csrf().disable()
-                .authorizeRequests().antMatchers("/api/authenticate").permitAll().
-                anyRequest().authenticated().and().
+
+                .authorizeRequests().antMatchers("/**").permitAll()
+                /*.authorizeRequests().antMatchers("/api/authenticate").permitAll() */
+                /*.authorizeRequests().antMatchers("/", "index", "login","/styles/**", "/css/*", "login.css",  "antd.css", "/js/*", "/api/authenticate").permitAll()*/
+
+                .anyRequest().authenticated().and().
                 exceptionHandling().and().sessionManagement()
                 .sessionCreationPolicy(SessionCreationPolicy.STATELESS)
                 .and().addFilterBefore(corsFilter, UsernamePasswordAuthenticationFilter.class)

@@ -1,17 +1,12 @@
-import React, { Component } from "react";
-import {
-  BrowserRouter as Router,
-  Route,
-  Routes,
-  Navigate,
-} from "react-router-dom";
+import React, { useState, useEffect } from "react";
+import { BrowserRouter as Router, Navigate, useRoutes } from "react-router-dom";
 
 import UserContext from "./contexts/UserContext";
 
 import NotFound from "./components/Errors/NotFound.component";
 
-import { LoginPage } from "./loginPage";
-import { LogoutPage } from "./logoutPage";
+import { LoginPage } from "./components/LoginPage/LoginPage.component";
+import { LogoutPage } from "./components/LogoutPage/LogoutPage.component";
 
 import ProtectedRoute from "./common/ProtectedRoute.component";
 
@@ -27,110 +22,77 @@ import { CdrDBClosedOutages } from "./components/Routes/CdrDBClosedInc";
 import { AdHocOutages } from "./components/AdHocOutages.component";
 import { NovaAdHocOutages } from "./components/NovaAdHocOutages.component";
 
-import { DataTable } from "./components/DataTable/SpectraIncidentsDataTable.component";
-
 import WindStats from "./components/stats/WindStats.component";
 import NovaStats from "./components/stats/NovaStats.component";
 
 import ScopedCssBaseline from "@mui/material/ScopedCssBaseline";
 
-import MyHeader from "./components/Header/MyHeader.component";
-import { getCurrentYear } from "./utils/myutils";
-import { Layout } from "antd";
-const { Footer } = Layout;
-
-import { ReactComponent as NovaLogo } from "./assets/novaLogo.svg";
+import { MyHeader } from "./components/Header/MyHeader.component";
+import { MyFooter } from "./components/Footer/MyFooter.component";
 
 import auth from "./services/authService";
-import { AllSpectraIncidents } from "./components/Routes/AllSpectraIncidents";
 
-const footerClass =
-  "p-1 bg-dark border-top border-2 border-secondary text-white d-flex flex-column justify-content-center align-items-center fixed-bottom";
+const routes = [
+  { path: "/login", element: <LoginPage />, exact: true },
+  { path: "/logout", element: <LogoutPage />, exact: true },
+  {
+    path: "/allspectraincidents",
+    element: <AllWindSpectraIncidents />,
+    exact: true,
+  },
+  {
+    path: "/openspectraincidents",
+    element: <WindOpenSpectraIncidents />,
+    exact: true,
+  },
+  {
+    path: "/nova_openspectraincidents",
+    element: <NovaOpenSpectraIncidents />,
+    exact: true,
+  },
+  {
+    path: "/nova_allspectraincidents",
+    element: <AllNovaSpectraIncidents />,
+    exact: true,
+  },
+  { path: "/opencdrdbincidents", element: <CdrDBOpenOutages />, exact: true },
+  {
+    path: "/closedcdrdbincidents",
+    element: <CdrDBClosedOutages />,
+    exact: true,
+  },
+  { path: "/stats", element: <WindStats />, exact: true },
+  { path: "/nova_stats", element: <NovaStats />, exact: true },
+  { path: "/adhocoutages", element: <AdHocOutages />, exact: true },
+  { path: "/nova_adhocoutages", element: <NovaAdHocOutages />, exact: true },
+  { path: "/", element: <Navigate to={"/allspectraincidents"} />, exact: true },
+  { path: "*", element: <NotFound /> },
+];
 
-class App extends Component {
-  state = {
-    userDetails: null,
-  };
+const App = () => {
+  const routing = useRoutes(routes);
+  return routing;
+};
 
-  componentDidMount() {
+const AppWrapper = () => {
+  const [userDetails, setUserDetails] = useState(null);
+
+  useEffect(() => {
     const userDetails = auth.getCurrentUser();
-    this.setState({ userDetails });
-  }
+    setUserDetails(userDetails);
+  }, []);
 
-  render() {
-    return (
-      <UserContext.Provider value={this.state.userDetails}>
-        <ScopedCssBaseline>
-          <Router>
-            <MyHeader />
-            <Routes>
-              <Route path="/login" element={<LoginPage />} />
+  return (
+    <UserContext.Provider value={userDetails}>
+      <ScopedCssBaseline>
+        <Router>
+          <MyHeader />
+          <App />
+          <MyFooter />
+        </Router>
+      </ScopedCssBaseline>
+    </UserContext.Provider>
+  );
+};
 
-              <Route path="/logout" element={<LogoutPage />} />
-
-              <Route
-                path="/allspectraincidents"
-                element={<AllWindSpectraIncidents />}
-              />
-              <Route
-                path="/allopenspectraincidents"
-                element={<WindOpenSpectraIncidents />}
-              />
-              <Route
-                exact
-                path="/allspectraincidents"
-                element={<AllWindSpectraIncidents />}
-              />
-              <Route
-                exact
-                path="/openspectraincidents"
-                element={<WindOpenSpectraIncidents />}
-              />
-
-              <Route
-                exact
-                path="/nova_openspectraincidents"
-                element={<NovaOpenSpectraIncidents />}
-              />
-              <Route
-                exact
-                path="/nova_allspectraincidents"
-                element={<AllNovaSpectraIncidents />}
-              />
-
-              <Route
-                exact
-                path="/opencdrdbincidents"
-                element={<CdrDBOpenOutages />}
-              />
-              <Route
-                exact
-                path="/closedcdrdbincidents"
-                element={<CdrDBClosedOutages />}
-              />
-              <Route path="/stats" element={<WindStats />} />
-
-              <Route path="/nova_stats" element={<NovaStats />} />
-
-              <Route path="/adhocoutages" element={<AdHocOutages />} />
-
-              <Route path="/nova_adhocoutages" element={<NovaAdHocOutages />} />
-
-              {/* Not Found Page */}
-              <Route path="*" element={<Navigate to="/" />} />
-            </Routes>
-            <Footer className={footerClass}>
-              <NovaLogo
-                style={{ width: "110px" }}
-                fill="white"
-                stroke="black"
-              />
-              <span className="nmsteam">NMS Team {getCurrentYear()}</span>
-            </Footer>
-          </Router>
-        </ScopedCssBaseline>
-      </UserContext.Provider>
-    );
-  }
-}
-export default App;
+export default AppWrapper;

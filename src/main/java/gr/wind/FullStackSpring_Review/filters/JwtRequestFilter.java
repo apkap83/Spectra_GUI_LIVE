@@ -4,6 +4,7 @@ package gr.wind.FullStackSpring_Review.filters;
 import gr.wind.FullStackSpring_Review.auth.ApplicationUserService;
 import gr.wind.FullStackSpring_Review.util.JwtUtil;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.MediaType;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.UserDetails;
@@ -34,6 +35,15 @@ public class JwtRequestFilter extends OncePerRequestFilter {
 
         final String authorizationHeader = request.getHeader("Authorization");
 
+        // If no JWT Token provided and not using the authorization URI, then return HTTP 401 (unauthorized)
+        if (authorizationHeader == null && !request.getRequestURI().equals("/api/authenticate")) {
+            response.setStatus(HttpServletResponse.SC_UNAUTHORIZED);
+            response.setContentType(MediaType.APPLICATION_JSON_VALUE);
+            String errorMessage = "No JWT token provided. Please include a valid token in the Authorization header.";
+            response.getWriter().write("{\"error\": \"" + errorMessage + "\"}");
+            return;
+        }
+
         String username = null;
         String jwt = null;
 
@@ -46,11 +56,8 @@ public class JwtRequestFilter extends OncePerRequestFilter {
                 response.setStatus(HttpServletResponse.SC_UNAUTHORIZED);
                 return;
             }
-
-
         }
 
-        System.out.println("user name = " + username);
         if (username != null && SecurityContextHolder.getContext().getAuthentication() == null) {
 
             UserDetails userDetails = this.userDetailsService.loadUserByUsername(username);
