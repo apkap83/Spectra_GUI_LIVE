@@ -9,22 +9,21 @@ export function PaginationAndTotalRecords({
 }) {
   return (
     <Box
-      float="right"
       display="flex"
-      width="auto"
+      width="100%"
       height="80px"
-      marginLeft="1rem"
-      marginTop="20px"
-      marginBottom="50px"
-      // bgcolor="lightgreen"
+      margin="50px 0px"
       alignItems="flex-start"
       justifyContent="space-between"
     >
-      <p>
+      <p style={{ marginLeft: "10px" }}>
         <b>Total Records: {recordsNumber}</b>
       </p>
 
       <Pagination
+        sx={{
+          marginRight: "10px",
+        }}
         page={pageNumber}
         count={pagesCount}
         variant="outlined"

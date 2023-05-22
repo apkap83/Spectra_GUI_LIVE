@@ -30,6 +30,9 @@ import ScopedCssBaseline from "@mui/material/ScopedCssBaseline";
 import { MyHeader } from "./components/Header/MyHeader.component";
 import { MyFooter } from "./components/Footer/MyFooter.component";
 
+import { Users } from "./components/Users/Users.component";
+import { Users_2 } from "./components/Users/Users_2.component";
+
 import auth from "./services/authService";
 
 const routes = [
@@ -65,6 +68,8 @@ const routes = [
   { path: "/nova_stats", element: <NovaStats />, exact: true },
   { path: "/adhocoutages", element: <AdHocOutages />, exact: true },
   { path: "/nova_adhocoutages", element: <NovaAdHocOutages />, exact: true },
+  { path: "/user_management", element: <Users />, exact: true },
+  { path: "/user_management_2", element: <Users_2 />, exact: true },
   { path: "/", element: <Navigate to={"/allspectraincidents"} />, exact: true },
   { path: "*", element: <NotFound /> },
 ];

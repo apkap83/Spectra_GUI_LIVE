@@ -12,7 +12,7 @@ import FormGroup from "@mui/material/FormGroup";
 import FormControlLabel from "@mui/material/FormControlLabel";
 
 // import { willBePublishedNoByIncidentId } from "../client";
-import { errorNotification } from "../Notification";
+import { errorNotification } from "../common/Notification";
 
 import {
   willBePublishedYesByOutageId,

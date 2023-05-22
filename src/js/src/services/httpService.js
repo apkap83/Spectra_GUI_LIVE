@@ -1,6 +1,6 @@
 import axios from "axios";
 import config from "../config.json";
-import { errorNotification } from "../Notification";
+import { errorNotification } from "../common/Notification";
 
 axios.interceptors.response.use(null, (error) => {
   // Unexpected Errors (network down, server down, db down, bug)

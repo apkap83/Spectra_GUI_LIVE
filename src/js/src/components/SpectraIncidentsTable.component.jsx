@@ -11,7 +11,7 @@ import TableRow from "@mui/material/TableRow";
 import QueryStatsIcon from "@mui/icons-material/QueryStats";
 import { MenuPopupDownloads } from "./MenuPopup/MenuPopupDownloads.component";
 import UserContext from "../contexts/UserContext";
-import { errorNotification } from "../Notification";
+import { errorNotification } from "../common/Notification";
 
 import {
   getAllSpectraIncidents,

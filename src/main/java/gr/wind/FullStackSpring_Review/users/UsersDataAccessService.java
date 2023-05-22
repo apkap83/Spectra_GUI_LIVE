@@ -86,4 +86,41 @@ public class UsersDataAccessService {
                 "SET active = 1 WHERE RealName = ? and UserName = ?";
         jdbcTemplate.update(sql, webUser.getRealName(), webUser.getUserName());
     }
+
+    public List<String> getDistinctRoles() {
+        String sql = "" +
+                "SELECT DISTINCT role FROM " +
+                TablePrefix + "GUI_Available_Roles ORDER BY role ASC";
+        List<String> roles = jdbcTemplate.query(sql, (resultSet, i) ->{
+            String role = resultSet.getString("role");
+
+            return role;
+        });
+        return roles;
+    }
+
+    public void updateUser(SpectraWebUser webUser) {
+        String sql = "" +
+                "UPDATE " +
+                TablePrefix + "DEV_Spectra_GUI_Users " +
+                "SET `RealName` = ?, " +
+                "`password` = ?, " +
+                "`role` = ?, " +
+                "`active` = ? " +
+                "WHERE `userName` = ?";
+        System.out.println(sql);
+        jdbcTemplate.update(sql, webUser.getRealName(), webUser.getEncryptedPassword(), webUser.getRole(), webUser.getActive(), webUser.getUserName());
+    }
+
+
+//    public void updateManyUsers(List<SpectraWebUser> webUsers) {
+//
+//        for (SpectraWebUser user : webUsers) {
+//            if (user.getRealName() != null && user.getUserName() != null) {
+//
+//
+//            }
+//        }
+//
+//    }
 }

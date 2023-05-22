@@ -4,7 +4,7 @@ import UserContext from "../contexts/UserContext";
 import axios from "axios";
 import LoadingSpinnerCentered from "./Spinner/LoadingSpinnerCentered.component";
 import { getAdHocOutages } from "../services/incidentService";
-import { errorNotification } from "../Notification";
+import { errorNotification } from "../common/Notification";
 import { ReactComponent as WindLogo } from "../assets/windLogo.svg";
 
 import config from "../config.json";

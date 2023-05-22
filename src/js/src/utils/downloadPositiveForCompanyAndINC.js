@@ -1,5 +1,5 @@
 import { downloadPosSpectra } from "../services/incidentService";
-import { errorNotification } from "../Notification";
+import { errorNotification } from "../common/Notification";
 import { capitalizeFirstLetter } from "./myutils";
 
 // Javascript function to trigger browser to save data to file as if it was downloaded.

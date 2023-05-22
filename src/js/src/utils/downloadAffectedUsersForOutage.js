@@ -1,6 +1,6 @@
 import { monthNameToNumber, yyyymmdd } from "./myutils";
 import { downloadFile } from "../services/incidentService";
-import { errorNotification } from "../Notification";
+import { errorNotification } from "../common/Notification";
 
 // Javascript function to trigger browser to save data to file as if it was downloaded.
 const FileDownload = require("js-file-download");

@@ -1,7 +1,7 @@
 import React, { useEffect } from "react";
 import { useState } from "react";
 import { alterBackupPolicyforIncidentId } from "../services/incidentService";
-import { errorNotification } from "../Notification";
+import { errorNotification } from "../common/Notification";
 import { message } from "antd";
 
 // MUI

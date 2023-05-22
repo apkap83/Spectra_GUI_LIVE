@@ -68,4 +68,17 @@ public class SpectraWebUser {
     public String getRole() {
         return role;
     }
+
+    @Override
+    public String toString() {
+        return "SpectraWebUser{" +
+                "id=" + id +
+                ", realName='" + realName + '\'' +
+                ", userName='" + userName + '\'' +
+                ", active=" + active +
+                ", encryptedPassword='" + encryptedPassword + '\'' +
+                ", role='" + role + '\'' +
+                ", passwordEncoder=" + passwordEncoder +
+                '}';
+    }
 }

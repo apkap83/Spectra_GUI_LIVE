@@ -39,4 +39,16 @@ public class UsersService {
     public void enableUser(SpectraWebUser webUser) {
         this.usersDataAccessService.enableUser(webUser);
     }
+
+    public List<String> getDistinctRoles() {
+        return this.usersDataAccessService.getDistinctRoles();
+    }
+
+    public void updateUser(SpectraWebUser webUser) {
+        this.usersDataAccessService.updateUser(webUser);
+    }
+
+//    public void updateManyUsers(List<SpectraWebUser> webUsers) {
+//        this.usersDataAccessService.updateManyUsers(webUsers);
+//    }
 }

@@ -1,7 +1,7 @@
 import React from "react";
 import { useState, useEffect } from "react";
 import { changeMsgForIncidentId } from "../services/incidentService";
-import { errorNotification } from "../Notification";
+import { errorNotification } from "../common/Notification";
 import { message } from "antd";
 
 // MUI
