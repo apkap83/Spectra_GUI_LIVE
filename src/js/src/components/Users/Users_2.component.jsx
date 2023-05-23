@@ -5,8 +5,10 @@ import {
   addUser,
   updateUser,
   deleteUser,
+  enableUser,
+  disableUser,
 } from "../../services/userService";
-
+import { PasswordResetButton } from "../IconButtons/Password.component";
 import { Formik, Form, Field, ErrorMessage } from "formik";
 import * as Yup from "yup";
 
@@ -18,9 +20,11 @@ import TableRow from "@mui/material/TableRow";
 import KeyIcon from "@mui/icons-material/Key";
 
 import Button from "@mui/material/Button";
-import DeleteIcon from "@mui/icons-material/Delete";
+import { DeleteButton } from "../IconButtons/Delete.component";
 import LockIcon from "@mui/icons-material/Lock";
 import LockOpenIcon from "@mui/icons-material/LockOpen";
+import { LockUnlock } from "../IconButtons/LockUnlock.component";
+
 import List from "@mui/material/List";
 import ListItem from "@mui/material/ListItem";
 import ListItemButton from "@mui/material/ListItemButton";
@@ -170,7 +174,50 @@ export const Users_2 = () => {
     "Actions",
   ];
 
-  const TableBodyForIncidents = (rows) => {
+  const handleLockUnlockIconClick = async (user) => {
+    let messageEnableDisable = user.active === 1 ? "disabled" : "enabled";
+    try {
+      user.active === 1 ? await disableUser(user) : await enableUser(user);
+
+      successNotification(`User ${messageEnableDisable} successfully`);
+
+      let usersCopy = [...users];
+
+      const newCopy = usersCopy.map((obj) => {
+        if (obj === user) {
+          return { ...obj, active: obj.active === 1 ? 0 : 1 };
+        }
+        return obj;
+      });
+
+      setUsers(newCopy);
+    } catch (err) {
+      errorNotification("Error performing action", err.msg);
+    }
+  };
+
+  const handleDeleteIconClick = async (user) => {
+    try {
+      const isAdminSure = window.confirm(
+        `Are you sure you want to delete user ${user.realName} ?`
+      );
+      if (isAdminSure) {
+        await deleteUser(user);
+        let usersCopy = [...users];
+
+        const newCopy = usersCopy.filter((item) => item.id !== user.id);
+
+        setUsers(newCopy);
+        successNotification(`User ${user.realName} deleted successfully`);
+      } else {
+        // Cancel or handle the user's decision
+      }
+    } catch (error) {
+      errorNotification("Error performing action", err.msg);
+    }
+  };
+
+  const MyTableBody = (rows) => {
     return (
       <>
         <TableBody>
@@ -201,9 +248,17 @@ export const Users_2 = () => {
                 </TableCell>
                 <TableCell>
                   <div className="menu_icons">
-                    <KeyIcon />
-                    {user.active === 1 ? <LockOpenIcon /> : <LockIcon />}
-                    {user.userName !== "admin" ? <DeleteIcon /> : ""}
+                    <PasswordResetButton user={user} />
+                    <LockUnlock
+                      lock={user.active}
+                      handleLockUnlockIconClick={() =>
+                        handleLockUnlockIconClick(user)
+                      }
+                    />
+                    <DeleteButton
+                      user={user}
+                      handleDeleteIconClick={() => handleDeleteIconClick(user)}
+                    />
                   </div>
                 </TableCell>
               </TableRow>
@@ -223,6 +278,10 @@ export const Users_2 = () => {
       name: Yup.string().required("Name is required"),
       username: Yup.string().required("User name is required"),
       password: Yup.string().required("Password is required"),
+      // .matches(
+      //   /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[!@#$%^&*()_\-+=<>?])[A-Za-z\d!@#$%^&*()_\-+=<>?]{15,}$/,
+      //   "Password must be at least 15 characters long and contain at least one uppercase letter, one lowercase letter, one digit, and one special character"
+      // ),
       repeat_password: Yup.string()
         .oneOf([Yup.ref("password"), null], "Passwords must match")
         .required("Repeat Password is required"),
@@ -274,7 +333,7 @@ export const Users_2 = () => {
             <Form>
               <div className="newUserForm__formField">
                 <label className="newUserForm__formField__label" htmlFor="name">
-                  Name
+                  Name (Surname first)
                 </label>
                 <Field
                   className="newUserForm__formField__input"
@@ -347,9 +406,18 @@ export const Users_2 = () => {
                 </label>
                 <Field
                   className="newUserForm__formField__input"
-                  type="text"
+                  as="select"
                   name="role"
-                />
+                >
+                  <option value=""></option>;
+                  {availableRoles.map((role, id) => {
+                    return (
+                      <option key={id} value={role}>
+                        {role}
+                      </option>
+                    );
+                  })}
+                </Field>
                 <ErrorMessage
                   name="role"
                   className="newUserForm__formField__error"
@@ -391,16 +459,18 @@ export const Users_2 = () => {
         <Button
           variant="contained"
           onClick={handleCreateUserBtn}
-          className={createUserFormVisible ? "createUserToggleBtnPressed" : ""}
+          className={
+            createUserFormVisible
+              ? "createUserToggleBtnPressed"
+              : "createUserBtn"
+          }
         >
           Create User
         </Button>
-        {isFetchingUsers ? <MyLoadingSpinner /> : null}
-        {/* <MyLoadingSpinner /> */}
       </div>
+      {isFetchingUsers ? <MyLoadingSpinner /> : null}
       <h3 style={{ margin: "10px" }}>Spectra Users List</h3>
       {createUserFormVisible ? <CreateUserForm /> : null}
-
       <Table
         sx={{ minWidth: 650, position: "relative" }}
         size="large"
@@ -409,7 +479,7 @@ export const Users_2 = () => {
         {generateTableHeadAndColumns(columnsForOpenSpectraIncidents)}
         {/* <LoadingSpinnerCentered isFetching={true}> */}
 
-        {TableBodyForIncidents(paginatedList)}
+        {MyTableBody(paginatedList)}
         {/* </LoadingSpinnerCentered> */}
       </Table>
       <PaginationAndTotalRecords

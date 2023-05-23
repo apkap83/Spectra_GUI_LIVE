@@ -60,14 +60,13 @@ $green-900: #22543d;
   padding: 20px;
   background-color: $gray-200;
   display: flex;
-  justify-content: space-between;
-  // width: 50%;
+  align-items: center;
 }
 
 .myRow {
-  &:hover {
-    background-color: #cbd5e080;
-  }
+  // &:hover {
+  //   background-color: #cbd5e080;
+  // }
 }
 
 .menu_icons {
@@ -101,7 +100,7 @@ $green-900: #22543d;
       color: inherit;
       background-color: #f4f2f2;
       border: none;
-      // width: 300px;
+      width: 400px;
       border-radius: 100px;
     }
   }
@@ -117,6 +116,12 @@ $green-900: #22543d;
 
 .newUserForm__submit__btn {
   padding: 10px 50px !important;
+}
+
+createUserBtn {
+  // padding: 15px 10px !important;
+  // width: 424px !important;
+  // height: 36.4px !important;
 }
 
 .createUserToggleBtnPressed {
