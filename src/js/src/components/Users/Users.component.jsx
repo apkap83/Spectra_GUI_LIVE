@@ -5,7 +5,25 @@ import {
   addUser,
   updateUser,
   deleteUser,
+  enableUser,
+  disableUser,
 } from "../../services/userService";
+import { PasswordResetButton } from "../IconButtons/Password.component";
+import { Formik, Form, Field, ErrorMessage } from "formik";
+import * as Yup from "yup";
+
+// MUI Lib Imports
+import Table from "@mui/material/Table";
+import TableBody from "@mui/material/TableBody";
+import TableHead from "@mui/material/TableHead";
+import TableRow from "@mui/material/TableRow";
+import KeyIcon from "@mui/icons-material/Key";
+
+import Button from "@mui/material/Button";
+import { DeleteButton } from "../IconButtons/Delete.component";
+import LockIcon from "@mui/icons-material/Lock";
+import LockOpenIcon from "@mui/icons-material/LockOpen";
+import { LockUnlock } from "../IconButtons/LockUnlock.component";
 
 import List from "@mui/material/List";
 import ListItem from "@mui/material/ListItem";
@@ -15,12 +33,21 @@ import PersonIcon from "@mui/icons-material/Person";
 import FormGroup from "@mui/material/FormGroup";
 import FormControlLabel from "@mui/material/FormControlLabel";
 import Switch from "@mui/material/Switch";
-import Button from "@mui/material/Button";
-import LoadingSpinnerCentered from "./../Spinner/LoadingSpinnerCentered.component";
+import LoadingSpinnerCentered from "../Spinner/LoadingSpinnerCentered.component";
+import { MyLoadingSpinner } from "../Spinner/MyLoadingSpinner.component";
+
+import { PaginationAndTotalRecords } from "../common/PaginationAndTotalRecords.component";
+import { paginate } from "../../utils/paginate";
+
+import { TableCell } from "@mui/material";
+import {
+  successNotification,
+  errorNotification,
+} from "../../common/Notification";
 
 import "./users.scss";
-
 export const Users = () => {
+  const pageSize = 10;
   const initialEmptyUser = {
     userName: "",
     realName: "",
@@ -28,6 +55,8 @@ export const Users = () => {
   };
 
   const [users, setUsers] = useState([]);
+  const [createUserFormVisible, setCreateUserFormVisible] = useState(false);
+  const [pageNumber, setPageNumber] = useState(1);
   const [availableRoles, setAvailableRoles] = useState([]);
   const [selectedRole, setSelectedRole] = useState();
 
@@ -38,8 +67,6 @@ export const Users = () => {
   const [userName, setUserName] = useState("");
   const [realName, setRealName] = useState("");
   const [password, setPassword] = useState("");
-  const [repeatPassword, setRepeatPassword] = useState("");
-  const [passwordsMatch, setPasswordsMatch] = useState(true);
 
   const user = {
     userName,
@@ -49,22 +76,17 @@ export const Users = () => {
     active: 1,
   };
 
+  const getUsersAndRoles = async () => {
+    setIsFetchingUsers(true);
+    const { data: users } = await getAllUsersDetails();
+    const { data: roles } = await getAllAvailableRoles();
+    setUsers(users);
+    setAvailableRoles(roles);
+    setIsFetchingUsers(false);
+  };
   useEffect(() => {
-    const getUsers = async () => {
-      setIsFetchingUsers(true);
-      const { data: users } = await getAllUsersDetails();
-      const { data: roles } = await getAllAvailableRoles();
-      setUsers(users);
-      setAvailableRoles(roles);
-      setIsFetchingUsers(false);
-    };
-    console.log("selectedUser = ", selectedUser);
-    getUsers();
+    getUsersAndRoles();
   }, []);
-
-  useEffect(() => {
-    setPasswordsMatch(password === repeatPassword);
-  }, [repeatPassword]);
 
   const handleUserClick = (user) => {
     setSelectedUser(user);
@@ -128,168 +150,344 @@ export const Users = () => {
       console.log("Update User!");
     }
   };
-  return (
-    <div className="users">
-      <div
-        className="users__left"
-        style={{
-          position: "relative",
-          border: "1px solid rgba(0,0,0,0.2)",
-        }}
-      >
-        <h4 className="users__header">Spectra Users</h4>
-        <LoadingSpinnerCentered isFetching={isFetchingUsers}>
-          <List className="users__list" style={{ marginBottom: "200px" }}>
-            {users.map((user, index) => {
-              const isSelected = user === selectedUser;
-              return (
-                <ListItem
-                  disablePadding
-                  sx={{ backgroundColor: isSelected ? "lightblue" : "inherit" }}
-                  onClick={() => handleUserClick(user)}
-                  key={user.id}
-                >
-                  <ListItemButton>
-                    <PersonIcon></PersonIcon> &nbsp;
-                    <ListItemText primary={user.realName} />
-                  </ListItemButton>
-                </ListItem>
-              );
-            })}
-          </List>
-        </LoadingSpinnerCentered>
-      </div>
 
-      <div className="users__right">
-        <FormGroup
-          sx={{
-            height: "80vh",
+  const generateTableHeadAndColumns = (columnsArray) => {
+    return (
+      <TableHead>
+        <TableRow>
+          {columnsArray.map((item, id) => (
+            <TableCell key={id} align="left">
+              {item}
+            </TableCell>
+          ))}
+        </TableRow>
+      </TableHead>
+    );
+  };
+
+  const columnsForOpenSpectraIncidents = [
+    "ID",
+    "Real Name",
+    "User Name",
+    "Active",
+    "Role",
+    "Actions",
+  ];
+
+  const handleLockUnlockIconClick = async (user) => {
+    let messageEnableDisable = user.active === 1 ? "disabled" : "enabled";
+    try {
+      user.active === 1 ? await disableUser(user) : await enableUser(user);
+
+      successNotification(`User ${messageEnableDisable} successfully`);
+
+      let usersCopy = [...users];
+
+      const newCopy = usersCopy.map((obj) => {
+        if (obj === user) {
+          return { ...obj, active: obj.active === 1 ? 0 : 1 };
+        }
+        return obj;
+      });
+
+      setUsers(newCopy);
+    } catch (err) {
+      errorNotification("Error performing action", err.msg);
+    }
+  };
+
+  const handleDeleteIconClick = async (user) => {
+    try {
+      const isAdminSure = window.confirm(
+        `Are you sure you want to delete user ${user.realName} ?`
+      );
+      if (isAdminSure) {
+        await deleteUser(user);
+        let usersCopy = [...users];
+
+        const newCopy = usersCopy.filter((item) => item.id !== user.id);
+
+        setUsers(newCopy);
+        successNotification(`User ${user.realName} deleted successfully`);
+      } else {
+        // Cancel or handle the user's decision
+      }
+    } catch (error) {
+      errorNotification("Error performing action", err.msg);
+    }
+  };
+
+  const MyTableBody = (rows) => {
+    return (
+      <>
+        <TableBody>
+          {rows.map((user) => {
+            return (
+              <TableRow
+                key={user.id}
+                className="myRow"
+                sx={{
+                  backgroundColor:
+                    user.active === 1 ? "#9ae6b445" : "#feb2b245",
+                }}
+              >
+                <TableCell align="left" component="th" scope="row">
+                  {user.id}
+                </TableCell>
+                <TableCell align="left" component="th" scope="row">
+                  {user.realName}
+                </TableCell>
+                <TableCell align="left" component="th" scope="row">
+                  {user.userName}
+                </TableCell>
+                <TableCell align="left" component="th" scope="row">
+                  {user.active == 1 ? "Yes" : "No"}
+                </TableCell>
+                <TableCell align="left" component="th" scope="row">
+                  {user.role}
+                </TableCell>
+                <TableCell>
+                  <div className="menu_icons">
+                    <PasswordResetButton user={user} />
+                    <LockUnlock
+                      lock={user.active}
+                      handleLockUnlockIconClick={() =>
+                        handleLockUnlockIconClick(user)
+                      }
+                    />
+                    <DeleteButton
+                      user={user}
+                      handleDeleteIconClick={() => handleDeleteIconClick(user)}
+                    />
+                  </div>
+                </TableCell>
+              </TableRow>
+            );
+          })}
+        </TableBody>
+      </>
+    );
+  };
+
+  const handleCreateUserBtn = () => {
+    setCreateUserFormVisible((prev) => !prev);
+  };
+
+  const CreateUserForm = () => {
+    const validationSchema = Yup.object().shape({
+      name: Yup.string().required("Name is required"),
+      username: Yup.string().required("User name is required"),
+      password: Yup.string().required("Password is required"),
+      // .matches(
+      //   /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[!@#$%^&*()_\-+=<>?])[A-Za-z\d!@#$%^&*()_\-+=<>?]{15,}$/,
+      //   "Password must be at least 15 characters long and contain at least one uppercase letter, one lowercase letter, one digit, and one special character"
+      // ),
+      repeat_password: Yup.string()
+        .oneOf([Yup.ref("password"), null], "Passwords must match")
+        .required("Repeat Password is required"),
+      role: Yup.string().required("Role is required"),
+    });
+
+    return (
+      <div className="newUserForm">
+        <h1>Create New Spectra User Form</h1>
+        <Formik
+          initialValues={{
+            name: "",
+            username: "",
+            password: "",
+            repeat_password: "",
+            role: "",
           }}
+          onSubmit={(values, { setSubmitting }) => {
+            setTimeout(async () => {
+              // alert(JSON.stringify(values, null, 2));
+
+              try {
+                await addUser({
+                  realName: values.name,
+                  userName: values.username,
+                  password: values.password,
+                  active: 1,
+                  role: values.role,
+                });
+
+                values.name = "";
+                values.username = "";
+                values.password = "";
+                values.repeat_password = "";
+                values.role = "";
+                successNotification("User successfully created");
+
+                getUsersAndRoles();
+              } catch (error) {
+                errorNotification("Error during user creation");
+              }
+
+              setSubmitting(false);
+            }, 400);
+          }}
+          validationSchema={validationSchema}
         >
-          <div
-            style={{
-              display: "flex",
-              justifyContent: "space-between",
-              width: "50%",
-            }}
-          >
-            <Button
-              variant="contained"
-              disabled={newUserMode === true}
-              color="warning"
-              sx={{ width: "25%", marginBottom: "20px", marginTop: "10px" }}
-              onClick={() => handleNewUser()}
-            >
-              New User
-            </Button>
-            <Button
-              variant="contained"
-              disabled={newUserMode === true || selectedUser.userName === ""}
-              color="error"
-              sx={{ width: "25%", marginBottom: "20px", marginTop: "10px" }}
-              onClick={() => handleDeleteUser()}
-            >
-              Delete User
-            </Button>
-          </div>
-
-          <label htmlFor="userName">User Name:</label>
-          <input
-            disabled={!newUserMode}
-            id="userName"
-            type="text"
-            style={{ width: "50%", marginBottom: "20px", marginTop: "10px" }}
-            value={userName}
-            onChange={handleChange}
-          />
-
-          <label htmlFor="realName">Real Name:</label>
-          <input
-            id="realName"
-            type="text"
-            style={{ width: "50%", marginBottom: "20px", marginTop: "10px" }}
-            value={realName}
-            onChange={handleChange}
-          />
-
-          <label htmlFor="password">Password</label>
-          <input
-            id="password"
-            type="password"
-            style={{ width: "50%", marginBottom: "20px", marginTop: "10px" }}
-            value={password}
-            onChange={handleChange}
-          />
-
-          <label htmlFor="repeat_password">Repeat Password</label>
-          <input
-            id="repeat_password"
-            type="password"
-            style={{
-              borderColor: !passwordsMatch ? "red" : "black",
-              outline: "none",
-              width: "50%",
-              marginBottom: "20px",
-              marginTop: "10px",
-            }}
-            value={repeatPassword}
-            onChange={handleChange}
-          />
-          {/* Additional validation error message if passwords don't match */}
-          {!passwordsMatch && (
-            <p
-              style={{
-                color: "red",
-                marginTop: "-20px",
-                marginBottom: "10pxs",
-              }}
-            >
-              Passwords do not match.
-            </p>
-          )}
-
-          <label htmlFor="role">Role</label>
-          <select
-            name="role"
-            id="role"
-            style={{ width: "50%", marginBottom: "20px", marginTop: "10px" }}
-            value={selectedRole}
-            onChange={handleSelectRoleChange}
-          >
-            <option></option>
-            {availableRoles.map((role, id) => {
-              return (
-                <option
-                  key={id}
-                  value={role}
-                  //   selected={role === selectedUser.role}
+          {({ isSubmitting }) => (
+            <Form>
+              <div className="newUserForm__formField">
+                <label className="newUserForm__formField__label" htmlFor="name">
+                  Name (Surname first)
+                </label>
+                <Field
+                  className="newUserForm__formField__input"
+                  type="text"
+                  name="name"
+                />
+                <ErrorMessage
+                  name="name"
+                  className="newUserForm__formField__error"
+                  component="div"
+                />
+              </div>
+              <div className="newUserForm__formField">
+                <label
+                  className="newUserForm__formField__label"
+                  htmlFor="username"
                 >
-                  {role}
-                </option>
-              );
-            })}
-          </select>
-
-          {/* <FormControlLabel
-            control={
-              <Switch
-                onChange={handleSwitchChange}
-                checked={selectedUser?.active}
-              />
-            }
-            label="User Enabled"
-          /> */}
-
-          <Button
-            variant="contained"
-            color="success"
-            sx={{ width: "50%", marginBottom: "20px", marginTop: "10px" }}
-            onClick={handleSubmit}
-          >
-            Submit
-          </Button>
-        </FormGroup>
+                  User Name
+                </label>
+                <Field
+                  className="newUserForm__formField__input"
+                  type="text"
+                  name="username"
+                />
+                <ErrorMessage
+                  name="username"
+                  className="newUserForm__formField__error"
+                  component="div"
+                />
+              </div>
+              <div className="newUserForm__formField">
+                <label
+                  className="newUserForm__formField__label"
+                  htmlFor="password"
+                >
+                  Password
+                </label>
+                <Field
+                  className="newUserForm__formField__input"
+                  type="password"
+                  name="password"
+                />
+                <ErrorMessage
+                  name="password"
+                  className="newUserForm__formField__error"
+                  component="div"
+                />
+              </div>
+              <div className="newUserForm__formField">
+                <label
+                  className="newUserForm__formField__label"
+                  htmlFor="repeat_password"
+                >
+                  Repeat Password
+                </label>
+                <Field
+                  className="newUserForm__formField__input"
+                  type="password"
+                  name="repeat_password"
+                />
+                <ErrorMessage
+                  name="repeat_password"
+                  className="newUserForm__formField__error"
+                  component="div"
+                />
+              </div>
+              <div className="newUserForm__formField">
+                <label className="newUserForm__formField__label" htmlFor="role">
+                  Role
+                </label>
+                <Field
+                  className="newUserForm__formField__input"
+                  as="select"
+                  name="role"
+                >
+                  <option value=""></option>;
+                  {availableRoles.map((role, id) => {
+                    return (
+                      <option key={id} value={role}>
+                        {role}
+                      </option>
+                    );
+                  })}
+                </Field>
+                <ErrorMessage
+                  name="role"
+                  className="newUserForm__formField__error"
+                  component="div"
+                />
+              </div>
+              <div className="newUserForm__submit">
+                <Button
+                  variant="contained"
+                  type="submit"
+                  disabled={isSubmitting}
+                  className="newUserForm__submit__btn"
+                >
+                  Submit
+                </Button>
+              </div>
+            </Form>
+          )}
+        </Formik>
       </div>
-    </div>
+    );
+  };
+
+  const handlePageChange = (e, value) => {
+    setPageNumber(value);
+  };
+
+  const getPagedData = () => {
+    let filtered = users;
+    return paginate(filtered, pageNumber, pageSize);
+  };
+
+  const pagesCount = users && Math.ceil(users.length / pageSize);
+  let paginatedList = getPagedData();
+
+  return (
+    <>
+      <div className="user_menu_buttons">
+        <Button
+          variant="contained"
+          onClick={handleCreateUserBtn}
+          className={
+            createUserFormVisible
+              ? "createUserToggleBtnPressed"
+              : "createUserBtn"
+          }
+        >
+          Create User
+        </Button>
+      </div>
+      {isFetchingUsers ? <MyLoadingSpinner /> : null}
+      <h3 style={{ margin: "10px" }}>Spectra Users List</h3>
+      {createUserFormVisible ? <CreateUserForm /> : null}
+      <Table
+        sx={{ minWidth: 650, position: "relative" }}
+        size="large"
+        aria-label="a table"
+      >
+        {generateTableHeadAndColumns(columnsForOpenSpectraIncidents)}
+        {/* <LoadingSpinnerCentered isFetching={true}> */}
+
+        {MyTableBody(paginatedList)}
+        {/* </LoadingSpinnerCentered> */}
+      </Table>
+      <PaginationAndTotalRecords
+        recordsNumber={users && users.length}
+        pageNumber={pageNumber}
+        pagesCount={pagesCount}
+        handlePageChange={handlePageChange}
+      />
+    </>
   );
 };
