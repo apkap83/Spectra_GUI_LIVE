@@ -273,7 +273,7 @@ export function NovaAdHocOutages() {
 
   return (
     <div className="row">
-      <div className="col-6 border">
+      <div className="col-6" style={{ borderRight: "1px solid #eee" }}>
         <div
           style={{
             display: "flex",
@@ -299,9 +299,7 @@ export function NovaAdHocOutages() {
         <div className="row p-1">
           <div className="col-6">
             {tableData.length ? (
-              <span className="mb-2 border">
-                Total Entries: {tableData.length}
-              </span>
+              <span className="mb-2">Total Entries: {tableData.length}</span>
             ) : (
               ""
             )}
@@ -318,13 +316,13 @@ export function NovaAdHocOutages() {
             )}
           </div>
         </div>
-        <div className="vh-100" style={{ position: "relative" }}>
+        <div style={{ position: "relative", height: "60vh" }}>
           <LoadingSpinnerCentered isFetching={currentAdHocIsFetching}>
             <Table
               dataSource={tableData}
               columns={columnsForCurrentAdHocOutages}
               rowKey="id"
-              pagination={{ defaultPageSize: 15 }}
+              pagination={{ defaultPageSize: 10 }}
               size="small"
               style={{ marginBottom: "50px", transition: "transform 1.5s" }}
             />
@@ -357,7 +355,7 @@ export function NovaAdHocOutages() {
         {successMessage && renderSuccessMessage(successMessage)}
         {errorMessage && renderErrorMessage(errorMessage)}
         {infoMessage && renderInfoMessage(infoMessage)}
-        <div className="vh-100" style={{ position: "relative" }}>
+        <div style={{ position: "relative", height: "60vh" }}>
           {uploadedTableData.length ? (
             <span>Total Entries: {uploadedTableData.length}</span>
           ) : (

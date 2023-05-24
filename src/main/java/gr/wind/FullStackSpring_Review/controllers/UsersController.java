@@ -1,11 +1,13 @@
 package gr.wind.FullStackSpring_Review.controllers;
 
+import gr.wind.FullStackSpring_Review.exception.MyResponseStatusException;
 import gr.wind.FullStackSpring_Review.model.SpectraWebUser;
 import gr.wind.FullStackSpring_Review.users.UsersService;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.http.HttpStatus;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.web.bind.annotation.*;
@@ -49,7 +51,17 @@ public class UsersController {
         userNameLoggedIn = authentication.getName();
         logger.info(Environment + " " + userNameLoggedIn + " -> Add User " + webUser.toString());
 
-        usersService.addNewUser(webUser);
+            usersService.addNewUser(webUser);
+    }
+
+    @CrossOrigin
+    @PostMapping(path = "/updateuserrole", produces = "application/json")
+    public void updateUserRole(@Valid @RequestBody SpectraWebUser webUser ) {
+        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+        userNameLoggedIn = authentication.getName();
+        logger.info(Environment + " " + userNameLoggedIn + " -> Update User Role " + webUser.toString());
+
+        usersService.updateUserRole(webUser);
     }
 
     @CrossOrigin
@@ -81,7 +93,13 @@ public class UsersController {
         userNameLoggedIn = authentication.getName();
         logger.info(Environment + " " + userNameLoggedIn + " -> Change User Password " + webUser.toString());
 
+        try {
         usersService.changePasswordForUser(webUser);
+        } catch (Exception e) {
+            e.printStackTrace();
+            throw new MyResponseStatusException(HttpStatus.BAD_REQUEST, e.getMessage());
+        }
+
     }
 
     @CrossOrigin
@@ -114,15 +132,5 @@ public class UsersController {
 
         return usersService.getDistinctRoles();
     }
-
-//    @CrossOrigin
-//    @PostMapping(path = "/updateManyUsers", produces = "application/json")
-//    public void updateManyUsers(@Valid @RequestBody List<SpectraWebUser> webUsers ) {
-//        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
-//        userNameLoggedIn = authentication.getName();
-//        logger.info(Environment + " " + userNameLoggedIn + " -> GET all User Details");
-//
-//        usersService.updateManyUsers(webUsers);
-//    }
 
 }

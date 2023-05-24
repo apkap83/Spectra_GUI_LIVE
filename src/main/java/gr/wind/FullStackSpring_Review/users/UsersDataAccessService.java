@@ -1,8 +1,11 @@
 package gr.wind.FullStackSpring_Review.users;
 
+import gr.wind.FullStackSpring_Review.exception.MyResponseStatusException;
 import gr.wind.FullStackSpring_Review.model.SpectraWebUser;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.dao.DuplicateKeyException;
+import org.springframework.http.HttpStatus;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.stereotype.Repository;
 
@@ -51,7 +54,12 @@ public class UsersDataAccessService {
                 "(RealName, userName, active, password, role) VALUES " +
                 "(?, ?, ?, ?, ?)";
 
-       jdbcTemplate.update(sql, webUser.getRealName(), webUser.getUserName(), webUser.getActive(), webUser.getEncryptedPassword(), webUser.getRole());
+        try {
+            jdbcTemplate.update(sql, webUser.getRealName(), webUser.getUserName(), webUser.getActive(), webUser.getEncryptedPassword(), webUser.getRole());
+        } catch (DuplicateKeyException e) {
+            e.printStackTrace();
+            throw new MyResponseStatusException(HttpStatus.BAD_REQUEST, "User already exists");
+        }
      }
 
     public void deleteUser(SpectraWebUser webUser) {
@@ -111,6 +119,17 @@ public class UsersDataAccessService {
         System.out.println(sql);
         jdbcTemplate.update(sql, webUser.getRealName(), webUser.getEncryptedPassword(), webUser.getRole(), webUser.getActive(), webUser.getUserName());
     }
+
+    public void updateUserRole(SpectraWebUser webUser) {
+        String sql = "" +
+                "UPDATE " +
+                TablePrefix + "DEV_Spectra_GUI_Users " +
+                "SET `Role` = ? " +
+                "WHERE `userName` = ?";
+        System.out.println(sql);
+        jdbcTemplate.update(sql, webUser.getRole(), webUser.getUserName());
+    }
+
 
 
 //    public void updateManyUsers(List<SpectraWebUser> webUsers) {

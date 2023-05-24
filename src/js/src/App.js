@@ -34,6 +34,7 @@ import { Users } from "./components/Users/Users.component";
 // import { Users_2 } from "./components/Users/Users_2.component";
 
 import auth from "./services/authService";
+import { ErrorBoundary } from "./components/Errors/ErrorBoundary.component";
 
 const routes = [
   { path: "/login", element: <LoginPage />, exact: true },
@@ -88,15 +89,17 @@ const AppWrapper = () => {
   }, []);
 
   return (
-    <UserContext.Provider value={userDetails}>
-      <ScopedCssBaseline>
-        <Router>
-          <MyHeader />
-          <App />
-          <MyFooter />
-        </Router>
-      </ScopedCssBaseline>
-    </UserContext.Provider>
+    <ErrorBoundary>
+      <UserContext.Provider value={userDetails}>
+        <ScopedCssBaseline>
+          <Router>
+            <MyHeader />
+            <App />
+            <MyFooter />
+          </Router>
+        </ScopedCssBaseline>
+      </UserContext.Provider>
+    </ErrorBoundary>
   );
 };
 

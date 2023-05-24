@@ -2,15 +2,10 @@ import { Spin } from "antd";
 const LoadingSpinnerCentered = (props) => {
   if (props.isFetching) {
     return (
-      <>
-        <Spin className="loadingIndicatorCentered" size="large" />
-        <span
-          className="loadingIndicatorCentered"
-          style={{ marginTop: "20px", textAlign: "center" }}
-        >
-          Please wait...
-        </span>
-      </>
+      <div className="loadingIndicatorCentered">
+        <Spin size="large" />
+        <span style={{ marginTop: "5px" }}>Please wait...</span>
+      </div>
     );
   } else {
     return props.children;

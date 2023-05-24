@@ -16,6 +16,11 @@ import "./scss/styles.scss";
 
 document.title = config.appTitle;
 
+window.onunhandledrejection = (event) => {
+  //   console.error("Unhandled Promise Rejection:", event.reason);
+  // Custom error handling logic goes here
+};
+
 const container = document.getElementById("root");
 const root = createRoot(container);
 root.render(<AppWrapper style={{ position: "relative" }} />);

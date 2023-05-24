@@ -20,7 +20,6 @@ export const getAllAvailableRoles = async () => {
 };
 
 export const addUser = async (user) => {
-  console.log("user = ", user);
   try {
     return await httpService.post(`${apiEndPoint}/addnewuser`, {
       realName: user.realName,
@@ -41,6 +40,17 @@ export const updateUser = async (user) => {
       userName: user.userName,
       active: user.active,
       password: user.password,
+      role: user.role,
+    });
+  } catch (error) {
+    return Promise.reject(error);
+  }
+};
+
+export const updateUserRole = async (user) => {
+  try {
+    return await httpService.post(`${apiEndPoint}/updateuserrole`, {
+      userName: user.userName,
       role: user.role,
     });
   } catch (error) {

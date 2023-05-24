@@ -436,7 +436,7 @@ export default function SpectraIncidentsTable(props) {
   let paginatedList = getPagedData();
 
   if (isFetching) {
-    return <LoadingSpinnerCentered isFetching={true} />;
+    // return <LoadingSpinnerCentered isFetching={true} />;
   }
 
   return (
@@ -472,25 +472,27 @@ export default function SpectraIncidentsTable(props) {
         setIncidents={setIncidents}
       />
 
-      <div>
+      <div style={{ position: "relative", height: "80vh" }}>
         <LogoAndTitle company={company} title={title} />
-        <Table
-          sx={{ minWidth: 650, marginTop: "-24px" }}
-          size="medium"
-          aria-label="a dense table"
-        >
-          {generateTableHeadAndColumns(columnsForOpenSpectraIncidents)}
-          {TableBodyForIncidents(paginatedList)}
-        </Table>
+        <LoadingSpinnerCentered isFetching={isFetching}>
+          <Table
+            sx={{ minWidth: 650, marginTop: "-24px" }}
+            size="medium"
+            aria-label="a dense table"
+          >
+            {generateTableHeadAndColumns(columnsForOpenSpectraIncidents)}
+            {TableBodyForIncidents(paginatedList)}
+          </Table>
 
-        <EmptyTableIndication recordsNumber={incidents && incidents.length} />
+          <EmptyTableIndication recordsNumber={incidents && incidents.length} />
 
-        <PaginationAndTotalRecords
-          recordsNumber={incidents && incidents.length}
-          pageNumber={pageNumber}
-          pagesCount={pagesCount}
-          handlePageChange={handlePageChange}
-        />
+          <PaginationAndTotalRecords
+            recordsNumber={incidents && incidents.length}
+            pageNumber={pageNumber}
+            pagesCount={pagesCount}
+            handlePageChange={handlePageChange}
+          />
+        </LoadingSpinnerCentered>
       </div>
     </>
   );

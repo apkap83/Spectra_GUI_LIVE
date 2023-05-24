@@ -101,7 +101,12 @@ $green-900: #22543d;
       background-color: #f4f2f2;
       border: none;
       width: 400px;
-      border-radius: 100px;
+      text-align: center;
+
+      &--select {
+        color: grey;
+        text-align-last: center;
+      }
     }
   }
 
@@ -116,12 +121,6 @@ $green-900: #22543d;
 
 .newUserForm__submit__btn {
   padding: 10px 50px !important;
-}
-
-createUserBtn {
-  // padding: 15px 10px !important;
-  // width: 424px !important;
-  // height: 36.4px !important;
 }
 
 .createUserToggleBtnPressed {

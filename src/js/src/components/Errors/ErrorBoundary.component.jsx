@@ -12,13 +12,23 @@ export class ErrorBoundary extends React.Component {
 
   componentDidCatch(error, errorInfo) {
     // You can also log the error to an error reporting service
-    logErrorToMyService(error, errorInfo);
+    // logErrorToMyService(error, errorInfo);
   }
 
   render() {
     if (this.state.hasError) {
-      // You can render any custom fallback UI
-      return <h1>Something went wrong.</h1>;
+      <div style={{ height: "100vh", position: "relative" }}>
+        // You can render any custom fallback UI
+        <h1
+          style={{
+            top: "50%",
+            left: "50%",
+            transform: "translate(-50%, -50%)",
+          }}
+        >
+          Spectra - Something went wrong.
+        </h1>
+      </div>;
     }
 
     return this.props.children;

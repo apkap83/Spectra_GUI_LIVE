@@ -4,6 +4,7 @@ import {
   getAllAvailableRoles,
   addUser,
   updateUser,
+  updateUserRole,
   deleteUser,
   enableUser,
   disableUser,
@@ -17,24 +18,12 @@ import Table from "@mui/material/Table";
 import TableBody from "@mui/material/TableBody";
 import TableHead from "@mui/material/TableHead";
 import TableRow from "@mui/material/TableRow";
-import KeyIcon from "@mui/icons-material/Key";
 
 import Button from "@mui/material/Button";
 import { DeleteButton } from "../IconButtons/Delete.component";
-import LockIcon from "@mui/icons-material/Lock";
-import LockOpenIcon from "@mui/icons-material/LockOpen";
 import { LockUnlock } from "../IconButtons/LockUnlock.component";
 
-import List from "@mui/material/List";
-import ListItem from "@mui/material/ListItem";
-import ListItemButton from "@mui/material/ListItemButton";
-import ListItemText from "@mui/material/ListItemText";
-import PersonIcon from "@mui/icons-material/Person";
-import FormGroup from "@mui/material/FormGroup";
-import FormControlLabel from "@mui/material/FormControlLabel";
-import Switch from "@mui/material/Switch";
 import LoadingSpinnerCentered from "../Spinner/LoadingSpinnerCentered.component";
-import { MyLoadingSpinner } from "../Spinner/MyLoadingSpinner.component";
 
 import { PaginationAndTotalRecords } from "../common/PaginationAndTotalRecords.component";
 import { paginate } from "../../utils/paginate";
@@ -58,7 +47,9 @@ export const Users = () => {
   const [createUserFormVisible, setCreateUserFormVisible] = useState(false);
   const [pageNumber, setPageNumber] = useState(1);
   const [availableRoles, setAvailableRoles] = useState([]);
-  const [selectedRole, setSelectedRole] = useState();
+  const [selectedRole, setSelectedRole] = useState("");
+
+  const [selectedIndividualRole, setSelectedIndividualRole] = useState("");
 
   const [isFetchingUsers, setIsFetchingUsers] = useState(false);
   const [selectedUser, setSelectedUser] = useState(initialEmptyUser);
@@ -88,54 +79,8 @@ export const Users = () => {
     getUsersAndRoles();
   }, []);
 
-  const handleUserClick = (user) => {
-    setSelectedUser(user);
-    setUserName(user.userName);
-    setRealName(user.realName);
-    setPassword(user.userName);
-    setRepeatPassword(user.userName);
-    setSelectedRole(user.role);
-    setNewUserMode(false);
-  };
-
-  const handleChange = (event) => {
-    const { id, value } = event.target;
-    console.log(id);
-    switch (id) {
-      case "userName":
-        setUserName(value);
-        break;
-      case "realName":
-        setRealName(value);
-        break;
-      case "password":
-        setPassword(value);
-        break;
-      case "repeat_password":
-        setRepeatPassword(value);
-        break;
-      case "role":
-        setRole(value);
-        break;
-    }
-  };
-
-  const handleNewUser = (event) => {
-    setNewUserMode(true);
-    setSelectedUser(initialEmptyUser);
-    setUserName("");
-    setRealName("");
-    setPassword("");
-    setRepeatPassword("");
-    setSelectedRole("");
-  };
-
   const handleSwitchChange = (event) => {
     setUserIsEnabled(!userIsEnabled);
-  };
-
-  const handleSelectRoleChange = (event) => {
-    setSelectedRole(event.target.value);
   };
 
   const handleDeleteUser = async () => {
@@ -175,8 +120,8 @@ export const Users = () => {
   ];
 
   const handleLockUnlockIconClick = async (user) => {
-    let messageEnableDisable = user.active === 1 ? "disabled" : "enabled";
     try {
+      let messageEnableDisable = user.active === 1 ? "disabled" : "enabled";
       user.active === 1 ? await disableUser(user) : await enableUser(user);
 
       successNotification(`User ${messageEnableDisable} successfully`);
@@ -217,6 +162,32 @@ export const Users = () => {
     }
   };
 
+  const SelectElement = ({ user }) => {
+    return (
+      <select
+        name="role"
+        value={user.role}
+        onChange={(e) => handleChangeForExistingUserRole(e, user)}
+        style={{
+          backgroundColor: "transparent",
+          // border: "none",
+          padding: "5px",
+        }}
+      >
+        {availableRoles.map((role, id) => {
+          if (user.userName === "admin") {
+            return null;
+          }
+          return (
+            <option key={id} value={role}>
+              {role}
+            </option>
+          );
+        })}
+      </select>
+    );
+  };
+
   const MyTableBody = (rows) => {
     return (
       <>
@@ -244,12 +215,17 @@ export const Users = () => {
                   {user.active == 1 ? "Yes" : "No"}
                 </TableCell>
                 <TableCell align="left" component="th" scope="row">
-                  {user.role}
+                  {user.userName === "admin" ? (
+                    <span style={{ padding: "10px" }}>ADMIN</span>
+                  ) : (
+                    <SelectElement user={user} />
+                  )}
                 </TableCell>
                 <TableCell>
                   <div className="menu_icons">
                     <PasswordResetButton user={user} />
                     <LockUnlock
+                      user={user}
                       lock={user.active}
                       handleLockUnlockIconClick={() =>
                         handleLockUnlockIconClick(user)
@@ -270,12 +246,37 @@ export const Users = () => {
   };
 
   const handleCreateUserBtn = () => {
+    setSelectedRole("");
     setCreateUserFormVisible((prev) => !prev);
+  };
+
+  const handleChangeForExistingUserRole = async (e, user) => {
+    try {
+      updateUserRole({
+        userName: user.userName,
+        role: e.target.value,
+      });
+
+      let usersCopy = [...users];
+
+      const newCopy = usersCopy.map((obj) => {
+        if (obj === user) {
+          console.log("found");
+          return { ...obj, role: e.target.value };
+        }
+        return obj;
+      });
+
+      setUsers(newCopy);
+      successNotification("User role successfully updated");
+    } catch (error) {
+      errorNotification("User role could be updated");
+    }
   };
 
   const CreateUserForm = () => {
     const validationSchema = Yup.object().shape({
-      name: Yup.string().required("Name is required"),
+      name: Yup.string().required("Real Name is required"),
       username: Yup.string().required("User name is required"),
       password: Yup.string().required("Password is required"),
       // .matches(
@@ -318,13 +319,10 @@ export const Users = () => {
                 values.repeat_password = "";
                 values.role = "";
                 successNotification("User successfully created");
-
                 getUsersAndRoles();
-              } catch (error) {
-                errorNotification("Error during user creation");
+              } finally {
+                setSubmitting(false);
               }
-
-              setSubmitting(false);
             }, 400);
           }}
           validationSchema={validationSchema}
@@ -332,13 +330,14 @@ export const Users = () => {
           {({ isSubmitting }) => (
             <Form>
               <div className="newUserForm__formField">
-                <label className="newUserForm__formField__label" htmlFor="name">
-                  Name (Surname first)
-                </label>
+                {/* <label className="newUserForm__formField__label" htmlFor="name">
+                  Real Name (Surname first)
+                </label> */}
                 <Field
                   className="newUserForm__formField__input"
                   type="text"
                   name="name"
+                  placeholder="Real Name (Surname first)"
                 />
                 <ErrorMessage
                   name="name"
@@ -347,16 +346,17 @@ export const Users = () => {
                 />
               </div>
               <div className="newUserForm__formField">
-                <label
+                {/* <label
                   className="newUserForm__formField__label"
                   htmlFor="username"
                 >
                   User Name
-                </label>
+                </label> */}
                 <Field
                   className="newUserForm__formField__input"
                   type="text"
                   name="username"
+                  placeholder="User Name"
                 />
                 <ErrorMessage
                   name="username"
@@ -365,16 +365,17 @@ export const Users = () => {
                 />
               </div>
               <div className="newUserForm__formField">
-                <label
+                {/* <label
                   className="newUserForm__formField__label"
                   htmlFor="password"
                 >
                   Password
-                </label>
+                </label> */}
                 <Field
                   className="newUserForm__formField__input"
                   type="password"
                   name="password"
+                  placeholder="Password"
                 />
                 <ErrorMessage
                   name="password"
@@ -383,16 +384,17 @@ export const Users = () => {
                 />
               </div>
               <div className="newUserForm__formField">
-                <label
+                {/* <label
                   className="newUserForm__formField__label"
                   htmlFor="repeat_password"
                 >
                   Repeat Password
-                </label>
+                </label> */}
                 <Field
                   className="newUserForm__formField__input"
                   type="password"
                   name="repeat_password"
+                  placeholder="Repeat Password"
                 />
                 <ErrorMessage
                   name="repeat_password"
@@ -401,15 +403,17 @@ export const Users = () => {
                 />
               </div>
               <div className="newUserForm__formField">
-                <label className="newUserForm__formField__label" htmlFor="role">
+                {/* <label className="newUserForm__formField__label" htmlFor="role">
                   Role
-                </label>
+                </label> */}
                 <Field
-                  className="newUserForm__formField__input"
+                  className="newUserForm__formField__input newUserForm__formField__input--select"
                   as="select"
                   name="role"
                 >
-                  <option value=""></option>;
+                  <option value="" disabled hidden>
+                    Select Role
+                  </option>
                   {availableRoles.map((role, id) => {
                     return (
                       <option key={id} value={role}>
@@ -468,26 +472,28 @@ export const Users = () => {
           Create User
         </Button>
       </div>
-      {isFetchingUsers ? <MyLoadingSpinner /> : null}
+      {/* {isFetchingUsers ? <MyLoadingSpinner /> : null} */}
       <h3 style={{ margin: "10px" }}>Spectra Users List</h3>
       {createUserFormVisible ? <CreateUserForm /> : null}
-      <Table
-        sx={{ minWidth: 650, position: "relative" }}
-        size="large"
-        aria-label="a table"
-      >
-        {generateTableHeadAndColumns(columnsForOpenSpectraIncidents)}
-        {/* <LoadingSpinnerCentered isFetching={true}> */}
+      <div style={{ position: "relative", height: "60vh", zIndex: "10" }}>
+        <LoadingSpinnerCentered isFetching={isFetchingUsers}>
+          <Table
+            sx={{ minWidth: 650, position: "relative" }}
+            size="large"
+            aria-label="a table"
+          >
+            {generateTableHeadAndColumns(columnsForOpenSpectraIncidents)}
 
-        {MyTableBody(paginatedList)}
-        {/* </LoadingSpinnerCentered> */}
-      </Table>
-      <PaginationAndTotalRecords
-        recordsNumber={users && users.length}
-        pageNumber={pageNumber}
-        pagesCount={pagesCount}
-        handlePageChange={handlePageChange}
-      />
+            {MyTableBody(paginatedList)}
+          </Table>
+          <PaginationAndTotalRecords
+            recordsNumber={users && users.length}
+            pageNumber={pageNumber}
+            pagesCount={pagesCount}
+            handlePageChange={handlePageChange}
+          />
+        </LoadingSpinnerCentered>
+      </div>
     </>
   );
 };

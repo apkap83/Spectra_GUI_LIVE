@@ -48,6 +48,9 @@ public class UsersService {
         this.usersDataAccessService.updateUser(webUser);
     }
 
+    public void updateUserRole(SpectraWebUser webUser) {
+        this.usersDataAccessService.updateUserRole(webUser);
+    }
 //    public void updateManyUsers(List<SpectraWebUser> webUsers) {
 //        this.usersDataAccessService.updateManyUsers(webUsers);
 //    }

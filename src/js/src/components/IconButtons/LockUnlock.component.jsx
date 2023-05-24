@@ -1,10 +1,14 @@
 import LockIcon from "@mui/icons-material/Lock";
 import LockOpenIcon from "@mui/icons-material/LockOpen";
 
-export const LockUnlock = ({ lock, handleLockUnlockIconClick }) => {
-  if (!lock) {
-    return <LockIcon onClick={handleLockUnlockIconClick} />;
+export const LockUnlock = ({ user, lock, handleLockUnlockIconClick }) => {
+  if (user.userName !== "admin") {
+    if (lock) {
+      return <LockOpenIcon onClick={handleLockUnlockIconClick} />;
+    } else {
+      return <LockIcon onClick={handleLockUnlockIconClick} />;
+    }
   } else {
-    return <LockOpenIcon onClick={handleLockUnlockIconClick} />;
+    return null;
   }
 };

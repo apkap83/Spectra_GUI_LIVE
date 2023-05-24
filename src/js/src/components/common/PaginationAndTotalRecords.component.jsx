@@ -11,8 +11,8 @@ export function PaginationAndTotalRecords({
     <Box
       display="flex"
       width="100%"
-      height="80px"
-      margin="50px 0px"
+      height="150px"
+      margin="25px 0px"
       alignItems="flex-start"
       justifyContent="space-between"
     >

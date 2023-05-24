@@ -15,6 +15,15 @@ axios.interceptors.response.use(null, (error) => {
     errorNotification("An unexpected error occured");
   }
 
+  if (error.response) {
+    const { data, status, headers } = error.response;
+    errorNotification(data.error, data.message);
+  } else if (error.request) {
+    errorNotification(error.request);
+  } else {
+    errorNotification("Error", error.message);
+  }
+
   // Redirect the user to the login page (in case of HTTP 401 Unauthorized)
   if (error.response.status === 401) {
     // Remove JWT from Session
@@ -28,8 +37,8 @@ axios.interceptors.response.use(null, (error) => {
 });
 
 const setJwtAuthHeader = (jwt) => {
-  console.log("Setting Header: Authorization: Bearer", jwt);
-  axios.defaults.headers.common["Authorization"] = `Bearer ${jwt}`;
+  // console.log("Setting Header: Authorization: Bearer:", jwt);
+  axios.defaults.headers.common["Authorization"] = `Bearer: ${jwt}`;
 };
 
 const exportedObject = {
