@@ -192,10 +192,10 @@ export const Users = () => {
     return (
       <>
         <TableBody>
-          {rows.map((user) => {
+          {rows.map((user, id) => {
             return (
               <TableRow
-                key={user.id}
+                key={id}
                 className="myRow"
                 sx={{
                   backgroundColor:
@@ -203,7 +203,7 @@ export const Users = () => {
                 }}
               >
                 <TableCell align="left" component="th" scope="row">
-                  {user.id}
+                  {(pageNumber - 1) * pageSize + id + 1}
                 </TableCell>
                 <TableCell align="left" component="th" scope="row">
                   {user.realName}
