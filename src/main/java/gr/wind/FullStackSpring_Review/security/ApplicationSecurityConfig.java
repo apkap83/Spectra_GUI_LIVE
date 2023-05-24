@@ -104,10 +104,8 @@ public class ApplicationSecurityConfig extends WebSecurityConfigurerAdapter {
                                                         "/api/incidents/downloadfile/**").hasAuthority(ApplicationUserPermission.USER_CAN_DOWNLOAD_FILES.getPermission())
 
                 .antMatchers("/api/incidents/nova_deleteadhocincident/**",
-                                        "/api/incidents/getalladhocoutages",
-                                        "[/api/incidents/uploadadhocfile",
+                                        "/api/incidents/uploadadhocfile",
                                         "/api/incidents/previewadhocfile",
-                                        "/api/incidents/nova_getalladhocoutages",
                                         "/api/incidents/nova_previewadhocfile",
                                         "/api/incidents/nova_uploadadhocfile",
                                         "/api/incidents/deleteadhocincident/**").hasAuthority(ApplicationUserPermission.USER_CAN_UPLOAD_ADHOC.getPermission())

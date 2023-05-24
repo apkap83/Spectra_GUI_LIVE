@@ -15,13 +15,16 @@ axios.interceptors.response.use(null, (error) => {
     errorNotification("An unexpected error occured");
   }
 
-  if (error.response) {
-    const { data, status, headers } = error.response;
-    errorNotification(data.error, data.message);
-  } else if (error.request) {
-    errorNotification(error.request);
-  } else {
-    errorNotification("Error", error.message);
+  if (sessionStorage.getItem(config.jwtTokenKeyName)) {
+    console.log(19);
+    if (error.response) {
+      const { data, status, headers } = error.response;
+      errorNotification(data.error, data.message);
+    } else if (error.request) {
+      errorNotification(error.request);
+    } else {
+      errorNotification("Error", error.message);
+    }
   }
 
   // Redirect the user to the login page (in case of HTTP 401 Unauthorized)
