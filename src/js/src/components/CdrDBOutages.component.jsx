@@ -115,154 +115,28 @@ export function CdrDBOutages(props) {
               background: stringToColor("ABC" + incident.dslam_Owner) + "30",
             }}
           >
-            <TableCell
-              align="center"
-              component="th"
-              scope="row"
-              sx={{
-                fontWeight: 700,
-                fontSize: "12px",
-              }}
-            >
+            <TableCell align="center" component="th" scope="row">
               {incident.outage_ID}
             </TableCell>
-            <TableCell
-              align="center"
-              component="th"
-              scope="row"
-              sx={{
-                fontWeight: 700,
-                fontSize: "12px",
-              }}
-            >
+            <TableCell align="center" component="th" scope="row">
               {incident.outage_LEVEL}
             </TableCell>
-            <TableCell
-              align="center"
-              sx={{
-                fontWeight: 700,
-                fontSize: "12px",
-              }}
-            >
-              {incident.status}
-            </TableCell>
-            <TableCell
-              align="center"
-              sx={{
-                fontWeight: 700,
-                fontSize: "12px",
-              }}
-            >
-              {incident.capture_Date}
-            </TableCell>
-            <TableCell
-              align="center"
-              sx={{
-                fontWeight: 700,
-                fontSize: "12px",
-              }}
-            >
-              {incident.network}
-            </TableCell>
-            <TableCell
-              align="center"
-              sx={{
-                fontWeight: 700,
-                fontSize: "12px",
-              }}
-            >
-              {incident.ote_SITE_NAME}
-            </TableCell>
-            <TableCell
-              align="center"
-              sx={{
-                fontWeight: 700,
-                fontSize: "12px",
-              }}
-            >
-              {incident.dslam}
-            </TableCell>
-            <TableCell
-              align="center"
-              sx={{
-                fontWeight: 700,
-                fontSize: "12px",
-              }}
-            >
-              {incident.dslam_SLOT}
-            </TableCell>
-            <TableCell
-              align="center"
-              sx={{
-                fontWeight: 700,
-                fontSize: "12px",
-              }}
-            >
-              {incident.dslam_Owner}
-            </TableCell>
-            <TableCell
-              align="center"
-              sx={{
-                fontWeight: 700,
-                fontSize: "12px",
-              }}
-            >
-              {incident.last_Occured}
-            </TableCell>
-            <TableCell
-              align="center"
-              sx={{
-                fontWeight: 700,
-                fontSize: "12px",
-              }}
-            >
-              {incident.duration_Pretty}
-            </TableCell>
-            <TableCell
-              align="center"
-              sx={{
-                fontWeight: 700,
-                fontSize: "12px",
-              }}
-            >
-              {incident.duration_Sec}
-            </TableCell>
-            <TableCell
-              align="center"
-              sx={{
-                fontWeight: 700,
-                fontSize: "12px",
-              }}
-            >
-              {incident.dslam_Users}
-            </TableCell>
-            <TableCell
-              align="center"
-              sx={{
-                fontWeight: 700,
-                fontSize: "12px",
-              }}
-            >
-              {incident.disconnected_Users}
-            </TableCell>
-            <TableCell
-              align="center"
-              sx={{
-                fontWeight: 700,
-                fontSize: "12px",
-              }}
-            >
+            <TableCell align="center">{incident.status}</TableCell>
+            <TableCell align="center">{incident.capture_Date}</TableCell>
+            <TableCell align="center">{incident.network}</TableCell>
+            <TableCell align="center">{incident.ote_SITE_NAME}</TableCell>
+            <TableCell align="center">{incident.dslam}</TableCell>
+            <TableCell align="center">{incident.dslam_SLOT}</TableCell>
+            <TableCell align="center">{incident.dslam_Owner}</TableCell>
+            <TableCell align="center">{incident.last_Occured}</TableCell>
+            <TableCell align="center">{incident.duration_Pretty}</TableCell>
+            <TableCell align="center">{incident.duration_Sec}</TableCell>
+            <TableCell align="center">{incident.dslam_Users}</TableCell>
+            <TableCell align="center">{incident.disconnected_Users}</TableCell>
+            <TableCell align="center">
               {incident.disconnections_Ratio}
             </TableCell>
-            <TableCell
-              align="center"
-              sx={{
-                fontWeight: 700,
-                fontSize: "12px",
-              }}
-            >
-              {incident.total_Users_Called}
-            </TableCell>
+            <TableCell align="center">{incident.total_Users_Called}</TableCell>
           </TableRow>
         ))}
       </TableBody>
@@ -276,16 +150,13 @@ export function CdrDBOutages(props) {
 
   const companySelectorComponent = () => (
     <FormControl fullWidth>
-      <InputLabel id="demo-simple-select-label">
-        <b>Network</b>
-      </InputLabel>
+      <InputLabel id="demo-simple-select-label">Network</InputLabel>
       <NativeSelect
         sx={{
-          width: "130px",
+          width: "120px",
           textAlign: "center",
-          fontSize: "16px",
-          fontWeight: 700,
-          textAlignLast: "center",
+          fontSize: "1.3rem",
+          textAlignLast: "left",
         }}
         onChange={handleNetworkDropDownChange}
       >
@@ -299,29 +170,6 @@ export function CdrDBOutages(props) {
       </NativeSelect>
     </FormControl>
   );
-
-  // const ColorButton = styled(MuiButton)(({ theme }) => ({
-  //   color: theme.palette.getContrastText(grey[900]),
-  //   backgroundColor: green[500],
-  //   "&:hover": {
-  //     backgroundColor: green[700],
-  //   },
-  // }));
-
-  // const StyledTextField = styled(TextField)(({ theme }) => ({
-  //   root: {
-  //     "& label": {
-  //       // transformOrigin: "top right",
-  //       // right: "0",
-  //       // left: "auto",
-  //       textAlign: "center",
-  //     },
-  //   },
-  // }));
-
-  // export default function BasicTextField() {
-  //   return <StyledTextField id="standard-basic" label="Standard" />;
-  // }
 
   const dslamFilterComponent = () => {
     return (
@@ -408,21 +256,28 @@ export function CdrDBOutages(props) {
         if (props.specificRequest === "getOpenCdrDBIncidents") {
           Title = () => {
             return (
-              <>
+              <div
+                style={{
+                  margin: "1rem",
+                  color: "#000",
+                  display: "flex",
+                  justifyContent: "left",
+                  alignItems: "center",
+                }}
+              >
                 <BorderOuterIcon
                   sx={{
-                    fontSize: "28px",
+                    fontSize: "24px",
                   }}
                 />{" "}
                 <span
                   style={{
-                    fontFamily: "Nunito, sans-serif",
-                    letterSpacing: 1.2,
+                    marginLeft: "0.4rem",
                   }}
                 >
                   Open DSLAM Outages
                 </span>
-              </>
+              </div>
             );
           };
           const { data } = await getOpenCDR_DBIncidents();
@@ -432,21 +287,28 @@ export function CdrDBOutages(props) {
         } else if (props.specificRequest === "getClosedCdrDBIncidents") {
           Title = () => {
             return (
-              <>
+              <div
+                style={{
+                  margin: "1rem",
+                  color: "#000",
+                  display: "flex",
+                  justifyContent: "left",
+                  alignItems: "center",
+                }}
+              >
                 <HistoryToggleOffIcon
                   sx={{
-                    fontSize: "28px",
+                    fontSize: "24px",
                   }}
                 />{" "}
                 <span
                   style={{
-                    fontFamily: "Nunito, sans-serif",
-                    letterSpacing: 1.2,
+                    marginLeft: "0.4rem",
                   }}
                 >
                   Closed DSLAM Outages
                 </span>
-              </>
+              </div>
             );
           };
           const { data } = await getClosedCDR_DBIncidents();
@@ -519,7 +381,11 @@ export function CdrDBOutages(props) {
       <h3 className="m-2">
         <Title />
       </h3>
-      <div>
+      <div
+        style={{
+          borderTop: "var(--line)",
+        }}
+      >
         <Table sx={{ minWidth: 650 }} size="medium" aria-label="a dense table">
           {generateTableHeadAndColumns(columnsForCdrDBIncidents)}
           {TableBodyForOutages(paginatedList)}
@@ -532,11 +398,12 @@ export function CdrDBOutages(props) {
           width="auto"
           height="50px"
           marginLeft="1rem"
-          marginTop="20px"
-          marginBottom="60px"
+          marginTop="8px"
+          marginBottom="80px"
           // bgcolor="lightgreen"
           alignItems="flex-start"
           justifyContent="space-between"
+          fontSize="1.3rem"
         >
           <p>
             <b>Total Records: {incidents.length}</b>

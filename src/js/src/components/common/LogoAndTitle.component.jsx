@@ -50,6 +50,7 @@ export const LogoAndTitle = ({ company, title }) => {
           style={{
             fontWeight: 600,
             fontSize: "12px",
+            marginTop: "-10px",
           }}
         >
           {title}

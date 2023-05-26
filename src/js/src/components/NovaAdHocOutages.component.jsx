@@ -291,6 +291,7 @@ export function NovaAdHocOutages() {
             style={{
               fontWeight: 600,
               fontSize: "12px",
+              marginTop: "-1.5rem",
             }}
           >
             Ad Hoc Outages

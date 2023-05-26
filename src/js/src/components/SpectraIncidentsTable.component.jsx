@@ -98,22 +98,13 @@ export default function SpectraIncidentsTable(props) {
     "INC Affected IPTV",
     "User ID",
     "",
+    "",
     <HideScheduledCheckBox setHideScheduled={setHideScheduled} />,
   ];
 
   const TableBodyForIncidents = (incidents) => {
     return (
-      <TableBody
-        style={
-          {
-            // backgroundColor: "red",
-            // overflowX: "scroll",
-            // overflow: "hidden",
-            // textOverflow: "ellipsis",
-            // wordWrap: "break-word",
-          }
-        }
-      >
+      <TableBody>
         {incidents.map((incident) => (
           <TableRow
             key={incident.id}
@@ -122,20 +113,10 @@ export default function SpectraIncidentsTable(props) {
               background: stringToColor(incident.incidentId) + "22", // Add Opacity in Color
             }}
           >
-            <TableCell
-              align="center"
-              component="th"
-              scope="row"
-              sx={{
-                fontWeight: 700,
-                fontSize: "12px",
-              }}
-            >
+            <TableCell align="center" component="th" scope="row">
               {incident.incidentId}
             </TableCell>
-            <TableCell align="center">
-              <MenuPopupDownloads incident={incident} company={company} />
-            </TableCell>
+            <TableCell align="center">{incident.outageId}</TableCell>
             <TableCell align="center">
               <span style={{ fontWeight: 600 }}>{incident.incidentStatus}</span>
             </TableCell>
@@ -163,24 +144,10 @@ export default function SpectraIncidentsTable(props) {
             >
               {getColorYesNo(incident.backupEligible)}
             </TableCell>
-            <TableCell
-              align="center"
-              sx={{
-                // background: stringToColor(incident.incidentId),
-                fontWeight: 700,
-                fontSize: "12px",
-              }}
-            >
+            <TableCell align="center">
               {incident.hierarchySelected} &nbsp;
             </TableCell>
-            <TableCell
-              align="center"
-              sx={{
-                fontSize: "12px",
-              }}
-            >
-              {incident.affectedServices}
-            </TableCell>
+            <TableCell align="center">{incident.affectedServices}</TableCell>
             <TableCell
               align="center"
               sx={{
@@ -238,34 +205,6 @@ export default function SpectraIncidentsTable(props) {
             >
               {incident.incidentAffectedIPTV}
             </TableCell>
-            {/*
-            <TableCell
-              align="center"
-              sx={{
-                fontSize: "12px",
-              }}
-            >
-              {incident.outageAffectedVoice}
-            </TableCell>
-
-            <TableCell
-              align="center"
-              sx={{
-                fontSize: "12px",
-              }}
-            >
-              {incident.outageAffectedData}
-            </TableCell>
-
-            <TableCell
-              align="center"
-              sx={{
-                fontSize: "12px",
-              }}
-            >
-              {incident.outageAffectedIPTV}
-            </TableCell> */}
-
             <TableCell
               align="center"
               sx={{
@@ -274,18 +213,24 @@ export default function SpectraIncidentsTable(props) {
             >
               {incident.userId}
             </TableCell>
-            <TableCell>
+            <TableCell sx={{ marginLeft: "20px" }}>
               <button
-                className="mybtn"
+                className="statsButton"
                 onMouseEnter={(e) => handlePopoverOpen(e, incident.incidentId)}
                 onMouseLeave={handlePopoverClose}
               >
                 <QueryStatsIcon className="statsIcon" />
               </button>
             </TableCell>
+            <TableCell></TableCell>
             <TableCell align="center">
               {incident.incidentStatus === "OPEN"
-                ? ActionsMenu(incident, restActionMenuProperties, userDetails)
+                ? ActionsMenu(
+                    incident,
+                    restActionMenuProperties,
+                    userDetails,
+                    company
+                  )
                 : null}
             </TableCell>
           </TableRow>
@@ -408,10 +353,12 @@ export default function SpectraIncidentsTable(props) {
               <div className="popupForStatistics__header">
                 Real Time Statistics for Incident {incidentId}
               </div>
-              <Typography sx={{ p: 1 }}>
-                {data.length
-                  ? "Unique CLI Positive Responses Per Requestor:"
-                  : "No positive responses yet"}
+              <Typography sx={{ p: 1, fontSize: "inherit !important" }}>
+                {data.length ? (
+                  <p>Unique CLI Positive Responses Per Requestor:</p>
+                ) : (
+                  <p>No positive responses yet</p>
+                )}
               </Typography>
               {showStats(data)}
             </div>
@@ -420,7 +367,7 @@ export default function SpectraIncidentsTable(props) {
       };
 
       setPopOverData(responseFormatted);
-    }, 450);
+    }, 250);
   };
 
   const handlePopoverClose = () => {
@@ -434,10 +381,6 @@ export default function SpectraIncidentsTable(props) {
 
   const pagesCount = incidents && Math.ceil(incidents.length / pageSize);
   let paginatedList = getPagedData();
-
-  if (isFetching) {
-    // return <LoadingSpinnerCentered isFetching={true} />;
-  }
 
   return (
     <>
@@ -476,7 +419,13 @@ export default function SpectraIncidentsTable(props) {
         <LogoAndTitle company={company} title={title} />
         <LoadingSpinnerCentered isFetching={isFetching}>
           <Table
-            sx={{ minWidth: 650, marginTop: "-24px" }}
+            sx={{
+              width: "98.5vw",
+              minWidth: 650,
+              margin: "auto",
+              marginTop: "-20px",
+              borderTop: "var(--line)",
+            }}
             size="medium"
             aria-label="a dense table"
           >

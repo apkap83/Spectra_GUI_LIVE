@@ -1,0 +1,82 @@
+.loadingIndicatorCentered {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+}
+
+.statsIcon {
+  &.css-i4bv87-MuiSvgIcon-root {
+    fill: #fff;
+    width: 22px;
+    height: 22px;
+    border-radius: 50%;
+  }
+}
+
+.statsButton {
+  width: 30px;
+  height: 30px;
+  border: none;
+  border-radius: 50%;
+  background-color: royalblue;
+  color: #fff;
+  box-shadow: 0 5px 10px rgba(#000, 0.3);
+  transition: all 0.2s;
+
+  &:hover {
+    filter: brightness(0.8);
+  }
+}
+
+.popupForStatistics {
+  width: 30rem;
+  font-size: 1.3rem;
+  padding: 12px;
+
+  &__header {
+    font-size: "14px";
+    font-weight: 600;
+    margin-bottom: 12px;
+  }
+}
+
+// Table header
+.MuiTableCell-head {
+  // color: red !important;
+  font-size: 1.3rem !important;
+  color: grey !important;
+}
+
+// Hide scheduled checkbox
+.hideScheduledCheckbox {
+  font-size: 1.3rem !important;
+}
+
+.MuiFormControlLabel-label {
+  font-size: 1.3rem !important;
+}
+
+.MuiInputLabel-formControl {
+  font-size: 1.3rem !important;
+  color: grey !important;
+}
+
+.MuiTextField-root {
+  text-align: center !important;
+  display: flex !important;
+  justify-content: center !important;
+}
+
+// CDR DB Outages
+#demo-simple-select-label {
+  transform: translateY(3px);
+}
+
+.MuiNativeSelect-select {
+  color: var(--color-grey-dark-2) !important;
+}

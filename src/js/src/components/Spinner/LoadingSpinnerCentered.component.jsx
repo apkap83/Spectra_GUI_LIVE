@@ -4,7 +4,15 @@ const LoadingSpinnerCentered = (props) => {
     return (
       <div className="loadingIndicatorCentered">
         <Spin size="large" />
-        <span style={{ marginTop: "5px" }}>Please wait...</span>
+        <span
+          style={{
+            fontSize: "1,7rem !important",
+            color: "#000",
+            marginTop: "5px",
+          }}
+        >
+          Please wait...
+        </span>
       </div>
     );
   } else {

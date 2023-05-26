@@ -2,7 +2,7 @@ import { useState } from "react";
 import axios from "axios";
 import config from "../../config.json";
 import auth from "../../services/authService";
-// import "./login.css";
+import "./login.scss";
 
 export function LoginPage() {
   const [username, setUsername] = useState("akapetan");
@@ -41,68 +41,58 @@ export function LoginPage() {
     // Call the server
     try {
       await auth.login(username, password);
-      window.location = "/allspectraincidents";
+      window.location = "/nova_openspectraincidents";
     } catch (ex) {
       sessionStorage.removeItem("JWT_Token");
       setError("Invalid username or password");
     }
   };
 
-  //   return (
-  //     <div className="myloginform">
-  //       <form action={doSubmit}>
-  //         <h2>Spectra Login</h2>
-  //       </form>
-  //     </div>
-  //   );
-
   return (
-    <div className="MyApp">
-      <div className="myloginform">
-        <form onSubmit={doSubmit}>
-          <div className="form-inner">
-            <h2>
-              Spectra Login
-              <span
-                className="ant-tag ant-tag-green"
-                style={{ marginLeft: "15px", verticalAlign: "middle" }}
+    <div className="myloginform">
+      <form onSubmit={doSubmit}>
+        <div className="form-inner">
+          <h2>
+            Spectra Login
+            <span
+              className="ant-tag ant-tag-green"
+              style={{ marginLeft: "15px", verticalAlign: "middle" }}
+            >
+              Live Environment
+            </span>
+          </h2>
+          <div className="form-group">
+            {error && (
+              <div
+                className="mt-3 alert alert-danger"
+                style={{ width: "300px" }}
               >
-                Live Environment
-              </span>
-            </h2>
-            <div className="form-group">
-              {error && (
-                <div
-                  className="mt-3 alert alert-danger"
-                  style={{ width: "300px" }}
-                >
-                  {error}
-                </div>
-              )}
-              <label htmlFor="username">User Name: </label>
-              <input
-                type="text"
-                name="username"
-                id="username"
-                value={username}
-                onChange={handleUsernameChange}
-              />
-            </div>
-            <div className="form-group">
-              <label htmlFor="password">Password</label>
-              <input
-                type="password"
-                name="password"
-                id="password"
-                value={password}
-                onChange={handlePasswordChange}
-              />
-            </div>
-
-            <input type="submit" value="LOGIN" />
+                {error}
+              </div>
+            )}
+            <label htmlFor="username">User Name</label>
+            <input
+              id="username"
+              name="username"
+              type="text"
+              value={username}
+              onChange={handleUsernameChange}
+            />
           </div>
-        </form>
-      </div>
+          <div className="form-group">
+            <label htmlFor="password">Password</label>
+            <input
+              id="password"
+              name="password"
+              type="password"
+              value={password}
+              onChange={handlePasswordChange}
+            />
+          </div>
+
+          <input type="submit" value="LOGIN" />
+        </div>
+      </form>
     </div>
   );
 }

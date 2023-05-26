@@ -71,7 +71,11 @@ const routes = [
   { path: "/nova_adhocoutages", element: <NovaAdHocOutages />, exact: true },
   { path: "/user_management", element: <Users />, exact: true },
   // { path: "/user_management_2", element: <Users_2 />, exact: true },
-  { path: "/", element: <Navigate to={"/allspectraincidents"} />, exact: true },
+  {
+    path: "/",
+    element: <Navigate to={"/nova_openspectraincidents"} />,
+    exact: true,
+  },
   { path: "*", element: <NotFound /> },
 ];
 
@@ -91,13 +95,13 @@ const AppWrapper = () => {
   return (
     <ErrorBoundary>
       <UserContext.Provider value={userDetails}>
-        <ScopedCssBaseline>
-          <Router>
-            <MyHeader />
-            <App />
-            <MyFooter />
-          </Router>
-        </ScopedCssBaseline>
+        {/* <ScopedCssBaseline> */}
+        <Router>
+          <MyHeader />
+          <App />
+          <MyFooter />
+        </Router>
+        {/* </ScopedCssBaseline> */}
       </UserContext.Provider>
     </ErrorBoundary>
   );

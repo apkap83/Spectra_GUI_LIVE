@@ -16,7 +16,7 @@ export function PaginationAndTotalRecords({
       alignItems="flex-start"
       justifyContent="space-between"
     >
-      <p style={{ marginLeft: "10px" }}>
+      <p style={{ fontSize: "1.3rem", marginLeft: "10px" }}>
         <b>Total Records: {recordsNumber}</b>
       </p>
 

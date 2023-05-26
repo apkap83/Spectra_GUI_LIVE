@@ -1,0 +1,25 @@
+.navBar__brand {
+  font-family: "Nunito", sans-serif;
+  letter-spacing: 0.3rem;
+  font-size: 2rem !important;
+}
+
+.navBar__link,
+a.navBar__link {
+  font-size: 1.5rem;
+  line-height: 1;
+}
+
+.me-auto:first-child {
+  //   border-left: 1px solid red;
+  margin-left: 1rem;
+}
+
+.me-auto > * {
+  //   border-left: 1px solid red;
+  margin-right: 0.5rem;
+}
+
+.dropdown-item {
+  font-size: 1.6rem !important;
+}

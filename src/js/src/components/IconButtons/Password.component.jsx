@@ -46,8 +46,7 @@ export const PasswordResetButton = ({ user }) => {
 
   return (
     <div>
-      <KeyIcon onClick={() => setShowPopup(true)} />
-
+      <KeyIcon fontSize="large" onClick={() => setShowPopup(true)} />
       {showPopup && (
         <div className="popup">
           <h4>Reset password for user {user.realName}</h4>

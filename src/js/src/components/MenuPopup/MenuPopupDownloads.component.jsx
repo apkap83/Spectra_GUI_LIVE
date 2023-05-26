@@ -16,9 +16,9 @@ import { downloadPosSpectraForCompanyAndINC } from "../../utils/downloadPositive
 
 export const MenuPopupDownloads = ({ incident, company }) => {
   const userDetails = useContext(UserContext);
-  const IsDisabled = !userDetails.roles.includes(
-    PERMISSION.USER_CAN_DOWNLOAD_FILES
-  );
+  // const IsDisabled = !userDetails.roles.includes(
+  //   PERMISSION.USER_CAN_DOWNLOAD_FILES
+  // );
 
   const [anchorEl, setAnchorEl] = useState(null);
   const open = Boolean(anchorEl);
@@ -31,18 +31,31 @@ export const MenuPopupDownloads = ({ incident, company }) => {
   return (
     <div>
       <Button
-        disabled={IsDisabled}
+        // disabled={IsDisabled}
         size="small"
         id="basic-button"
-        variant="outlined"
+        // variant="outlined"
         aria-controls={open ? "basic-menu" : undefined}
         aria-haspopup="true"
         aria-expanded={open ? "true" : undefined}
         onClick={handleClick}
+        sx={{
+          fontSize: "1.4rem",
+          margin: 0,
+          padding: 0,
+          textTransform: "none",
+        }}
       >
-        <DownloadIcon />
-        &nbsp;
-        {incident.outageId}
+        <DownloadIcon sx={{ color: "var(--color-primary-dark)" }} />
+        <span
+          style={{
+            marginLeft: "5px",
+            color: "var(--color-primary-dark)",
+            fontSize: "1.2rem",
+          }}
+        >
+          <b>Download Lists</b>
+        </span>
       </Button>
       <Menu
         id="basic-menu"
@@ -58,6 +71,7 @@ export const MenuPopupDownloads = ({ incident, company }) => {
             downloadAffectedUsersForOutage(incident, company);
             handleClose();
           }}
+          sx={{ fontSize: "1.3rem" }}
         >
           <DownloadingIcon />
           &nbsp;Download Affected Customers for Outage:&nbsp;
@@ -68,6 +82,7 @@ export const MenuPopupDownloads = ({ incident, company }) => {
             downloadAffectedUsersForIncident(incident, company);
             handleClose();
           }}
+          sx={{ fontSize: "1.3rem" }}
         >
           <DownloadForOfflineIcon />
           &nbsp;Download Affected Customers for Incident:&nbsp;
@@ -78,6 +93,7 @@ export const MenuPopupDownloads = ({ incident, company }) => {
             downloadPosSpectraForCompanyAndINC(incident, company);
             handleClose();
           }}
+          sx={{ fontSize: "1.3rem" }}
         >
           <AddIcCallIcon />
           &nbsp;Download Positive Spectra Requests for Incident:&nbsp;

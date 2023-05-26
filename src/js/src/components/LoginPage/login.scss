@@ -1,0 +1,132 @@
+.myloginform {
+  & form {
+    display: block;
+    position: relative;
+    font-size: 1.3rem;
+  }
+
+  & .form-inner {
+    position: relative;
+    background-color: #fff;
+    padding: 5rem;
+    z-index: 2;
+
+    & > .error {
+      margin-bottom: 1.5rem;
+      color: var(--color-primary);
+    }
+
+    & h2 {
+      font-size: 2.8rem;
+      font-weight: 500;
+      margin-bottom: 3rem;
+    }
+
+    & input[type="submit"]:hover {
+      background-position: 100% 0%;
+    }
+
+    .form-group {
+      display: block;
+      width: 300px;
+      margin-bottom: 15px;
+
+      & label {
+        display: block;
+        font-size: 12px;
+        font-weight: 700;
+        transition: 0.4s;
+      }
+
+      &:focus-within label {
+        color: var(--color-primary);
+      }
+
+      & input {
+        font-family: inherit;
+        font-size: inherit;
+        font-weight: inherit;
+        display: block;
+        width: 100%;
+        padding: 10px 15px;
+        background-color: var(--color-grey-light-2);
+        border-radius: 0.2rem;
+        transition: 0.2s;
+        border: none;
+        outline: none;
+      }
+
+      & input:focus {
+        box-shadow: 0px 0px 0.5rem rgba(0, 0, 0, 0.2);
+      }
+    }
+  }
+
+  & input[type="submit"] {
+    display: inline-block;
+    padding: 0.5rem 2.5rem;
+    border-radius: 0.8rem;
+    background-image: linear-gradient(
+      to right,
+      #ffce00 50%,
+      #ffce00 50%,
+      var(--color-primary)
+    );
+    background-size: 200%;
+    background-position: 0%;
+    transition: 0.2s;
+    color: #fff;
+    font-weight: 700;
+    cursor: pointer;
+    width: 10rem;
+  }
+
+  & > form:after {
+    content: "";
+    display: block;
+    position: absolute;
+    top: -5px;
+    left: -5px;
+    right: -5px;
+    bottom: -5px;
+    z-index: 1;
+    background-image: linear-gradient(
+      to bottom right,
+      #ffce00,
+      var(--color-primary)
+    );
+  }
+}
+
+.ant-tag {
+  -webkit-box-sizing: border-box;
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+  color: rgba(0, 0, 0, 0.85);
+  font-size: 14px;
+  font-variant: tabular-nums;
+  line-height: 1.5715;
+  list-style: none;
+  -webkit-font-feature-settings: "tnum";
+  font-feature-settings: "tnum";
+  display: inline-block;
+  height: auto;
+  margin-right: 8px;
+  padding: 0 7px;
+  font-size: 12px;
+  line-height: 20px;
+  white-space: nowrap;
+  background: #fafafa;
+  border: 1px solid #d9d9d9;
+  border-radius: 2px;
+  opacity: 1;
+  -webkit-transition: all 0.3s;
+  transition: all 0.3s;
+}
+
+.ant-tag-green {
+  color: #389e0d;
+  background: #f6ffed;
+  border-color: #b7eb8f;
+}

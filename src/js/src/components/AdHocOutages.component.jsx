@@ -296,6 +296,7 @@ export function AdHocOutages() {
             style={{
               fontWeight: 600,
               fontSize: "12px",
+              marginTop: "-0.8rem",
             }}
           >
             Ad Hoc Outages

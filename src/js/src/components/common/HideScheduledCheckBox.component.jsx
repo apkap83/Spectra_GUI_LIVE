@@ -6,7 +6,12 @@ export function HideScheduledCheckBox({ setHideScheduled }) {
   return (
     <FormGroup>
       <FormControlLabel
-        control={<Checkbox onClick={() => setHideScheduled((prev) => !prev)} />}
+        control={
+          <Checkbox
+            className="hideScheduledCheckbox"
+            onClick={() => setHideScheduled((prev) => !prev)}
+          />
+        }
         label="Hide Scheduled"
       />
     </FormGroup>

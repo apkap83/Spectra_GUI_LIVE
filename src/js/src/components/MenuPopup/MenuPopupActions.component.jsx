@@ -16,6 +16,7 @@ import CheckIcon from "@mui/icons-material/Check";
 import MessageIcon from "@mui/icons-material/Message";
 import BackupIcon from "@mui/icons-material/Backup";
 import DownloadIcon from "@mui/icons-material/Download";
+import { MenuPopupDownloads } from "./MenuPopupDownloads.component";
 
 const ColorButton = styled(MuiButton)(({ theme }) => ({
   color: theme.palette.getContrastText(grey[900]),
@@ -25,7 +26,12 @@ const ColorButton = styled(MuiButton)(({ theme }) => ({
   },
 }));
 
-export function ActionsMenu(incident, restContextProperties, userDetails) {
+export function ActionsMenu(
+  incident,
+  restContextProperties,
+  userDetails,
+  company
+) {
   const IsDisabledPublishing =
     userDetails &&
     !userDetails.roles.includes(PERMISSION.USER_CAN_DISABLE_PUBLISHING);
@@ -35,6 +41,10 @@ export function ActionsMenu(incident, restContextProperties, userDetails) {
   const isDisabledAlterBackup =
     userDetails &&
     !userDetails.roles.includes(PERMISSION.USER_CAN_ALTER_BACKUP_POLICY);
+
+  const IsDisabledDownload = !userDetails.roles.includes(
+    PERMISSION.USER_CAN_DOWNLOAD_FILES
+  );
 
   const {
     setSelectedIncident,
@@ -48,17 +58,25 @@ export function ActionsMenu(incident, restContextProperties, userDetails) {
         <Fragment>
           <ColorButton
             style={{
-              width: "110px",
-              padding: "0.5em",
+              fontSize: "1.1rem",
+              // width: "110px",
+              padding: "0.5rem 0.4rem",
               display: "flex",
               flexDirection: "row",
-              justifyContent: "space-between",
+              justifyContent: "center",
+              alignItems: "center",
             }}
             variant="contained"
             {...bindTrigger(popupState)}
           >
-            <span>Actions</span>
-            <SettingsIcon />
+            <SettingsIcon fontSize="large" />
+            <span
+              style={{
+                marginLeft: "0.7rem",
+              }}
+            >
+              Actions
+            </span>
           </ColorButton>
           <Menu {...bindMenu(popupState)}>
             <MenuItem
@@ -70,7 +88,7 @@ export function ActionsMenu(incident, restContextProperties, userDetails) {
               }}
             >
               {incident.willBePublished === "Yes" ? (
-                <span style={{ color: "red" }}>
+                <span style={{ color: "red", fontSize: "1.2rem" }}>
                   <DisabledByDefaultIcon />
                   &nbsp;
                   <b>Disable&nbsp;Publishing</b>
@@ -90,7 +108,7 @@ export function ActionsMenu(incident, restContextProperties, userDetails) {
                 setSelectedIncident(incident);
               }}
             >
-              <span style={{ color: "#1890ff" }}>
+              <span style={{ color: "#1890ff", fontSize: "1.2rem" }}>
                 <MessageIcon />
                 &nbsp;
                 <b>Alter&nbsp;Message</b>
@@ -104,10 +122,17 @@ export function ActionsMenu(incident, restContextProperties, userDetails) {
                 setSelectedIncident(incident);
               }}
             >
-              <span>
+              <span style={{ color: "#000", fontSize: "1.2rem" }}>
                 <BackupIcon />
-                &nbsp; Alter Backup Policy
+                &nbsp; <b>Alter Backup Policy</b>
               </span>
+            </MenuItem>
+            <MenuItem disabled={IsDisabledDownload}>
+              <MenuPopupDownloads
+                style={{ margin: 0, padding: 0 }}
+                incident={incident}
+                company={company}
+              />
             </MenuItem>
           </Menu>
         </Fragment>

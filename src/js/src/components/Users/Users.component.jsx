@@ -34,7 +34,10 @@ import {
   errorNotification,
 } from "../../common/Notification";
 
+import { UserSelector } from "../common/UserSelector.component";
+
 import "./users.scss";
+import { filter } from "lodash";
 export const Users = () => {
   const pageSize = 10;
   const initialEmptyUser = {
@@ -43,11 +46,35 @@ export const Users = () => {
     password: "",
   };
 
+  function useDelayUnmount(isMounted, delayTime) {
+    const [showDiv, setShowDiv] = useState(false);
+    useEffect(() => {
+      let timeoutId;
+      if (isMounted && !showDiv) {
+        timeoutId = setTimeout(() => setShowDiv(true), delayTime); //delay our unmount
+      } else if (!isMounted && showDiv) {
+        timeoutId = setTimeout(() => setShowDiv(false), delayTime); //delay our unmount
+      }
+      return () => clearTimeout(timeoutId); // cleanup mechanism for effects , the use of setTimeout generate a sideEffect
+    }, [isMounted, delayTime, showDiv]);
+    return showDiv;
+  }
+
+  // How to use Conditional Rendering with Animation in React
+  // https://dev.to/oussel/how-to-use-conditional-rendering-with-animation-in-react-1k20
+  const mountedStyle = { animation: "showAnimation 250ms ease-in" };
+  const unmountedStyle = { animation: "unShowAnimation 250ms ease-in" };
+  // animation: "unShowAnimation 500ms ease-out",
+  // animationFillMode: "forwards",
+
   const [users, setUsers] = useState([]);
+  const [retrievedUsers, setRetrievedUsers] = useState([]);
   const [createUserFormVisible, setCreateUserFormVisible] = useState(false);
   const [pageNumber, setPageNumber] = useState(1);
   const [availableRoles, setAvailableRoles] = useState([]);
   const [selectedRole, setSelectedRole] = useState("");
+
+  const [filteredUserName, setFilteredUserName] = useState("");
 
   const [selectedIndividualRole, setSelectedIndividualRole] = useState("");
 
@@ -58,6 +85,8 @@ export const Users = () => {
   const [userName, setUserName] = useState("");
   const [realName, setRealName] = useState("");
   const [password, setPassword] = useState("");
+
+  const showDiv = useDelayUnmount(createUserFormVisible, 100);
 
   const user = {
     userName,
@@ -72,12 +101,31 @@ export const Users = () => {
     const { data: users } = await getAllUsersDetails();
     const { data: roles } = await getAllAvailableRoles();
     setUsers(users);
+    setRetrievedUsers(users);
     setAvailableRoles(roles);
     setIsFetchingUsers(false);
   };
   useEffect(() => {
     getUsersAndRoles();
   }, []);
+
+  // Filtering of Scheduled Incidents
+  useEffect(() => {
+    setPageNumber(1);
+
+    let filteredAll = retrievedUsers;
+
+    if (filteredUserName && filteredUserName.length > 0) {
+      filteredAll = filteredAll.filter((users) =>
+        users.userName
+          .toLowerCase()
+          .includes(filteredUserName.toLocaleLowerCase())
+      );
+      setUsers(filteredAll);
+    } else {
+      setUsers(retrievedUsers);
+    }
+  }, [filteredUserName]);
 
   const handleSwitchChange = (event) => {
     setUserIsEnabled(!userIsEnabled);
@@ -113,7 +161,10 @@ export const Users = () => {
   const columnsForOpenSpectraIncidents = [
     "ID",
     "Real Name",
-    "User Name",
+    <UserSelector
+      setFilteredUserName={setFilteredUserName}
+      filteredUserName={filteredUserName}
+    />,
     "Active",
     "Role",
     "Actions",
@@ -274,7 +325,7 @@ export const Users = () => {
     }
   };
 
-  const CreateUserForm = () => {
+  const CreateUserForm = ({ style }) => {
     const validationSchema = Yup.object().shape({
       name: Yup.string().required("Real Name is required"),
       username: Yup.string().required("User name is required"),
@@ -288,9 +339,8 @@ export const Users = () => {
         .required("Repeat Password is required"),
       role: Yup.string().required("Role is required"),
     });
-
     return (
-      <div className="newUserForm">
+      <div className="newUserForm" style={style}>
         <h1>Create New Spectra User Form</h1>
         <Formik
           initialValues={{
@@ -334,7 +384,7 @@ export const Users = () => {
                   Real Name (Surname first)
                 </label> */}
                 <Field
-                  className="newUserForm__formField__input"
+                  className="newUserForm__input"
                   type="text"
                   name="name"
                   placeholder="Real Name (Surname first)"
@@ -353,7 +403,7 @@ export const Users = () => {
                   User Name
                 </label> */}
                 <Field
-                  className="newUserForm__formField__input"
+                  className="newUserForm__input"
                   type="text"
                   name="username"
                   placeholder="User Name"
@@ -372,7 +422,7 @@ export const Users = () => {
                   Password
                 </label> */}
                 <Field
-                  className="newUserForm__formField__input"
+                  className="newUserForm__input"
                   type="password"
                   name="password"
                   placeholder="Password"
@@ -391,7 +441,7 @@ export const Users = () => {
                   Repeat Password
                 </label> */}
                 <Field
-                  className="newUserForm__formField__input"
+                  className="newUserForm__input"
                   type="password"
                   name="repeat_password"
                   placeholder="Repeat Password"
@@ -407,7 +457,7 @@ export const Users = () => {
                   Role
                 </label> */}
                 <Field
-                  className="newUserForm__formField__input newUserForm__formField__input--select"
+                  className="newUserForm__input newUserForm__input--select"
                   as="select"
                   name="role"
                 >
@@ -472,13 +522,23 @@ export const Users = () => {
           Create User
         </Button>
       </div>
-      {/* {isFetchingUsers ? <MyLoadingSpinner /> : null} */}
-      <h3 style={{ margin: "10px" }}>Spectra Users List</h3>
-      {createUserFormVisible ? <CreateUserForm /> : null}
+      <h3 style={{ fontSize: "1.8rem", fontWeight: 600, margin: "10px" }}>
+        Spectra Users List
+      </h3>
+      {showDiv ? (
+        <CreateUserForm
+          style={createUserFormVisible ? mountedStyle : unmountedStyle}
+        />
+      ) : null}
       <div style={{ position: "relative", height: "60vh", zIndex: "10" }}>
         <LoadingSpinnerCentered isFetching={isFetchingUsers}>
           <Table
-            sx={{ minWidth: 650, position: "relative" }}
+            sx={{
+              margin: "auto",
+              minWidth: 650,
+              position: "relative",
+              width: "98.5vw",
+            }}
             size="large"
             aria-label="a table"
           >

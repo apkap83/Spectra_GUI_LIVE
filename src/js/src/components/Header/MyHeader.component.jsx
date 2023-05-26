@@ -16,6 +16,8 @@ import config from "../../config.json";
 import BorderOuterIcon from "@mui/icons-material/BorderOuter";
 import HistoryToggleOffIcon from "@mui/icons-material/HistoryToggleOff";
 
+import "./myheader.scss";
+
 export function MyHeader() {
   const userDetails = useContext(UserContext);
   const isUserAdmin =
@@ -28,10 +30,11 @@ export function MyHeader() {
           <Container>
             <Navbar.Brand
               href="/"
-              style={{
-                fontFamily: "Nunito, sans-serif",
-                letterSpacing: 1.5,
-              }}
+              className="navBar__brand"
+              // style={{
+              //   fontFamily: "Nunito, sans-serif",
+              //   letterSpacing: 1.5,
+              // }}
             >
               {config.appTitle}
             </Navbar.Brand>
@@ -39,14 +42,22 @@ export function MyHeader() {
             <Navbar.Collapse id="responsive-navbar-nav">
               <Nav className="me-auto">
                 {isUserAdmin ? (
-                  <Nav.Link href="/user_management">User Management</Nav.Link>
+                  <Nav.Link className="navBar__link" href="/user_management">
+                    User Management
+                  </Nav.Link>
                 ) : (
                   ""
                 )}
 
-                <NavDropdown title="WIND" id="collasible-nav-dropdown">
+                <NavDropdown
+                  className="navBar__link"
+                  title="WIND"
+                  id="collasible-nav-dropdown"
+                >
                   <LinkContainer to="/allspectraincidents">
-                    <NavDropdown.Item>All Spectra Incidents</NavDropdown.Item>
+                    <NavDropdown.Item style={{ fontSize: "38px" }}>
+                      All Spectra Incidents
+                    </NavDropdown.Item>
                   </LinkContainer>
 
                   <LinkContainer to="/openspectraincidents">
@@ -61,7 +72,11 @@ export function MyHeader() {
                   </LinkContainer>
                 </NavDropdown>
 
-                <NavDropdown title="Nova" id="collasible-nav-dropdown">
+                <NavDropdown
+                  className="navBar__link"
+                  title="Nova"
+                  id="collasible-nav-dropdown"
+                >
                   <LinkContainer to="/nova_allspectraincidents">
                     <NavDropdown.Item>All Spectra Incidents</NavDropdown.Item>
                   </LinkContainer>
@@ -78,7 +93,11 @@ export function MyHeader() {
                   </LinkContainer>
                 </NavDropdown>
 
-                <NavDropdown title="CDR-DB" id="collasible-nav-dropdown">
+                <NavDropdown
+                  className="navBar__link"
+                  title="CDR-DB"
+                  id="collasible-nav-dropdown"
+                >
                   <LinkContainer to="/opencdrdbincidents">
                     <NavDropdown.Item>
                       <BorderOuterIcon />
@@ -96,7 +115,11 @@ export function MyHeader() {
 
               <Nav>
                 {userDetails ? (
-                  <Nav.Link eventKey={2} href="/logout">
+                  <Nav.Link
+                    className="navBar__link"
+                    eventKey={2}
+                    href="/logout"
+                  >
                     Log Out &mdash; {userDetails?.username}
                   </Nav.Link>
                 ) : (
