@@ -32,16 +32,21 @@ public class JwtRequestFilter extends OncePerRequestFilter {
             throws ServletException, IOException {
 
         response.setHeader("Access-Control-Allow-Origin", "*");
+        response.setContentType("application/json");
 
         final String authorizationHeader = request.getHeader("Authorization");
 
         // If no JWT Token provided and not using the authorization URI, then return HTTP 401 (unauthorized)
         if (authorizationHeader == null && !request.getRequestURI().equals("/api/authenticate")) {
-            response.setStatus(HttpServletResponse.SC_UNAUTHORIZED);
-            response.setContentType(MediaType.APPLICATION_JSON_VALUE);
-            String errorMessage = "No JWT token provided. Please include a valid token in the Authorization header.";
-            response.getWriter().write("{\"error\": \"" + errorMessage + "\"}");
-            return;
+
+            // Only /api requests, need a JWT
+            if (request.getRequestURI().startsWith("/api")) {
+                response.setStatus(HttpServletResponse.SC_UNAUTHORIZED);
+                response.setContentType(MediaType.APPLICATION_JSON_VALUE);
+                String errorMessage = "No JWT token provided. Please include a valid token in the Authorization header.";
+                response.getWriter().write("{\"error\": \"" + errorMessage + "\"}");
+                return;
+            }
         }
 
         String username = null;

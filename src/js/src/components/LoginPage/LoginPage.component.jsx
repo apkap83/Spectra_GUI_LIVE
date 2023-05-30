@@ -5,8 +5,8 @@ import auth from "../../services/authService";
 import "./login.scss";
 
 export function LoginPage() {
-  const [username, setUsername] = useState("akapetan");
-  const [password, setPassword] = useState("sXlZ5vlmUA98yXo7qERr");
+  const [username, setUsername] = useState("");
+  const [password, setPassword] = useState("");
   const [error, setError] = useState("");
 
   const handleUsernameChange = (event) => {

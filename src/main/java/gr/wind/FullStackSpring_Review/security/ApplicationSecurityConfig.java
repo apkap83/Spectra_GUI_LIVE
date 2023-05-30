@@ -58,12 +58,11 @@ public class ApplicationSecurityConfig extends WebSecurityConfigurerAdapter {
         http.csrf().disable().authorizeRequests()
 
 //                .authorizeRequests().antMatchers("/**").permitAll()
-                .antMatchers("/api/authenticate", "/", "index", "login","/styles/**", "/css/*", "login.css",  "antd.css", "/js/*", "/api/authenticate").permitAll()
+//                .antMatchers("/api/authenticate", "/", "/index", "/login","/styles/**", "/css/*", "login.css",  "antd.css", "/js/*", "/static/**", "/manifest.json", "/favicon.ico").permitAll()
 //                .antMatchers("/actuator/**").permitAll()
                 .antMatchers("/api/charts/**").permitAll()
                 .antMatchers(HttpMethod.GET, "/api/users/**").hasRole(ApplicationUserRole.ADMIN.toString())
                 .antMatchers(HttpMethod.POST, "/api/users/**").hasRole(ApplicationUserRole.ADMIN.toString())
-
                 .antMatchers(HttpMethod.GET, "/api/incidents/getalladhocoutages",
                                                         "/api/incidents/nova_getallincidents",
                                                         "/api/incidents/getallincidents",
@@ -109,7 +108,7 @@ public class ApplicationSecurityConfig extends WebSecurityConfigurerAdapter {
                                         "/api/incidents/nova_previewadhocfile",
                                         "/api/incidents/nova_uploadadhocfile",
                                         "/api/incidents/deleteadhocincident/**").hasAuthority(ApplicationUserPermission.USER_CAN_UPLOAD_ADHOC.getPermission())
-
+                .antMatchers("/**").permitAll()  // All React Routes
                 .anyRequest().authenticated().and().
                 exceptionHandling().and().sessionManagement()
                 .sessionCreationPolicy(SessionCreationPolicy.STATELESS)

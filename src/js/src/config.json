@@ -1,5 +1,5 @@
 {
   "appTitle": "Spectra Live",
-  "apiPrefix": "http://127.0.0.1:4000",
+  "apiPrefix": "https://10.10.18.120:4000",
   "jwtTokenKeyName": "JWT_Token"
 }
