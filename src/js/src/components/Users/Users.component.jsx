@@ -1,4 +1,4 @@
-import { useState, useEffect } from "react";
+import { useState, useEffect, useRef, useMemo } from "react";
 import {
   getAllUsersDetails,
   getAllAvailableRoles,
@@ -48,6 +48,7 @@ export const Users = () => {
 
   function useDelayUnmount(isMounted, delayTime) {
     const [showDiv, setShowDiv] = useState(false);
+
     useEffect(() => {
       let timeoutId;
       if (isMounted && !showDiv) {
@@ -57,12 +58,15 @@ export const Users = () => {
       }
       return () => clearTimeout(timeoutId); // cleanup mechanism for effects , the use of setTimeout generate a sideEffect
     }, [isMounted, delayTime, showDiv]);
+
     return showDiv;
   }
 
   // How to use Conditional Rendering with Animation in React
   // https://dev.to/oussel/how-to-use-conditional-rendering-with-animation-in-react-1k20
-  const mountedStyle = { animation: "showAnimation 250ms ease-in" };
+  const mountedStyle = {
+    animation: "showAnimation 250ms ease-in",
+  };
   const unmountedStyle = { animation: "unShowAnimation 250ms ease-in" };
   // animation: "unShowAnimation 500ms ease-out",
   // animationFillMode: "forwards",
@@ -109,7 +113,7 @@ export const Users = () => {
     getUsersAndRoles();
   }, []);
 
-  // Filtering of Scheduled Incidents
+  // Filtering of Users
   useEffect(() => {
     setPageNumber(1);
 
@@ -158,13 +162,14 @@ export const Users = () => {
     );
   };
 
-  const columnsForOpenSpectraIncidents = [
+  const columnsForUsersList = [
     "ID",
     "Real Name",
     <UserSelector
       setFilteredUserName={setFilteredUserName}
       filteredUserName={filteredUserName}
     />,
+    "E-mail",
     "Active",
     "Role",
     "Actions",
@@ -263,6 +268,9 @@ export const Users = () => {
                   {user.userName}
                 </TableCell>
                 <TableCell align="left" component="th" scope="row">
+                  {user.email}
+                </TableCell>
+                <TableCell align="left" component="th" scope="row">
                   {user.active == 1 ? "Yes" : "No"}
                 </TableCell>
                 <TableCell align="left" component="th" scope="row">
@@ -329,6 +337,7 @@ export const Users = () => {
     const validationSchema = Yup.object().shape({
       name: Yup.string().required("Real Name is required"),
       username: Yup.string().required("User name is required"),
+      email: Yup.string().required("Email is required"),
       password: Yup.string().required("Password is required"),
       // .matches(
       //   /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[!@#$%^&*()_\-+=<>?])[A-Za-z\d!@#$%^&*()_\-+=<>?]{15,}$/,
@@ -339,8 +348,14 @@ export const Users = () => {
         .required("Repeat Password is required"),
       role: Yup.string().required("Role is required"),
     });
+    let myStyle = style;
+
+    if (createUserFormVisible === true) {
+      myStyle = {};
+    }
+
     return (
-      <div className="newUserForm" style={style}>
+      <div className="newUserForm" style={myStyle}>
         <h1>Create New Spectra User Form</h1>
         <Formik
           initialValues={{
@@ -358,6 +373,7 @@ export const Users = () => {
                 await addUser({
                   realName: values.name,
                   userName: values.username,
+                  email: values.email,
                   password: values.password,
                   active: 1,
                   role: values.role,
@@ -410,6 +426,25 @@ export const Users = () => {
                 />
                 <ErrorMessage
                   name="username"
+                  className="newUserForm__formField__error"
+                  component="div"
+                />
+              </div>
+              <div className="newUserForm__formField">
+                {/* <label
+                  className="newUserForm__formField__label"
+                  htmlFor="username"
+                >
+                  User Name
+                </label> */}
+                <Field
+                  className="newUserForm__input"
+                  type="text"
+                  name="email"
+                  placeholder="Email"
+                />
+                <ErrorMessage
+                  name="email"
                   className="newUserForm__formField__error"
                   component="div"
                 />
@@ -542,7 +577,7 @@ export const Users = () => {
             size="large"
             aria-label="a table"
           >
-            {generateTableHeadAndColumns(columnsForOpenSpectraIncidents)}
+            {generateTableHeadAndColumns(columnsForUsersList)}
 
             {MyTableBody(paginatedList)}
           </Table>

@@ -2,7 +2,7 @@
   & form {
     display: block;
     position: relative;
-    font-size: 1.3rem;
+    font-size: 1.8rem;
   }
 
   & .form-inner {
@@ -22,18 +22,14 @@
       margin-bottom: 3rem;
     }
 
-    & input[type="submit"]:hover {
-      background-position: 100% 0%;
-    }
-
     .form-group {
       display: block;
-      width: 300px;
-      margin-bottom: 15px;
+      width: 30rem;
+      margin-bottom: 1.5rem;
 
       & label {
         display: block;
-        font-size: 12px;
+        font-size: 1.2rem;
         font-weight: 700;
         transition: 0.4s;
       }
@@ -48,23 +44,28 @@
         font-weight: inherit;
         display: block;
         width: 100%;
-        padding: 10px 15px;
+        padding: 1rem 1.5rem;
         background-color: var(--color-grey-light-2);
-        border-radius: 0.2rem;
+        border-radius: 0.8rem;
         transition: 0.2s;
         border: none;
         outline: none;
       }
 
       & input:focus {
-        box-shadow: 0px 0px 0.5rem rgba(0, 0, 0, 0.2);
+        box-shadow: 0 0 0.5rem rgba(0, 0, 0, 0.2);
       }
     }
   }
 
+  input[type="submit"]:hover {
+    background-position: 100% 0%;
+  }
+
   & input[type="submit"] {
+    font-size: 1.4rem;
     display: inline-block;
-    padding: 0.5rem 2.5rem;
+    padding: 0.3rem 2.5rem;
     border-radius: 0.8rem;
     background-image: linear-gradient(
       to right,
@@ -78,7 +79,7 @@
     color: #fff;
     font-weight: 700;
     cursor: pointer;
-    width: 10rem;
+    // width: 12rem;
   }
 
   & > form:after {
@@ -104,7 +105,7 @@
   margin: 0;
   padding: 0;
   color: rgba(0, 0, 0, 0.85);
-  font-size: 14px;
+  font-size: 1.4rem;
   font-variant: tabular-nums;
   line-height: 1.5715;
   list-style: none;
@@ -112,10 +113,10 @@
   font-feature-settings: "tnum";
   display: inline-block;
   height: auto;
-  margin-right: 8px;
-  padding: 0 7px;
-  font-size: 12px;
-  line-height: 20px;
+  margin-right: 0.8rem;
+  padding: 0 0.7rem;
+  font-size: 1.2rem;
+  line-height: 2rem;
   white-space: nowrap;
   background: #fafafa;
   border: 1px solid #d9d9d9;

@@ -1,4 +1,4 @@
-package gr.wind.FullStackSpring_Review.model;
+package gr.wind.FullStackSpring_Review.auth;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
@@ -11,6 +11,7 @@ public class SpectraWebUser {
     private final int id;
     private final String realName;
     private final String userName;
+    private final String email;
     private final int active;
 
     @JsonIgnore
@@ -23,6 +24,7 @@ public class SpectraWebUser {
     public SpectraWebUser(@JsonProperty("id") int id,
                           @JsonProperty("realName") String realName,
                           @JsonProperty("userName") String userName,
+                          @JsonProperty("email") String email,
                           @JsonProperty("active") int active,
                           @JsonProperty("password") String plainPassword,
                           @JsonProperty("role")String role
@@ -30,6 +32,7 @@ public class SpectraWebUser {
         this.id = id;
         this.realName = realName;
         this.userName = userName;
+        this.email = email;
         this.active = active;
         this.encryptedPassword = encryptPassword(plainPassword);
         this.role = role;
@@ -57,6 +60,10 @@ public class SpectraWebUser {
         return userName;
     }
 
+    public String getEmail() {
+        return email;
+    }
+
     public int getActive() {
         return active;
     }
@@ -75,6 +82,7 @@ public class SpectraWebUser {
                 "id=" + id +
                 ", realName='" + realName + '\'' +
                 ", userName='" + userName + '\'' +
+                ", email='" + email + '\'' +
                 ", active=" + active +
                 ", encryptedPassword='" + encryptedPassword + '\'' +
                 ", role='" + role + '\'' +

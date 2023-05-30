@@ -1,7 +1,7 @@
 package gr.wind.FullStackSpring_Review.controllers;
 
 import gr.wind.FullStackSpring_Review.exception.MyResponseStatusException;
-import gr.wind.FullStackSpring_Review.model.SpectraWebUser;
+import gr.wind.FullStackSpring_Review.auth.SpectraWebUser;
 import gr.wind.FullStackSpring_Review.users.UsersService;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;

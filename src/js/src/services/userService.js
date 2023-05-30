@@ -24,6 +24,7 @@ export const addUser = async (user) => {
     return await httpService.post(`${apiEndPoint}/addnewuser`, {
       realName: user.realName,
       userName: user.userName,
+      email: user.email,
       active: user.active,
       password: user.password,
       role: user.role,

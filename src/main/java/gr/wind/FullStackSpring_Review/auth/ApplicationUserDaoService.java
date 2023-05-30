@@ -69,6 +69,7 @@ public class ApplicationUserDaoService implements ApplicationUserDao {
 
         String sqlQuery = "SELECT " +
                 "userName, " +
+                "email, " +
                 "active, " +
                 "password, " +
                 "role " +
@@ -76,11 +77,12 @@ public class ApplicationUserDaoService implements ApplicationUserDao {
 
         List<ApplicationUser> appUsers = jdbcTemplate.query(sqlQuery, (resultSet, i) -> {
             String userName = resultSet.getString("userName");
+            String email = resultSet.getString("email");
             Boolean active = resultSet.getBoolean("active");
             String password = resultSet.getString("password");
             String role = resultSet.getString("role");
 
-            return new ApplicationUser(userName, password, ApplicationUserRole.valueOf(role).getGrantedAuthorities(), true, true, true, active);
+            return new ApplicationUser(userName, email, password, ApplicationUserRole.valueOf(role).getGrantedAuthorities(), true, true, true, active);
 
         });
 

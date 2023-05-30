@@ -1,7 +1,7 @@
 package gr.wind.FullStackSpring_Review.users;
 
 import gr.wind.FullStackSpring_Review.exception.MyResponseStatusException;
-import gr.wind.FullStackSpring_Review.model.SpectraWebUser;
+import gr.wind.FullStackSpring_Review.auth.SpectraWebUser;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.dao.DuplicateKeyException;
@@ -28,6 +28,7 @@ public class UsersDataAccessService {
                 "ID, " +
                 "RealName, " +
                 "userName, " +
+                "email, " +
                 "active, " +
                 "password, " +
                 "role " +
@@ -37,11 +38,12 @@ public class UsersDataAccessService {
             int id = resultSet.getInt("id");
             String realName = resultSet.getString("RealName");
             String userName = resultSet.getString("userName");
+            String email = resultSet.getString("email");
             int active = resultSet.getInt("active");
             String password = resultSet.getString("password");
             String role = resultSet.getString("role");
 
-            return new SpectraWebUser(id,realName,userName,active,password,role);
+            return new SpectraWebUser(id,realName,userName,email,active,password,role);
         });
 
         return users;
@@ -51,11 +53,11 @@ public class UsersDataAccessService {
         String sql = "" +
                 "INSERT INTO " +
                 TablePrefix + "DEV_Spectra_GUI_Users " +
-                "(RealName, userName, active, password, role) VALUES " +
-                "(?, ?, ?, ?, ?)";
+                "(`RealName`, `userName`, `email`, `active`, `password`, `role`) VALUES " +
+                "(?, ?, ?, ?, ?, ?)";
 
         try {
-            jdbcTemplate.update(sql, webUser.getRealName(), webUser.getUserName(), webUser.getActive(), webUser.getEncryptedPassword(), webUser.getRole());
+            jdbcTemplate.update(sql, webUser.getRealName(), webUser.getUserName(), webUser.getEmail(), webUser.getActive(), webUser.getEncryptedPassword(), webUser.getRole());
         } catch (DuplicateKeyException e) {
             e.printStackTrace();
             throw new MyResponseStatusException(HttpStatus.BAD_REQUEST, "User already exists");

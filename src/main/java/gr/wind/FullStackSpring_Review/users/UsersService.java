@@ -1,6 +1,6 @@
 package gr.wind.FullStackSpring_Review.users;
 
-import gr.wind.FullStackSpring_Review.model.SpectraWebUser;
+import gr.wind.FullStackSpring_Review.auth.SpectraWebUser;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
