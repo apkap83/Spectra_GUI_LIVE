@@ -39,7 +39,6 @@ export default function ChangeOutageMessageForm({
   }, []);
 
   const handleChange = (e) => {
-    // console.log(41, msg);
     setselectedMsg(e.target.value);
   };
 

@@ -8,14 +8,6 @@ export const PasswordResetForm = () => {
 
   const handleSubmit = (e) => {
     e.preventDefault();
-
-    if (newPassword === confirmPassword) {
-      // Reset password logic goes here
-      console.log("Password reset successful!");
-    } else {
-      console.log("Passwords do not match");
-    }
-
     // Close the popup
     setShowPopup(false);
   };

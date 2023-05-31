@@ -32,7 +32,7 @@ public class UsersDataAccessService {
                 "active, " +
                 "password, " +
                 "role " +
-                "FROM " + TablePrefix + "DEV_Spectra_GUI_Users order by ID ASC";
+                "FROM " + TablePrefix + "Spectra_GUI_Users order by ID ASC";
 
         List<SpectraWebUser> users = jdbcTemplate.query(sql, (resultSet, i) ->{
             int id = resultSet.getInt("id");
@@ -52,7 +52,7 @@ public class UsersDataAccessService {
     public void addNewUser(SpectraWebUser webUser) {
         String sql = "" +
                 "INSERT INTO " +
-                TablePrefix + "DEV_Spectra_GUI_Users " +
+                TablePrefix + "Spectra_GUI_Users " +
                 "(`RealName`, `userName`, `email`, `active`, `password`, `role`) VALUES " +
                 "(?, ?, ?, ?, ?, ?)";
 
@@ -67,7 +67,7 @@ public class UsersDataAccessService {
     public void deleteUser(SpectraWebUser webUser) {
         String sql = "" +
                 "DELETE FROM " +
-                TablePrefix + "DEV_Spectra_GUI_Users " +
+                TablePrefix + "Spectra_GUI_Users " +
                 "WHERE RealName = ? and UserName = ? ";
 
         jdbcTemplate.update(sql, webUser.getRealName(), webUser.getUserName());
@@ -76,7 +76,7 @@ public class UsersDataAccessService {
     public void changePasswordForUser(SpectraWebUser webUser) {
         String sql = "" +
                 "UPDATE " +
-                TablePrefix + "DEV_Spectra_GUI_Users " +
+                TablePrefix + "Spectra_GUI_Users " +
                 "SET password = ? WHERE RealName = ? and UserName = ?";
         jdbcTemplate.update(sql, webUser.getEncryptedPassword(), webUser.getRealName(), webUser.getUserName());
     }
@@ -84,7 +84,7 @@ public class UsersDataAccessService {
     public void disableUser(SpectraWebUser webUser) {
         String sql = "" +
                 "UPDATE " +
-                TablePrefix + "DEV_Spectra_GUI_Users " +
+                TablePrefix + "Spectra_GUI_Users " +
                 "SET active = 0 WHERE RealName = ? and UserName = ?";
         jdbcTemplate.update(sql, webUser.getRealName(), webUser.getUserName());
     }
@@ -92,7 +92,7 @@ public class UsersDataAccessService {
     public void enableUser(SpectraWebUser webUser) {
         String sql = "" +
                 "UPDATE " +
-                TablePrefix + "DEV_Spectra_GUI_Users " +
+                TablePrefix + "Spectra_GUI_Users " +
                 "SET active = 1 WHERE RealName = ? and UserName = ?";
         jdbcTemplate.update(sql, webUser.getRealName(), webUser.getUserName());
     }
@@ -112,7 +112,7 @@ public class UsersDataAccessService {
     public void updateUser(SpectraWebUser webUser) {
         String sql = "" +
                 "UPDATE " +
-                TablePrefix + "DEV_Spectra_GUI_Users " +
+                TablePrefix + "Spectra_GUI_Users " +
                 "SET `RealName` = ?, " +
                 "`password` = ?, " +
                 "`role` = ?, " +
@@ -125,7 +125,7 @@ public class UsersDataAccessService {
     public void updateUserRole(SpectraWebUser webUser) {
         String sql = "" +
                 "UPDATE " +
-                TablePrefix + "DEV_Spectra_GUI_Users " +
+                TablePrefix + "Spectra_GUI_Users " +
                 "SET `Role` = ? " +
                 "WHERE `userName` = ?";
         System.out.println(sql);

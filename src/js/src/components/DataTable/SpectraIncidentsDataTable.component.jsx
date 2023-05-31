@@ -294,7 +294,6 @@ export function DataTable() {
         setIncidents(data);
         setRetrievedIncidents(data);
         setIsFetching(false);
-        console.log(data);
       } catch (error) {
         console.log(error.code, error.message);
       }

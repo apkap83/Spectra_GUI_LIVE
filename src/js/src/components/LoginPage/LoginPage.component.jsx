@@ -17,24 +17,6 @@ export function LoginPage() {
     setPassword(event.target.value);
   };
 
-  const handleSubmit = (event) => {
-    event.preventDefault();
-    axios
-      .post(`${config.apiPrefix}/api/authenticate`, { username, password })
-      .then((response) => {
-        // Authentication succeeded, store the access token and redirect to the dashboard
-        sessionStorage.setItem("JWT_Token", response.data.jwt);
-        console.log("successful login");
-        // window.location.href = "/dashboard";
-      })
-      .catch((error) => {
-        sessionStorage.removeItem("JWT_Token");
-        console.log("error", error);
-        // Authentication failed, display an error message
-        setError("Invalid username or password");
-      });
-  };
-
   const doSubmit = async (event) => {
     event.preventDefault();
 
@@ -45,6 +27,8 @@ export function LoginPage() {
     } catch (ex) {
       sessionStorage.removeItem("JWT_Token");
       setError("Invalid username or password");
+      setUsername("");
+      setPassword("");
     }
   };
 

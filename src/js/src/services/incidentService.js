@@ -109,7 +109,6 @@ export const willBePublishedNoByIncidentId = async (incidentId, company) => {
       }
     );
   } catch (error) {
-    console.log(85);
     return Promise.reject(error);
   }
 };

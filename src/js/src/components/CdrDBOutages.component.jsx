@@ -371,7 +371,6 @@ export function CdrDBOutages(props) {
   const getPagedData = () => {
     let filtered = incidents;
     return paginate(filtered, pageNumber, pageSize);
-    // console.log("filtered:", paginatedList);
   };
 
   const pagesCount = Math.ceil(incidents.length / pageSize);

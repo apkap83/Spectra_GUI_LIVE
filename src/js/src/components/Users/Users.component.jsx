@@ -144,7 +144,6 @@ export const Users = () => {
       await addUser(user);
     } else {
       await updateUser(user);
-      console.log("Update User!");
     }
   };
 
@@ -320,7 +319,6 @@ export const Users = () => {
 
       const newCopy = usersCopy.map((obj) => {
         if (obj === user) {
-          console.log("found");
           return { ...obj, role: e.target.value };
         }
         return obj;

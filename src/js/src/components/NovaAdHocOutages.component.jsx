@@ -62,7 +62,6 @@ export function NovaAdHocOutages() {
         setNewAdHocIsFetching(false);
         setErrorMessage(error.response.data.message);
         setSuccessMessage(false);
-        console.log(error.response.data.message);
       }
     }, 1);
   };
@@ -178,7 +177,6 @@ export function NovaAdHocOutages() {
   ];
 
   const deleteSelectedAdHocIncident = async (incident) => {
-    console.log("Deleting");
     const response = await axios({
       method: "delete",
       url: `${apiEndPoint}/nova_deleteadhocincident/${incident.id}`,

@@ -5,7 +5,6 @@ const apiEndPoint = `${config.apiPrefix}/api/authenticate`;
 
 // Get JWT from Storage and Set it in Authorization Header
 if (getJwt()) {
-  console.log("Running auth Service...");
   httpService.setJwtAuthHeader(getJwt());
 }
 
@@ -28,7 +27,6 @@ export async function logout() {
 export function getCurrentUser() {
   try {
     const jwt = sessionStorage.getItem(config.jwtTokenKeyName);
-    console.log(jwtDecode(jwt));
     return jwtDecode(jwt);
   } catch (ex) {
     return null;

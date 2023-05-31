@@ -18,6 +18,8 @@ import BackupIcon from "@mui/icons-material/Backup";
 import DownloadIcon from "@mui/icons-material/Download";
 import { MenuPopupDownloads } from "./MenuPopupDownloads.component";
 
+import "./menupopupactions.scss";
+
 const ColorButton = styled(MuiButton)(({ theme }) => ({
   color: theme.palette.getContrastText(grey[900]),
   backgroundColor: green[500],
@@ -56,28 +58,28 @@ export function ActionsMenu(
     <PopupState variant="popover" popupId="demo-popup-menu">
       {(popupState) => (
         <Fragment>
-          <ColorButton
-            style={{
-              fontSize: "1.1rem",
-              // width: "110px",
-              padding: "0.5rem 0.4rem",
-              display: "flex",
-              flexDirection: "row",
-              justifyContent: "center",
-              alignItems: "center",
-            }}
-            variant="contained"
+          <button
+            className="action__btn"
+            // style={{
+            //   fontSize: "1.1rem",
+            //   padding: "0.55rem 0.55rem",
+            //   display: "flex",
+            //   justifyContent: "center",
+            //   alignItems: "center",
+            // }}
             {...bindTrigger(popupState)}
           >
-            <SettingsIcon fontSize="large" />
-            <span
-              style={{
-                marginLeft: "0.7rem",
-              }}
-            >
-              Actions
-            </span>
-          </ColorButton>
+            <div>
+              <SettingsIcon fontSize="medium" />
+              <span
+                style={{
+                  marginLeft: "0.7rem",
+                }}
+              >
+                Actions
+              </span>
+            </div>
+          </button>
           <Menu {...bindMenu(popupState)}>
             <MenuItem
               disabled={IsDisabledPublishing}

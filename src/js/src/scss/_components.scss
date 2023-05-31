@@ -27,6 +27,12 @@
   color: #fff;
   box-shadow: 0 5px 10px rgba(#000, 0.3);
   transition: all 0.2s;
+  font-size: 1.5rem;
+
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  margin-left: 2.3rem;
 
   &:hover {
     filter: brightness(0.8);

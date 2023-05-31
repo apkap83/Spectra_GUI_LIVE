@@ -22,7 +22,6 @@ export function MyHeader() {
   const userDetails = useContext(UserContext);
   const isUserAdmin =
     userDetails && userDetails.roles.includes(PERMISSION.USER_CAN_MANAGE_USERS);
-  console.log("isUserAdmin", isUserAdmin);
   return (
     <>
       {window.location.pathname !== "/login" && userDetails && (

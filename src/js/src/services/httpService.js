@@ -16,7 +16,6 @@ axios.interceptors.response.use(null, (error) => {
   }
 
   if (sessionStorage.getItem(config.jwtTokenKeyName)) {
-    console.log(19);
     if (error.response) {
       const { data, status, headers } = error.response;
       errorNotification(data.error, data.message);
@@ -40,7 +39,6 @@ axios.interceptors.response.use(null, (error) => {
 });
 
 const setJwtAuthHeader = (jwt) => {
-  // console.log("Setting Header: Authorization: Bearer:", jwt);
   axios.defaults.headers.common["Authorization"] = `Bearer: ${jwt}`;
 };
 

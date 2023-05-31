@@ -110,10 +110,10 @@ export default function SpectraIncidentsTable(props) {
             key={incident.id}
             sx={{
               "&:last-child td, &:last-child th": { border: 0 },
-              background: stringToColor(incident.incidentId) + "22", // Add Opacity in Color
+              background: stringToColor(incident.incidentId) + "12", // Add Opacity in Color
             }}
           >
-            <TableCell align="center" component="th" scope="row">
+            <TableCell align="left" component="th" scope="row">
               {incident.incidentId}
             </TableCell>
             <TableCell align="center">{incident.outageId}</TableCell>
@@ -213,7 +213,7 @@ export default function SpectraIncidentsTable(props) {
             >
               {incident.userId}
             </TableCell>
-            <TableCell sx={{ marginLeft: "20px" }}>
+            <TableCell>
               <button
                 className="statsButton"
                 onMouseEnter={(e) => handlePopoverOpen(e, incident.incidentId)}
@@ -223,7 +223,7 @@ export default function SpectraIncidentsTable(props) {
               </button>
             </TableCell>
             <TableCell></TableCell>
-            <TableCell align="center">
+            <TableCell align="center" style={{}}>
               {incident.incidentStatus === "OPEN"
                 ? ActionsMenu(
                     incident,
