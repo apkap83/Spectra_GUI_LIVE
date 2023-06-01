@@ -1,12 +1,39 @@
+.allscreen {
+  height: 100vh;
+  position: relative;
+
+  & .line {
+    position: absolute;
+    bottom: 50px;
+    left: 0;
+    right: 0;
+    height: 5px;
+    background-image: linear-gradient(
+      to bottom right,
+      #ff6e40,
+      var(--color-primary)
+    );
+    z-index: 100;
+    text-align: center;
+    font-size: 1.6rem;
+    font-weight: 700;
+  }
+}
 .myloginform {
+  border: 1px solid grey;
+  box-shadow: 0rem 1rem 2rem rgba(0, 0, 0, 0.3);
+
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -70%);
+
   & form {
     display: block;
-    position: relative;
     font-size: 1.8rem;
   }
 
   & .form-inner {
-    position: relative;
     background-color: #fff;
     padding: 5rem;
     z-index: 2;
@@ -22,7 +49,12 @@
       margin-bottom: 3rem;
     }
 
+    .mybutton {
+      text-align: center;
+    }
+
     .form-group {
+      margin: auto;
       display: block;
       width: 30rem;
       margin-bottom: 1.5rem;
@@ -51,6 +83,8 @@
         border: none;
         outline: none;
         box-shadow: 0 0 0.5rem rgba(0, 0, 0, 0.3);
+
+        text-align: center;
       }
 
       & input:focus {
@@ -64,16 +98,18 @@
   }
 
   & input[type="submit"] {
-    font-size: 1.4rem;
+    width: 50%;
+    margin-top: 5rem;
+    font-size: 1.6rem;
     display: inline-block;
     padding: 0.3rem 2.5rem;
     border-radius: 0.8rem;
-    color: #fff;
+    color: #fafafa;
     // border-color: #ffce00;
     background-image: linear-gradient(
       to right,
-      #ffce00 50%,
-      #ffce00 50%,
+      #ffbe00 50%,
+      #ffbe00 50%,
       var(--color-primary)
     );
     background-size: 200%;
@@ -82,27 +118,11 @@
     font-weight: 700;
     cursor: pointer;
     box-shadow: 0 1rem 1.5rem rgba(0, 0, 0, 0.3);
-    // width: 12rem;
 
     &:active {
       transform: translateY(3px);
+      color: var(--color-primary);
     }
-  }
-
-  & > form:after {
-    content: "";
-    display: block;
-    position: absolute;
-    top: -5px;
-    left: -5px;
-    right: -5px;
-    bottom: -5px;
-    z-index: 1;
-    background-image: linear-gradient(
-      to bottom right,
-      #ffce00,
-      var(--color-primary)
-    );
   }
 }
 

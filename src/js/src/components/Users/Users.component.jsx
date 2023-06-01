@@ -39,7 +39,7 @@ import { UserSelector } from "../common/UserSelector.component";
 import "./users.scss";
 import { filter } from "lodash";
 export const Users = () => {
-  const pageSize = 10;
+  const pageSize = 20;
   const initialEmptyUser = {
     userName: "",
     realName: "",
@@ -255,6 +255,8 @@ export const Users = () => {
                 sx={{
                   backgroundColor:
                     user.active === 1 ? "#9ae6b445" : "#feb2b245",
+
+                  padding: "1rem",
                 }}
               >
                 <TableCell align="left" component="th" scope="row">

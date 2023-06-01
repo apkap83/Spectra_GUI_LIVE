@@ -3,6 +3,7 @@ import axios from "axios";
 import config from "../../config.json";
 import auth from "../../services/authService";
 import "./login.scss";
+import { getCurrentYear } from "./../../utils/myutils";
 
 export function LoginPage() {
   const [username, setUsername] = useState("");
@@ -33,50 +34,56 @@ export function LoginPage() {
   };
 
   return (
-    <div className="myloginform">
-      <form onSubmit={doSubmit}>
-        <div className="form-inner">
-          <h2>
-            Spectra Login
-            <span
-              className="ant-tag ant-tag-green"
-              style={{ marginLeft: "15px", verticalAlign: "middle" }}
-            >
-              Live Environment
-            </span>
-          </h2>
-          <div className="form-group">
-            {error && (
-              <div
-                className="mt-3 alert alert-danger"
-                style={{ width: "300px" }}
+    <div className="allscreen">
+      <div className="myloginform">
+        <form onSubmit={doSubmit}>
+          <div className="form-inner">
+            <h2>
+              Spectra Login
+              <span
+                className="ant-tag ant-tag-green"
+                style={{ marginLeft: "15px", verticalAlign: "middle" }}
               >
-                {error}
-              </div>
-            )}
-            <label htmlFor="username">User Name</label>
-            <input
-              id="username"
-              name="username"
-              type="text"
-              value={username}
-              onChange={handleUsernameChange}
-            />
-          </div>
-          <div className="form-group">
-            <label htmlFor="password">Password</label>
-            <input
-              id="password"
-              name="password"
-              type="password"
-              value={password}
-              onChange={handlePasswordChange}
-            />
-          </div>
+                Live Environment
+              </span>
+            </h2>
+            <div className="form-group">
+              {error && (
+                <div
+                  className="mt-3 alert alert-danger"
+                  style={{ width: "300px" }}
+                >
+                  {error}
+                </div>
+              )}
+              <label htmlFor="username">User Name</label>
+              <input
+                id="username"
+                name="username"
+                type="text"
+                value={username}
+                onChange={handleUsernameChange}
+              />
+            </div>
+            <div className="form-group">
+              <label htmlFor="password">Password</label>
+              <input
+                id="password"
+                name="password"
+                type="password"
+                value={password}
+                onChange={handlePasswordChange}
+              />
+            </div>
 
-          <input type="submit" value="LOGIN" />
-        </div>
-      </form>
+            <div className="mybutton">
+              <input type="submit" value="Sign In" />
+            </div>
+          </div>
+        </form>
+      </div>
+
+      <div className="line">NOVA NMS Team {getCurrentYear()}</div>
     </div>
   );
 }

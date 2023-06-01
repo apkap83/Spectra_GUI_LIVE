@@ -385,7 +385,11 @@ export function CdrDBOutages(props) {
           borderTop: "var(--line)",
         }}
       >
-        <Table sx={{ minWidth: 650 }} size="medium" aria-label="a dense table">
+        <Table
+          sx={{ margin: "auto", width: "99.2%" }}
+          size="medium"
+          aria-label="a dense table"
+        >
           {generateTableHeadAndColumns(columnsForCdrDBIncidents)}
           {TableBodyForOutages(paginatedList)}
         </Table>
