@@ -16,8 +16,6 @@ import config from "../../config.json";
 import BorderOuterIcon from "@mui/icons-material/BorderOuter";
 import HistoryToggleOffIcon from "@mui/icons-material/HistoryToggleOff";
 
-import "./myheader.scss";
-
 export function MyHeader() {
   const userDetails = useContext(UserContext);
   const isUserAdmin =

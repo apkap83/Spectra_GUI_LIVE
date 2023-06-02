@@ -10,8 +10,6 @@ import {
   errorNotification,
 } from "../../common/Notification";
 
-import "./password.scss";
-
 export const PasswordResetButton = ({ user }) => {
   const [showPopup, setShowPopup] = useState(false);
 

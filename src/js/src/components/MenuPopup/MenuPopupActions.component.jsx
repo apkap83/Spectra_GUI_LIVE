@@ -18,8 +18,6 @@ import BackupIcon from "@mui/icons-material/Backup";
 import DownloadIcon from "@mui/icons-material/Download";
 import { MenuPopupDownloads } from "./MenuPopupDownloads.component";
 
-import "./menupopupactions.scss";
-
 const ColorButton = styled(MuiButton)(({ theme }) => ({
   color: theme.palette.getContrastText(grey[900]),
   backgroundColor: green[500],

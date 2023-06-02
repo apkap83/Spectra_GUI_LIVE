@@ -2,7 +2,6 @@ import { useState } from "react";
 import axios from "axios";
 import config from "../../config.json";
 import auth from "../../services/authService";
-import "./login.scss";
 import { getCurrentYear } from "./../../utils/myutils";
 
 export function LoginPage() {

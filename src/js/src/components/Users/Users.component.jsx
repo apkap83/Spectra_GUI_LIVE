@@ -36,7 +36,6 @@ import {
 
 import { UserSelector } from "../common/UserSelector.component";
 
-import "./users.scss";
 import { filter } from "lodash";
 export const Users = () => {
   const pageSize = 20;

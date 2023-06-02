@@ -1,5 +1,4 @@
 import { Spin } from "antd";
-import "./myloadingspinner.scss";
 
 export const MyLoadingSpinner = (props) => {
   return (

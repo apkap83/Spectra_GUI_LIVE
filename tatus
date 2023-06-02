@@ -1,0 +1,65 @@
+*   [33mcd8eae8[m[33m ([m[1;35mrefs/stash[m[33m)[m WIP on master: f8a1f51 OK
+[31m|[m[32m\[m  
+[31m|[m * [33m5559aa2[m index on master: f8a1f51 OK
+[31m|[m[31m/[m  
+* [33mf8a1f51[m[33m ([m[1;36mHEAD -> [m[1;32mmaster[m[33m, [m[1;31morigin/master[m[33m, [m[1;31morigin/HEAD[m[33m)[m OK
+* [33mdd06184[m OK
+* [33ma167dca[m[33m ([m[1;32mUserRoles[m[33m)[m Seems OK
+* [33m604c47e[m[33m ([m[1;31morigin/UserRoles[m[33m)[m OK
+* [33m3bdf5e3[m OK
+* [33m1a2794d[m OK
+* [33m0adb911[m OK
+* [33mffa02dd[m OK
+* [33m6d7e745[m OK
+* [33m7aa6bcb[m OK
+* [33mf7ed37f[m OK
+* [33md8ba1ac[m OK
+* [33m2dd1cf7[m OK
+* [33mede7944[m OK
+* [33m1231332[m OK
+* [33ma2846e0[m OK
+* [33mc1e083a[m OK
+* [33m46b0d14[m[33m ([m[1;31morigin/Optimizations[m[33m, [m[1;32mOptimizations[m[33m)[m OK2
+* [33m3d4a76f[m Sec
+* [33m4cf95b6[m OK
+* [33ma5fc9d5[m OK
+* [33m74ef3ca[m OK
+* [33me82e481[m OK
+* [33m53b52f1[m OK
+* [33m985bb37[m OK
+* [33mbc3191a[m Seems OK
+* [33mc1746b2[m OK
+* [33m555643a[m Fix Pagination
+* [33m98fee46[m Fix Pagination Reset
+* [33mee83ce6[m Minor Fix
+* [33m28f395c[m Added Incident Status
+* [33m5514879[m Added Incident Status
+* [33m9ad3ab5[m Minor Changes
+* [33m8a6509f[m Fix for Wind Downloads
+* [33ma1a0cce[m Minor Changes
+* [33m570db51[m Minor Fixes
+* [33m497c7ce[m OK
+* [33m3cef244[m Super Updates
+* [33m337157d[m OK
+*   [33m10c5441[m OK
+[33m|[m[34m\[m  
+[33m|[m * [33mfc25fdb[m OK
+[33m|[m * [33m858b87b[m Corrections from MAC
+[33m|[m * [33m8231755[m OK
+[33m|[m * [33m7cc76ca[m Seems OK
+[33m|[m * [33m6ed92fd[m OK
+[33m|[m * [33mf4c13d3[m Minor Changes
+[33m|[m * [33mb2170d7[m Addition of Company and DSLAM Filters - Fix of Loading Indicator
+[33m|[m * [33m960f1d9[m Only Spinner is not Shown
+[33m|[m * [33ma66251d[m OK
+[33m|[m * [33m1a707b3[m NOTOK
+[33m|[m * [33m5044132[m OK
+* [34m|[m [33ma1edd4a[m OK
+[34m|[m[34m/[m  
+* [33ma93f394[m Adding Redirects always to index.html
+* [33m7627ef4[m Seems OK
+* [33mc506ad2[m Seems OK
+* [33m0be9878[m Seems OK
+* [33m9d7f7ed[m OK
+* [33m6f4c7bf[m Fix of Proxy in Package.json
+* [33m20367d8[m First Commit
