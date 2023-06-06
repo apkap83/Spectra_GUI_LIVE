@@ -52,6 +52,8 @@ export function ActionsMenu(
     setShowModalAlterMessage,
     setShowModalAlterBackup,
   } = restContextProperties;
+
+  const incidentIsOpen = incident.incidentStatus === "OPEN";
   return (
     <PopupState variant="popover" popupId="demo-popup-menu">
       {(popupState) => (
@@ -79,54 +81,59 @@ export function ActionsMenu(
             </div>
           </button>
           <Menu {...bindMenu(popupState)}>
-            <MenuItem
-              disabled={IsDisabledPublishing}
-              onClick={() => {
-                popupState.close();
-                setshowModalAlterPublish(true);
-                setSelectedIncident(incident);
-              }}
-            >
-              {incident.willBePublished === "Yes" ? (
-                <span style={{ color: "red", fontSize: "1.2rem" }}>
-                  <DisabledByDefaultIcon />
-                  &nbsp;
-                  <b>Disable&nbsp;Publishing</b>
-                </span>
-              ) : (
-                <span style={{ color: "green" }}>
-                  <CheckIcon />
-                  &nbsp;<b>Enable&nbsp;Publishing</b>
-                </span>
-              )}
-            </MenuItem>
-            <MenuItem
-              disabled={IsDisabledAlterMessage}
-              onClick={() => {
-                popupState.close();
-                setShowModalAlterMessage(true);
-                setSelectedIncident(incident);
-              }}
-            >
-              <span style={{ color: "#1890ff", fontSize: "1.2rem" }}>
-                <MessageIcon />
-                &nbsp;
-                <b>Alter&nbsp;Message</b>
-              </span>
-            </MenuItem>
-            <MenuItem
-              disabled={isDisabledAlterBackup}
-              onClick={() => {
-                popupState.close();
-                setShowModalAlterBackup(true);
-                setSelectedIncident(incident);
-              }}
-            >
-              <span style={{ color: "#000", fontSize: "1.2rem" }}>
-                <BackupIcon />
-                &nbsp; <b>Alter Backup Policy</b>
-              </span>
-            </MenuItem>
+            {incidentIsOpen ? (
+              <div>
+                <MenuItem
+                  disabled={IsDisabledPublishing}
+                  onClick={() => {
+                    popupState.close();
+                    setshowModalAlterPublish(true);
+                    setSelectedIncident(incident);
+                  }}
+                >
+                  {incident.willBePublished === "Yes" ? (
+                    <span style={{ color: "red", fontSize: "1.2rem" }}>
+                      <DisabledByDefaultIcon />
+                      &nbsp;
+                      <b>Disable&nbsp;Publishing</b>
+                    </span>
+                  ) : (
+                    <span style={{ color: "green" }}>
+                      <CheckIcon />
+                      &nbsp;<b>Enable&nbsp;Publishing</b>
+                    </span>
+                  )}
+                </MenuItem>
+                <MenuItem
+                  disabled={IsDisabledAlterMessage}
+                  onClick={() => {
+                    popupState.close();
+                    setShowModalAlterMessage(true);
+                    setSelectedIncident(incident);
+                  }}
+                >
+                  <span style={{ color: "#1890ff", fontSize: "1.2rem" }}>
+                    <MessageIcon />
+                    &nbsp;
+                    <b>Alter&nbsp;Message</b>
+                  </span>
+                </MenuItem>
+                <MenuItem
+                  disabled={isDisabledAlterBackup}
+                  onClick={() => {
+                    popupState.close();
+                    setShowModalAlterBackup(true);
+                    setSelectedIncident(incident);
+                  }}
+                >
+                  <span style={{ color: "#000", fontSize: "1.2rem" }}>
+                    <BackupIcon />
+                    &nbsp; <b>Alter Backup Policy</b>
+                  </span>
+                </MenuItem>
+              </div>
+            ) : null}
+
             <MenuItem disabled={IsDisabledDownload}>
               <MenuPopupDownloads
                 style={{ margin: 0, padding: 0 }}

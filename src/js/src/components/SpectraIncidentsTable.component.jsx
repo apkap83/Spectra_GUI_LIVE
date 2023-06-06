@@ -224,14 +224,12 @@ export default function SpectraIncidentsTable(props) {
             </TableCell>
             <TableCell></TableCell>
             <TableCell align="center" style={{}}>
-              {incident.incidentStatus === "OPEN"
-                ? ActionsMenu(
-                    incident,
-                    restActionMenuProperties,
-                    userDetails,
-                    company
-                  )
-                : null}
+              {ActionsMenu(
+                incident,
+                restActionMenuProperties,
+                userDetails,
+                company
+              )}
             </TableCell>
           </TableRow>
         ))}
