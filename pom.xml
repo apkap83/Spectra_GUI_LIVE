@@ -124,28 +124,28 @@
                             <workingDirectory>src/js</workingDirectory>
                         </configuration>
                         <executions>
-                            <execution>
-                                <id>install node and npm</id>
-                                <goals>
-                                    <goal>install-node-and-npm</goal>
-                                </goals>
-                                <configuration>
-                                    <!-- See https://nodejs.org/en/download/ for latest node and npm (lts) versions -->
-                                    <nodeVersion>v16.13.0</nodeVersion>
-                                    <npmVersion>8.12.1</npmVersion>
-                                </configuration>
-                            </execution>
+<!--                            <execution>-->
+<!--                                <id>install node and npm</id>-->
+<!--                                <goals>-->
+<!--                                    <goal>install-node-and-npm</goal>-->
+<!--                                </goals>-->
+<!--                                <configuration>-->
+<!--                                    &lt;!&ndash; See https://nodejs.org/en/download/ for latest node and npm (lts) versions &ndash;&gt;-->
+<!--                                    <nodeVersion>v16.13.0</nodeVersion>-->
+<!--                                    <npmVersion>8.12.1</npmVersion>-->
+<!--                                </configuration>-->
+<!--                            </execution>-->
 
-                            <execution>
-                                <id>npm install</id>
-                                <goals>
-                                    <goal>npm</goal>
-                                </goals>
-                                <!-- Optional configuration which provides for running any npm command -->
-                                <configuration>
-                                    <arguments>install</arguments>
-                                </configuration>
-                            </execution>
+<!--                            <execution>-->
+<!--                                <id>npm install</id>-->
+<!--                                <goals>-->
+<!--                                    <goal>npm</goal>-->
+<!--                                </goals>-->
+<!--                                &lt;!&ndash; Optional configuration which provides for running any npm command &ndash;&gt;-->
+<!--                                <configuration>-->
+<!--                                    <arguments>install</arguments>-->
+<!--                                </configuration>-->
+<!--                            </execution>-->
 
                             <execution>
                                 <id>npm run build</id>

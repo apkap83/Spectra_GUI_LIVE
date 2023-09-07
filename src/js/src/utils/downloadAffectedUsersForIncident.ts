@@ -41,10 +41,10 @@ export const downloadAffectedUsersForIncident = (
       ? fileNamePatternForOpennedINC
       : fileNamePatternForClosedINC;
 
-  const dirName1 =
-    incident.incidentStatus === "OPEN"
-      ? "AllOpenedOutages"
-      : "AllClosedOutages";
+  const dirName1 = "AllOpenedOutages";
+  // incident.incidentStatus === "OPEN"
+  //   ? "AllOpenedOutages"
+  //   : "AllClosedOutages";
 
   downloadFile(dirName1, fileNamePattern, company)
     .then((response) => {
