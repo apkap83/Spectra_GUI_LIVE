@@ -2,21 +2,24 @@
   height: 100vh;
   position: relative;
 
+  background-image: url("../../assets/home_bg_image.jpg");
+  background-repeat: no-repeat;
+  background-size: cover;
+
   & .line {
     position: absolute;
-    bottom: 50px;
+    bottom: 10px;
     left: 0;
     right: 0;
-    height: 5px;
-    background-image: linear-gradient(
-      to bottom right,
-      #ff6e40,
-      var(--color-primary)
-    );
     z-index: 100;
     text-align: center;
-    font-size: 1.6rem;
+    font-size: 2rem;
     font-weight: 700;
+    color: white;
+  }
+
+  & .nmsTeam {
+    margin-top: -10px;
   }
 }
 .myloginform {
@@ -27,6 +30,7 @@
   top: 50%;
   left: 50%;
   transform: translate(-50%, -70%);
+  opacity: 0.93;
 
   & form {
     display: block;
@@ -34,7 +38,7 @@
   }
 
   & .form-inner {
-    background-color: #fff;
+    background-color: #eee;
     padding: 5rem;
     z-index: 2;
 
@@ -45,7 +49,7 @@
 
     & h2 {
       font-size: 2.8rem;
-      font-weight: 500;
+      font-weight: 700;
       margin-bottom: 3rem;
     }
 
@@ -61,7 +65,7 @@
 
       & label {
         display: block;
-        font-size: 1.2rem;
+        font-size: 1.4rem;
         font-weight: 700;
         transition: 0.4s;
       }
@@ -99,21 +103,16 @@
 
   & input[type="submit"] {
     width: 50%;
+    border: 1px solid #0083b0;
     margin-top: 5rem;
     font-size: 1.6rem;
     display: inline-block;
     padding: 0.3rem 2.5rem;
     border-radius: 0.8rem;
     color: #fafafa;
-    // border-color: #ffce00;
-    background-image: linear-gradient(
-      to right,
-      #ffbe00 50%,
-      #ffbe00 50%,
-      var(--color-primary)
-    );
-    background-size: 200%;
-    background-position: 0%;
+    background-image: linear-gradient(to right, #00b4db, #222);
+    // background-size: 200%;
+    // background-position: 0%;
     transition: 0.2s;
     font-weight: 700;
     cursor: pointer;

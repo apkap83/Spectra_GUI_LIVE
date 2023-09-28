@@ -3,6 +3,7 @@ import axios from "axios";
 import config from "../../config.json";
 import auth from "../../services/authService";
 import { getCurrentYear } from "./../../utils/myutils";
+import { ReactComponent as NovaLogo } from "../../assets/novaLogo.svg";
 
 export function LoginPage() {
   const [username, setUsername] = useState("");
@@ -37,7 +38,7 @@ export function LoginPage() {
       <div className="myloginform">
         <form onSubmit={doSubmit}>
           <div className="form-inner">
-            <h2>
+            <h2 className="productName">
               Spectra Login
               <span
                 className="ant-tag ant-tag-green"
@@ -76,13 +77,18 @@ export function LoginPage() {
             </div>
 
             <div className="mybutton">
-              <input type="submit" value="Sign In" />
+              <input type="submit" value="Login" />
             </div>
           </div>
         </form>
       </div>
 
-      <div className="line">NOVA NMS Team {getCurrentYear()}</div>
+      <div className="line">
+        <div>
+          <NovaLogo />
+        </div>
+        <div className="nmsTeam">NMS Team {getCurrentYear()}</div>
+      </div>
     </div>
   );
 }
