@@ -84,7 +84,7 @@ export function LoginPage() {
       </div>
 
       <div className="line">
-        <div>
+        <div className="novaHomePageLogo">
           <NovaLogo />
         </div>
         <div className="nmsTeam">NMS Team {getCurrentYear()}</div>
