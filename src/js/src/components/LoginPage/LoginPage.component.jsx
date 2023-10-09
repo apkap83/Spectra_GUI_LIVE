@@ -85,9 +85,11 @@ export function LoginPage() {
 
       <div className="line">
         <div className="novaHomePageLogo">
-          <NovaLogo />
+          <NovaLogo className="novaLogo" />
         </div>
-        <div className="nmsTeam">NMS Team {getCurrentYear()}</div>
+        <div className="nmsTeam font-face-chiller">
+          NMS Team {getCurrentYear()}
+        </div>
       </div>
     </div>
   );

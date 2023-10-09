@@ -15,7 +15,7 @@ export const MyFooter = () => {
       {window.location.pathname !== "/login" && userDetails && (
         <Footer className={footerClass}>
           <NovaLogo style={{ width: "110px" }} fill="white" stroke="black" />
-          <span className="nmsteam">NMS Team {getCurrentYear()}</span>
+          <span className="nmsTeam">NMS Team {getCurrentYear()}</span>
         </Footer>
       )}
     </>

@@ -4,6 +4,9 @@ import AppWrapper from "./App";
 import config from "./config.json";
 import { createRoot } from "react-dom/client";
 
+// import "./fonts/Chiller/chiller.ttf";
+import "./index.css";
+
 import "bootstrap/dist/css/bootstrap.min.css";
 import "bootstrap/dist/css/bootstrap.css";
 
