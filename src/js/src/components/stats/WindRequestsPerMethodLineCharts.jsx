@@ -100,7 +100,7 @@ class RequestsPerMethodLineCharts extends Component {
       showInLegend: true,
       toolTipContent: "{x}: {y}",
       xValueType: "dateTime",
-      lineColor: randomColor(),
+      // lineColor: randomColor(),
       // dataPoints: this.state.chartsData,
 
       dataPoints: constructData,
