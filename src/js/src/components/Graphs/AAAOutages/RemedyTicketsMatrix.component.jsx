@@ -102,7 +102,9 @@ export function RemedyTickets({ dateRange, setLoading }) {
       setLoading(false);
     };
 
-    getDataFromDB();
+    setTimeout(() => {
+      getDataFromDB();
+    }, 1300);
   }, [dateRange]);
 
   function EnhancedTableHead(props) {

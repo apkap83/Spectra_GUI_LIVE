@@ -1,5 +1,5 @@
 import httpService from "./httpService";
-import jwtDecode from "jwt-decode";
+import { jwtDecode } from "jwt-decode";
 import config from "../config.json";
 const apiEndPoint = `${config.apiPrefix}/api/authenticate`;
 

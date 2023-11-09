@@ -43,7 +43,7 @@ export const TripleAOutagesPlusRemedy = () => {
         gap: "1rem",
         margin: "0 10rem",
         height: "100vh",
-        marginBottom: "100rem",
+        marginBottom: "55rem",
       }}
     >
       <div className="aaa__header">

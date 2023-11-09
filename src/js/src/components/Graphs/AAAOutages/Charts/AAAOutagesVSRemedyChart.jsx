@@ -1,11 +1,8 @@
-import React, { useState, useEffect } from "react";
-import equal from "fast-deep-equal";
-import httpService from "../../../../services/httpService";
-import { Spin } from "antd";
+import CanvasJSReact from "@canvasjs/react-charts";
+//var CanvasJSReact = require('@canvasjs/react-charts');
 
-import CanvasJSReact from "../../../../lib/assets/canvasjs.react";
-import ErrorBoundary from "antd/es/alert/ErrorBoundary";
-const CanvasJSChart = CanvasJSReact.CanvasJSChart;
+var CanvasJS = CanvasJSReact.CanvasJS;
+var CanvasJSChart = CanvasJSReact.CanvasJSChart;
 
 // Helper function to convert a date string to a date object
 function parseDate(dateString) {
@@ -14,64 +11,112 @@ function parseDate(dateString) {
 }
 
 const chart1AxisData = [
-  "AAA Outages vs Remedy (Nova, Wind, OTE, VF)",
+  "AAA Outages vs Remedy",
   "Percentage %",
-  "Date",
+  "Percentage %",
 ];
 
 const chart2AxisData = [
   "AAA Outages vs Remedy (Wind+Nova)",
-  "Percentage %",
   "Date",
+  "Percentage %",
 ];
 
-const constructDataForChart = (myData) => {
-  let constructData = [];
+const constructDataForChart = (myData1, myData2) => {
+  let constructData1 = [];
+  let constructData2 = [];
 
-  if (myData) {
-    const { dateValuePair } = myData;
+  if (myData1 && myData2) {
+    const { dateValuePair: dateValuePair1 } = myData1;
+    const { dateValuePair: dateValuePair2 } = myData2;
 
     // Sort the keys
-    const sortedKeys = Object.keys(dateValuePair).sort(
+    const sortedKeys1 = Object.keys(dateValuePair1).sort(
+      (a, b) => parseDate(a) - parseDate(b)
+    );
+
+    const sortedKeys2 = Object.keys(dateValuePair2).sort(
       (a, b) => parseDate(a) - parseDate(b)
     );
 
     // Create a new sorted object
-    const sortedData = {};
-    for (const key of sortedKeys) {
-      sortedData[key] = dateValuePair[key];
+    const sortedData1 = {};
+    for (const key of sortedKeys1) {
+      sortedData1[key] = dateValuePair1[key];
     }
 
-    const dataWithEpochKeys = Object.keys(sortedData).reduce(
+    // Create a new sorted object
+    const sortedData2 = {};
+    for (const key of sortedKeys2) {
+      sortedData2[key] = dateValuePair2[key];
+    }
+
+    const dataWithEpochKeys1 = Object.keys(sortedData1).reduce(
       (accumulator, currentKey) => {
         // Split the current key into parts
         const [day, month, year] = currentKey.split("/");
-        const dateString = `${year}-${month}-${day}`;
-        accumulator[dateString] = parseFloat(sortedData[currentKey]);
+        const dateObject = new Date(year, month - 1, day);
+        accumulator[dateObject] = parseFloat(sortedData1[currentKey]);
         return accumulator;
       },
       {}
     );
 
-    for (const item in dataWithEpochKeys) {
-      constructData.push({
+    const dataWithEpochKeys2 = Object.keys(sortedData2).reduce(
+      (accumulator, currentKey) => {
+        // Split the current key into parts
+        const [day, month, year] = currentKey.split("/");
+        const dateObject = new Date(year, month - 1, day);
+        accumulator[dateObject] = parseFloat(sortedData2[currentKey]);
+        return accumulator;
+      },
+      {}
+    );
+
+    for (const item in dataWithEpochKeys1) {
+      constructData1.push({
         x: Date.parse(item),
-        y: dataWithEpochKeys[item],
+        y: dataWithEpochKeys1[item],
       });
     }
 
-    const data = {
+    for (const item in dataWithEpochKeys2) {
+      constructData2.push({
+        x: Date.parse(item),
+        y: dataWithEpochKeys2[item],
+      });
+    }
+
+    const data1 = {
       type: "line",
-      name: "My Name",
-      // showInLegend: true,
-      toolTipContent: "{x}: {y}",
+      showInLegend: true,
+      name: "AAA Outages VS Remedy (Nova, Wind, OTE, VF)",
+      markerType: "square",
+      // toolTipContent: "{x}: {y}",
       xValueType: "dateTime",
-      showLegend: true,
-      dataPoints: constructData,
+      dataPoints: constructData1,
     };
-    return [data];
+    const data2 = {
+      type: "line",
+      showInLegend: true,
+      name: "AAA Outages vs Remedy (Wind+Nova)",
+      showInLegend: true,
+      // toolTipContent: "{x}: {y}",
+      xValueType: "dateTime",
+      dataPoints: constructData2,
+    };
+    return [data2, data1];
   }
 };
+
+function toogleDataSeries(e) {
+  if (typeof e.dataSeries.visible === "undefined" || e.dataSeries.visible) {
+    e.dataSeries.visible = false;
+  } else {
+    e.dataSeries.visible = true;
+  }
+  chart.render();
+}
 
 export const AAAOutagesVSRemedyCharts = ({ chartData }) => {
   console.log("chartData", chartData);
@@ -85,28 +130,36 @@ export const AAAOutagesVSRemedyCharts = ({ chartData }) => {
       animationEnabled: true,
       exportEnabled: true,
       zoomEnabled: true,
-      theme: "light1", // "light1", "dark1", "dark2"
+      theme: "light2", // "light1", "dark1", "dark2"
       title: {
         text: chartTitle,
       },
-      axisY: {
-        title: axisXTitle,
-        includeZero: true,
-        suffix: "",
-      },
       axisX: {
         valueFormatString: "DD MMM",
-        title: axisYTitle,
-        // prefix: "W",
-        interval: 1,
         crosshair: {
           enabled: true,
           snapToDataPoint: true,
         },
       },
+      axisY: {
+        title: axisYTitle,
+        includeZero: true,
+      },
+
+      toolTip: {
+        shared: true,
+      },
+      legend: {
+        cursor: "pointer",
+        verticalAlign: "bottom",
+        horizontalAlign: "center",
+        dockInsidePlotArea: false,
+        itemclick: toogleDataSeries,
+      },
     };
 
-    options["data"] = constructDataForChart(chartData[0]);
+    options["data"] = constructDataForChart(chartData[0], chartData[1]);
+    console.log('options["data"]', options["data"]);
     return options;
   };
 
@@ -142,7 +195,7 @@ export const AAAOutagesVSRemedyCharts = ({ chartData }) => {
 
   let chartOptionsChart1 = getOptionsChart1(...chart1AxisData);
 
-  let chartOptionsChart2 = getOptionsChart2(...chart2AxisData);
+  // let chartOptionsChart2 = getOptionsChart2(...chart2AxisData);
 
   if (!chartData || chartData.length === 0) {
     return null;
@@ -152,14 +205,13 @@ export const AAAOutagesVSRemedyCharts = ({ chartData }) => {
       <div
         style={{
           marginTop: "5rem",
-          marginBottom: "20rem",
           display: "flex",
           flexDirection: "column",
           gap: "2rem",
         }}
       >
         <CanvasJSChart options={chartOptionsChart1} />
-        <CanvasJSChart options={chartOptionsChart2} />
+        {/* <CanvasJSChart options={chartOptionsChart2} /> */}
       </div>
     </div>
   );

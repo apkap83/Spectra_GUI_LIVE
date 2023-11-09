@@ -182,7 +182,9 @@ export function PercentagesTable({ dateRange, setLoading }) {
       setLoading(false);
     };
 
-    getDataFromDB();
+    setTimeout(() => {
+      getDataFromDB();
+    }, 1500);
   }, [dateRange]);
 
   function EnhancedTableHead(props) {
