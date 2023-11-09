@@ -4,6 +4,7 @@ import gr.wind.FullStackSpring_Review.model.NumOfRequestsPerMethod;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.Date;
 import java.util.List;
 
 @Service
@@ -16,7 +17,7 @@ public class NovaStatsService {
         this.novaStatsDataAccessService = novaStatsDataAccessService;
     }
 
-    public List<NumOfRequestsPerMethod> getStatsForDateRange(String startDate, String endDate) {
+    public List<NumOfRequestsPerMethod> getStatsForDateRange(Date startDate, Date endDate) {
         return novaStatsDataAccessService.getStatsForDates(startDate, endDate);
     }
 }

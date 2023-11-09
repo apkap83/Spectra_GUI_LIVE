@@ -6,7 +6,7 @@ import { Spin } from "antd";
 import conf from "./config.json";
 import envConf from "../../config.json";
 
-import CanvasJSReact from "./assets/canvasjs.react";
+import CanvasJSReact from "../../lib/assets/canvasjs.react";
 var CanvasJSChart = CanvasJSReact.CanvasJSChart;
 
 const apiURL = envConf.apiPrefix + conf.apiURL;
@@ -21,8 +21,6 @@ class RequestsPerMethodLineCharts extends Component {
       myDateRange: [],
     };
   }
-
-  getData = async () => {};
 
   componentDidMount() {
     this.updateCharts();

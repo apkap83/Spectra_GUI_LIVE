@@ -6,6 +6,7 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.stereotype.Repository;
 
+import java.util.Date;
 import java.util.List;
 
 @Repository
@@ -19,7 +20,7 @@ public class NovaStatsDataAccessService {
         this.jdbcTemplate = jdbcTemplate;
     }
 
-    public List<NumOfRequestsPerMethod> getStatsForDates(String StartDate, String EndDate) {
+    public List<NumOfRequestsPerMethod> getStatsForDates(Date StartDate, Date EndDate) {
 
         // {"ID":1,"Date":"2019-12-27",
         // "GetHierarchy":10,

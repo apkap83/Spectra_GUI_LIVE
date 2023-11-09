@@ -33,6 +33,8 @@ import { MyFooter } from "./components/Footer/MyFooter.component";
 import { Users } from "./components/Users/Users.component";
 // import { Users_2 } from "./components/Users/Users_2.component";
 
+import { TripleAOutagesPlusRemedy } from "./components/Graphs/AAAOutages/TripleAOutagesPlusRemedy.component";
+
 import auth from "./services/authService";
 import { ErrorBoundary } from "./components/Errors/ErrorBoundary.component";
 
@@ -40,40 +42,45 @@ const routes = [
   { path: "login", element: <LoginPage />, exact: true },
   { path: "mylogout", element: <LogoutPage />, exact: true },
   {
-    path: "allspectraincidents",
+    path: "wind/allspectraincidents",
     element: <AllWindSpectraIncidents />,
     exact: true,
   },
   {
-    path: "openspectraincidents",
+    path: "wind/openspectraincidents",
     element: <WindOpenSpectraIncidents />,
     exact: true,
   },
   {
-    path: "nova_openspectraincidents",
+    path: "nova/openspectraincidents",
     element: <NovaOpenSpectraIncidents />,
     exact: true,
   },
   {
-    path: "nova_allspectraincidents",
+    path: "nova/allspectraincidents",
     element: <AllNovaSpectraIncidents />,
     exact: true,
   },
-  { path: "opencdrdbincidents", element: <CdrDBOpenOutages />, exact: true },
+  { path: "cdr-db/openincidents", element: <CdrDBOpenOutages />, exact: true },
   {
-    path: "closedcdrdbincidents",
+    path: "cdr-db/closedincidents",
     element: <CdrDBClosedOutages />,
     exact: true,
   },
-  { path: "stats", element: <WindStats />, exact: true },
-  { path: "nova_stats", element: <NovaStats />, exact: true },
-  { path: "adhocoutages", element: <AdHocOutages />, exact: true },
-  { path: "nova_adhocoutages", element: <NovaAdHocOutages />, exact: true },
+  { path: "wind/stats", element: <WindStats />, exact: true },
+  { path: "nova/stats", element: <NovaStats />, exact: true },
+  { path: "wind/adhocoutages", element: <AdHocOutages />, exact: true },
+  { path: "nova/adhocoutages", element: <NovaAdHocOutages />, exact: true },
   { path: "user_management", element: <Users />, exact: true },
+  {
+    path: "graphs/aaa-outagesplus-remedy",
+    element: <TripleAOutagesPlusRemedy />,
+    exact: true,
+  },
   // { path: "/user_management_2", element: <Users_2 />, exact: true },
   {
     path: "/",
-    element: <Navigate to={"nova_openspectraincidents"} />,
+    element: <Navigate to={"nova/allspectraincidents"} />,
     exact: true,
   },
   { path: "*", element: <NotFound /> },

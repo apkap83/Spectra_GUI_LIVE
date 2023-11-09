@@ -15,6 +15,7 @@ import config from "../../config.json";
 // MUI Icons
 import BorderOuterIcon from "@mui/icons-material/BorderOuter";
 import HistoryToggleOffIcon from "@mui/icons-material/HistoryToggleOff";
+import TimelineIcon from "@mui/icons-material/Timeline";
 
 export function MyHeader() {
   const userDetails = useContext(UserContext);
@@ -48,63 +49,81 @@ export function MyHeader() {
 
                 <NavDropdown
                   className="navBar__link"
-                  title="WIND"
-                  id="collasible-nav-dropdown"
-                >
-                  <LinkContainer to="/allspectraincidents">
-                    <NavDropdown.Item style={{ fontSize: "38px" }}>
-                      All Spectra Incidents
-                    </NavDropdown.Item>
-                  </LinkContainer>
-
-                  <LinkContainer to="/openspectraincidents">
-                    <NavDropdown.Item>Open Spectra Incidents</NavDropdown.Item>
-                  </LinkContainer>
-
-                  <LinkContainer to="/adhocoutages">
-                    <NavDropdown.Item>Ad Hoc Outages</NavDropdown.Item>
-                  </LinkContainer>
-                  <LinkContainer to="/stats">
-                    <NavDropdown.Item>Stats</NavDropdown.Item>
-                  </LinkContainer>
-                </NavDropdown>
-
-                <NavDropdown
-                  className="navBar__link"
                   title="Nova"
                   id="collasible-nav-dropdown"
                 >
-                  <LinkContainer to="/nova_allspectraincidents">
-                    <NavDropdown.Item>All Spectra Incidents</NavDropdown.Item>
+                  <LinkContainer to="/nova/allspectraincidents">
+                    <NavDropdown.Item>All Incidents</NavDropdown.Item>
                   </LinkContainer>
 
-                  <LinkContainer to="/nova_openspectraincidents">
-                    <NavDropdown.Item>Open Spectra Incidents</NavDropdown.Item>
+                  <LinkContainer to="/nova/openspectraincidents">
+                    <NavDropdown.Item>Open Incidents</NavDropdown.Item>
                   </LinkContainer>
 
-                  <LinkContainer to="/nova_adhocoutages">
+                  <LinkContainer to="/nova/adhocoutages">
                     <NavDropdown.Item>Ad Hoc Outages</NavDropdown.Item>
                   </LinkContainer>
-                  <LinkContainer to="/nova_stats">
+                  <LinkContainer to="/nova/stats">
                     <NavDropdown.Item>Stats</NavDropdown.Item>
                   </LinkContainer>
                 </NavDropdown>
 
                 <NavDropdown
                   className="navBar__link"
-                  title="CDR-DB"
+                  title="Wind"
                   id="collasible-nav-dropdown"
                 >
-                  <LinkContainer to="/opencdrdbincidents">
-                    <NavDropdown.Item>
-                      <BorderOuterIcon />
-                      &nbsp;Opened DSLAM Outages
+                  <LinkContainer to="/wind/allspectraincidents">
+                    <NavDropdown.Item style={{ fontSize: "38px" }}>
+                      All Incidents
                     </NavDropdown.Item>
                   </LinkContainer>
-                  <LinkContainer to="/closedcdrdbincidents">
+
+                  <LinkContainer to="/wind/openspectraincidents">
+                    <NavDropdown.Item>Open Incidents</NavDropdown.Item>
+                  </LinkContainer>
+
+                  <LinkContainer to="/wind/adhocoutages">
+                    <NavDropdown.Item>Ad Hoc Outages</NavDropdown.Item>
+                  </LinkContainer>
+                  <LinkContainer to="/wind/stats">
+                    <NavDropdown.Item>Stats</NavDropdown.Item>
+                  </LinkContainer>
+                </NavDropdown>
+
+                <NavDropdown
+                  className="navBar__link"
+                  title="CDR"
+                  id="collasible-nav-dropdown"
+                >
+                  <LinkContainer to="/cdr-db/openincidents">
+                    <NavDropdown.Item>
+                      <BorderOuterIcon />
+                      &nbsp;Open DSLAM Outages
+                    </NavDropdown.Item>
+                  </LinkContainer>
+
+                  <LinkContainer to="/cdr-db/closedincidents">
                     <NavDropdown.Item>
                       <HistoryToggleOffIcon />
                       &nbsp;Closed DSLAM Outages
+                    </NavDropdown.Item>
+                  </LinkContainer>
+                </NavDropdown>
+
+                <NavDropdown
+                  className="navBar__link"
+                  title="Graphs"
+                  id="collasible-nav-dropdown"
+                >
+                  <LinkContainer to="/graphs/aaa-outagesplus-remedy">
+                    <NavDropdown.Item
+                      style={{
+                        padding: "0.5rem 0.5rem",
+                      }}
+                    >
+                      <TimelineIcon />
+                      &nbsp;AAA Outages + Remedy
                     </NavDropdown.Item>
                   </LinkContainer>
                 </NavDropdown>

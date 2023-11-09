@@ -2,6 +2,8 @@ package gr.wind.FullStackSpring_Review.model;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
 
+import java.util.Date;
+
 public class DateRange {
 
     private final DateFields dateFields;
@@ -11,13 +13,14 @@ public class DateRange {
         this.dateFields = dateFields;
     }
 
-    public String startDate() {
+    public Date startDate() {
         return dateFields.getStartDate();
     }
 
-    public String endDate() {
+    public Date endDate() {
         return dateFields.getEndDate();
     }
+
     @Override
     public String toString() {
         return "DateRange{" +

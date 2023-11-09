@@ -6,7 +6,7 @@ import { Spin } from "antd";
 import conf from "./config.json";
 import envConf from "../../config.json";
 
-import CanvasJSReact from "./assets/canvasjs.react";
+import CanvasJSReact from "../../lib/assets/canvasjs.react";
 var CanvasJSChart = CanvasJSReact.CanvasJSChart;
 
 const apiURL = envConf.apiPrefix + conf.apiURL;
@@ -44,6 +44,7 @@ class RequestsPerMethodLineCharts extends Component {
         dateRange: this.props.dateRange,
       }
     );
+    console.log("myData", myData);
     setTimeout(() => {
       this.setState({
         isFetching: false,
@@ -82,11 +83,13 @@ class RequestsPerMethodLineCharts extends Component {
     });
 
     options["data"] = dataCalculation;
+    console.log("options", options);
     return options;
   };
 
   constructDataForChart = (myData, kpiItemName) => {
     let constructData = [];
+    console.log("myData 92", myData);
     myData.map((item) => {
       constructData.push({
         x: Date.parse(item.Date),
@@ -115,7 +118,6 @@ class RequestsPerMethodLineCharts extends Component {
         <div style={{ marginTop: "1.3rem", marginBottom: "3rem" }}>
           <CanvasJSChart
             title="Hello"
-            data={this.state.dateRange}
             options={this.getOptions(
               ...conf.requestsPerMethodCharts.nluActivePos
             )}

@@ -2,30 +2,32 @@ package gr.wind.FullStackSpring_Review.model;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
 
+import java.util.Date;
+
 public class DateFields {
-    private String startDate;
-    private String endDate;
+    private Date startDate;
+    private Date endDate;
 
     public DateFields(
-            @JsonProperty("startDate") String startDate,
-            @JsonProperty("endDate") String endDate) {
+            @JsonProperty("startDate") Date startDate,
+            @JsonProperty("endDate") Date endDate) {
         this.startDate = startDate;
         this.endDate = endDate;
     }
 
-    public void setStartDate(String startDate) {
+    public void setStartDate(Date startDate) {
         this.startDate = startDate;
     }
 
-    public void setEndDate(String endDate) {
+    public void setEndDate(Date endDate) {
         this.endDate = endDate;
     }
 
-    public String getStartDate() {
+    public Date getStartDate() {
         return startDate;
     }
 
-    public String getEndDate() {
+    public Date getEndDate() {
         return endDate;
     }
 

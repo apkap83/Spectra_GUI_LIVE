@@ -1,12 +1,12 @@
 package gr.wind.FullStackSpring_Review.stats;
 
 import gr.wind.FullStackSpring_Review.model.NumOfRequestsPerMethod;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.stereotype.Repository;
 
+import java.util.Date;
 import java.util.List;
 
 @Repository
@@ -20,7 +20,7 @@ public class StatsDataAccessService {
         this.jdbcTemplate = jdbcTemplate;
     }
 
-    public List<NumOfRequestsPerMethod> getStatsForDates(String StartDate, String EndDate) {
+    public List<NumOfRequestsPerMethod> getStatsForDates(Date StartDate, Date EndDate) {
 
         // {"ID":1,"Date":"2019-12-27",
         // "GetHierarchy":10,

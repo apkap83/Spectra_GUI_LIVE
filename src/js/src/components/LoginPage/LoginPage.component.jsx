@@ -24,7 +24,7 @@ export function LoginPage() {
     // Call the server
     try {
       await auth.login(username, password);
-      window.location = "/nova_openspectraincidents";
+      window.location = "/nova/allspectraincidents";
     } catch (ex) {
       sessionStorage.removeItem("JWT_Token");
       setError("Invalid username or password");

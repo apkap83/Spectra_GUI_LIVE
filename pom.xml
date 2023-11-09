@@ -14,9 +14,9 @@
     <name>Spectra_Live_Server_Port_4000</name>
     <description>Spectra Live Web GUI</description>
     <properties>
-        <java.version>8</java.version>
+        <java.version>17</java.version>
         <frontend-maven-plugin.version>1.12.1</frontend-maven-plugin.version>
-        <node.version>v16.13.0</node.version>
+        <node.version>v20.9.0</node.version>
     </properties>
     <dependencies>
         <dependency>
