@@ -217,20 +217,38 @@ public class RemedyStatsDataAccessService {
 
     public List<TopAffected> getStatsForTopXAffected(Date startDate, Date endDate) {
 
-        // Add one day in endDate
         // Create a Calendar instance and set the time to startDate
-        Calendar calendar = Calendar.getInstance();
-        calendar.setTime(endDate);
+        Calendar calendarStart = Calendar.getInstance();
+        calendarStart.setTime(startDate);
 
-        // Add one day
-        calendar.add(Calendar.DAY_OF_MONTH, 1);
+        // Set hours, minutes, seconds, and milliseconds to 00
+        calendarStart.set(Calendar.HOUR_OF_DAY, 0);
+        calendarStart.set(Calendar.MINUTE, 0);
+        calendarStart.set(Calendar.SECOND, 0);
+        calendarStart.set(Calendar.MILLISECOND, 0);
 
-        // Get the new date
-        Date newDate = calendar.getTime();
+        // Create a Calendar instance and set the time to endDate
+        Calendar calendarEnd = Calendar.getInstance();
+        calendarEnd.setTime(endDate);
+
+        // Set hours, minutes, seconds, and milliseconds to 00
+        calendarEnd.set(Calendar.HOUR_OF_DAY, 0);
+        calendarEnd.set(Calendar.MINUTE, 0);
+        calendarEnd.set(Calendar.SECOND, 0);
+        calendarEnd.set(Calendar.MILLISECOND, 0);
+
+        // Add one day to the endDate
+        calendarEnd.add(Calendar.DAY_OF_MONTH, 1);
+
+        // Get the new dates
+        Date newStartDate = calendarStart.getTime();
+        Date newEndDate = calendarEnd.getTime();
 
         System.out.println("startDate" + startDate.toString());
         System.out.println("endDate" + endDate.toString());
-        System.out.println("newDate" + newDate.toString());
+        System.out.println("newStartDate" + newStartDate.toString());
+        System.out.println("newDate" + newEndDate.toString());
+
         String sql = """
                             WITH
                                DAILY_OUTAGES AS
@@ -255,7 +273,7 @@ public class RemedyStatsDataAccessService {
                 """;
 
         List<TopAffected> stats = jdbcTemplate.query(sql,
-                new Object[]{startDate, newDate},
+                new Object[]{newStartDate, newEndDate},
                 (resultSet, i) -> {
                     // First 2 Columns are Static
                     String top5Area = resultSet.getString("TOP_5_AREAS");

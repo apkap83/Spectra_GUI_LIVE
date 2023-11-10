@@ -105,7 +105,7 @@ export function AAAOutagesTable({ dateRange, setLoading }) {
             id: "COMMENTS",
             numeric: false,
             disablePadding: true,
-            label: "Row Labels",
+            label: "Comments",
           },
           {
             id: "DSLAM_OWNER_GROUP",

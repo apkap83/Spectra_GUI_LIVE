@@ -16,7 +16,7 @@ import CachedIcon from "@mui/icons-material/Cached";
 dayjs.extend(utc); // Extend dayjs with the utc plugin
 
 const rangePickerDateFormat = ["DD MMM YYYY"];
-const startDate = dayjs().utc().subtract(1, "month").startOf("day").hour(4);
+const startDate = dayjs().utc().subtract(1, "week").startOf("day").hour(4);
 const endDate = dayjs().utc().startOf("day").hour(23);
 const initialDates = {
   startDate,
@@ -60,7 +60,7 @@ export const TripleAOutagesPlusRemedy = () => {
         gap: "1.5rem",
         margin: "0 10rem",
         height: "100vh",
-        marginBottom: "70rem",
+        marginBottom: "85rem",
       }}
     >
       <div className="aaa__header">
