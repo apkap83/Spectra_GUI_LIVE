@@ -98,13 +98,12 @@ export function RemedyTickets({ dateRange, setLoading }) {
           ...dateLabels,
         ]);
       });
-
-      setLoading(false);
     };
 
     setTimeout(() => {
       getDataFromDB();
-    }, 1300);
+      setLoading(false);
+    }, 1100);
   }, [dateRange]);
 
   function EnhancedTableHead(props) {

@@ -1,8 +1,18 @@
+import { useState } from "react";
 import CanvasJSReact from "@canvasjs/react-charts";
-//var CanvasJSReact = require('@canvasjs/react-charts');
+import Popover from "@mui/material/Popover";
+import Typography from "@mui/material/Typography";
+import httpService from "../../../../services/httpService";
+import Button from "@mui/material/Button";
+import Tooltip, { tooltipClasses } from "@mui/material/Tooltip";
+import { styled } from "@mui/material/styles";
 
 var CanvasJS = CanvasJSReact.CanvasJS;
 var CanvasJSChart = CanvasJSReact.CanvasJSChart;
+
+import config from "../../../../config.json";
+const apiEndPoint =
+  config.apiPrefix + "/api/charts/aaa_outages_top_affected_areas";
 
 // Helper function to convert a date string to a date object
 function parseDate(dateString) {
@@ -10,17 +20,36 @@ function parseDate(dateString) {
   return new Date(year, month - 1, day);
 }
 
+const CustomWidthTooltip = styled(({ className, ...props }) => (
+  <Tooltip {...props} classes={{ popper: className }} />
+))({
+  [`& .${tooltipClasses.tooltip}`]: {
+    maxWidth: 500,
+  },
+});
+
 const chart1AxisData = [
-  "AAA Outages vs Remedy",
+  "AAA Outages VS Remedy",
   "Percentage %",
   "Percentage %",
 ];
 
 const chart2AxisData = [
-  "AAA Outages vs Remedy (Wind+Nova)",
+  "AAA Outages VS Remedy (Wind+Nova)",
   "Date",
   "Percentage %",
 ];
+
+function convertEpochToDate(epoch) {
+  // Create a new Date object with the epoch timestamp
+  var date = new Date(epoch);
+
+  // Define options for the toLocaleDateString method
+  var options = { day: "2-digit", month: "short", year: "numeric" };
+
+  // Format the date
+  return date.toLocaleDateString("en-US", options);
+}
 
 const constructDataForChart = (myData1, myData2) => {
   let constructData1 = [];
@@ -99,7 +128,7 @@ const constructDataForChart = (myData1, myData2) => {
     const data2 = {
       type: "line",
       showInLegend: true,
-      name: "AAA Outages vs Remedy (Wind+Nova)",
+      name: "AAA Outages VS Remedy (Wind+Nova)",
       showInLegend: true,
       // toolTipContent: "{x}: {y}",
       xValueType: "dateTime",
@@ -108,6 +137,10 @@ const constructDataForChart = (myData1, myData2) => {
     return [data2, data1];
   }
 };
+
+function printMe(str) {
+  console.log(str);
+}
 
 function toogleDataSeries(e) {
   if (typeof e.dataSeries.visible === "undefined" || e.dataSeries.visible) {
@@ -119,7 +152,10 @@ function toogleDataSeries(e) {
 }
 
 export const AAAOutagesVSRemedyCharts = ({ chartData }) => {
-  console.log("chartData", chartData);
+  const [top5Data, setTop5Data] = useState([]);
+  const [selectedDate, setSelectedDate] = useState(null);
+
+  let clearTimer = "";
   const getOptionsChart1 = (
     chartTitle,
     axisXTitle,
@@ -148,6 +184,27 @@ export const AAAOutagesVSRemedyCharts = ({ chartData }) => {
 
       toolTip: {
         shared: true,
+        contentFormatter: function (e) {
+          clearTimeout(clearTimer);
+          var content = "";
+
+          for (var i = 0; i < e.entries.length; i++) {
+            content +=
+              e.entries[i].dataSeries.name +
+              " " +
+              "<strong>" +
+              e.entries[i].dataPoint.y +
+              " %</strong>";
+            content += "<br/>";
+          }
+
+          clearTimer = setTimeout(() => {
+            getDataFromDB(e.entries[0].dataPoint.x);
+            setSelectedDate(e.entries[0].dataPoint.x);
+          }, 1100);
+
+          return content;
+        },
       },
       legend: {
         cursor: "pointer",
@@ -159,47 +216,31 @@ export const AAAOutagesVSRemedyCharts = ({ chartData }) => {
     };
 
     options["data"] = constructDataForChart(chartData[0], chartData[1]);
-    console.log('options["data"]', options["data"]);
-    return options;
-  };
-
-  const getOptionsChart2 = (
-    chartTitle,
-    axisXTitle,
-    axisYTitle,
-    kpiItemNames
-  ) => {
-    const options = {
-      animationEnabled: true,
-      exportEnabled: true,
-      zoomEnabled: true,
-      theme: "light1", // "light1", "dark1", "dark2"
-      title: {
-        text: chartTitle,
-      },
-      axisY: {
-        title: axisXTitle,
-        includeZero: true,
-        suffix: "",
-      },
-      axisX: {
-        title: axisYTitle,
-        // prefix: "W",
-        interval: 1,
-      },
-    };
-
-    options["data"] = constructDataForChart(chartData[1]);
     return options;
   };
 
   let chartOptionsChart1 = getOptionsChart1(...chart1AxisData);
 
-  // let chartOptionsChart2 = getOptionsChart2(...chart2AxisData);
-
   if (!chartData || chartData.length === 0) {
     return null;
   }
+
+  const getDataFromDB = async (date) => {
+    console.log("getDataFromDB", date);
+    const myDate = new Date(date);
+
+    const dateRange = {
+      startDate: myDate,
+      endDate: new Date(myDate.setDate(myDate.getDate() + 1)),
+    };
+
+    const { data: myData } = await httpService.post(apiEndPoint, {
+      dateRange,
+    });
+
+    setTop5Data(myData);
+  };
+  console.log("top5Data", top5Data);
   return (
     <div style={{ width: "100%" }}>
       <div
@@ -208,10 +249,55 @@ export const AAAOutagesVSRemedyCharts = ({ chartData }) => {
           display: "flex",
           flexDirection: "column",
           gap: "2rem",
+          position: "relative",
         }}
       >
-        <CanvasJSChart options={chartOptionsChart1} />
-        {/* <CanvasJSChart options={chartOptionsChart2} /> */}
+        <div
+          style={{
+            position: "absolute",
+            right: "70rem",
+            top: "0rem",
+            zIndex: "10",
+            marginLeft: "auto",
+            backgroundColor: "#4a4a4a",
+            fontSize: "0.7rem",
+            textAlign: "left",
+            marginBottom: "3rem",
+            color: "#fff",
+          }}
+        ></div>
+
+        <Tooltip
+          title={
+            selectedDate && (
+              <div>
+                <h4>{convertEpochToDate(selectedDate)}</h4>
+                <ol
+                  style={{
+                    // width: "15rem",
+                    marginLeft: "auto",
+                    margin: "0.5rem",
+                    padding: "0.5rem",
+                  }}
+                >
+                  {top5Data &&
+                    top5Data.map((item) => {
+                      return (
+                        <h6>
+                          <li>{item.topAffected}</li>
+                        </h6>
+                      );
+                    })}
+                </ol>
+              </div>
+            )
+          }
+          followCursor
+          sx={{ typography: "body1", fontSize: "5.25rem" }}
+        >
+          <div></div>
+          <CanvasJSChart options={chartOptionsChart1} />
+        </Tooltip>
       </div>
     </div>
   );

@@ -114,12 +114,11 @@ function windAndNovaOutagesOverWindAndNovaTotalEvents(data) {
   return percentageByDate;
 }
 
-export function PercentagesTable({ dateRange, setLoading }) {
+export function PercentagesTable({ dateRange }) {
   const [rows, setQuery1Data] = useState([]);
   const [headCells, setHeadCells] = useState([]);
 
   useEffect(() => {
-    setLoading(true);
     const getDataFromDB = async () => {
       const { data: myData } = await httpService.post(apiEndPoint, {
         dateRange,
@@ -179,12 +178,11 @@ export function PercentagesTable({ dateRange, setLoading }) {
       });
 
       setQuery1Data(dataTobeShown);
-      setLoading(false);
     };
 
     setTimeout(() => {
       getDataFromDB();
-    }, 1500);
+    }, 1200);
   }, [dateRange]);
 
   function EnhancedTableHead(props) {

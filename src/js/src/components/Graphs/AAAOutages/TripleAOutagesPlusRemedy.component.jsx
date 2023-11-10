@@ -9,13 +9,15 @@ import locale from "antd/es/date-picker/locale/en_GB";
 import { datesWithinRange } from "../../../lib/helpFunctions";
 import { AAAOutagesTable } from "./AAAOutagesMatrix.component";
 import { PercentagesTable } from "./PercentagesMatrix";
-import { AAAOutagesVSRemedyChart } from "./Charts/AAAOutagesVSRemedyChart";
+
+import Button from "@mui/material/Button";
+import CachedIcon from "@mui/icons-material/Cached";
 
 dayjs.extend(utc); // Extend dayjs with the utc plugin
 
 const rangePickerDateFormat = ["DD MMM YYYY"];
 const startDate = dayjs().utc().subtract(1, "month").startOf("day").hour(4);
-const endDate = dayjs().utc().add(1, "day").startOf("day").hour(3);
+const endDate = dayjs().utc().startOf("day").hour(23);
 const initialDates = {
   startDate,
   endDate,
@@ -24,7 +26,9 @@ const initialDates = {
 export const TripleAOutagesPlusRemedy = () => {
   const [value, setValue] = useState(null);
   const [dateRange, setDateRange] = useState(initialDates);
-  const [loading, setLoading] = useState(null);
+  const [loadingAAA, setLoadingAAA] = useState(false);
+  const [loadingRemedyTickets, setLoadingRemedyTickets] = useState(false);
+  const [refreshKey, setRefreshKey] = useState(0);
 
   useEffect(() => {
     if (value && value.length == 2) {
@@ -33,17 +37,30 @@ export const TripleAOutagesPlusRemedy = () => {
         endDate: value[1].utc().add(1, "day").startOf("day").hour(3),
       });
     }
+    setLoadingAAA(true);
+    setLoadingRemedyTickets(true);
   }, [value]);
+
+  const handleRefreshClick = () => {
+    // Check if value is set, otherwise use the initial date range
+    const newValue = value
+      ? [...value]
+      : [dateRange.startDate, dateRange.endDate];
+
+    setValue(newValue);
+
+    setRefreshKey((oldKey) => oldKey + 1); // Increment the key to force rerender
+  };
 
   return (
     <div
       style={{
         display: "flex",
         flexDirection: "column",
-        gap: "1rem",
+        gap: "1.5rem",
         margin: "0 10rem",
         height: "100vh",
-        marginBottom: "55rem",
+        marginBottom: "70rem",
       }}
     >
       <div className="aaa__header">
@@ -55,23 +72,42 @@ export const TripleAOutagesPlusRemedy = () => {
             format={rangePickerDateFormat}
             defaultValue={[dateRange.startDate, dateRange.endDate]}
             className="aaa__header__datePicker--item"
-            onChange={(dates, dateStrings) => {
+            onChange={(dates) => {
               if (datesWithinRange(dates)) {
                 setValue(dates);
               }
             }}
           />
-          <CircularIndeterminate size={22} loading={loading} />
+          <div className="aaa__header__reload">
+            {loadingAAA || loadingRemedyTickets ? (
+              <CircularIndeterminate size={25} loading={true} />
+            ) : (
+              <Button
+                className="aaa__header__reloadButton"
+                variant="outlined"
+                onClick={handleRefreshClick}
+              >
+                <CachedIcon fontSize="medium" />
+              </Button>
+            )}
+          </div>
         </div>
       </div>
 
-      <AAAOutagesTable dateRange={dateRange} setLoading={setLoading} />
-
-      <RemedyTickets dateRange={dateRange} setLoading={setLoading} />
-
-      <PercentagesTable dateRange={dateRange} setLoading={setLoading} />
-
-      {/* <AAAOutagesVSRemedyChart chartData={percentagesTableData} /> */}
+      <AAAOutagesTable
+        key={`outages-${refreshKey}`}
+        dateRange={dateRange}
+        setLoading={setLoadingAAA}
+      />
+      <RemedyTickets
+        key={`remedy-${refreshKey}`}
+        dateRange={dateRange}
+        setLoading={setLoadingRemedyTickets}
+      />
+      <PercentagesTable
+        key={`percentages-${refreshKey}`}
+        dateRange={dateRange}
+      />
     </div>
   );
 };

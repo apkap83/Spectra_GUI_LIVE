@@ -2,6 +2,7 @@ package gr.wind.FullStackSpring_Review.stats;
 
 import gr.wind.FullStackSpring_Review.model.AaaOutagesRemedy;
 import gr.wind.FullStackSpring_Review.model.AaaOutagesRemedy2;
+import gr.wind.FullStackSpring_Review.model.TopAffected;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -24,5 +25,9 @@ public class RemedyStatsService {
 
     public List<AaaOutagesRemedy2> getStatsForDateRangeQuery2(Date startDate, Date endDate) {
         return remedyStatsDataAccessService.getStatsForDatesQuery2(startDate, endDate);
+    }
+
+    public List<TopAffected> getStatsForTopXAffected(Date startDate, Date endDate) {
+        return remedyStatsDataAccessService.getStatsForTopXAffected(startDate, endDate);
     }
 }

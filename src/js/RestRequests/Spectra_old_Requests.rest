@@ -1,0 +1,185 @@
+###
+GET http://localhost:4000/api/incidents/getallincidents
+
+###
+POST http://localhost:3500/api/charts/num_of_requests_per_method
+Content-Type: application/json
+
+{
+"dateRange": {
+    "startDate": "2022-10-24T22:00:00.000Z",
+    "endDate": "2022-12-24T22:00:00.000Z"
+}
+
+}
+
+Request URL: http://127.0.0.1:4000/api/incidents/getallincidents
+
+###
+GET http://127.0.0.1:4000/api/incidents/getopenincidents
+Authorization: Bearer eyJhbGciOiJIUzI1NiJ9.eyJyb2xlcyI6WyJ1c2VyOmNhbnVwbG9hZDphZGhvY21lc3NhZ2UiLCJ1c2VyOmNhbm1hbmFnZTp1c2VycyIsInVzZXI6Y2FuZG93bmxvYWQ6ZmlsZXMiLCJ1c2VyOmNhbmFsdGVyX2JhY2t1cF9wb2xpY3kiLCJ1c2VyOmNhbmFsdGVyOm1lc3NhZ2UiLCJST0xFX0FETUlOIiwidXNlcjpjYW5kaXNhYmxlOnB1Ymxpc2hpbmciXSwiZXhwIjoxNjg0NDM2Mjg0LCJpYXQiOjE2ODQ0MDAyODQsInVzZXJuYW1lIjoiYWthcGV0YW4ifQ.qyEaCq-TPsHksl0iBisJCHuxm-kkcQcB7wv-B1fdGoI
+
+
+###
+GET http://localhost:4000/api/incidents/getstatsforwindincidentid/INC000003102520
+
+
+###
+GET http://localhost:4000/api/incidents/getstatsfornovaincidentid/INC000003101574
+
+###
+GET http://localhost:4000/api/incidents/downloadcustomerscalledforwindincidentid/INC000003103267
+
+###
+GET http://localhost:4000/api/incidents/downloadcustomerscalledfornovaincidentid/INC000003102449
+
+###
+POST http://127.0.0.1:4000/api/authenticate
+Content-Type: application/json
+
+{
+    "username": "akapetan",
+    "password": "sXlZ5vlmUA98yXo7qERr"
+}
+
+###
+GET http://127.0.0.1:4000/api/incidents/getallincidents
+
+
+### Get All User details
+GET http://127.0.0.1:4000/api/users/getalluserdetails
+Authorization: Bearer: eyJhbGciOiJIUzI1NiJ9.eyJyb2xlcyI6WyJ1c2VyOmNhbnVwbG9hZDphZGhvY21lc3NhZ2UiLCJ1c2VyOmNhbm1hbmFnZTp1c2VycyIsInVzZXI6Y2FuZG93bmxvYWQ6ZmlsZXMiLCJ1c2VyOmNhbmFsdGVyX2JhY2t1cF9wb2xpY3kiLCJ1c2VyOmNhbmFsdGVyOm1lc3NhZ2UiLCJST0xFX0FETUlOIiwidXNlcjpjYW5kaXNhYmxlOnB1Ymxpc2hpbmciXSwiZXhwIjoxNjg0NDM2Mjg0LCJpYXQiOjE2ODQ0MDAyODQsInVzZXJuYW1lIjoiYWthcGV0YW4ifQ.qyEaCq-TPsHksl0iBisJCHuxm-kkcQcB7wv-B1fdGoI
+
+
+
+### Get All Actuator endpoints
+GET http://127.0.0.1:4000/actuator/info
+Authorization: Bearer: eyJhbGciOiJIUzI1NiJ9.eyJyb2xlcyI6WyJ1c2VyOmNhbnVwbG9hZDphZGhvY21lc3NhZ2UiLCJ1c2VyOmNhbm1hbmFnZTp1c2VycyIsInVzZXI6Y2FuZG93bmxvYWQ6ZmlsZXMiLCJ1c2VyOmNhbmFsdGVyX2JhY2t1cF9wb2xpY3kiLCJ1c2VyOmNhbmFsdGVyOm1lc3NhZ2UiLCJST0xFX0FETUlOIiwidXNlcjpjYW5kaXNhYmxlOnB1Ymxpc2hpbmciXSwiZXhwIjoxNjg0NDM2Mjg0LCJpYXQiOjE2ODQ0MDAyODQsInVzZXJuYW1lIjoiYWthcGV0YW4ifQ.qyEaCq-TPsHksl0iBisJCHuxm-kkcQcB7wv-B1fdGoI
+
+
+### Get All Actuator endpoints
+GET http://127.0.0.1:4000/actuator/mappings
+Authorization: Bearer: eyJhbGciOiJIUzI1NiJ9.eyJyb2xlcyI6WyJ1c2VyOmNhbnVwbG9hZDphZGhvY21lc3NhZ2UiLCJ1c2VyOmNhbmRvd25sb2FkOmZpbGVzIiwidXNlcjpjYW5tYW5hZ2U6dXNlcnMiLCJ1c2VyOmNhbmFsdGVyX2JhY2t1cF9wb2xpY3kiLCJ1c2VyOmNhbmFsdGVyOm1lc3NhZ2UiLCJST0xFX0FETUlOIiwidXNlcjpjYW5kaXNhYmxlOnB1Ymxpc2hpbmciXSwiZXhwIjoxNjg0OTc2NzA2LCJpYXQiOjE2ODQ5NDA3MDYsInVzZXJuYW1lIjoiYWthcGV0YW4ifQ.-tcUmPcUyI9WslVmKfHreGHsseXF94QN3HhohpLhdII
+
+
+### Get All User details
+GET http://127.0.0.1:4000/api/users/getalluserdetails
+Authorization: Bearer: eyJhbGciOiJIUzI1NiJ9.eyJyb2xlcyI6WyJ1c2VyOmNhbnVwbG9hZDphZGhvY21lc3NhZ2UiLCJ1c2VyOmNhbmRvd25sb2FkOmZpbGVzIiwidXNlcjpjYW5tYW5hZ2U6dXNlcnMiLCJ1c2VyOmNhbmFsdGVyX2JhY2t1cF9wb2xpY3kiLCJ1c2VyOmNhbmFsdGVyOm1lc3NhZ2UiLCJST0xFX0FETUlOIiwidXNlcjpjYW5kaXNhYmxlOnB1Ymxpc2hpbmciXSwiZXhwIjoxNjg0OTc2NzA2LCJpYXQiOjE2ODQ5NDA3MDYsInVzZXJuYW1lIjoiYWthcGV0YW4ifQ.-tcUmPcUyI9WslVmKfHreGHsseXF94QN3HhohpLhdII
+
+
+### Add new user
+POST http://127.0.0.1:4000/api/users/addnewuser
+Content-Type: application/json
+Authorization: Bearer: eyJhbGciOiJIUzI1NiJ9.eyJyb2xlcyI6WyJ1c2VyOmNhbnVwbG9hZDphZGhvY21lc3NhZ2UiLCJ1c2VyOmNhbmRvd25sb2FkOmZpbGVzIiwidXNlcjpjYW5tYW5hZ2U6dXNlcnMiLCJ1c2VyOmNhbmFsdGVyX2JhY2t1cF9wb2xpY3kiLCJ1c2VyOmNhbmFsdGVyOm1lc3NhZ2UiLCJST0xFX0FETUlOIiwidXNlcjpjYW5kaXNhYmxlOnB1Ymxpc2hpbmciXSwiZXhwIjoxNjg0OTc2NzA2LCJpYXQiOjE2ODQ5NDA3MDYsInVzZXJuYW1lIjoiYWthcGV0YW4ifQ.-tcUmPcUyI9WslVmKfHreGHsseXF94QN3HhohpLhdII
+
+{
+    "realName": "Test1 Name 5",
+    "userName": "test5",
+    "active": "1",
+    "password": "pass123",
+    "role": "USER_RO"
+}
+
+### Add new user with a non-admin account
+POST http://127.0.0.1:4000/api/users/addnewuser
+Content-Type: application/json
+Authorization: Bearer: eyJhbGciOiJIUzI1NiJ9.eyJyb2xlcyI6WyJST0xFX1VTRVJfUk8iXSwiZXhwIjoxNjg0OTc5MTMxLCJpYXQiOjE2ODQ5NDMxMzEsInVzZXJuYW1lIjoidGVzdDMifQ.QgDbwCXGM6kZB_lOwo9wS6pqEv1Kz7KT7SL75fStJmM
+
+{
+    "realName": "Test1 Name 6",
+    "userName": "test6",
+    "active": "1",
+    "password": "pass123",
+    "role": "USER_RO"
+}
+
+### Update User
+POST http://127.0.0.1:4000/api/users/updateuser
+Content-Type: application/json
+Authorization: Bearer: eyJhbGciOiJIUzI1NiJ9.eyJyb2xlcyI6WyJ1c2VyOmNhbnVwbG9hZDphZGhvY21lc3NhZ2UiLCJ1c2VyOmNhbm1hbmFnZTp1c2VycyIsInVzZXI6Y2FuZG93bmxvYWQ6ZmlsZXMiLCJ1c2VyOmNhbmFsdGVyX2JhY2t1cF9wb2xpY3kiLCJ1c2VyOmNhbmFsdGVyOm1lc3NhZ2UiLCJST0xFX0FETUlOIiwidXNlcjpjYW5kaXNhYmxlOnB1Ymxpc2hpbmciXSwiZXhwIjoxNjg0NDM2Mjg0LCJpYXQiOjE2ODQ0MDAyODQsInVzZXJuYW1lIjoiYWthcGV0YW4ifQ.qyEaCq-TPsHksl0iBisJCHuxm-kkcQcB7wv-B1fdGoI
+
+{
+    "realName": "Renamed Real Name",
+    "userName": "test1",
+    "active": "1",
+    "password": "pass123",
+    "role": "USER_RO"
+}
+
+### Delete user
+POST http://127.0.0.1:4000/api/users/deleteuser
+Content-Type: application/json
+Authorization: Bearer: eyJhbGciOiJIUzI1NiJ9.eyJyb2xlcyI6WyJ1c2VyOmNhbnVwbG9hZDphZGhvY21lc3NhZ2UiLCJ1c2VyOmNhbm1hbmFnZTp1c2VycyIsInVzZXI6Y2FuZG93bmxvYWQ6ZmlsZXMiLCJ1c2VyOmNhbmFsdGVyX2JhY2t1cF9wb2xpY3kiLCJ1c2VyOmNhbmFsdGVyOm1lc3NhZ2UiLCJST0xFX0FETUlOIiwidXNlcjpjYW5kaXNhYmxlOnB1Ymxpc2hpbmciXSwiZXhwIjoxNjg0NDM2Mjg0LCJpYXQiOjE2ODQ0MDAyODQsInVzZXJuYW1lIjoiYWthcGV0YW4ifQ.qyEaCq-TPsHksl0iBisJCHuxm-kkcQcB7wv-B1fdGoI
+
+{
+    "realName": "Test1 Name",
+    "userName": "test1",
+    "active": "1",
+    "password": "pass123",
+    "role": "USER_RO"
+}
+
+### Change user password
+POST http://127.0.0.1:4000/api/users/changeuserpassword
+Content-Type: application/json
+Authorization: Bearer: eyJhbGciOiJIUzI1NiJ9.eyJyb2xlcyI6WyJ1c2VyOmNhbnVwbG9hZDphZGhvY21lc3NhZ2UiLCJ1c2VyOmNhbm1hbmFnZTp1c2VycyIsInVzZXI6Y2FuZG93bmxvYWQ6ZmlsZXMiLCJ1c2VyOmNhbmFsdGVyX2JhY2t1cF9wb2xpY3kiLCJ1c2VyOmNhbmFsdGVyOm1lc3NhZ2UiLCJST0xFX0FETUlOIiwidXNlcjpjYW5kaXNhYmxlOnB1Ymxpc2hpbmciXSwiZXhwIjoxNjg0NDM2Mjg0LCJpYXQiOjE2ODQ0MDAyODQsInVzZXJuYW1lIjoiYWthcGV0YW4ifQ.qyEaCq-TPsHksl0iBisJCHuxm-kkcQcB7wv-B1fdGoI
+
+{
+    "realName": "power",
+    "userName": "power",
+    "password": "pass123"
+}
+
+
+### Disable User
+POST http://127.0.0.1:4000/api/users/disableuser
+Content-Type: application/json
+Authorization: Bearer: eyJhbGciOiJIUzI1NiJ9.eyJyb2xlcyI6WyJ1c2VyOmNhbnVwbG9hZDphZGhvY21lc3NhZ2UiLCJ1c2VyOmNhbm1hbmFnZTp1c2VycyIsInVzZXI6Y2FuZG93bmxvYWQ6ZmlsZXMiLCJ1c2VyOmNhbmFsdGVyX2JhY2t1cF9wb2xpY3kiLCJ1c2VyOmNhbmFsdGVyOm1lc3NhZ2UiLCJST0xFX0FETUlOIiwidXNlcjpjYW5kaXNhYmxlOnB1Ymxpc2hpbmciXSwiZXhwIjoxNjg0NDM2Mjg0LCJpYXQiOjE2ODQ0MDAyODQsInVzZXJuYW1lIjoiYWthcGV0YW4ifQ.qyEaCq-TPsHksl0iBisJCHuxm-kkcQcB7wv-B1fdGoI
+
+{
+    "realName": "Test1 Name",
+    "userName": "test1"
+}
+
+
+### Enable User
+POST http://127.0.0.1:4000/api/users/enableuser
+Content-Type: application/json
+Authorization: Bearer: eyJhbGciOiJIUzI1NiJ9.eyJyb2xlcyI6WyJ1c2VyOmNhbnVwbG9hZDphZGhvY21lc3NhZ2UiLCJ1c2VyOmNhbm1hbmFnZTp1c2VycyIsInVzZXI6Y2FuZG93bmxvYWQ6ZmlsZXMiLCJ1c2VyOmNhbmFsdGVyX2JhY2t1cF9wb2xpY3kiLCJ1c2VyOmNhbmFsdGVyOm1lc3NhZ2UiLCJST0xFX0FETUlOIiwidXNlcjpjYW5kaXNhYmxlOnB1Ymxpc2hpbmciXSwiZXhwIjoxNjg0NDM2Mjg0LCJpYXQiOjE2ODQ0MDAyODQsInVzZXJuYW1lIjoiYWthcGV0YW4ifQ.qyEaCq-TPsHksl0iBisJCHuxm-kkcQcB7wv-B1fdGoI
+
+{
+    "realName": "Test1 Name",
+    "userName": "test1"
+}
+
+### Update User Role
+POST http://127.0.0.1:4000/api/users/updateuserrole
+Content-Type: application/json
+Authorization: Bearer: eyJhbGciOiJIUzI1NiJ9.eyJyb2xlcyI6WyJ1c2VyOmNhbnVwbG9hZDphZGhvY21lc3NhZ2UiLCJ1c2VyOmNhbm1hbmFnZTp1c2VycyIsInVzZXI6Y2FuZG93bmxvYWQ6ZmlsZXMiLCJ1c2VyOmNhbmFsdGVyX2JhY2t1cF9wb2xpY3kiLCJ1c2VyOmNhbmFsdGVyOm1lc3NhZ2UiLCJST0xFX0FETUlOIiwidXNlcjpjYW5kaXNhYmxlOnB1Ymxpc2hpbmciXSwiZXhwIjoxNjg0NDM2Mjg0LCJpYXQiOjE2ODQ0MDAyODQsInVzZXJuYW1lIjoiYWthcGV0YW4ifQ.qyEaCq-TPsHksl0iBisJCHuxm-kkcQcB7wv-B1fdGoI
+
+{
+       "userName": "test",
+       "role": "USER_RO"
+}
+
+### Update Many Users
+POST http://127.0.0.1:4000/api/users/updateManyUsers
+Content-Type: application/json
+Authorization: Bearer: eyJhbGciOiJIUzI1NiJ9.eyJyb2xlcyI6WyJ1c2VyOmNhbnVwbG9hZDphZGhvY21lc3NhZ2UiLCJ1c2VyOmNhbm1hbmFnZTp1c2VycyIsInVzZXI6Y2FuZG93bmxvYWQ6ZmlsZXMiLCJ1c2VyOmNhbmFsdGVyX2JhY2t1cF9wb2xpY3kiLCJ1c2VyOmNhbmFsdGVyOm1lc3NhZ2UiLCJST0xFX0FETUlOIiwidXNlcjpjYW5kaXNhYmxlOnB1Ymxpc2hpbmciXSwiZXhwIjoxNjg0NDM2Mjg0LCJpYXQiOjE2ODQ0MDAyODQsInVzZXJuYW1lIjoiYWthcGV0YW4ifQ.qyEaCq-TPsHksl0iBisJCHuxm-kkcQcB7wv-B1fdGoI
+
+[
+    {
+       "realName": "Test1 Name",
+       "userName": "test1"
+    },
+    {
+        "realName": "Test1 Name",
+        "userName": "test1"
+    }
+]
+    
+
+### Update Many Users
+POST http://127.0.0.1:4000/api/users/getdistinctroles
+Content-Type: application/json
+Authorization: Bearer: eyJhbGciOiJIUzI1NiJ9.eyJyb2xlcyI6WyJ1c2VyOmNhbnVwbG9hZDphZGhvY21lc3NhZ2UiLCJ1c2VyOmNhbm1hbmFnZTp1c2VycyIsInVzZXI6Y2FuZG93bmxvYWQ6ZmlsZXMiLCJ1c2VyOmNhbmFsdGVyX2JhY2t1cF9wb2xpY3kiLCJ1c2VyOmNhbmFsdGVyOm1lc3NhZ2UiLCJST0xFX0FETUlOIiwidXNlcjpjYW5kaXNhYmxlOnB1Ymxpc2hpbmciXSwiZXhwIjoxNjg0NDM2Mjg0LCJpYXQiOjE2ODQ0MDAyODQsInVzZXJuYW1lIjoiYWthcGV0YW4ifQ.qyEaCq-TPsHksl0iBisJCHuxm-kkcQcB7wv-B1fdGoI

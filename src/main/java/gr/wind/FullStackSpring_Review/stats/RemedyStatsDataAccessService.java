@@ -2,6 +2,7 @@ package gr.wind.FullStackSpring_Review.stats;
 
 import gr.wind.FullStackSpring_Review.model.AaaOutagesRemedy;
 import gr.wind.FullStackSpring_Review.model.AaaOutagesRemedy2;
+import gr.wind.FullStackSpring_Review.model.TopAffected;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.stereotype.Repository;
@@ -10,10 +11,7 @@ import java.sql.ResultSetMetaData;
 import java.time.LocalDate;
 import java.time.ZoneId;
 import java.time.format.DateTimeFormatter;
-import java.util.Date;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 @Repository
 public class RemedyStatsDataAccessService {
@@ -217,5 +215,55 @@ public class RemedyStatsDataAccessService {
     }
 
 
+    public List<TopAffected> getStatsForTopXAffected(Date startDate, Date endDate) {
 
+        // Add one day in endDate
+        // Create a Calendar instance and set the time to startDate
+        Calendar calendar = Calendar.getInstance();
+        calendar.setTime(endDate);
+
+        // Add one day
+        calendar.add(Calendar.DAY_OF_MONTH, 1);
+
+        // Get the new date
+        Date newDate = calendar.getTime();
+
+        System.out.println("startDate" + startDate.toString());
+        System.out.println("endDate" + endDate.toString());
+        System.out.println("newDate" + newDate.toString());
+        String sql = """
+                            WITH
+                               DAILY_OUTAGES AS
+                               (
+                                  SELECT
+                                     OTE_SITE_AREA,
+                                     COUNT(1) OUTAGES,
+                                     ROW_NUMBER() OVER (ORDER BY COUNT(1) DESC) ORDERING
+                                  FROM DIOANNID.Z_OUTAGES_MERGED_AAA_RAW_V M
+                                  WHERE M.DATA_SOURCE = 'AAA'
+                                  AND   M.ALARM_START_DATE >= ?
+                                  AND   M.ALARM_START_DATE <  ?
+                                  GROUP BY OTE_SITE_AREA
+                                  ORDER BY OUTAGES DESC
+                               )
+                            SELECT
+                               OTE_SITE_AREA TOP_5_AREAS
+                            FROM DAILY_OUTAGES
+                            WHERE ORDERING <= 5
+                            ORDER BY ORDERING
+                                
+                """;
+
+        List<TopAffected> stats = jdbcTemplate.query(sql,
+                new Object[]{startDate, newDate},
+                (resultSet, i) -> {
+                    // First 2 Columns are Static
+                    String top5Area = resultSet.getString("TOP_5_AREAS");
+
+                    return new TopAffected(top5Area);
+                });
+
+        return stats;
+
+    }
 }
