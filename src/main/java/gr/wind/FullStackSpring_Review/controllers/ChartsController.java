@@ -1,6 +1,5 @@
 package gr.wind.FullStackSpring_Review.controllers;
 
-import gr.wind.FullStackSpring_Review.model.DateFields;
 import gr.wind.FullStackSpring_Review.model.DateRange;
 import gr.wind.FullStackSpring_Review.model.NumOfRequestsPerMethod;
 import gr.wind.FullStackSpring_Review.stats.StatsService;
@@ -40,7 +39,6 @@ public class ChartsController {
         userNameLoggedIn = authentication.getName();
         logger.info(Environment + " " + userNameLoggedIn + " -> Getting WIND Stats from /num_of_requests_per_method controller path");
 
-        System.out.println(myDateRange.toString());
         return statsService.getStatsForDateRange(myDateRange.startDate(), myDateRange.endDate());
     }
 }

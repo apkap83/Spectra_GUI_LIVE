@@ -81,7 +81,6 @@ public class ReadExcelFile {
 
         // Compare Headers of Excel with the anticipated headers
         boolean equal = correctExcelHeaders.equals(headers);
-        System.out.println("Headers are correct OK");
 
         if (!equal) {
             logger.error("This excel files does not contain the correct headers: " + correctExcelHeaders.toString());

@@ -3,7 +3,6 @@ package gr.wind.FullStackSpring_Review.controllers;
 import gr.wind.FullStackSpring_Review.model.DateRange;
 import gr.wind.FullStackSpring_Review.model.NumOfRequestsPerMethod;
 import gr.wind.FullStackSpring_Review.stats.NovaStatsService;
-import gr.wind.FullStackSpring_Review.stats.StatsService;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -40,7 +39,6 @@ public class NovaChartsController {
         userNameLoggedIn = authentication.getName();
         logger.info(Environment + " " + userNameLoggedIn + " -> Getting Nova Stats from /nova_num_of_requests_per_method controller path");
 
-        System.out.println(myDateRange.toString());
         return novaStatsService.getStatsForDateRange(myDateRange.startDate(), myDateRange.endDate());
     }
 }

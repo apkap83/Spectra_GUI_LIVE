@@ -504,7 +504,7 @@ public class NovaIncidentDataAccessService {
         String sql = "" +
                 "delete from " + TablePrefix + "AdHocOutage_CLIS " +
                 "where id = ?";
-        System.out.println("id =" +id);
+
         return jdbcTemplate.update(
                 sql,
                 id

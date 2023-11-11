@@ -39,7 +39,6 @@ public class RemedyChartsController {
         userNameLoggedIn = authentication.getName();
         logger.info(Environment + " " + userNameLoggedIn + " -> Getting Graph AAA Outages Plus Remedy Query 1");
 
-        System.out.println("myDateRange" + myDateRange);
         return remedyStatsService.getStatsForDateRangeQuery1(myDateRange.startDate(), myDateRange.endDate());
 
     }

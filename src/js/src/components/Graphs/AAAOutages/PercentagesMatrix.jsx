@@ -119,9 +119,14 @@ export function PercentagesTable({ dateRange }) {
   const [headCells, setHeadCells] = useState([]);
 
   useEffect(() => {
+    let { startDate, endDate } = dateRange;
+
+    startDate = startDate.subtract(2, "hour");
+    endDate = endDate.subtract(2, "hour").add(1, "day");
+
     const getDataFromDB = async () => {
       const { data: myData } = await httpService.post(apiEndPoint, {
-        dateRange,
+        dateRange: { startDate, endDate },
       });
 
       const dataTobeShown = [];

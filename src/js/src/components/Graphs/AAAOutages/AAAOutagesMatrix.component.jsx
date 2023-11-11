@@ -70,10 +70,15 @@ export function AAAOutagesTable({ dateRange, setLoading }) {
   const [headCells, setHeadCells] = useState([]);
 
   useEffect(() => {
+    let { startDate, endDate } = dateRange;
+
+    startDate = startDate.subtract(2, "hour");
+    endDate = endDate.subtract(2, "hour").add(1, "day");
+
     setLoading(true);
     const getDataFromDB = async () => {
       const { data: myData } = await httpService.post(apiEndPoint, {
-        dateRange,
+        dateRange: { startDate, endDate },
       });
       setQuery1Data(myData);
 

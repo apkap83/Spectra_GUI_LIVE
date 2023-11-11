@@ -16,8 +16,8 @@ import CachedIcon from "@mui/icons-material/Cached";
 dayjs.extend(utc); // Extend dayjs with the utc plugin
 
 const rangePickerDateFormat = ["DD MMM YYYY"];
-const startDate = dayjs().utc().subtract(1, "week").startOf("day").hour(4);
-const endDate = dayjs().utc().startOf("day").hour(23);
+const startDate = dayjs().utc().subtract(1, "week").startOf("day");
+const endDate = dayjs().utc().startOf("day");
 const initialDates = {
   startDate,
   endDate,
@@ -33,12 +33,13 @@ export const TripleAOutagesPlusRemedy = () => {
   useEffect(() => {
     if (value && value.length == 2) {
       setDateRange({
-        startDate: value[0].utc().startOf("day").hour(4),
-        endDate: value[1].utc().add(1, "day").startOf("day").hour(3),
+        startDate: value[0],
+        endDate: value[1],
       });
     }
     setLoadingAAA(true);
     setLoadingRemedyTickets(true);
+    setRefreshKey((oldKey) => oldKey + 1); // Increment the key to force rerender
   }, [value]);
 
   const handleRefreshClick = () => {

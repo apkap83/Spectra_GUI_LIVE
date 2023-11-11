@@ -5,8 +5,9 @@ import randomColor from "randomcolor";
 import { Spin } from "antd";
 import conf from "./config.json";
 import envConf from "../../config.json";
+import CanvasJSReact from "@canvasjs/react-charts";
 
-import CanvasJSReact from "../../lib/assets/canvasjs.react";
+var CanvasJS = CanvasJSReact.CanvasJS;
 var CanvasJSChart = CanvasJSReact.CanvasJSChart;
 
 const apiURL = envConf.apiPrefix + conf.apiURL;
@@ -183,11 +184,16 @@ class RequestsPerMethodLineCharts extends Component {
   render() {
     if (this.state.isFetching) {
       return (
-        <div className="vh-100 d-flex flex-column justify-content-center row-hl">
-          <Spin
-            // indicator={getIndicatorIcon}
-            size="large"
-          ></Spin>
+        <div
+          style={{
+            display: "flex",
+            justifyContent: "center",
+            alignItems: "center",
+            width: "100%",
+            height: "500px",
+          }}
+        >
+          <Spin size="large"></Spin>
           <span className="p-3 text-center">Please wait...</span>
         </div>
       );

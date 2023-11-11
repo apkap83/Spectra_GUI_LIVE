@@ -118,7 +118,7 @@ public class UsersDataAccessService {
                 "`role` = ?, " +
                 "`active` = ? " +
                 "WHERE `userName` = ?";
-        System.out.println(sql);
+
         jdbcTemplate.update(sql, webUser.getRealName(), webUser.getEncryptedPassword(), webUser.getRole(), webUser.getActive(), webUser.getUserName());
     }
 
@@ -128,7 +128,7 @@ public class UsersDataAccessService {
                 TablePrefix + "Spectra_GUI_Users " +
                 "SET `Role` = ? " +
                 "WHERE `userName` = ?";
-        System.out.println(sql);
+
         jdbcTemplate.update(sql, webUser.getRole(), webUser.getUserName());
     }
 

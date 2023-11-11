@@ -28,22 +28,6 @@ export default function Stats() {
     }
   }, [value]);
 
-  // const disabledDate = (current) => {
-  //   if (!dates) {
-  //     return false;
-  //   }
-  //   const tooLate = dates[0] && current.diff(dates[0], "years") > 70;
-  //   const tooEarly = dates[1] && dates[1].diff(current, "years") > 70;
-  //   return !!tooEarly || !!tooLate;
-  // };
-  // const onOpenChange = (open) => {
-  //   if (open) {
-  //     setDates([null, null]);
-  //   } else {
-  //     setDates(null);
-  //   }
-  // };
-
   const dateFormat = ["DD/MM/YYYY"];
   return (
     <div className="container">
@@ -63,6 +47,7 @@ export default function Stats() {
           }}
           onChange={(val) => setValue(val)}
         />
+
         <RequestsPerMethodLineCharts dateRange={dateRange} />
       </div>
     </div>

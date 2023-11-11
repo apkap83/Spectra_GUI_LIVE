@@ -42,7 +42,7 @@ public class RemedyStatsDataAccessService {
         boolean firstIteration = true;
 
         // Generate a COUNT CASE statement for each day
-        for (LocalDate date = startDate; !date.isAfter(endDate); date = date.plusDays(1)) {
+        for (LocalDate date = startDate; !date.isAfter(endDate.minusDays(1)); date = date.plusDays(1)) {
             if (firstIteration) {
                 firstIteration = false;
             } else {
@@ -77,7 +77,7 @@ public class RemedyStatsDataAccessService {
               WHERE M.DATA_SOURCE = 'AAA'
       
               AND   M.ALARM_START_DATE >= ?
-              AND   M.ALARM_START_DATE <= ?
+              AND   M.ALARM_START_DATE < ?
                                           
         
         
@@ -157,7 +157,7 @@ public class RemedyStatsDataAccessService {
                  FROM DIOANNID.Z_DSLAM_OUTAGES_MERGED M
                  WHERE M.INCIDENT_NUMBER IS NOT NULL
                  AND   M.ALARM_START_DATE >= ?
-                 AND   M.ALARM_START_DATE <= ?
+                 AND   M.ALARM_START_DATE < ?
                  GROUP BY
                     TRUNC(M.ALARM_START_DATE),
                     M.INCIDENT_NUMBER
@@ -216,39 +216,6 @@ public class RemedyStatsDataAccessService {
 
 
     public List<TopAffected> getStatsForTopXAffected(Date startDate, Date endDate) {
-
-        // Create a Calendar instance and set the time to startDate
-        Calendar calendarStart = Calendar.getInstance();
-        calendarStart.setTime(startDate);
-
-        // Set hours, minutes, seconds, and milliseconds to 00
-        calendarStart.set(Calendar.HOUR_OF_DAY, 0);
-        calendarStart.set(Calendar.MINUTE, 0);
-        calendarStart.set(Calendar.SECOND, 0);
-        calendarStart.set(Calendar.MILLISECOND, 0);
-
-        // Create a Calendar instance and set the time to endDate
-        Calendar calendarEnd = Calendar.getInstance();
-        calendarEnd.setTime(endDate);
-
-        // Set hours, minutes, seconds, and milliseconds to 00
-        calendarEnd.set(Calendar.HOUR_OF_DAY, 0);
-        calendarEnd.set(Calendar.MINUTE, 0);
-        calendarEnd.set(Calendar.SECOND, 0);
-        calendarEnd.set(Calendar.MILLISECOND, 0);
-
-        // Add one day to the endDate
-        calendarEnd.add(Calendar.DAY_OF_MONTH, 1);
-
-        // Get the new dates
-        Date newStartDate = calendarStart.getTime();
-        Date newEndDate = calendarEnd.getTime();
-
-        System.out.println("startDate" + startDate.toString());
-        System.out.println("endDate" + endDate.toString());
-        System.out.println("newStartDate" + newStartDate.toString());
-        System.out.println("newDate" + newEndDate.toString());
-
         String sql = """
                             WITH
                                DAILY_OUTAGES AS
@@ -273,7 +240,7 @@ public class RemedyStatsDataAccessService {
                 """;
 
         List<TopAffected> stats = jdbcTemplate.query(sql,
-                new Object[]{newStartDate, newEndDate},
+                new Object[]{startDate, endDate},
                 (resultSet, i) -> {
                     // First 2 Columns are Static
                     String top5Area = resultSet.getString("TOP_5_AREAS");

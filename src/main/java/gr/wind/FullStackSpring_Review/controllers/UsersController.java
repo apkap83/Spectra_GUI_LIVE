@@ -36,7 +36,6 @@ public class UsersController {
     @CrossOrigin
     @GetMapping(path = "/getalluserdetails", produces = "application/json")
     public List<SpectraWebUser> getAllUsers() {
-        System.out.println("HERE");
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
         userNameLoggedIn = authentication.getName();
         logger.info(Environment + " " + userNameLoggedIn + " -> GET all User Details");

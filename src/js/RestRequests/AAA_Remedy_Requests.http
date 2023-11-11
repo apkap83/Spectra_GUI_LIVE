@@ -1,20 +1,23 @@
+@host=localhost:4000
+@jwt=Bearer: eyJhbGciOiJIUzI1NiJ9.eyJyb2xlcyI6WyJ1c2VyOmNhbnVwbG9hZDphZGhvY21lc3NhZ2UiLCJ1c2VyOmNhbm1hbmFnZTp1c2VycyIsInVzZXI6Y2FuZG93bmxvYWQ6ZmlsZXMiLCJ1c2VyOmNhbmFsdGVyX2JhY2t1cF9wb2xpY3kiLCJ1c2VyOmNhbmFsdGVyOm1lc3NhZ2UiLCJST0xFX0FETUlOIiwidXNlcjpjYW5kaXNhYmxlOnB1Ymxpc2hpbmciXSwiZXhwIjoxNjk5NzEzNTQ1LCJpYXQiOjE2OTk2Nzc1NDUsInVzZXJuYW1lIjoiYWRtaW4ifQ.Qd7fTWWXHYqx7o4tXJ6oNgjkwETT2b9FVfOL6R0eVYI
+
 ### Get AAA Outages + Remedy First Query
-POST http://localhost:4000/api/charts/aaa_outages_plus_remedy_query1
+POST http://{{host}}/api/charts/aaa_outages_plus_remedy_query1
 Content-Type: application/json
-Authorization: Bearer: eyJhbGciOiJIUzI1NiJ9.eyJyb2xlcyI6WyJ1c2VyOmNhbnVwbG9hZDphZGhvY21lc3NhZ2UiLCJ1c2VyOmNhbm1hbmFnZTp1c2VycyIsInVzZXI6Y2FuZG93bmxvYWQ6ZmlsZXMiLCJ1c2VyOmNhbmFsdGVyX2JhY2t1cF9wb2xpY3kiLCJ1c2VyOmNhbmFsdGVyOm1lc3NhZ2UiLCJST0xFX0FETUlOIiwidXNlcjpjYW5kaXNhYmxlOnB1Ymxpc2hpbmciXSwiZXhwIjoxNjk5NTY1MTYyLCJpYXQiOjE2OTk1MjkxNjIsInVzZXJuYW1lIjoiYWRtaW4ifQ.CFuTllw2hjakf6GDpk1vboTMJP1ePJwl6TxOkarkWtQ
+Authorization: {{jwt}}
 
     {"dateRange":
         {
-            "startDate":"2023-10-01T04:00:00.000Z",
-            "endDate":"2023-10-03T03:00:00.000Z"
+        "startDate": "2023-10-01T00:00:00.000Z",
+        "endDate": "2023-10-05T23:59:59.000Z"
         }
     }
 
 ###
 ### Get AAA Outages + Remedy Second Query
-POST http://localhost:4000/api/charts/aaa_outages_plus_remedy_query2
+POST http://{{host}}/api/charts/aaa_outages_plus_remedy_query2
 Content-Type: application/json
-Authorization: Bearer: eyJhbGciOiJIUzI1NiJ9.eyJyb2xlcyI6WyJ1c2VyOmNhbnVwbG9hZDphZGhvY21lc3NhZ2UiLCJ1c2VyOmNhbm1hbmFnZTp1c2VycyIsInVzZXI6Y2FuZG93bmxvYWQ6ZmlsZXMiLCJ1c2VyOmNhbmFsdGVyX2JhY2t1cF9wb2xpY3kiLCJ1c2VyOmNhbmFsdGVyOm1lc3NhZ2UiLCJST0xFX0FETUlOIiwidXNlcjpjYW5kaXNhYmxlOnB1Ymxpc2hpbmciXSwiZXhwIjoxNjk5NjQwNTg0LCJpYXQiOjE2OTk2MDQ1ODQsInVzZXJuYW1lIjoiYWRtaW4ifQ.0-gR3ysLAh_Zl6ao43YBRaMZEnDIwwAkyXzRUhqug9k
+Authorization: {{jwt}}
 
 { 
     "dateRange":
@@ -25,9 +28,9 @@ Authorization: Bearer: eyJhbGciOiJIUzI1NiJ9.eyJyb2xlcyI6WyJ1c2VyOmNhbnVwbG9hZDph
 }
 
 ###
-POST http://localhost:4000/api/charts/num_of_requests_per_method
+POST http://{{host}}/api/charts/num_of_requests_per_method
 Content-Type: application/json
-Authorization: Bearer: eyJhbGciOiJIUzI1NiJ9.eyJyb2xlcyI6WyJ1c2VyOmNhbnVwbG9hZDphZGhvY21lc3NhZ2UiLCJ1c2VyOmNhbm1hbmFnZTp1c2VycyIsInVzZXI6Y2FuZG93bmxvYWQ6ZmlsZXMiLCJ1c2VyOmNhbmFsdGVyX2JhY2t1cF9wb2xpY3kiLCJ1c2VyOmNhbmFsdGVyOm1lc3NhZ2UiLCJST0xFX0FETUlOIiwidXNlcjpjYW5kaXNhYmxlOnB1Ymxpc2hpbmciXSwiZXhwIjoxNjk5NjQwNTg0LCJpYXQiOjE2OTk2MDQ1ODQsInVzZXJuYW1lIjoiYWRtaW4ifQ.0-gR3ysLAh_Zl6ao43YBRaMZEnDIwwAkyXzRUhqug9k
+Authorization: {{jwt}}
 
 {
     "dateRange":
@@ -38,9 +41,9 @@ Authorization: Bearer: eyJhbGciOiJIUzI1NiJ9.eyJyb2xlcyI6WyJ1c2VyOmNhbnVwbG9hZDph
 }
 
 ###
-POST http://localhost:4000/api/charts/aaa_outages_top_affected_areas
+POST http://{{host}}/api/charts/aaa_outages_top_affected_areas
 Content-Type: application/json
-Authorization: Bearer: eyJhbGciOiJIUzI1NiJ9.eyJyb2xlcyI6WyJ1c2VyOmNhbnVwbG9hZDphZGhvY21lc3NhZ2UiLCJ1c2VyOmNhbm1hbmFnZTp1c2VycyIsInVzZXI6Y2FuZG93bmxvYWQ6ZmlsZXMiLCJ1c2VyOmNhbmFsdGVyX2JhY2t1cF9wb2xpY3kiLCJ1c2VyOmNhbmFsdGVyOm1lc3NhZ2UiLCJST0xFX0FETUlOIiwidXNlcjpjYW5kaXNhYmxlOnB1Ymxpc2hpbmciXSwiZXhwIjoxNjk5NjQwNTg0LCJpYXQiOjE2OTk2MDQ1ODQsInVzZXJuYW1lIjoiYWRtaW4ifQ.0-gR3ysLAh_Zl6ao43YBRaMZEnDIwwAkyXzRUhqug9k
+Authorization: {{jwt}}
 
 {
     "dateRange": {

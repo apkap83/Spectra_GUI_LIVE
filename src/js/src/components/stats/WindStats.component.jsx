@@ -48,6 +48,7 @@ export default function Stats() {
           }}
           onChange={(val) => setValue(val)}
         />
+
         <RequestsPerMethodLineCharts dateRange={dateRange} />
       </div>
     </div>
