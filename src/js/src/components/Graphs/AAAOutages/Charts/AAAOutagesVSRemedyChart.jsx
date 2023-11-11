@@ -109,7 +109,6 @@ export const AAAOutagesVSRemedyCharts = ({ chartData }) => {
     chartData &&
     chartData.length > 0 &&
     Object.keys(chartData[0]["dateValuePair"]).length;
-  console.log("numberOfDaysForChart", numberOfDaysForChart);
 
   useEffect(() => {
     setTop5Data("Loading...");

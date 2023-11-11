@@ -45,7 +45,6 @@ class RequestsPerMethodLineCharts extends Component {
         dateRange: this.props.dateRange,
       }
     );
-    console.log("myData", myData);
     setTimeout(() => {
       this.setState({
         isFetching: false,
@@ -84,13 +83,11 @@ class RequestsPerMethodLineCharts extends Component {
     });
 
     options["data"] = dataCalculation;
-    console.log("options", options);
     return options;
   };
 
   constructDataForChart = (myData, kpiItemName) => {
     let constructData = [];
-    console.log("myData 92", myData);
     myData.map((item) => {
       constructData.push({
         x: Date.parse(item.Date),

@@ -97,7 +97,6 @@ const AppWrapper = () => {
   useEffect(() => {
     const userDetails = auth.getCurrentUser();
     setUserDetails(userDetails);
-    console.log("userDetails", userDetails);
   }, []);
 
   return (
