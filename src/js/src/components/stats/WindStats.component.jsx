@@ -8,8 +8,8 @@ import { ReactComponent as WindLogo } from "../../assets/windLogo.svg";
 
 const { RangePicker } = DatePicker;
 
-const startDate = dayjs().subtract(1, "month");
-const endDate = dayjs();
+const startDate = dayjs().subtract(1, "month").startOf("day");
+const endDate = dayjs().startOf("day");
 
 export default function Stats() {
   const initialDates = {
@@ -23,8 +23,8 @@ export default function Stats() {
   useEffect(() => {
     if (value && value.length == 2) {
       setDateRange({
-        startDate: value[0],
-        endDate: value[1],
+        startDate: value[0].startOf("day"),
+        endDate: value[1].startOf("day"),
       });
     }
   }, [value]);

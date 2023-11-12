@@ -18,16 +18,6 @@ import Toolbar from "@mui/material/Toolbar";
 import Typography from "@mui/material/Typography";
 import Paper from "@mui/material/Paper";
 
-function descendingComparator(a, b, orderBy) {
-  if (b[orderBy] < a[orderBy]) {
-    return -1;
-  }
-  if (b[orderBy] > a[orderBy]) {
-    return 1;
-  }
-  return 0;
-}
-
 function EnhancedTableToolbar() {
   return (
     <Toolbar>
@@ -72,8 +62,8 @@ export function AAAOutagesTable({ dateRange, setLoading }) {
   useEffect(() => {
     let { startDate, endDate } = dateRange;
 
-    startDate = startDate.subtract(2, "hour");
-    endDate = endDate.subtract(2, "hour").add(1, "day");
+    startDate = startDate;
+    endDate = endDate.add(1, "day");
 
     setLoading(true);
     const getDataFromDB = async () => {

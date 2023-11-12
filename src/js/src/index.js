@@ -17,6 +17,17 @@ import "bootstrap/dist/css/bootstrap.css";
 
 import "./scss/styles.scss";
 
+// Set Time Zone
+import dayjs from "dayjs";
+import utc from "dayjs/plugin/utc";
+import timezone from "dayjs/plugin/timezone";
+
+dayjs.extend(utc);
+dayjs.extend(timezone);
+
+// Set the default timezone
+dayjs.tz.setDefault("Europe/Athens");
+
 document.title = config.appTitle;
 
 window.onunhandledrejection = (event) => {

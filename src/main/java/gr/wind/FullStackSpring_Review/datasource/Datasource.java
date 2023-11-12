@@ -2,18 +2,28 @@ package gr.wind.FullStackSpring_Review.datasource;
 
 import com.zaxxer.hikari.HikariDataSource;
 import org.springframework.beans.factory.annotation.Qualifier;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.context.properties.ConfigurationProperties;
 import org.springframework.boot.jdbc.DataSourceBuilder;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.jdbc.core.JdbcTemplate;
-import org.springframework.jdbc.datasource.DataSourceTransactionManager;
-import org.springframework.transaction.PlatformTransactionManager;
 
+import javax.annotation.PostConstruct;
 import javax.sql.DataSource;
+import java.util.TimeZone;
 
 @Configuration
 public class Datasource {
+
+    @Value("${app.timezone}")
+    private String appTimezone;
+
+    @PostConstruct
+    public void init() {
+        // Set the application-wide timezone
+        TimeZone.setDefault(TimeZone.getTimeZone(appTimezone));
+    }
 
     @Bean(name="spectraLiveDB")
     @ConfigurationProperties("app.datasource")

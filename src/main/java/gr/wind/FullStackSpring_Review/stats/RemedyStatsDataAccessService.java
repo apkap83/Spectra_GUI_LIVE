@@ -11,7 +11,10 @@ import java.sql.ResultSetMetaData;
 import java.time.LocalDate;
 import java.time.ZoneId;
 import java.time.format.DateTimeFormatter;
-import java.util.*;
+import java.util.Date;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 
 @Repository
 public class RemedyStatsDataAccessService {
@@ -57,6 +60,9 @@ public class RemedyStatsDataAccessService {
     }
 
     public List<AaaOutagesRemedy> getStatsForDatesQuery1(Date StartDate, Date EndDate) {
+
+        System.out.println("StartDate" + StartDate);
+        System.out.println("EndDate" + EndDate);
 
         String sql = """
         WITH

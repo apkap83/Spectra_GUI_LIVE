@@ -36,8 +36,11 @@ public class StatsDataAccessService {
         // "CDR_DB_Pos":0}
 
         String sql = "SELECT * from " + TablePrefix + "Stats_NumOfRequestsPerMethod " +
-                "WHERE Date Between ? and ?";
+                "WHERE Date >= ? and Date <= ?";
 
+        System.out.println("StartDate"+StartDate);
+        System.out.println("EndDate"+EndDate);
+        System.out.println("sql"+sql);
         List<NumOfRequestsPerMethod> stats = jdbcTemplate.query(sql,
                 new Object[]{StartDate, EndDate},
                 (resultSet, i) -> {

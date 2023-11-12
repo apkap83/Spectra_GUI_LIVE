@@ -1,7 +1,6 @@
 import { useState, useEffect } from "react";
 import { DatePicker } from "antd";
 import dayjs from "dayjs";
-import utc from "dayjs/plugin/utc";
 const { RangePicker } = DatePicker;
 import { RemedyTickets } from "./RemedyTicketsMatrix.component";
 import CircularIndeterminate from "../../common/CircularIndeterminate";
@@ -13,11 +12,9 @@ import { PercentagesTable } from "./PercentagesMatrix";
 import Button from "@mui/material/Button";
 import CachedIcon from "@mui/icons-material/Cached";
 
-dayjs.extend(utc); // Extend dayjs with the utc plugin
-
 const rangePickerDateFormat = ["DD MMM YYYY"];
-const startDate = dayjs().utc().subtract(1, "week").startOf("day");
-const endDate = dayjs().utc().startOf("day");
+const startDate = dayjs().subtract(1, "week").startOf("day");
+const endDate = dayjs().startOf("day");
 const initialDates = {
   startDate,
   endDate,

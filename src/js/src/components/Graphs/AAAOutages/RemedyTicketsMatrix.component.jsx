@@ -2,9 +2,6 @@ import { useState, useEffect, useMemo } from "react";
 import PropTypes from "prop-types";
 import httpService from "../../../services/httpService";
 import config from "../../../config.json";
-const apiEndPoint =
-  config.apiPrefix + "/api/charts/aaa_outages_plus_remedy_query2";
-
 import Box from "@mui/material/Box";
 import Table from "@mui/material/Table";
 import TableBody from "@mui/material/TableBody";
@@ -17,6 +14,9 @@ import TableSortLabel from "@mui/material/TableSortLabel";
 import Toolbar from "@mui/material/Toolbar";
 import Typography from "@mui/material/Typography";
 import Paper from "@mui/material/Paper";
+
+const apiEndPoint =
+  config.apiPrefix + "/api/charts/aaa_outages_plus_remedy_query2";
 
 function EnhancedTableToolbar() {
   return (
@@ -63,8 +63,8 @@ export function RemedyTickets({ dateRange, setLoading }) {
     setLoading(true);
     let { startDate, endDate } = dateRange;
 
-    startDate = startDate.subtract(2, "hour");
-    endDate = endDate.subtract(2, "hour").add(1, "day");
+    startDate = startDate;
+    endDate = endDate.add(1, "day");
 
     const getDataFromDB = async () => {
       const { data: myData } = await httpService.post(apiEndPoint, {
