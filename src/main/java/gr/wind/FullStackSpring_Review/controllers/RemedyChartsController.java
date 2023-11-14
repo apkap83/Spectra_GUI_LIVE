@@ -1,9 +1,6 @@
 package gr.wind.FullStackSpring_Review.controllers;
 
-import gr.wind.FullStackSpring_Review.model.AaaOutagesRemedy;
-import gr.wind.FullStackSpring_Review.model.AaaOutagesRemedy2;
-import gr.wind.FullStackSpring_Review.model.DateRange;
-import gr.wind.FullStackSpring_Review.model.TopAffected;
+import gr.wind.FullStackSpring_Review.model.*;
 import gr.wind.FullStackSpring_Review.stats.RemedyStatsService;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
@@ -64,6 +61,31 @@ public class RemedyChartsController {
         logger.info(Environment + " " + userNameLoggedIn + " -> Getting Stat for Top Affected Areas");
 
         return remedyStatsService.getStatsForTopXAffected(myDateRange.startDate(), myDateRange.endDate());
+
+    }
+
+    @CrossOrigin
+    @PostMapping(path= "/aaa_avg_outages_perday_uniq_dslam_sess_affacted", produces = "application/json")
+    public List<AaaAverageOutagesPerDayUniqDslamSessAffected> getAvgOutagesPerDay(@Valid @RequestBody DateRange myDateRange) {
+
+        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+        userNameLoggedIn = authentication.getName();
+        logger.info(Environment + " " + userNameLoggedIn + " -> Getting Stat for Top Affected Areas");
+
+        return remedyStatsService.getAvgOutagPerDayPlusUniqDslamPlusSessAffected(myDateRange.startDate(), myDateRange.endDate());
+
+    }
+
+
+    @CrossOrigin
+    @PostMapping(path= "/aaa_uniq_users_affected", produces = "application/json")
+    public List<UniqueUsersAffected> getUniqueUsersAffected(@Valid @RequestBody DateRange myDateRange) {
+
+        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+        userNameLoggedIn = authentication.getName();
+        logger.info(Environment + " " + userNameLoggedIn + " -> Getting Stat for Top Affected Areas");
+
+        return remedyStatsService.getUniqueUsersAffected(myDateRange.startDate(), myDateRange.endDate());
 
     }
 }

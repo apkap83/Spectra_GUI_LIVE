@@ -1,8 +1,6 @@
 package gr.wind.FullStackSpring_Review.stats;
 
-import gr.wind.FullStackSpring_Review.model.AaaOutagesRemedy;
-import gr.wind.FullStackSpring_Review.model.AaaOutagesRemedy2;
-import gr.wind.FullStackSpring_Review.model.TopAffected;
+import gr.wind.FullStackSpring_Review.model.*;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.stereotype.Repository;
@@ -256,5 +254,71 @@ public class RemedyStatsDataAccessService {
 
         return stats;
 
+    }
+
+    public List<AaaAverageOutagesPerDayUniqDslamSessAffected> getAvgOutagPerDayPlusUniqDslamPlusSessAffected(Date startDate, Date endDate) {
+        String sql = """
+                      SELECT
+                         CEIL(COUNT(1) / COUNT(DISTINCT ALARM_DAY)) AVG_OUTAGES_PER_DAY,
+                         COUNT(DISTINCT M.DSLAM) UNIQUE_DSLAM,
+                         SUM(M.DATA_AFFECTED) SESSION_AFFECTED
+                      FROM DIOANNID.Z_OUTAGES_MERGED_AAA_RAW_V M
+                      WHERE M.ALARM_START_DATE >= ?
+                      AND   M.ALARM_START_DATE <  ?
+                """;
+
+        List<AaaAverageOutagesPerDayUniqDslamSessAffected> stats = jdbcTemplate.query(sql,
+                new Object[]{startDate, endDate},
+                (resultSet, i) -> {
+                    String avgOutagesPerDay = resultSet.getString("AVG_OUTAGES_PER_DAY");
+                    String uniqueDslam = resultSet.getString("UNIQUE_DSLAM");
+                    String sessionAffected = resultSet.getString("SESSION_AFFECTED");
+
+                    return new AaaAverageOutagesPerDayUniqDslamSessAffected(avgOutagesPerDay, uniqueDslam, sessionAffected);
+                });
+
+        return stats;
+    }
+
+    public List<UniqueUsersAffected> getUniqueUsersAffected(Date startDate, Date endDate) {
+        String sql = """
+                      SELECT
+                         M.DSLAM_OWNER_GROUP,
+                         (CASE WHEN M.RMD_INCIDENT_NUMBER IS NOT NULL THEN 'Yes' ELSE 'No' END) MATCHED_WITH_TICKET,
+                         COALESCE(M.RMD_RESOLUTION_CATEG_TIER_1,'<undefined>') RESOLUTION_CATEG_TIER_1,
+                         COALESCE(M.RMD_RESOLUTION_CATEG_TIER_2,'<undefined>') RESOLUTION_CATEG_TIER_2,
+                         COUNT(DISTINCT M.RMD_INCIDENT_NUMBER) UNIQUE_TICKETS,
+                         COUNT(DISTINCT M.DSLAM) UNIQUE_DSLAMS,
+                         SUM(M.DATA_AFFECTED) AFFECTED_SESSIONS
+                      FROM DIOANNID.Z_OUTAGES_MERGED_AAA_RAW_V M
+                      WHERE M.ALARM_START_DATE >= ?
+                      AND   M.ALARM_START_DATE <  ?
+                      GROUP BY
+                         M.DSLAM_OWNER_GROUP,
+                         COALESCE(M.RMD_RESOLUTION_CATEG_TIER_1,'<undefined>'),
+                         COALESCE(M.RMD_RESOLUTION_CATEG_TIER_2,'<undefined>'),
+                         (CASE WHEN M.RMD_INCIDENT_NUMBER IS NOT NULL THEN 'Yes' ELSE 'No' END)
+                      ORDER BY
+                         M.DSLAM_OWNER_GROUP DESC,
+                         RESOLUTION_CATEG_TIER_1,
+                         RESOLUTION_CATEG_TIER_2,
+                         MATCHED_WITH_TICKET DESC
+                """;
+
+        List<UniqueUsersAffected> stats = jdbcTemplate.query(sql,
+                new Object[]{startDate, endDate},
+                (resultSet, i) -> {
+                    String DSLAM_OWNER_GROUP = resultSet.getString("DSLAM_OWNER_GROUP");
+                    String MATCHED_WITH_TICKET = resultSet.getString("MATCHED_WITH_TICKET");
+                    String RESOLUTION_CATEG_TIER_1 = resultSet.getString("RESOLUTION_CATEG_TIER_1");
+                    String RESOLUTION_CATEG_TIER_2 = resultSet.getString("RESOLUTION_CATEG_TIER_2");
+                    String UNIQUE_TICKETS = resultSet.getString("UNIQUE_TICKETS");
+                    String UNIQUE_DSLAMS = resultSet.getString("UNIQUE_DSLAMS");
+                    String AFFECTED_SESSIONS = resultSet.getString("AFFECTED_SESSIONS");
+
+                   return new UniqueUsersAffected(DSLAM_OWNER_GROUP,MATCHED_WITH_TICKET,RESOLUTION_CATEG_TIER_1,RESOLUTION_CATEG_TIER_2,UNIQUE_TICKETS, UNIQUE_DSLAMS, AFFECTED_SESSIONS);
+                });
+
+        return stats;
     }
 }

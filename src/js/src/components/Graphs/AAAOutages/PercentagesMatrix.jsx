@@ -81,6 +81,28 @@ function entireNetworkOutagesOverAllEvents(data) {
   return summedByDate;
 }
 
+function entireNetworkOutagesOverAllEventsAVG(data) {
+  let summedData = 0;
+  const numOfItems = Object.keys(data).length;
+
+  for (const item in data) {
+    summedData += parseFloat(data[item]);
+  }
+
+  return (summedData / numOfItems).toFixed(1);
+}
+
+function windNovaOutagesOverWindNovaTotalEventsAVG(data) {
+  let summedData = 0;
+  const numOfItems = Object.keys(data).length;
+
+  for (const item in data) {
+    summedData += parseFloat(data[item]);
+  }
+
+  return (summedData / numOfItems).toFixed(1);
+}
+
 function windAndNovaOutagesOverWindAndNovaTotalEvents(data) {
   const summedByDate = {};
   const totalByDate = {};
@@ -114,7 +136,11 @@ function windAndNovaOutagesOverWindAndNovaTotalEvents(data) {
   return percentageByDate;
 }
 
-export function PercentagesTable({ dateRange }) {
+export function PercentagesTable({
+  dateRange,
+  setNetWorkOutagesAvgPercentage,
+  setWindNovaOutagesOverTotalEvents,
+}) {
   const [rows, setQuery1Data] = useState([]);
   const [headCells, setHeadCells] = useState([]);
 
@@ -145,6 +171,14 @@ export function PercentagesTable({ dateRange }) {
 
       const companyOutagesOverTotalEvents =
         windAndNovaOutagesOverWindAndNovaTotalEvents(myData);
+
+      const networkOutagesOverAllEventsAVG =
+        entireNetworkOutagesOverAllEventsAVG(networkOutagesOverAllEvents);
+
+      const windNovaNetworkOutagesOverAllEventsAVG =
+        windNovaOutagesOverWindNovaTotalEventsAVG(
+          companyOutagesOverTotalEvents
+        );
 
       dataTobeShown.push({
         DSLAM_OWNER_GROUP: "Entire Network Outages over All Events %",
@@ -183,6 +217,8 @@ export function PercentagesTable({ dateRange }) {
       });
 
       setQuery1Data(dataTobeShown);
+      setNetWorkOutagesAvgPercentage(networkOutagesOverAllEventsAVG);
+      setWindNovaOutagesOverTotalEvents(windNovaNetworkOutagesOverAllEventsAVG);
     };
 
     setTimeout(() => {

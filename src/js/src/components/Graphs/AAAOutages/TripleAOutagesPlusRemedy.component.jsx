@@ -8,9 +8,10 @@ import locale from "antd/es/date-picker/locale/en_GB";
 import { datesWithinRange } from "../../../lib/helpFunctions";
 import { AAAOutagesTable } from "./AAAOutagesMatrix.component";
 import { PercentagesTable } from "./PercentagesMatrix";
-
+import { Boxes } from "./Boxes";
 import Button from "@mui/material/Button";
 import CachedIcon from "@mui/icons-material/Cached";
+import { UniqueUsersAffectedTable } from "./UniqueUsersAffectedMatrix";
 
 const rangePickerDateFormat = ["DD MMM YYYY"];
 const startDate = dayjs().subtract(1, "week").startOf("day");
@@ -26,6 +27,11 @@ export const TripleAOutagesPlusRemedy = () => {
   const [loadingAAA, setLoadingAAA] = useState(false);
   const [loadingRemedyTickets, setLoadingRemedyTickets] = useState(false);
   const [refreshKey, setRefreshKey] = useState(0);
+
+  const [netWorkOutagesAvgPercentage, setNetWorkOutagesAvgPercentage] =
+    useState(0);
+  const [windNovaOutagesOverTotalEvents, setWindNovaOutagesOverTotalEvents] =
+    useState(0);
 
   useEffect(() => {
     if (value && value.length == 2) {
@@ -92,6 +98,18 @@ export const TripleAOutagesPlusRemedy = () => {
         </div>
       </div>
 
+      <Boxes
+        key={`boxes-${refreshKey}`}
+        dateRange={dateRange}
+        netWorkOutagesAvgPercentage={netWorkOutagesAvgPercentage}
+        windNovaOutagesOverTotalEvents={windNovaOutagesOverTotalEvents}
+      />
+
+      <UniqueUsersAffectedTable
+        key={`uniqueUsersAffected-${refreshKey}`}
+        dateRange={dateRange}
+      />
+
       <AAAOutagesTable
         key={`outages-${refreshKey}`}
         dateRange={dateRange}
@@ -105,6 +123,8 @@ export const TripleAOutagesPlusRemedy = () => {
       <PercentagesTable
         key={`percentages-${refreshKey}`}
         dateRange={dateRange}
+        setNetWorkOutagesAvgPercentage={setNetWorkOutagesAvgPercentage}
+        setWindNovaOutagesOverTotalEvents={setWindNovaOutagesOverTotalEvents}
       />
     </div>
   );

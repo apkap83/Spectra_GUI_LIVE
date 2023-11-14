@@ -13,10 +13,13 @@ export const MyFooter = () => {
   return (
     <>
       {window.location.pathname !== "/login" && userDetails && (
-        <Footer className={footerClass}>
-          <NovaLogo style={{ width: "110px" }} fill="white" stroke="black" />
-          <span className="nmsTeam">NMS Team {getCurrentYear()}</span>
-        </Footer>
+        <>
+          <div className="clear-footer"></div>
+          <Footer className={footerClass}>
+            <NovaLogo style={{ width: "110px" }} fill="white" stroke="black" />
+            <span className="nmsTeam">NMS Team {getCurrentYear()}</span>
+          </Footer>
+        </>
       )}
     </>
   );

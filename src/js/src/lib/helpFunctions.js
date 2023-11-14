@@ -14,3 +14,7 @@ export const datesWithinRange = (dates) => {
     return true;
   }
 };
+
+export function formatNumberWithThousandsSeparator(number) {
+  return number.toLocaleString();
+}

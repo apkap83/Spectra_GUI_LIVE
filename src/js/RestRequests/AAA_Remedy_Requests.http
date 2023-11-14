@@ -1,5 +1,5 @@
 @host=localhost:4000
-@jwt=Bearer: eyJhbGciOiJIUzI1NiJ9.eyJyb2xlcyI6WyJ1c2VyOmNhbnVwbG9hZDphZGhvY21lc3NhZ2UiLCJ1c2VyOmNhbm1hbmFnZTp1c2VycyIsInVzZXI6Y2FuZG93bmxvYWQ6ZmlsZXMiLCJ1c2VyOmNhbmFsdGVyX2JhY2t1cF9wb2xpY3kiLCJ1c2VyOmNhbmFsdGVyOm1lc3NhZ2UiLCJST0xFX0FETUlOIiwidXNlcjpjYW5kaXNhYmxlOnB1Ymxpc2hpbmciXSwiZXhwIjoxNjk5NzEzNTQ1LCJpYXQiOjE2OTk2Nzc1NDUsInVzZXJuYW1lIjoiYWRtaW4ifQ.Qd7fTWWXHYqx7o4tXJ6oNgjkwETT2b9FVfOL6R0eVYI
+@jwt=Bearer: eyJhbGciOiJIUzI1NiJ9.eyJyb2xlcyI6WyJ1c2VyOmNhbnVwbG9hZDphZGhvY21lc3NhZ2UiLCJ1c2VyOmNhbm1hbmFnZTp1c2VycyIsInVzZXI6Y2FuZG93bmxvYWQ6ZmlsZXMiLCJ1c2VyOmNhbmFsdGVyX2JhY2t1cF9wb2xpY3kiLCJ1c2VyOmNhbmFsdGVyOm1lc3NhZ2UiLCJST0xFX0FETUlOIiwidXNlcjpjYW5kaXNhYmxlOnB1Ymxpc2hpbmciXSwiZXhwIjoxNjk5OTk3MTYwLCJpYXQiOjE2OTk5NjExNjAsInVzZXJuYW1lIjoiYWRtaW4ifQ.9O88ubpU60MUp35Uy8gMwl_XkhldeQbHqCcB3JHB8Ps
 
 ### Get AAA Outages + Remedy First Query
 POST http://{{host}}/api/charts/aaa_outages_plus_remedy_query1
@@ -8,8 +8,8 @@ Authorization: {{jwt}}
 
     {"dateRange":
         {
-        "startDate": "2023-10-01T00:00:00.000Z",
-        "endDate": "2023-10-05T23:59:59.000Z"
+        "startDate": "2023-10-01T00:00:00.000+02:00",
+        "endDate": "2023-10-05T00:00:00.000+02:00"
         }
     }
 
@@ -22,8 +22,8 @@ Authorization: {{jwt}}
 { 
     "dateRange":
         {
-             "startDate":"2023-10-01T04:45:22.373Z",
-             "endDate":"2023-10-19T05:45:22.373Z"
+             "startDate":"2023-10-01T00:00:00.000+02:00",
+             "endDate":"2023-10-19T00:00:00.000+02:00"
         }
 }
 
@@ -35,8 +35,8 @@ Authorization: {{jwt}}
 {
     "dateRange":
         {
-             "startDate":"2023-10-01T04:45:22.373Z",
-             "endDate":"2023-10-19T05:45:22.373Z"
+             "startDate":"2023-10-01T00:00:00.000+02:00",
+             "endDate":"2023-10-19T00:00:00.000+02:00"
         }
 }
 
@@ -47,7 +47,32 @@ Authorization: {{jwt}}
 
 {
     "dateRange": {
-    "startDate": "2023-11-01T22:00:00.000Z",
-    "endDate": "2023-11-01T22:00:00.000Z"
+    "startDate": "2023-11-01T22:00:00.000+02:00",
+    "endDate": "2023-11-01T22:00:00.000+02:00"
+    }
+}
+
+
+###
+POST http://{{host}}/api/charts/aaa_avg_outages_perday_uniq_dslam_sess_affacted
+Content-Type: application/json
+Authorization: {{jwt}}
+
+{
+    "dateRange": {
+    "startDate": "2023-11-01T00:00:00.000+02:00",
+    "endDate": "2023-11-03T00:00:00.000+02:00"
+    }
+}
+
+###
+POST http://{{host}}/api/charts/aaa_uniq_users_affected
+Content-Type: application/json
+Authorization: {{jwt}}
+
+{
+    "dateRange": {
+    "startDate": "2023-11-01T00:00:00.000+02:00",
+    "endDate": "2023-11-03T00:00:00.000+02:00"
     }
 }
