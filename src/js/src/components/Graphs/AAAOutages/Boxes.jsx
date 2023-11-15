@@ -123,7 +123,7 @@ export const Boxes = ({
         <h1
           className="infoBox__avgNumber"
           style={{
-            marginLeft: "1rem",
+            marginLeft: "1.4rem",
           }}
         >
           {netWorkOutagesAvgPercentage}%
@@ -158,7 +158,7 @@ export const Boxes = ({
           Wind + Nova Outages over Wind+Nova total Events
         </h4>
 
-        <h1 className="infoBox__avgNumber">
+        <h1 className="infoBox__avgNumber" style={{ marginLeft: "1.8rem" }}>
           {windNovaOutagesOverTotalEvents}%
         </h1>
 

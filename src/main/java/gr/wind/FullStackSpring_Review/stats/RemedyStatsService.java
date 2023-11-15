@@ -37,4 +37,8 @@ public class RemedyStatsService {
     public List<RemedyTicketsPerResolution> getUniqueUsersAffected(Date startDate, Date endDate) {
         return remedyStatsDataAccessService.getUniqueUsersAffected(startDate, endDate);
     }
+
+    public List<TopXSitesAllTechs> getTopXSitesAllTechs(Date startDate, Date endDate) {
+        return remedyStatsDataAccessService.getTopXSitesAllTechs(startDate, endDate);
+    }
 }

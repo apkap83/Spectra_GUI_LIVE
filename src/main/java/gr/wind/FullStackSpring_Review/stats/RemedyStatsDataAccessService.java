@@ -328,4 +328,51 @@ public class RemedyStatsDataAccessService {
 
         return stats;
     }
+
+    public List<TopXSitesAllTechs> getTopXSitesAllTechs(Date startDate, Date endDate) {
+        String sql = """
+                      WITH
+                         OUTAGES AS
+                         (
+                            SELECT
+                               A.DSLAM,
+                               A.DSLAM_OWNER_GROUP,
+                               COUNT(1) OUTAGES,
+                               COUNT(A.RMD_INCIDENT_NUMBER) MATCHED_WITH_TICKETS,
+                               SUM(DATA_AFFECTED) AFFECTED_SESSIONS,
+                               ROW_NUMBER() OVER (ORDER BY COUNT(1) DESC) ORDERING
+                            FROM Z_OUTAGES_MERGED_AAA_RAW_V A
+                            WHERE A.ALARM_START_DATE >= ?
+                            AND   A.ALARM_START_DATE < ?
+                            GROUP BY
+                               A.DSLAM,
+                               A.NETWORK,
+                               A.DSLAM_OWNER_GROUP
+                            ORDER BY
+                               OUTAGES DESC
+                         )
+                      SELECT\s
+                         A.DSLAM,
+                         A.DSLAM_OWNER_GROUP,
+                         A.OUTAGES,
+                         A.MATCHED_WITH_TICKETS
+                      FROM OUTAGES A
+                      WHERE ORDERING <= 30
+                """;
+
+        List<TopXSitesAllTechs> stats = jdbcTemplate.query(sql,
+                new Object[]{startDate, endDate},
+                (resultSet, i) -> {
+                    String DSLAM = resultSet.getString("DSLAM");
+                    String DSLAM_OWNER_GROUP = resultSet.getString("DSLAM_OWNER_GROUP");
+
+                    String OUTAGES = resultSet.getString("OUTAGES");
+
+                    String MATCHED_WITH_TICKETS = resultSet.getString("MATCHED_WITH_TICKETS");
+
+                    return new TopXSitesAllTechs(DSLAM,DSLAM_OWNER_GROUP,OUTAGES,MATCHED_WITH_TICKETS);
+                });
+
+        return stats;
+    }
 }

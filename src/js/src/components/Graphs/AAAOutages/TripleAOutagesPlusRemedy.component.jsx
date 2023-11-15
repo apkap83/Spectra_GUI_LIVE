@@ -113,6 +113,17 @@ export const TripleAOutagesPlusRemedy = () => {
         </div>
       </div>
 
+      <iframe
+        src="http://10.10.18.121:5000/dslam_outage/map?from=2023-11-01&to=2023-11-02"
+        title="Example Iframe"
+        width="600"
+        height="400"
+        style={{ border: "none" }}
+      >
+        {/* Fallback content for browsers that don't support iframes */}
+        <p>Your browser does not support iframes.</p>
+      </iframe>
+
       <Boxes
         key={`boxes-${refreshKey}`}
         dateRange={dateRange}
@@ -120,7 +131,12 @@ export const TripleAOutagesPlusRemedy = () => {
         netWorkOutagesAvgPercentage={netWorkOutagesAvgPercentage}
         windNovaOutagesOverTotalEvents={windNovaOutagesOverTotalEvents}
       />
-
+      <PercentagesTable
+        key={`percentages-${refreshKey}`}
+        dateRange={dateRange}
+        setNetWorkOutagesAvgPercentage={setNetWorkOutagesAvgPercentage}
+        setWindNovaOutagesOverTotalEvents={setWindNovaOutagesOverTotalEvents}
+      />
       <AAAOutagesTable
         key={`outages-${refreshKey}`}
         dateRange={dateRange}
@@ -134,12 +150,6 @@ export const TripleAOutagesPlusRemedy = () => {
       <UniqueUsersAffectedTable
         key={`uniqueUsersAffected-${refreshKey}`}
         dateRange={dateRange}
-      />
-      <PercentagesTable
-        key={`percentages-${refreshKey}`}
-        dateRange={dateRange}
-        setNetWorkOutagesAvgPercentage={setNetWorkOutagesAvgPercentage}
-        setWindNovaOutagesOverTotalEvents={setWindNovaOutagesOverTotalEvents}
       />
     </div>
   );

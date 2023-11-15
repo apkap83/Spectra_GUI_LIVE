@@ -76,3 +76,15 @@ Authorization: {{jwt}}
     "endDate": "2023-11-03T00:00:00.000+02:00"
     }
 }
+
+###
+POST http://{{host}}/api/charts/getTopXSitesAllTechs
+Content-Type: application/json
+Authorization: {{jwt}}
+
+{
+    "dateRange": {
+    "startDate": "2023-11-01T00:00:00.000+02:00",
+    "endDate": "2023-11-03T00:00:00.000+02:00"
+    }
+}
