@@ -78,8 +78,8 @@ public class RemedyChartsController {
 
 
     @CrossOrigin
-    @PostMapping(path= "/aaa_uniq_users_affected", produces = "application/json")
-    public List<UniqueUsersAffected> getUniqueUsersAffected(@Valid @RequestBody DateRange myDateRange) {
+    @PostMapping(path= "/remedy_tickets_per_resolution", produces = "application/json")
+    public List<RemedyTicketsPerResolution> getUniqueUsersAffected(@Valid @RequestBody DateRange myDateRange) {
 
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
         userNameLoggedIn = authentication.getName();

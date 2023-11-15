@@ -46,9 +46,14 @@ public class Datasource {
     @Bean(name="cdr_db")
     @ConfigurationProperties("app.datasourceoracle")
     public HikariDataSource hikariDataSource_CDR_DB() {
-        return DataSourceBuilder.create()
+        HikariDataSource dataSource = DataSourceBuilder.create()
                 .type(HikariDataSource.class)
                 .build();
+
+        // Set the SQL statement to be executed when a new database connection is created
+        dataSource.setConnectionInitSql("ALTER SESSION SET NLS_SORT='GREEK'");
+
+        return dataSource;
 
     }
 

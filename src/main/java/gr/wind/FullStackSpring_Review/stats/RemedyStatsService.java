@@ -34,7 +34,7 @@ public class RemedyStatsService {
         return remedyStatsDataAccessService.getAvgOutagPerDayPlusUniqDslamPlusSessAffected(startDate, endDate);
     }
 
-    public List<UniqueUsersAffected> getUniqueUsersAffected(Date startDate, Date endDate) {
+    public List<RemedyTicketsPerResolution> getUniqueUsersAffected(Date startDate, Date endDate) {
         return remedyStatsDataAccessService.getUniqueUsersAffected(startDate, endDate);
     }
 }

@@ -11,7 +11,7 @@ import { PercentagesTable } from "./PercentagesMatrix";
 import { Boxes } from "./Boxes";
 import Button from "@mui/material/Button";
 import CachedIcon from "@mui/icons-material/Cached";
-import { UniqueUsersAffectedTable } from "./UniqueUsersAffectedMatrix";
+import { UniqueUsersAffectedTable } from "./RemedyTicketsPerResolution";
 
 const rangePickerDateFormat = ["DD MMM YYYY"];
 const startDate = dayjs().subtract(1, "week").startOf("day");
@@ -43,6 +43,8 @@ export const TripleAOutagesPlusRemedy = () => {
     setLoadingAAA(true);
     setLoadingRemedyTickets(true);
     setRefreshKey((oldKey) => oldKey + 1); // Increment the key to force rerender
+    setNetWorkOutagesAvgPercentage(0);
+    setWindNovaOutagesOverTotalEvents(0);
   }, [value]);
 
   const handleRefreshClick = () => {
@@ -53,8 +55,22 @@ export const TripleAOutagesPlusRemedy = () => {
 
     setValue(newValue);
 
+    setNetWorkOutagesAvgPercentage(0);
+    setWindNovaOutagesOverTotalEvents(0);
+
     setRefreshKey((oldKey) => oldKey + 1); // Increment the key to force rerender
   };
+
+  const masterLoading =
+    loadingAAA ||
+    loadingRemedyTickets ||
+    !netWorkOutagesAvgPercentage ||
+    !windNovaOutagesOverTotalEvents;
+
+  function disabledDate(current) {
+    // Disable dates in the future
+    return current && current > dayjs().startOf("day");
+  }
 
   return (
     <div
@@ -63,8 +79,6 @@ export const TripleAOutagesPlusRemedy = () => {
         flexDirection: "column",
         gap: "1.5rem",
         margin: "0 10rem",
-        height: "100vh",
-        marginBottom: "85rem",
       }}
     >
       <div className="aaa__header">
@@ -81,9 +95,10 @@ export const TripleAOutagesPlusRemedy = () => {
                 setValue(dates);
               }
             }}
+            disabledDate={disabledDate}
           />
           <div className="aaa__header__reload">
-            {loadingAAA || loadingRemedyTickets ? (
+            {masterLoading ? (
               <CircularIndeterminate size={25} loading={true} />
             ) : (
               <Button
@@ -101,13 +116,9 @@ export const TripleAOutagesPlusRemedy = () => {
       <Boxes
         key={`boxes-${refreshKey}`}
         dateRange={dateRange}
+        loading={[loadingAAA, loadingAAA]}
         netWorkOutagesAvgPercentage={netWorkOutagesAvgPercentage}
         windNovaOutagesOverTotalEvents={windNovaOutagesOverTotalEvents}
-      />
-
-      <UniqueUsersAffectedTable
-        key={`uniqueUsersAffected-${refreshKey}`}
-        dateRange={dateRange}
       />
 
       <AAAOutagesTable
@@ -119,6 +130,10 @@ export const TripleAOutagesPlusRemedy = () => {
         key={`remedy-${refreshKey}`}
         dateRange={dateRange}
         setLoading={setLoadingRemedyTickets}
+      />
+      <UniqueUsersAffectedTable
+        key={`uniqueUsersAffected-${refreshKey}`}
+        dateRange={dateRange}
       />
       <PercentagesTable
         key={`percentages-${refreshKey}`}

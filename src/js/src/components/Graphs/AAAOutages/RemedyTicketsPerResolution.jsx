@@ -2,7 +2,8 @@ import { useState, useEffect, useMemo } from "react";
 import PropTypes from "prop-types";
 import httpService from "../../../services/httpService";
 import config from "../../../config.json";
-const apiEndPoint = config.apiPrefix + "/api/charts/aaa_uniq_users_affected";
+const apiEndPoint =
+  config.apiPrefix + "/api/charts/remedy_tickets_per_resolution";
 
 import { AAAOutagesVSRemedyCharts } from "./Charts/AAAOutagesVSRemedyChart";
 import { formatNumberWithThousandsSeparator } from "../../../lib/helpFunctions";
@@ -53,43 +54,31 @@ export function UniqueUsersAffectedTable({ dateRange }) {
 
       const columns = [
         {
-          id: "DSLAM_OWNER_GROUP",
-          numeric: true,
+          id: "dslamOwnerGroup",
+          numeric: false,
           disablePadding: false,
           label: "DSLAM Owner Group",
         },
         {
-          id: "MATCHED_WITH_TICKET",
-          numeric: true,
+          id: "resolCateg",
+          numeric: false,
           disablePadding: false,
-          label: "Matched With Ticket",
+          label: "Resolution/Categorization",
         },
         {
-          id: "RESOLUTION_CATEG_TIER_1",
+          id: "tickets",
           numeric: true,
           disablePadding: false,
-          label: "Resolution Categ Tier 1",
+          label: "Tickets",
         },
         {
-          id: "RESOLUTION_CATEG_TIER_2",
+          id: "uniqDslams",
           numeric: true,
           disablePadding: false,
-          label: "Resolution Categ Tier 2",
+          label: "Unique DSLAMs",
         },
         {
-          id: "UNIQUE_TICKETS",
-          numeric: true,
-          disablePadding: false,
-          label: "Unique Tickets",
-        },
-        {
-          id: "UNIQUE_DSLAMS",
-          numeric: true,
-          disablePadding: false,
-          label: "Unique DSLAMS",
-        },
-        {
-          id: "AFFECTED_SESSIONS",
+          id: "affectedSessions",
           numeric: true,
           disablePadding: false,
           label: "Affected Sessions",
@@ -112,7 +101,7 @@ export function UniqueUsersAffectedTable({ dateRange }) {
           {headCells.map((headCell, index) => (
             <TableCell
               key={headCell.id}
-              align={index < 4 ? "left" : "right"}
+              align={index < 2 ? "left" : "right"}
               padding={headCell.disablePadding ? "none" : "normal"}
             >
               <TableSortLabel
@@ -148,17 +137,9 @@ export function UniqueUsersAffectedTable({ dateRange }) {
                     >
                       {row["dslamOwnerGroup"]}
                     </TableCell>
-                    <TableCell align="left">
-                      {row["matchedWithTicket"]}
-                    </TableCell>
-                    <TableCell align="left">{row["resolCategTier1"]}</TableCell>
-                    <TableCell align="left">{row["resolCategTier2"]}</TableCell>
-                    <TableCell align="right">{row["uniqueTickets"]}</TableCell>
-                    <TableCell align="right">
-                      {formatNumberWithThousandsSeparator(
-                        parseFloat(row["uniqDslams"])
-                      )}
-                    </TableCell>
+                    <TableCell align="left">{row["resolCateg"]}</TableCell>
+                    <TableCell align="right">{row["tickets"]}</TableCell>
+                    <TableCell align="right">{row["uniqDslams"]}</TableCell>
                     <TableCell align="right">
                       {formatNumberWithThousandsSeparator(
                         parseFloat(row["affectedSessions"])

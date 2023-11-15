@@ -1,5 +1,5 @@
 @host=localhost:4000
-@jwt=Bearer: eyJhbGciOiJIUzI1NiJ9.eyJyb2xlcyI6WyJ1c2VyOmNhbnVwbG9hZDphZGhvY21lc3NhZ2UiLCJ1c2VyOmNhbm1hbmFnZTp1c2VycyIsInVzZXI6Y2FuZG93bmxvYWQ6ZmlsZXMiLCJ1c2VyOmNhbmFsdGVyX2JhY2t1cF9wb2xpY3kiLCJ1c2VyOmNhbmFsdGVyOm1lc3NhZ2UiLCJST0xFX0FETUlOIiwidXNlcjpjYW5kaXNhYmxlOnB1Ymxpc2hpbmciXSwiZXhwIjoxNjk5OTk3MTYwLCJpYXQiOjE2OTk5NjExNjAsInVzZXJuYW1lIjoiYWRtaW4ifQ.9O88ubpU60MUp35Uy8gMwl_XkhldeQbHqCcB3JHB8Ps
+@jwt=eyJhbGciOiJIUzI1NiJ9.eyJyb2xlcyI6WyJ1c2VyOmNhbnVwbG9hZDphZGhvY21lc3NhZ2UiLCJ1c2VyOmNhbm1hbmFnZTp1c2VycyIsInVzZXI6Y2FuZG93bmxvYWQ6ZmlsZXMiLCJ1c2VyOmNhbmFsdGVyX2JhY2t1cF9wb2xpY3kiLCJ1c2VyOmNhbmFsdGVyOm1lc3NhZ2UiLCJST0xFX0FETUlOIiwidXNlcjpjYW5kaXNhYmxlOnB1Ymxpc2hpbmciXSwiZXhwIjoxNzAwMDY1MzYwLCJpYXQiOjE3MDAwMjkzNjAsInVzZXJuYW1lIjoiYWRtaW4ifQ.mCUhR5elxU6ATli04uGidQ1pkxiG3RVnkVS9ITkKpRs
 
 ### Get AAA Outages + Remedy First Query
 POST http://{{host}}/api/charts/aaa_outages_plus_remedy_query1
@@ -66,7 +66,7 @@ Authorization: {{jwt}}
 }
 
 ###
-POST http://{{host}}/api/charts/aaa_uniq_users_affected
+POST http://{{host}}/api/charts/remedy_tickets_per_resolution
 Content-Type: application/json
 Authorization: {{jwt}}
 
