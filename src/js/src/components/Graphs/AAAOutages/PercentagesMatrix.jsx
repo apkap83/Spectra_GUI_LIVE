@@ -61,25 +61,85 @@ function sumByDate(data) {
 
 function entireNetworkOutagesOverAllEvents(data) {
   const summedByDate = {};
-
   data.forEach((item, itemIndex) => {
     Object.entries(item.dateValuePair).forEach(([date, value]) => {
-      if (itemIndex < 6) {
+      if (
+        item.COMMENTS ===
+          "01.a. AAA outage found in Remedy with +- 60 minutes difference" ||
+        item.COMMENTS ===
+          "02.a. AAA outage found in Remedy with +- 3 hours difference" ||
+        item.COMMENTS ===
+          "04.a.1 question for NOC: Remedy not found /AAA >= 10% calls" ||
+        item.COMMENTS ===
+          "04.b. question for NOC: Remedy not found /AAA < 10% calls"
+      ) {
         if (!summedByDate[date]) {
           summedByDate[date] = 0;
         }
         summedByDate[date] += value;
       }
-
-      if (itemIndex === data.length - 1) {
+      if (item.DSLAM_OWNER_GROUP === "Grand Total") {
         summedByDate[date] =
-          (summedByDate[date] / data[itemIndex].dateValuePair[date]) * 100;
+          (summedByDate[date] / item.dateValuePair[date]) * 100;
 
         summedByDate[date] = summedByDate[date].toFixed(1);
       }
     });
   });
   return summedByDate;
+}
+
+function windAndNovaOutagesOverWindAndNovaTotalEvents(data) {
+  const total1ByDate = {};
+  const total2ByDate = {};
+  const percentageByDate = {};
+  data.forEach((item, itemIndex) => {
+    Object.entries(item.dateValuePair).forEach(([date, value]) => {
+      if (item["DSLAM_OWNER_GROUP"] === "WIND+NOVA") {
+        if (
+          item.COMMENTS ===
+            "01.a. AAA outage found in Remedy with +- 60 minutes difference" ||
+          item.COMMENTS ===
+            "02.a. AAA outage found in Remedy with +- 3 hours difference" ||
+          item.COMMENTS ===
+            "04.a.1 question for NOC: Remedy not found /AAA >= 10% calls" ||
+          item.COMMENTS ===
+            "04.b. question for NOC: Remedy not found /AAA < 10% calls"
+        ) {
+          if (!total1ByDate[date]) {
+            total1ByDate[date] = 0;
+          }
+          total1ByDate[date] += value;
+        }
+      }
+      if (item["DSLAM_OWNER_GROUP"] === "WIND+NOVA") {
+        if (
+          item.COMMENTS ===
+            "01.a. AAA outage found in Remedy with +- 60 minutes difference" ||
+          item.COMMENTS ===
+            "02.a. AAA outage found in Remedy with +- 3 hours difference" ||
+          item.COMMENTS ===
+            "04.a.1 question for NOC: Remedy not found /AAA >= 10% calls" ||
+          item.COMMENTS ===
+            "04.b. question for NOC: Remedy not found /AAA < 10% calls" ||
+          item.COMMENTS === "05. Less than 12 minutes AAA outage" ||
+          item.COMMENTS === "06. AAA outage with 0 calls"
+        ) {
+          if (!total2ByDate[date]) {
+            total2ByDate[date] = 0;
+          }
+          total2ByDate[date] += value;
+        }
+      }
+
+      if (item.DSLAM_OWNER_GROUP === "Grand Total") {
+        percentageByDate[date] =
+          (total1ByDate[date] / total2ByDate[date]) * 100;
+        percentageByDate[date] = percentageByDate[date].toFixed(1);
+      }
+    });
+  });
+  return percentageByDate;
 }
 
 function entireNetworkOutagesOverAllEventsAVG(data) {
@@ -102,39 +162,6 @@ function windNovaOutagesOverWindNovaTotalEventsAVG(data) {
   }
 
   return (summedData / numOfItems).toFixed(1);
-}
-
-function windAndNovaOutagesOverWindAndNovaTotalEvents(data) {
-  const summedByDate = {};
-  const totalByDate = {};
-  const percentageByDate = {};
-
-  data.forEach((item, itemIndex) => {
-    Object.entries(item.dateValuePair).forEach(([date, value]) => {
-      if (itemIndex < 6) {
-        if (item["DSLAM_OWNER_GROUP"] === "WIND+NOVA") {
-          if (!summedByDate[date]) {
-            summedByDate[date] = 0;
-          }
-          summedByDate[date] += value;
-        }
-      }
-
-      if (item["DSLAM_OWNER_GROUP"] === "WIND+NOVA") {
-        if (!totalByDate[date]) {
-          totalByDate[date] = 0;
-        }
-        totalByDate[date] += value;
-      }
-
-      if (itemIndex === data.length - 1) {
-        percentageByDate[date] = (summedByDate[date] / totalByDate[date]) * 100;
-
-        percentageByDate[date] = percentageByDate[date].toFixed(1);
-      }
-    });
-  });
-  return percentageByDate;
 }
 
 export function PercentagesTable({

@@ -88,3 +88,21 @@ Authorization: {{jwt}}
     "endDate": "2023-11-03T00:00:00.000+02:00"
     }
 }
+
+# http://yourhost/proxy/dslam-outage?from=2023-11-01&to=2023-11-02
+###
+GET http://{{host}}/api/charts/proxy/dslam-outage?from=2023-11-01&to=2023-11-02
+# Content-Type: application/json
+# Authorization: {{jwt}}
+
+###
+POST http://localhost:4000/api/charts/nova_num_of_requests_per_method
+Content-Type: application/json
+# Authorization: {{jwt}}
+
+{
+    "dateRange": {
+        "startDate": "2023-10-14T21:00:00.000Z",
+        "endDate": "2023-11-14T22:00:00.000Z"
+    }
+}

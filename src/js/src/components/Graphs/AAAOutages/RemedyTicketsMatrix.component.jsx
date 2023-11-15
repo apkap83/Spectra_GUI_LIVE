@@ -73,6 +73,7 @@ export function RemedyTickets({ dateRange, setLoading }) {
           endDate,
         },
       });
+
       setQuery2Data(myData);
       // Calculate Grand Totals Per Date
       const sumByDateObject = sumByDate(myData);

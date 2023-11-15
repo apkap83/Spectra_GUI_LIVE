@@ -37,7 +37,7 @@ function EnhancedTableToolbar() {
   );
 }
 
-export function UniqueUsersAffectedTable({ dateRange }) {
+export function RemedyTicketsPerResolution({ dateRange }) {
   const [rows, setRows] = useState([]);
   const [headCells, setHeadCells] = useState([]);
 

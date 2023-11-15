@@ -317,7 +317,7 @@ export const TopXSitesIncidentsAllTechs = ({ dateRange }) => {
   };
 
   return (
-    <p>Hello World</p>
+    <div></div>
     // <div style={{ width: "100%" }}>
     //   <div
     //     style={{

@@ -33,6 +33,47 @@ function EnhancedTableToolbar() {
   );
 }
 
+const determineColor = (commentsText) => {
+  if (
+    commentsText ===
+    "01.a. AAA outage found in Remedy with +- 60 minutes difference"
+  ) {
+    return "#A9D08E";
+  }
+
+  if (
+    commentsText ===
+    "02.a. AAA outage found in Remedy with +- 3 hours difference"
+  ) {
+    return "#A9D08E";
+  }
+
+  if (
+    commentsText ===
+    "04.a.1 question for NOC: Remedy not found /AAA >= 10% calls"
+  ) {
+    return "#FFF2CC";
+  }
+
+  if (
+    commentsText === "04.b. question for NOC: Remedy not found /AAA < 10% calls"
+  ) {
+    return "#FFE699";
+  }
+
+  if (commentsText === "05. Less than 12 minutes AAA outage") {
+    return "#FFE699";
+  }
+
+  if (commentsText === "06. AAA outage with 0 calls") {
+    return "#FFE699";
+  }
+
+  if (commentsText === "Grand Total") {
+    return "#f8f8f8";
+  }
+};
+
 function sortDates(a, b) {
   // Convert the string dates into actual Date objects
   const dateA = a.split("/").reverse().join("-");
@@ -167,14 +208,14 @@ export function AAAOutagesTable({ dateRange, setLoading }) {
                     sx={{
                       cursor: "pointer",
 
-                      backgroundColor:
-                        index === 12
-                          ? "#f8f8f8"
-                          : index < 4
-                          ? "#A9D08E"
-                          : index >= 4 && index <= 5
-                          ? "#FFF2CC"
-                          : "#FFE699",
+                      backgroundColor: determineColor(row.COMMENTS),
+                      // index === 12
+                      //   ? "#f8f8f8"
+                      //   : index < 4
+                      //   ? "#A9D08E"
+                      //   : index >= 4 && index <= 5
+                      //   ? "#FFF2CC"
+                      //   : "#FFE699",
                     }}
                   >
                     <TableCell

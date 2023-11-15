@@ -11,7 +11,7 @@ import { PercentagesTable } from "./PercentagesMatrix";
 import { Boxes } from "./Boxes";
 import Button from "@mui/material/Button";
 import CachedIcon from "@mui/icons-material/Cached";
-import { UniqueUsersAffectedTable } from "./RemedyTicketsPerResolution";
+import { RemedyTicketsPerResolution } from "./RemedyTicketsPerResolution";
 
 const rangePickerDateFormat = ["DD MMM YYYY"];
 const startDate = dayjs().subtract(1, "week").startOf("day");
@@ -113,17 +113,6 @@ export const TripleAOutagesPlusRemedy = () => {
         </div>
       </div>
 
-      <iframe
-        src="http://10.10.18.121:5000/dslam_outage/map?from=2023-11-01&to=2023-11-02"
-        title="Example Iframe"
-        width="600"
-        height="400"
-        style={{ border: "none" }}
-      >
-        {/* Fallback content for browsers that don't support iframes */}
-        <p>Your browser does not support iframes.</p>
-      </iframe>
-
       <Boxes
         key={`boxes-${refreshKey}`}
         dateRange={dateRange}
@@ -131,6 +120,7 @@ export const TripleAOutagesPlusRemedy = () => {
         netWorkOutagesAvgPercentage={netWorkOutagesAvgPercentage}
         windNovaOutagesOverTotalEvents={windNovaOutagesOverTotalEvents}
       />
+
       <PercentagesTable
         key={`percentages-${refreshKey}`}
         dateRange={dateRange}
@@ -142,15 +132,27 @@ export const TripleAOutagesPlusRemedy = () => {
         dateRange={dateRange}
         setLoading={setLoadingAAA}
       />
+
       <RemedyTickets
         key={`remedy-${refreshKey}`}
         dateRange={dateRange}
         setLoading={setLoadingRemedyTickets}
       />
-      <UniqueUsersAffectedTable
-        key={`uniqueUsersAffected-${refreshKey}`}
+
+      <RemedyTicketsPerResolution
+        key={`remedyTicketsPerResolution-${refreshKey}`}
         dateRange={dateRange}
       />
+
+      <iframe
+        src="http://localhost:4000/api/charts/proxy/dslam-outage?from=2023-11-01&to=2023-11-02"
+        title="Example Iframe"
+        width="100%"
+        height="860"
+        style={{ border: "none" }}
+      >
+        <p>Your browser does not support iframes.</p>
+      </iframe>
     </div>
   );
 };
