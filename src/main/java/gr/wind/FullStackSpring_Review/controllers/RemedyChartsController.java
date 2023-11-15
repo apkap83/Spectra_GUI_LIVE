@@ -6,6 +6,8 @@ import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.format.annotation.DateTimeFormat;
+import org.springframework.http.HttpHeaders;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
@@ -13,6 +15,10 @@ import org.springframework.web.bind.annotation.*;
 import org.springframework.web.client.RestTemplate;
 
 import javax.validation.Valid;
+import java.text.SimpleDateFormat;
+import java.time.LocalDate;
+import java.time.ZoneId;
+import java.util.Date;
 import java.util.List;
 
 @RestController
@@ -21,14 +27,17 @@ public class RemedyChartsController {
     private RemedyStatsService remedyStatsService;
     private String userNameLoggedIn;
     private static final Logger logger = LogManager.getLogger(NovaChartsController.class);
+
+    @Autowired
     private RestTemplate restTemplate;
 
     @Value("${app.MyEnvironmentDescription}")
     private String Environment;
 
     @Autowired
-    public RemedyChartsController(RemedyStatsService remedyStatsService) {
+    public RemedyChartsController(RemedyStatsService remedyStatsService, RestTemplate restTemplate) {
         this.remedyStatsService = remedyStatsService;
+        this.restTemplate = restTemplate;
     }
 
     @CrossOrigin
@@ -105,13 +114,33 @@ public class RemedyChartsController {
 
     }
 
-
     @CrossOrigin
     @GetMapping("/proxy/dslam-outage")
-    public ResponseEntity<String> getDslamOutageData(@Valid @RequestBody DateRange myDateRange) {
-        String url = String.format("http://10.10.18.121:5000/dslam_outage/map?from=%s&to=%s", myDateRange.startDate(), myDateRange.endDate());
+    public ResponseEntity<String> getDslamOutageData(
+            @RequestParam("from") @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) LocalDate from,
+            @RequestParam("to") @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) LocalDate to) {
+
+        // Formatting the date
+        SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
+
+        String url = String.format("http://localhost:5000/dslam_outage/map?from=%s&to=%s",
+                sdf.format(Date.from(from.atStartOfDay(ZoneId.systemDefault()).toInstant())),
+                sdf.format(Date.from(to.atStartOfDay(ZoneId.systemDefault()).toInstant())));
+
         ResponseEntity<String> response = restTemplate.getForEntity(url, String.class);
-        return ResponseEntity.status(response.getStatusCode()).body(response.getBody());
+
+        HttpHeaders headers = new HttpHeaders();
+        headers.addAll(response.getHeaders());
+        System.out.println("Before Headers" + headers);
+        // Remove X-Frame-Options
+        headers.remove("X-Frame-Options");
+        // Set Content-Security-Policy to allow framing from anywhere
+        headers.set("Content-Security-Policy", "frame-ancestors *");
+        System.out.println("Headers" + headers);
+        return ResponseEntity.status(response.getStatusCode())
+                .headers(headers)
+                .body(response.getBody());
     }
+
 
 }

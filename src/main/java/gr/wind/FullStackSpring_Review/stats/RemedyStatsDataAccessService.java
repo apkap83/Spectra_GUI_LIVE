@@ -59,9 +59,6 @@ public class RemedyStatsDataAccessService {
 
     public List<AaaOutagesRemedy> getStatsForDatesQuery1(Date StartDate, Date EndDate) {
 
-        System.out.println("StartDate" + StartDate);
-        System.out.println("EndDate" + EndDate);
-
         String sql = """
         WITH
            DATA AS

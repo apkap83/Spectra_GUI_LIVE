@@ -17,6 +17,8 @@ import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 @Component
 public class JwtRequestFilter extends OncePerRequestFilter {
@@ -34,7 +36,26 @@ public class JwtRequestFilter extends OncePerRequestFilter {
         response.setHeader("Access-Control-Allow-Origin", "*");
         response.setContentType("application/json");
 
+        final String requestUri = request.getRequestURI();
+        final String query = request.getQueryString();
         final String authorizationHeader = request.getHeader("Authorization");
+
+        // Pattern to extract date parameters from the query string
+        Pattern datePattern = Pattern.compile("from=(\\d{4}-\\d{2}-\\d{2})&to=(\\d{4}-\\d{2}-\\d{2})");
+        Matcher matcher = datePattern.matcher(query != null ? query : "");
+
+        // Disable JWT Authorization for iFrame of Ioannis Lakkas
+        if (requestUri.equals("/api/charts/proxy/dslam-outage") && matcher.find()) {
+            // Extracted dates
+            String fromDate = matcher.group(1);
+            String toDate = matcher.group(2);
+
+            // Logic to determine if the request should be allowed
+            // Example: Allow all dates or implement specific logic
+
+            chain.doFilter(request, response);
+            return;
+        }
 
         // If no JWT Token provided and not using the authorization URI, then return HTTP 401 (unauthorized)
         if (authorizationHeader == null && !request.getRequestURI().equals("/api/authenticate")) {
