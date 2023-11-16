@@ -19,8 +19,9 @@ import TableSortLabel from "@mui/material/TableSortLabel";
 import Toolbar from "@mui/material/Toolbar";
 import Typography from "@mui/material/Typography";
 import Paper from "@mui/material/Paper";
-import { set } from "lodash";
-import { TopXSitesIncidentsAllTechs } from "./Charts/TopXSitesIncidentsAllTechsChart";
+
+import { showSelectedDates } from "../../../lib/helpFunctions";
+import { date } from "yup";
 
 function EnhancedTableToolbar() {
   return (
@@ -164,6 +165,7 @@ export function PercentagesTable({
   dateRange,
   setNetWorkOutagesAvgPercentage,
   setWindNovaOutagesOverTotalEvents,
+  masterLoading,
 }) {
   const [rows, setQuery1Data] = useState([]);
   const [headCells, setHeadCells] = useState([]);
@@ -282,8 +284,8 @@ export function PercentagesTable({
   return (
     <div>
       <AAAOutagesVSRemedyCharts chartData={rows} />
-      <TopXSitesIncidentsAllTechs dateRange={dateRange} />
-      <Box sx={{ width: "100%" }}>
+      {/* <p>{showSelectedDates(dateRange, masterLoading)}</p> */}
+      {/* <Box sx={{ width: "100%" }}>
         <Paper sx={{ width: "100%", mb: 2 }}>
           <EnhancedTableToolbar />
           <TableContainer>
@@ -324,7 +326,7 @@ export function PercentagesTable({
             </Table>
           </TableContainer>
         </Paper>
-      </Box>
+      </Box> */}
     </div>
   );
 }

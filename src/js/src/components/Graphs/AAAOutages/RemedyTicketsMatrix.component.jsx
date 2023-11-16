@@ -27,7 +27,7 @@ function EnhancedTableToolbar() {
         id="tableTitle"
         component="div"
       >
-        Remedy Tickets
+        Remedy Tickets - Created by Victus NOC
       </Typography>
     </Toolbar>
   );
@@ -81,7 +81,7 @@ export function RemedyTickets({ dateRange, setLoading }) {
       // Insert Grand Total Object
       if (myData.length > 0) {
         myData.push({
-          DSLAM_OWNER_GROUP: "Grand Total",
+          DSLAM_OWNER_GROUP: "Total",
           dateValuePair: sumByDateObject,
           id: Math.random(),
         });
@@ -147,47 +147,49 @@ export function RemedyTickets({ dateRange, setLoading }) {
   }
 
   return (
-    <Box sx={{ width: "100%" }}>
-      <Paper sx={{ width: "100%", mb: 2 }}>
-        <EnhancedTableToolbar />
-        <TableContainer>
-          <Table sx={{ minWidth: 750 }} aria-labelledby="tableTitle">
-            <EnhancedTableHead rowCount={rows.length} />
-            <TableBody>
-              {rows.map((row, index) => {
-                return (
-                  <TableRow tabIndex={-1} key={row.id} sx={{}}>
-                    <TableCell
-                      align="right"
-                      sx={{
-                        position: "sticky",
-                        whiteSpace: "nowrap",
-                        textAlign: "left",
-                        left: 0,
-                        zIndex: 10, // higher than the table body cells
-                        background: "white",
-                      }}
-                    >
-                      {row.DSLAM_OWNER_GROUP}
-                    </TableCell>
+    <div>
+      <Box sx={{ width: "100%" }}>
+        <Paper sx={{ width: "100%", mb: 2 }}>
+          <EnhancedTableToolbar />
+          <TableContainer>
+            <Table sx={{ minWidth: 750 }} aria-labelledby="tableTitle">
+              <EnhancedTableHead rowCount={rows.length} />
+              <TableBody>
+                {rows.map((row, index) => {
+                  return (
+                    <TableRow tabIndex={-1} key={row.id} sx={{}}>
+                      <TableCell
+                        align="right"
+                        sx={{
+                          position: "sticky",
+                          whiteSpace: "nowrap",
+                          textAlign: "left",
+                          left: 0,
+                          zIndex: 10, // higher than the table body cells
+                          background: "white",
+                        }}
+                      >
+                        {row.DSLAM_OWNER_GROUP}
+                      </TableCell>
 
-                    {row &&
-                      Object.keys(row.dateValuePair)
-                        .sort(sortDates)
-                        .map((key) => {
-                          return (
-                            <TableCell key={key} align="right">
-                              {row.dateValuePair[key]}
-                            </TableCell>
-                          );
-                        })}
-                  </TableRow>
-                );
-              })}
-            </TableBody>
-          </Table>
-        </TableContainer>
-      </Paper>
-    </Box>
+                      {row &&
+                        Object.keys(row.dateValuePair)
+                          .sort(sortDates)
+                          .map((key) => {
+                            return (
+                              <TableCell key={key} align="right">
+                                {row.dateValuePair[key]}
+                              </TableCell>
+                            );
+                          })}
+                    </TableRow>
+                  );
+                })}
+              </TableBody>
+            </Table>
+          </TableContainer>
+        </Paper>
+      </Box>
+    </div>
   );
 }

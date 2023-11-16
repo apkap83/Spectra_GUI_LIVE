@@ -38,35 +38,35 @@ const determineColor = (commentsText) => {
     commentsText ===
     "01.a. AAA outage found in Remedy with +- 60 minutes difference"
   ) {
-    return "#A9D08E";
+    return "#df6565";
   }
 
   if (
     commentsText ===
     "02.a. AAA outage found in Remedy with +- 3 hours difference"
   ) {
-    return "#A9D08E";
+    return "#df6565";
   }
 
   if (
     commentsText ===
     "04.a.1 question for NOC: Remedy not found /AAA >= 10% calls"
   ) {
-    return "#FFF2CC";
+    return "#65b2df";
   }
 
   if (
     commentsText === "04.b. question for NOC: Remedy not found /AAA < 10% calls"
   ) {
-    return "#FFE699";
+    return "#e2c985";
   }
 
   if (commentsText === "05. Less than 12 minutes AAA outage") {
-    return "#FFE699";
+    return "#e2c985";
   }
 
   if (commentsText === "06. AAA outage with 0 calls") {
-    return "#FFE699";
+    return "#e2c985";
   }
 
   if (commentsText === "Grand Total") {
