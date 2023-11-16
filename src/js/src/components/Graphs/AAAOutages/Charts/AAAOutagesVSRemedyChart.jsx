@@ -191,7 +191,7 @@ export const AAAOutagesVSRemedyCharts = ({ chartData }) => {
     const data1 = {
       type: "column",
       indexLabel: numberOfDaysForChart < 33 ? "{y} %" : null,
-      indexLabelFontColor: "#5A5757",
+      indexLabelFontColor: "#3D1410",
       showInLegend: true,
       name: "AAA Outages VS Remedy (OTE, VF, Wind, Nova)",
       markerType: "square",
@@ -202,6 +202,7 @@ export const AAAOutagesVSRemedyCharts = ({ chartData }) => {
     const data2 = {
       type: "column",
       indexLabel: numberOfDaysForChart < 33 ? "{y} %" : null,
+      indexLabelFontColor: "#3D1410",
       showInLegend: true,
       name: "AAA Outages VS Remedy (Wind, Nova)",
       showInLegend: true,

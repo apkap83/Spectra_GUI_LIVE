@@ -12,6 +12,7 @@ import { Boxes } from "./Boxes";
 import Button from "@mui/material/Button";
 import CachedIcon from "@mui/icons-material/Cached";
 import { RemedyTicketsPerResolution } from "./RemedyTicketsPerResolution";
+import { formatDateForIFrame } from "../../../lib/helpFunctions";
 
 const rangePickerDateFormat = ["DD MMM YYYY"];
 const startDate = dayjs().subtract(1, "week").startOf("day");
@@ -144,15 +145,29 @@ export const TripleAOutagesPlusRemedy = () => {
         dateRange={dateRange}
       />
 
-      <iframe
-        src="http://localhost:4000/api/charts/proxy/dslam-outage?from=2023-11-01&to=2023-11-02"
-        title="Example Iframe"
-        width="100%"
-        height="860"
-        style={{ border: "none" }}
+      <div
+        style={{
+          marginTop: "3rem",
+        }}
       >
-        <p>Your browser does not support iframes.</p>
-      </iframe>
+        <h3>
+          Map Data: {dateRange["startDate"].format("DD MMM YYYY")} -{" "}
+          {dateRange["endDate"].format("DD MMM YYYY")}
+        </h3>
+        <iframe
+          src={`http://localhost:4000/api/charts/proxy/dslam-outage?from=${dateRange[
+            "startDate"
+          ].format("YYYY-MM-DD")}&to=${dateRange["endDate"].format(
+            "YYYY-MM-DD"
+          )}`}
+          title="Example Iframe"
+          width="100%"
+          height="860"
+          style={{ border: "1 px solid #f8f8f8" }}
+        >
+          <p>Your browser does not support iframes.</p>
+        </iframe>
+      </div>
     </div>
   );
 };

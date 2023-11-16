@@ -79,11 +79,13 @@ export function RemedyTickets({ dateRange, setLoading }) {
       const sumByDateObject = sumByDate(myData);
 
       // Insert Grand Total Object
-      myData.push({
-        DSLAM_OWNER_GROUP: "Grand Total",
-        dateValuePair: sumByDateObject,
-        id: Math.random(),
-      });
+      if (myData.length > 0) {
+        myData.push({
+          DSLAM_OWNER_GROUP: "Grand Total",
+          dateValuePair: sumByDateObject,
+          id: Math.random(),
+        });
+      }
 
       // Create Additional Table Columns from Dates
       myData.map((item) => {

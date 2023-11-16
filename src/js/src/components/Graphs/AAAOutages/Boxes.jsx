@@ -31,7 +31,6 @@ export const Boxes = ({
       });
 
       if (myData) {
-        console.log("myData", myData);
         setAvgOutagesPerDay(myData[0]["avgOutagesPerDay"]);
         setDslamAffected(myData[0]["uniqueDslam"]);
         setUsersAffected(myData[0]["sessionAffected"]);
