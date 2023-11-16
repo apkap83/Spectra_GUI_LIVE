@@ -69,9 +69,7 @@ function entireNetworkOutagesOverAllEvents(data) {
         item.COMMENTS ===
           "02.a. AAA outage found in Remedy with +- 3 hours difference" ||
         item.COMMENTS ===
-          "04.a.1 question for NOC: Remedy not found /AAA >= 10% calls" ||
-        item.COMMENTS ===
-          "04.b. question for NOC: Remedy not found /AAA < 10% calls"
+          "04.a.1 question for NOC: Remedy not found /AAA >= 10% calls"
       ) {
         if (!summedByDate[date]) {
           summedByDate[date] = 0;
@@ -102,9 +100,7 @@ function windAndNovaOutagesOverWindAndNovaTotalEvents(data) {
           item.COMMENTS ===
             "02.a. AAA outage found in Remedy with +- 3 hours difference" ||
           item.COMMENTS ===
-            "04.a.1 question for NOC: Remedy not found /AAA >= 10% calls" ||
-          item.COMMENTS ===
-            "04.b. question for NOC: Remedy not found /AAA < 10% calls"
+            "04.a.1 question for NOC: Remedy not found /AAA >= 10% calls"
         ) {
           if (!total1ByDate[date]) {
             total1ByDate[date] = 0;
