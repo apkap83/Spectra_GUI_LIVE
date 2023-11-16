@@ -7,14 +7,18 @@ import FormLabel from "@mui/material/FormLabel";
 
 import config from "../../../config.json";
 
-export const MapIframe = ({ dateRange }) => {
+export const MapIframe = ({ dateRange, masterLoading }) => {
   // Create a state variable to hold the selected value
   const [selectedValue, setSelectedValue] = useState(1);
-  console.log("selectedValue", selectedValue);
   // Function to handle changes in the radio group
   const handleRadioChange = (event) => {
     setSelectedValue(event.target.value);
   };
+
+  if (masterLoading) {
+    return null;
+  }
+
   return (
     <div>
       <FormControl>
