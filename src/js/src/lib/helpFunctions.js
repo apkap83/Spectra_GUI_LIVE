@@ -28,3 +28,24 @@ export function formatDateForIFrame(date) {
     return `${year}-${month}-${day}`;
   }
 }
+
+export function showSelectedDates(dateRange, masterLoading) {
+  if (masterLoading) {
+    return null;
+  }
+  if (dateRange) {
+    const startDate = dateRange["startDate"].format("DD MMM YYYY");
+    const endDate = dateRange["endDate"].format("DD MMM YYYY");
+    if (startDate === endDate) {
+      return <span>{startDate}</span>;
+    } else {
+      return (
+        <span>
+          {`${startDate}`}
+          <br />
+          {`${endDate}`}
+        </span>
+      );
+    }
+  }
+}

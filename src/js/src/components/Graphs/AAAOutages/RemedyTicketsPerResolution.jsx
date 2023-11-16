@@ -7,7 +7,6 @@ const apiEndPoint =
 
 import { AAAOutagesVSRemedyCharts } from "./Charts/AAAOutagesVSRemedyChart";
 import { formatNumberWithThousandsSeparator } from "../../../lib/helpFunctions";
-
 import Box from "@mui/material/Box";
 import Table from "@mui/material/Table";
 import TableBody from "@mui/material/TableBody";
@@ -31,7 +30,7 @@ function EnhancedTableToolbar() {
         id="tableTitle"
         component="div"
       >
-        Remedy Tickets
+        Remedy Tickets - Outages Categorization
       </Typography>
     </Toolbar>
   );
@@ -54,16 +53,16 @@ export function RemedyTicketsPerResolution({ dateRange }) {
 
       const columns = [
         {
-          id: "dslamOwnerGroup",
+          id: "resolutionCategTier1",
           numeric: false,
           disablePadding: false,
-          label: "DSLAM Owner Group",
+          label: "Resolution Categ. Tier 1",
         },
         {
-          id: "resolCateg",
+          id: "resolutionCategTier1",
           numeric: false,
           disablePadding: false,
-          label: "Resolution/Categorization",
+          label: "Resolution Categ. Tier 2",
         },
         {
           id: "tickets",
@@ -72,10 +71,22 @@ export function RemedyTicketsPerResolution({ dateRange }) {
           label: "Tickets",
         },
         {
-          id: "uniqDslams",
+          id: "dslams",
           numeric: true,
           disablePadding: false,
-          label: "Unique DSLAMs",
+          label: "DSLAMs",
+        },
+        {
+          id: "dslamsWindNova",
+          numeric: true,
+          disablePadding: false,
+          label: "DSLAMs Wind + Nova",
+        },
+        {
+          id: "dslamsOteVF",
+          numeric: true,
+          disablePadding: false,
+          label: "DSLAMs Ote + VF",
         },
         {
           id: "affectedSessions",
@@ -85,6 +96,7 @@ export function RemedyTicketsPerResolution({ dateRange }) {
         },
       ];
 
+      console.log(99, myData);
       setRows(myData);
       setHeadCells(columns);
     };
@@ -118,40 +130,46 @@ export function RemedyTicketsPerResolution({ dateRange }) {
   }
 
   return (
-    <Box sx={{ width: "100%" }}>
-      <Paper sx={{ width: "100%", mb: 2 }}>
-        <EnhancedTableToolbar />
-        <TableContainer>
-          <Table sx={{ minWidth: 750 }} aria-labelledby="tableTitle">
-            <EnhancedTableHead rowCount={rows.length} />
-            <TableBody>
-              {rows.map((row, index) => {
-                return (
-                  <TableRow tabIndex={-1} key={row.id} sx={{}}>
-                    <TableCell
-                      align="left"
-                      sx={{
-                        whiteSpace: "nowrap",
-                        textAlign: "left",
-                      }}
-                    >
-                      {row["dslamOwnerGroup"]}
-                    </TableCell>
-                    <TableCell align="left">{row["resolCateg"]}</TableCell>
-                    <TableCell align="right">{row["tickets"]}</TableCell>
-                    <TableCell align="right">{row["uniqDslams"]}</TableCell>
-                    <TableCell align="right">
-                      {formatNumberWithThousandsSeparator(
-                        parseFloat(row["affectedSessions"])
-                      )}
-                    </TableCell>
-                  </TableRow>
-                );
-              })}
-            </TableBody>
-          </Table>
-        </TableContainer>
-      </Paper>
-    </Box>
+    <div>
+      <Box sx={{ width: "100%" }}>
+        <Paper sx={{ width: "100%", mb: 2 }}>
+          <EnhancedTableToolbar />
+          <TableContainer>
+            <Table sx={{ minWidth: 750 }} aria-labelledby="tableTitle">
+              <EnhancedTableHead rowCount={rows.length} />
+              <TableBody>
+                {rows.map((row, index) => {
+                  return (
+                    <TableRow tabIndex={-1} key={row.id} sx={{}}>
+                      <TableCell
+                        align="left"
+                        sx={{
+                          whiteSpace: "nowrap",
+                          textAlign: "left",
+                        }}
+                      >
+                        {row["resolCategTier1"]}
+                      </TableCell>
+                      <TableCell align="left">
+                        {row["resolutionCategTier2"]}
+                      </TableCell>
+                      <TableCell align="right">{row["tickets"]}</TableCell>
+                      <TableCell align="right">{row["dslams"]}</TableCell>
+                      <TableCell align="right">
+                        {row["dslamsWindNova"]}
+                      </TableCell>
+                      <TableCell align="right">{row["dslamsOteVF"]}</TableCell>
+                      <TableCell align="right">
+                        {row["affectedSessions"]}
+                      </TableCell>
+                    </TableRow>
+                  );
+                })}
+              </TableBody>
+            </Table>
+          </TableContainer>
+        </Paper>
+      </Box>
+    </div>
   );
 }

@@ -210,6 +210,7 @@ export const AAAOutagesVSRemedyCharts = ({ chartData }) => {
       xValueType: "dateTime",
       dataPoints: constructData2,
     };
+    // console.log("Orig data1", data1);
     return [data2, data1];
   };
 
