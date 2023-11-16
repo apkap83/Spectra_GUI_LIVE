@@ -123,7 +123,7 @@ public class RemedyChartsController {
         // Formatting the date
         SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
 
-        String url = String.format("http://localhost:5000/dslam_outage/map?from=%s&to=%s",
+        String url = String.format("http://10.10.18.121:5000/dslam_outage/map?from=%s&to=%s",
                 sdf.format(Date.from(from.atStartOfDay(ZoneId.systemDefault()).toInstant())),
                 sdf.format(Date.from(to.atStartOfDay(ZoneId.systemDefault()).toInstant())));
 
@@ -131,12 +131,11 @@ public class RemedyChartsController {
 
         HttpHeaders headers = new HttpHeaders();
         headers.addAll(response.getHeaders());
-        System.out.println("Before Headers" + headers);
+
         // Remove X-Frame-Options
         headers.remove("X-Frame-Options");
         // Set Content-Security-Policy to allow framing from anywhere
         headers.set("Content-Security-Policy", "frame-ancestors *");
-        System.out.println("Headers" + headers);
         return ResponseEntity.status(response.getStatusCode())
                 .headers(headers)
                 .body(response.getBody());
