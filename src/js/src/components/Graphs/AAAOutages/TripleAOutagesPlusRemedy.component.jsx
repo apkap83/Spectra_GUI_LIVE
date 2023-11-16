@@ -231,7 +231,7 @@ export const TripleAOutagesPlusRemedy = () => {
               marginTop: "3rem",
             }}
           >
-            <MapIframe dateRange={dateRange} />
+            <MapIframe dateRange={dateRange} masterLoading={masterLoading} />
           </div>
         </div>
       </div>
