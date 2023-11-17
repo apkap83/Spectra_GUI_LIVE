@@ -37,14 +37,26 @@ export function showSelectedDates(dateRange, masterLoading) {
     const startDate = dateRange["startDate"].format("DD MMM YYYY");
     const endDate = dateRange["endDate"].format("DD MMM YYYY");
     if (startDate === endDate) {
-      return <span>{startDate}</span>;
+      return (
+        <>
+          {/* <p className="fixedDate__dateInd fixedDate__dateInd--1">
+            Selected Date
+          </p> */}
+          <span className="fixedDate__dateInd__date">{startDate}</span>
+        </>
+      );
     } else {
       return (
-        <span>
-          {`${startDate}`}
-          <br />
-          {`${endDate}`}
-        </span>
+        <>
+          {/* <p className="fixedDate__dateInd fixedDate__dateInd--2">
+            Selected Dates
+          </p> */}
+          <span className="fixedDate__dateInd__date">
+            {`${startDate}`}
+            <br />
+            {`${endDate}`}
+          </span>
+        </>
       );
     }
   }

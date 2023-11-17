@@ -38,39 +38,39 @@ const determineColor = (commentsText) => {
     commentsText ===
     "01.a. AAA outage found in Remedy with +- 60 minutes difference"
   ) {
-    return "#df6565";
+    return "#df656575";
   }
 
   if (
     commentsText ===
     "02.a. AAA outage found in Remedy with +- 3 hours difference"
   ) {
-    return "#df6565";
+    return "#df656575";
   }
 
   if (
     commentsText ===
     "04.a.1 question for NOC: Remedy not found /AAA >= 10% calls"
   ) {
-    return "#65b2df";
+    return "#65b2df75";
   }
 
   if (
     commentsText === "04.b. question for NOC: Remedy not found /AAA < 10% calls"
   ) {
-    return "#e2c985";
+    return "#e2c98575";
   }
 
   if (commentsText === "05. Less than 12 minutes AAA outage") {
-    return "#e2c985";
+    return "#e2c98575";
   }
 
   if (commentsText === "06. AAA outage with 0 calls") {
-    return "#e2c985";
+    return "#e2c98575";
   }
 
   if (commentsText === "Grand Total") {
-    return "#f8f8f8";
+    return "#fbfbfb";
   }
 };
 
@@ -206,16 +206,8 @@ export function AAAOutagesTable({ dateRange, setLoading }) {
                     tabIndex={-1}
                     key={row.id}
                     sx={{
-                      cursor: "pointer",
-
+                      // cursor: "pointer",
                       backgroundColor: determineColor(row.COMMENTS),
-                      // index === 12
-                      //   ? "#f8f8f8"
-                      //   : index < 4
-                      //   ? "#A9D08E"
-                      //   : index >= 4 && index <= 5
-                      //   ? "#FFF2CC"
-                      //   : "#FFE699",
                     }}
                   >
                     <TableCell
@@ -253,7 +245,11 @@ export function AAAOutagesTable({ dateRange, setLoading }) {
                         .sort(sortDates)
                         .map((key) => {
                           return (
-                            <TableCell key={key} align="right">
+                            <TableCell
+                              key={key}
+                              align="right"
+                              style={{ background: "inherit" }}
+                            >
                               {row.dateValuePair[key]}
                             </TableCell>
                           );

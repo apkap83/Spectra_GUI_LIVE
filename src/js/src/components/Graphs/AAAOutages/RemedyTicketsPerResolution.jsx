@@ -5,6 +5,7 @@ import config from "../../../config.json";
 const apiEndPoint =
   config.apiPrefix + "/api/charts/remedy_tickets_per_resolution";
 
+import { v4 as uuidv4 } from "uuid";
 import { AAAOutagesVSRemedyCharts } from "./Charts/AAAOutagesVSRemedyChart";
 import { formatNumberWithThousandsSeparator } from "../../../lib/helpFunctions";
 import Box from "@mui/material/Box";
@@ -59,7 +60,7 @@ export function RemedyTicketsPerResolution({ dateRange }) {
           label: "Resolution Categ. Tier 1",
         },
         {
-          id: "resolutionCategTier1",
+          id: "resolutionCategTier2",
           numeric: false,
           disablePadding: false,
           label: "Resolution Categ. Tier 2",
@@ -96,7 +97,6 @@ export function RemedyTicketsPerResolution({ dateRange }) {
         },
       ];
 
-      console.log(99, myData);
       setRows(myData);
       setHeadCells(columns);
     };
@@ -140,7 +140,7 @@ export function RemedyTicketsPerResolution({ dateRange }) {
               <TableBody>
                 {rows.map((row, index) => {
                   return (
-                    <TableRow tabIndex={-1} key={row.id} sx={{}}>
+                    <TableRow tabIndex={-1} key={uuidv4()} sx={{}}>
                       <TableCell
                         align="left"
                         sx={{

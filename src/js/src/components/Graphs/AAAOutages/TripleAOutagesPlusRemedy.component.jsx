@@ -27,8 +27,8 @@ const initialDates = {
 
 export const TripleAOutagesPlusRemedy = () => {
   const [showLeftDiv, setShowLeftDiv] = useState(false);
-  const scrollThreshold = 100; // Set the scroll threshold in pixels
-  const viewportThreshold = 100; // Set the viewport threshold in pixels
+  const scrollThreshold = 150; // Set the scroll threshold in pixels
+  const viewportThreshold = 150; // Set the viewport threshold in pixels
 
   const [value, setValue] = useState(null);
   const [dateRange, setDateRange] = useState(initialDates);
@@ -106,25 +106,8 @@ export const TripleAOutagesPlusRemedy = () => {
   return (
     <>
       {showLeftDiv && (
-        <div
-          style={{
-            position: "fixed",
-            left: "1rem",
-            top: "50%",
-            zIndex: 200,
-            borderTop: "1px solid gray",
-            borderBottom: "1px solid gray",
-          }}
-        >
-          <p
-            style={{
-              lineHeight: "1.5rem",
-              fontSize: "1.3rem",
-              color: "#181818",
-              margin: "0.5rem 0",
-              padding: "0",
-            }}
-          >
+        <div className="fixedDate">
+          <p className="fixedDate__text">
             {showSelectedDates(dateRange, masterLoading)}
           </p>
         </div>

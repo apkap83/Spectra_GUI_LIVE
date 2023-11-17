@@ -1,0 +1,40 @@
+.fixedDate {
+  position: fixed;
+  left: 0.3rem;
+  top: 40%;
+  z-index: 200;
+  border-top: 1px solid rgba(87, 68, 68, 0.1);
+  border-bottom: 1px solid rgba(87, 68, 68, 0.1);
+
+  &__dateInd {
+    text-align: center;
+    margin: 0;
+    margin-bottom: 0.2rem;
+    padding: 0;
+    color: rgba(87, 68, 68, 0.5);
+
+    &__date {
+      letter-spacing: 0.06rem;
+    }
+
+    &--1 {
+      letter-spacing: 0.01rem;
+    }
+
+    &--2 {
+      font-size: 1.22rem;
+    }
+  }
+
+  &__text {
+    font-family: Nunito;
+    line-height: 1.5rem;
+    font-size: 1.3rem;
+    color: rgba(87, 68, 68, 0.5);
+    margin: 0.5rem 0px;
+    padding: 0.5rem 0px;
+    text-align: center;
+    display: table-cell;
+    vertical-align: middle;
+  }
+}
