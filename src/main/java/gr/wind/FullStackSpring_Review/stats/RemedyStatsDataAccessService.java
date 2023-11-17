@@ -279,48 +279,38 @@ public class RemedyStatsDataAccessService {
 
     public List<RemedyTicketsPerResolution> getUniqueUsersAffected(Date startDate, Date endDate) {
         String sql = """
-                      SELECT
-                         M.DSLAM_OWNER_GROUP,
-                         (
-                            CASE
-                            WHEN M.RMD_RESOLUTION_CATEG_TIER_1 IS NULL THEN
-                               '<undefined>'
-                            ELSE
-                               M.RMD_RESOLUTION_CATEG_TIER_1 ||' / ' ||M.RMD_RESOLUTION_CATEG_TIER_2
-                            END
-                         ) RESOLUTION_CATEGORIZATION,
+                         SELECT
+                         NVL(M.RMD_RESOLUTION_CATEG_TIER_1,'<undefined>') RESOLUTION_CATEG_TIER_1,
+                         NVL(M.RMD_RESOLUTION_CATEG_TIER_2,'<undefined>') RESOLUTION_CATEG_TIER_2,
                          COUNT(DISTINCT M.RMD_INCIDENT_NUMBER) TICKETS,
-                         COUNT(DISTINCT M.DSLAM) UNIQUE_DSLAMS,
+                         COUNT(DISTINCT M.DSLAM) DSLAMS,
+                         COUNT(DISTINCT CASE WHEN M.DSLAM_OWNER_GROUP = 'WIND+NOVA' THEN M.DSLAM ELSE NULL END) DSLAMS_WIND_NOVA,
+                         COUNT(DISTINCT CASE WHEN M.DSLAM_OWNER_GROUP = 'OTE+VF' THEN M.DSLAM ELSE NULL END) DSLAMS_OTE_VF,
                          SUM(M.DATA_AFFECTED) AFFECTED_SESSIONS
-                      FROM Z_OUTAGES_MERGED_AAA_RAW_V M
+                      FROM DIOANNID.Z_OUTAGES_MERGED_AAA_RAW_V M
                       WHERE M.RMD_INCIDENT_NUMBER IS NOT NULL
                       AND   M.ALARM_START_DATE >= ?
                       AND   M.ALARM_START_DATE <  ?
                       GROUP BY
-                         M.DSLAM_OWNER_GROUP,
-                         (
-                            CASE
-                            WHEN M.RMD_RESOLUTION_CATEG_TIER_1 IS NULL THEN
-                               '<undefined>'
-                            ELSE
-                               M.RMD_RESOLUTION_CATEG_TIER_1 ||' / ' ||M.RMD_RESOLUTION_CATEG_TIER_2
-                            END
-                         )
+                         NVL(M.RMD_RESOLUTION_CATEG_TIER_1,'<undefined>'),
+                         NVL(M.RMD_RESOLUTION_CATEG_TIER_2,'<undefined>')
                       ORDER BY
-                         M.DSLAM_OWNER_GROUP DESC,
-                         RESOLUTION_CATEGORIZATION
+                         RESOLUTION_CATEG_TIER_1,
+                         RESOLUTION_CATEG_TIER_2
                 """;
 
         List<RemedyTicketsPerResolution> stats = jdbcTemplate.query(sql,
                 new Object[]{startDate, endDate},
                 (resultSet, i) -> {
-                    String DSLAM_OWNER_GROUP = resultSet.getString("DSLAM_OWNER_GROUP");
-                    String RESOLUTION_CATEGORIZATION = resultSet.getString("RESOLUTION_CATEGORIZATION");
+                    String RESOLUTION_CATEG_TIER_1 = resultSet.getString("RESOLUTION_CATEG_TIER_1");
+                    String RESOLUTION_CATEG_TIER_2 = resultSet.getString("RESOLUTION_CATEG_TIER_2");
                     String TICKETS = resultSet.getString("TICKETS");
-                    String UNIQUE_DSLAMS = resultSet.getString("UNIQUE_DSLAMS");
+                    String DSLAMS = resultSet.getString("DSLAMS");
+                    String DSLAMS_WIND_NOVA = resultSet.getString("DSLAMS_WIND_NOVA");
+                    String DSLAMS_OTE_VF = resultSet.getString("DSLAMS_OTE_VF");
                     String AFFECTED_SESSIONS = resultSet.getString("AFFECTED_SESSIONS");
 
-                   return new RemedyTicketsPerResolution(DSLAM_OWNER_GROUP,RESOLUTION_CATEGORIZATION,TICKETS,UNIQUE_DSLAMS,AFFECTED_SESSIONS);
+                   return new RemedyTicketsPerResolution(RESOLUTION_CATEG_TIER_1,RESOLUTION_CATEG_TIER_2,TICKETS,DSLAMS,DSLAMS_WIND_NOVA,DSLAMS_OTE_VF,AFFECTED_SESSIONS);
                 });
 
         return stats;

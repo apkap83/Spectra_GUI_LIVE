@@ -118,14 +118,26 @@ public class RemedyChartsController {
     @GetMapping("/proxy/dslam-outage")
     public ResponseEntity<String> getDslamOutageData(
             @RequestParam("from") @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) LocalDate from,
-            @RequestParam("to") @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) LocalDate to) {
+            @RequestParam("to") @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) LocalDate to,
+            @RequestParam("dataset") Integer dataSet
+            )
+    {
 
         // Formatting the date
         SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
 
-        String url = String.format("http://10.10.18.121:5000/dslam_outage/map?from=%s&to=%s",
+        String url = String.format("http://10.10.18.121:5000/dslam_outage/map?from=%s&to=%s&dataset=%s",
                 sdf.format(Date.from(from.atStartOfDay(ZoneId.systemDefault()).toInstant())),
-                sdf.format(Date.from(to.atStartOfDay(ZoneId.systemDefault()).toInstant())));
+                sdf.format(Date.from(to.atStartOfDay(ZoneId.systemDefault()).toInstant())),
+                dataSet
+                );
+
+//        String url = String.format("http://localhost:6000/dslam_outage/map?from=%s&to=%s&dataset=%s",
+//                sdf.format(Date.from(from.atStartOfDay(ZoneId.systemDefault()).toInstant())),
+//                sdf.format(Date.from(to.atStartOfDay(ZoneId.systemDefault()).toInstant())),
+//                dataSet
+//        );
+
 
         ResponseEntity<String> response = restTemplate.getForEntity(url, String.class);
 
