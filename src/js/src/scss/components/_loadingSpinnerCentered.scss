@@ -1,0 +1,21 @@
+.loadingIndicatorCentered {
+  position: absolute;
+  top: 45%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+
+  &__spinner {
+    top: 50%;
+    left: 50%;
+  }
+
+  &__message {
+    font-size: 2rem;
+    margin-top: "20px";
+    text-align: "center";
+  }
+}

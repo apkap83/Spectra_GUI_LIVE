@@ -1,5 +1,5 @@
 import { downloadPosSpectra } from "../services/incidentService";
-import { errorNotification } from "../common/Notification";
+import { errorNotification } from "../components/common/Notification";
 import { capitalizeFirstLetter } from "./myutils";
 
 import { IncidentType } from "../types/IncidentType";

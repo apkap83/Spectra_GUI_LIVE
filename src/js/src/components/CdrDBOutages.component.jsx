@@ -23,7 +23,7 @@ import InputLabel from "@mui/material/InputLabel";
 import FormControl from "@mui/material/FormControl";
 import NativeSelect from "@mui/material/NativeSelect";
 
-import { errorNotification } from "../common/Notification";
+import { errorNotification } from "./common/Notification";
 
 import { paginate } from "../utils/paginate";
 

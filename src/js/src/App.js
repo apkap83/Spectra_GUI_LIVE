@@ -8,7 +8,7 @@ import NotFound from "./components/Errors/NotFound.component";
 import { LoginPage } from "./components/LoginPage/LoginPage.component";
 import { LogoutPage } from "./components/LogoutPage/LogoutPage.component";
 
-import ProtectedRoute from "./common/ProtectedRoute.component";
+import ProtectedRoute from "./components/common/ProtectedRoute.component";
 
 import { AllWindSpectraIncidents } from "./components/Routes/WindAllSpectraIncidents";
 import { WindOpenSpectraIncidents } from "./components/Routes/WindOpenSpectraIncidents";
@@ -34,6 +34,7 @@ import { Users } from "./components/Users/Users.component";
 // import { Users_2 } from "./components/Users/Users_2.component";
 
 import { TripleAOutagesPlusRemedy } from "./components/Graphs/AAAOutages/TripleAOutagesPlusRemedy.component";
+import { AAAOutagesRawData } from "./components/AAAOutagesRawData/aaaOutagesRawData";
 
 import auth from "./services/authService";
 import { ErrorBoundary } from "./components/Errors/ErrorBoundary.component";
@@ -77,6 +78,11 @@ const routes = [
     element: <TripleAOutagesPlusRemedy />,
     exact: true,
   },
+  {
+    path: "/graphs/aaa-outages-rawdata",
+    element: <AAAOutagesRawData />,
+    exact: true,
+  },
   // { path: "/user_management_2", element: <Users_2 />, exact: true },
   {
     path: "/",
@@ -108,7 +114,9 @@ const AppWrapper = () => {
           <div
             style={{
               marginBottom: "15rem", // Distance from Fixed Footer
-              height: "100%",
+              // height: "calc(100vh - 150px)",
+              display: "flex",
+              flexDirection: "column",
             }}
           >
             <App />

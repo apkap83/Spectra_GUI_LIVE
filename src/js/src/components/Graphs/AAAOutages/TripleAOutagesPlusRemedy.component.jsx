@@ -179,7 +179,6 @@ export const TripleAOutagesPlusRemedy = () => {
           </div>
 
           <div>
-            {/* <p>{showSelectedDates(dateRange, masterLoading)}</p> */}
             <AAAOutagesTable
               key={`outages-${refreshKey}`}
               dateRange={dateRange}
@@ -188,7 +187,6 @@ export const TripleAOutagesPlusRemedy = () => {
           </div>
 
           <div>
-            {/* <p>{showSelectedDates(dateRange, masterLoading)}</p> */}
             <RemedyTickets
               key={`remedy-${refreshKey}`}
               dateRange={dateRange}
@@ -197,17 +195,11 @@ export const TripleAOutagesPlusRemedy = () => {
           </div>
 
           <div>
-            {/* <p>{showSelectedDates(dateRange, masterLoading)}</p> */}
             <RemedyTicketsPerResolution
               key={`remedyTicketsPerResolution-${refreshKey}`}
               dateRange={dateRange}
             />
           </div>
-
-          {/* <div>
-            <p>{showSelectedDates(dateRange, masterLoading)}</p>
-            <TopXSitesIncidentsAllTechs dateRange={dateRange} />
-          </div> */}
 
           <div
             style={{

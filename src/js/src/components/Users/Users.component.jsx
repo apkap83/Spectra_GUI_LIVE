@@ -29,10 +29,7 @@ import { PaginationAndTotalRecords } from "../common/PaginationAndTotalRecords.c
 import { paginate } from "../../utils/paginate";
 
 import { TableCell } from "@mui/material";
-import {
-  successNotification,
-  errorNotification,
-} from "../../common/Notification";
+import { successNotification, errorNotification } from "../common/Notification";
 
 import { UserSelector } from "../common/UserSelector.component";
 

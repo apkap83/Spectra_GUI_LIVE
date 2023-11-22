@@ -5,10 +5,7 @@ import * as Yup from "yup";
 import KeyIcon from "@mui/icons-material/Key";
 
 import { changeUserPassword } from "../../services/userService";
-import {
-  successNotification,
-  errorNotification,
-} from "../../common/Notification";
+import { successNotification, errorNotification } from "../common/Notification";
 
 export const PasswordResetButton = ({ user }) => {
   const [showPopup, setShowPopup] = useState(false);

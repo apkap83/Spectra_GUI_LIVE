@@ -16,6 +16,8 @@ import config from "../../config.json";
 import BorderOuterIcon from "@mui/icons-material/BorderOuter";
 import HistoryToggleOffIcon from "@mui/icons-material/HistoryToggleOff";
 import TimelineIcon from "@mui/icons-material/Timeline";
+import RawOnIcon from "@mui/icons-material/RawOn";
+import TextSnippetOutlinedIcon from "@mui/icons-material/TextSnippetOutlined";
 
 export function MyHeader() {
   const userDetails = useContext(UserContext);
@@ -124,6 +126,17 @@ export function MyHeader() {
                     >
                       <TimelineIcon />
                       &nbsp;AAA Outages + Remedy
+                    </NavDropdown.Item>
+                  </LinkContainer>
+
+                  <LinkContainer to="/graphs/aaa-outages-rawdata">
+                    <NavDropdown.Item
+                      style={{
+                        padding: "0.5rem 0.5rem",
+                      }}
+                    >
+                      <TextSnippetOutlinedIcon />
+                      &nbsp;AAA Raw Data
                     </NavDropdown.Item>
                   </LinkContainer>
                 </NavDropdown>

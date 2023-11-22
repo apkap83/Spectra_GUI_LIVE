@@ -1,5 +1,5 @@
-@host=localhost:4000
-@jwt=eyJhbGciOiJIUzI1NiJ9.eyJyb2xlcyI6WyJ1c2VyOmNhbnVwbG9hZDphZGhvY21lc3NhZ2UiLCJ1c2VyOmNhbm1hbmFnZTp1c2VycyIsInVzZXI6Y2FuZG93bmxvYWQ6ZmlsZXMiLCJ1c2VyOmNhbmFsdGVyX2JhY2t1cF9wb2xpY3kiLCJ1c2VyOmNhbmFsdGVyOm1lc3NhZ2UiLCJST0xFX0FETUlOIiwidXNlcjpjYW5kaXNhYmxlOnB1Ymxpc2hpbmciXSwiZXhwIjoxNzAwMDY1MzYwLCJpYXQiOjE3MDAwMjkzNjAsInVzZXJuYW1lIjoiYWRtaW4ifQ.mCUhR5elxU6ATli04uGidQ1pkxiG3RVnkVS9ITkKpRs
+@host=localhost:7000
+@jwt=Bearer: eyJhbGciOiJIUzI1NiJ9.eyJyb2xlcyI6WyJ1c2VyOmNhbnVwbG9hZDphZGhvY21lc3NhZ2UiLCJ1c2VyOmNhbmRvd25sb2FkOmZpbGVzIiwidXNlcjpjYW5tYW5hZ2U6dXNlcnMiLCJ1c2VyOmNhbmFsdGVyX2JhY2t1cF9wb2xpY3kiLCJ1c2VyOmNhbmFsdGVyOm1lc3NhZ2UiLCJST0xFX0FETUlOIiwidXNlcjpjYW5kaXNhYmxlOnB1Ymxpc2hpbmciXSwiZXhwIjoxNzAwNTg2MzE0LCJpYXQiOjE3MDA1NTAzMTQsInVzZXJuYW1lIjoiYWRtaW4ifQ.PIETrlQ5mYVQX5HHAEcjBoG6G0hNZ0jquzsNvSwytpE
 
 ### Get AAA Outages + Remedy First Query
 POST http://{{host}}/api/charts/aaa_outages_plus_remedy_query1
@@ -96,9 +96,21 @@ GET http://{{host}}/api/charts/proxy/dslam-outage?from=2023-11-01&to=2023-11-02
 # Authorization: {{jwt}}
 
 ###
-POST http://localhost:4000/api/charts/nova_num_of_requests_per_method
+POST http://{{host}}/api/charts/nova_num_of_requests_per_method
 Content-Type: application/json
 # Authorization: {{jwt}}
+
+{
+    "dateRange": {
+        "startDate": "2023-10-14T21:00:00.000Z",
+        "endDate": "2023-11-14T22:00:00.000Z"
+    }
+}
+
+###
+POST http://{{host}}/api/charts/getAAARawData
+Content-Type: application/json
+Authorization: {{jwt}}
 
 {
     "dateRange": {

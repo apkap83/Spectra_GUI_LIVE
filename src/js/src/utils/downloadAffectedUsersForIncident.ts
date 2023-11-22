@@ -1,6 +1,6 @@
 import { monthNameToNumber, yyyymmdd } from "./myutils";
 import { downloadFile } from "../services/incidentService";
-import { errorNotification } from "../common/Notification";
+import { errorNotification } from "../components/common/Notification";
 
 import { IncidentType } from "../types/IncidentType";
 
