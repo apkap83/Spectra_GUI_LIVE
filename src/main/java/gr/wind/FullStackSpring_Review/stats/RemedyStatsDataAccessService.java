@@ -5,6 +5,7 @@ import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.stereotype.Repository;
 
+import java.math.BigInteger;
 import java.sql.ResultSetMetaData;
 import java.time.LocalDate;
 import java.time.ZoneId;
@@ -361,5 +362,119 @@ public class RemedyStatsDataAccessService {
                 });
 
         return stats;
+    }
+
+    public List<AAARawData1> getAAARawData(Date startDate, Date endDate) {
+        String sql = """
+                     WITH
+                   DATA AS\s
+                   (
+                                   
+                SELECT
+                   ALARM_DAY,
+                   MATCHING_COMMENTS,
+                   NETWORK,
+                   DSLAM_OWNER,
+                   DSLAM_OWNER_GROUP,
+                   OUTAGE_ID,
+                   ALARM_START_DATE,
+                   ALARM_END_DATE,
+                   DSLAM,
+                   DSLAM_SLOT,
+                   TECHNOLOGY,
+                   OTE_SITE_NAME,
+                   OTE_SITE_AREA,
+                   POST_CODE,
+                   LONGITUDE,
+                   LATITUDE,
+                   PROBLEM,
+                   DSLAM_USERS,
+                   DATA_AFFECTED,
+                   TOTAL_USERS_CALLED,
+                   RMD_INCIDENT_NUMBER,
+                   RMD_ALARM_START_DATE,
+                   RMD_ALARM_END_DATE,
+                   RMD_SPECTRA_HIERARCHY,
+                   RMD_OPERATIONAL_CATEG_TIER_1,
+                   RMD_OPERATIONAL_CATEG_TIER_2,
+                   RMD_OPERATIONAL_CATEG_TIER_3,
+                   RMD_RESOLUTION_CATEG_TIER_1,
+                   RMD_RESOLUTION_CATEG_TIER_2,
+                   ZBX_EVENT_ID,
+                   ZBX_PROBLEM,
+                   ZBX_ALARM_START_DATE,
+                   ZBX_ALARM_END_DATE,
+                   NCE_EVENT_ID,
+                   NCE_ALARM_START_DATE,
+                   NCE_ALARM_END_DATE,
+                   NCE_PROBLEM,
+                   NCE_OPERATIONAL_DATA,
+                   ROW_NUMBER() OVER (ORDER BY ALARM_START_DATE) ORDERING --do not show
+                FROM DIOANNID.Z_OUTAGES_MERGED_AAA_RAW_V
+                WHERE ALARM_START_DATE >= ?
+                AND   ALARM_START_DATE <  ?
+                )
+                SELECT *
+                FROM DATA
+                WHERE ORDERING <= 1048570
+                """;
+
+        List<AAARawData1> stats = jdbcTemplate.query(sql,
+                new Object[]{startDate, endDate},
+                (resultSet, i) -> {
+
+                    BigInteger ID = BigInteger.valueOf(i);
+                    String ALARM_DAY = resultSet.getString("ALARM_DAY");
+                    String MATCHING_COMMENTS = resultSet.getString("MATCHING_COMMENTS");
+                    String NETWORK = resultSet.getString("NETWORK");
+
+                    String DSLAM_OWNER = resultSet.getString("DSLAM_OWNER");
+                    String DSLAM_OWNER_GROUP = resultSet.getString("DSLAM_OWNER_GROUP");
+                    String OUTAGE_ID = resultSet.getString("OUTAGE_ID");
+                    String ALARM_START_DATE = resultSet.getString("ALARM_START_DATE");
+                    String ALARM_END_DATE = resultSet.getString("ALARM_END_DATE");
+                    String DSLAM = resultSet.getString("DSLAM");
+                    String DSLAM_SLOT = resultSet.getString("DSLAM_SLOT");
+                    String TECHNOLOGY = resultSet.getString("TECHNOLOGY");
+                    String OTE_SITE_NAME = resultSet.getString("OTE_SITE_NAME");
+                    String OTE_SITE_AREA = resultSet.getString("OTE_SITE_AREA");
+                    String POST_CODE = resultSet.getString("POST_CODE");
+                    String LONGITUDE = resultSet.getString("LONGITUDE");
+                    String LATITUDE = resultSet.getString("LATITUDE");
+                    String PROBLEM = resultSet.getString("PROBLEM");
+                    String DSLAM_USERS = resultSet.getString("DSLAM_USERS");
+                    String DATA_AFFECTED = resultSet.getString("DATA_AFFECTED");
+                    String TOTAL_USERS_CALLED = resultSet.getString("TOTAL_USERS_CALLED");
+                    String RMD_INCIDENT_NUMBER = resultSet.getString("RMD_INCIDENT_NUMBER");
+                    String RMD_ALARM_START_DATE = resultSet.getString("RMD_ALARM_START_DATE");
+                    String RMD_ALARM_END_DATE = resultSet.getString("RMD_ALARM_END_DATE");
+                    String RMD_SPECTRA_HIERARCHY = resultSet.getString("RMD_SPECTRA_HIERARCHY");
+                    String RMD_OPERATIONAL_CATEG_TIER_1 = resultSet.getString("RMD_OPERATIONAL_CATEG_TIER_1");
+                    String RMD_OPERATIONAL_CATEG_TIER_2 = resultSet.getString("RMD_OPERATIONAL_CATEG_TIER_2");
+                    String RMD_OPERATIONAL_CATEG_TIER_3 = resultSet.getString("RMD_OPERATIONAL_CATEG_TIER_3");
+                    String RMD_RESOLUTION_CATEG_TIER_1 = resultSet.getString("RMD_RESOLUTION_CATEG_TIER_1");
+                    String RMD_RESOLUTION_CATEG_TIER_2 = resultSet.getString("RMD_RESOLUTION_CATEG_TIER_2");
+                    String ZBX_EVENT_ID = resultSet.getString("ZBX_EVENT_ID");
+                    String ZBX_PROBLEM = resultSet.getString("ZBX_PROBLEM");
+                    String ZBX_ALARM_START_DATE = resultSet.getString("ZBX_ALARM_START_DATE");
+                    String ZBX_ALARM_END_DATE = resultSet.getString("ZBX_ALARM_END_DATE");
+                    String NCE_EVENT_ID = resultSet.getString("NCE_EVENT_ID");
+                    String NCE_ALARM_START_DATE = resultSet.getString("NCE_ALARM_START_DATE");
+                    String NCE_ALARM_END_DATE = resultSet.getString("NCE_ALARM_END_DATE");
+                    String NCE_PROBLEM = resultSet.getString("NCE_PROBLEM");
+                    String NCE_OPERATIONAL_DATA = resultSet.getString("NCE_OPERATIONAL_DATA");
+
+                    return new AAARawData1(ID, ALARM_DAY, MATCHING_COMMENTS, NETWORK, DSLAM_OWNER,
+                            DSLAM_OWNER_GROUP, OUTAGE_ID, ALARM_START_DATE, ALARM_END_DATE, DSLAM, DSLAM_SLOT,
+                            TECHNOLOGY, OTE_SITE_NAME, OTE_SITE_AREA, POST_CODE, LONGITUDE, LATITUDE, PROBLEM,
+                            DSLAM_USERS, DATA_AFFECTED, TOTAL_USERS_CALLED, RMD_INCIDENT_NUMBER, RMD_ALARM_START_DATE,
+                            RMD_ALARM_END_DATE, RMD_SPECTRA_HIERARCHY, RMD_OPERATIONAL_CATEG_TIER_1, RMD_OPERATIONAL_CATEG_TIER_2,
+                            RMD_OPERATIONAL_CATEG_TIER_3, RMD_RESOLUTION_CATEG_TIER_1, RMD_RESOLUTION_CATEG_TIER_2,
+                            ZBX_EVENT_ID, ZBX_PROBLEM, ZBX_ALARM_START_DATE, ZBX_ALARM_END_DATE, NCE_EVENT_ID, NCE_ALARM_START_DATE,
+                            NCE_ALARM_END_DATE, NCE_PROBLEM, NCE_OPERATIONAL_DATA);
+                });
+
+        return stats;
+
     }
 }

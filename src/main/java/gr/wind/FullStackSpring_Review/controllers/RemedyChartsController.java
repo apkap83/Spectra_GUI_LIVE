@@ -46,7 +46,7 @@ public class RemedyChartsController {
 
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
         userNameLoggedIn = authentication.getName();
-        logger.info(Environment + " " + userNameLoggedIn + " -> Getting Graph AAA Outages Plus Remedy Query 1");
+        logger.info(Environment + " " + userNameLoggedIn + " -> Getting Graph AAA-Remedy Alignment Stats");
 
         return remedyStatsService.getStatsForDateRangeQuery1(myDateRange.startDate(), myDateRange.endDate());
 
@@ -56,9 +56,9 @@ public class RemedyChartsController {
     @PostMapping(path= "/aaa_outages_plus_remedy_query2", produces = "application/json")
     public List<AaaOutagesRemedy2> getStatsNumOfRequestsPerMethodForDatesQuery2(@Valid @RequestBody DateRange myDateRange) {
 
-        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
-        userNameLoggedIn = authentication.getName();
-        logger.info(Environment + " " + userNameLoggedIn + " -> Getting Graph AAA Outages Plus Remedy Query 2");
+//        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+//        userNameLoggedIn = authentication.getName();
+////        logger.info(Environment + " " + userNameLoggedIn + " -> Getting Graph AAA Outages Plus Remedy Query 2");
 
         return remedyStatsService.getStatsForDateRangeQuery2(myDateRange.startDate(), myDateRange.endDate());
 
@@ -68,9 +68,9 @@ public class RemedyChartsController {
     @PostMapping(path= "/aaa_outages_top_affected_areas", produces = "application/json")
     public List<TopAffected> getStatsForTopAffectedAreas(@Valid @RequestBody DateRange myDateRange) {
 
-        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
-        userNameLoggedIn = authentication.getName();
-        logger.info(Environment + " " + userNameLoggedIn + " -> Getting Stat for Top Affected Areas");
+//        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+//        userNameLoggedIn = authentication.getName();
+//        logger.info(Environment + " " + userNameLoggedIn + " -> Getting Stat for Top Affected Areas");
 
         return remedyStatsService.getStatsForTopXAffected(myDateRange.startDate(), myDateRange.endDate());
 
@@ -80,9 +80,9 @@ public class RemedyChartsController {
     @PostMapping(path= "/aaa_avg_outages_perday_uniq_dslam_sess_affacted", produces = "application/json")
     public List<AaaAverageOutagesPerDayUniqDslamSessAffected> getAvgOutagesPerDay(@Valid @RequestBody DateRange myDateRange) {
 
-        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
-        userNameLoggedIn = authentication.getName();
-        logger.info(Environment + " " + userNameLoggedIn + " -> Getting Stat for Top Affected Areas");
+//        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+//        userNameLoggedIn = authentication.getName();
+//        logger.info(Environment + " " + userNameLoggedIn + " -> Getting Stat for Avg Outages Per Uniq Dslam");
 
         return remedyStatsService.getAvgOutagPerDayPlusUniqDslamPlusSessAffected(myDateRange.startDate(), myDateRange.endDate());
 
@@ -93,9 +93,9 @@ public class RemedyChartsController {
     @PostMapping(path= "/remedy_tickets_per_resolution", produces = "application/json")
     public List<RemedyTicketsPerResolution> getUniqueUsersAffected(@Valid @RequestBody DateRange myDateRange) {
 
-        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
-        userNameLoggedIn = authentication.getName();
-        logger.info(Environment + " " + userNameLoggedIn + " -> Getting Stat for Top Affected Areas");
+//        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+//        userNameLoggedIn = authentication.getName();
+//        logger.info(Environment + " " + userNameLoggedIn + " -> Getting Stat for Top Affected Areas");
 
         return remedyStatsService.getUniqueUsersAffected(myDateRange.startDate(), myDateRange.endDate());
 
@@ -106,9 +106,9 @@ public class RemedyChartsController {
     @PostMapping(path= "/getTopXSitesAllTechs", produces = "application/json")
     public List<TopXSitesAllTechs> getTopXSSitesAllTechs(@Valid @RequestBody DateRange myDateRange) {
 
-        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
-        userNameLoggedIn = authentication.getName();
-        logger.info(Environment + " " + userNameLoggedIn + " -> Getting Stat for Top Affected Areas");
+//        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+//        userNameLoggedIn = authentication.getName();
+//        logger.info(Environment + " " + userNameLoggedIn + " -> Getting Stat for Top Affected Areas");
 
         return remedyStatsService.getTopXSitesAllTechs(myDateRange.startDate(), myDateRange.endDate());
 
@@ -154,4 +154,10 @@ public class RemedyChartsController {
     }
 
 
+    @CrossOrigin
+    @PostMapping(path="/getAAARawData", produces="application/json")
+    public List<AAARawData1> getAAARawData(@Valid @RequestBody DateRange myDateRange) {
+
+        return remedyStatsService.getAAARawData(myDateRange.startDate(), myDateRange.endDate());
+    }
 }

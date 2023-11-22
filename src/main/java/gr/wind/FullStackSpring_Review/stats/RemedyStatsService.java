@@ -41,4 +41,8 @@ public class RemedyStatsService {
     public List<TopXSitesAllTechs> getTopXSitesAllTechs(Date startDate, Date endDate) {
         return remedyStatsDataAccessService.getTopXSitesAllTechs(startDate, endDate);
     }
+
+    public List<AAARawData1> getAAARawData(Date startDate, Date endDate) {
+        return remedyStatsDataAccessService.getAAARawData(startDate, endDate);
+    }
 }
