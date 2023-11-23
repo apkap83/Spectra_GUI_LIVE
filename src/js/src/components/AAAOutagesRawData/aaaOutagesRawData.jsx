@@ -686,10 +686,7 @@ export function AAAOutagesRawData() {
           message={tooltip.message}
         />
       )}
-      <div
-        className="aaa__header"
-        style={{ marginTop: "1rem", marginBottom: "1rem" }}
-      >
+      <div className="aaa__header">
         <div className="aaa__header__title">AAA Outages - Raw Data</div>
 
         <div className="aaa__header__datePicker">

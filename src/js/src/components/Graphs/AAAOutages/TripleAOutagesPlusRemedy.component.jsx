@@ -113,14 +113,7 @@ export const TripleAOutagesPlusRemedy = () => {
         </div>
       )}
 
-      <div
-        style={{
-          display: "flex",
-          flexDirection: "column",
-          gap: "1.5rem",
-          margin: "0 10rem",
-        }}
-      >
+      <div className="pageWrapper">
         <div className="aaa__header">
           <div className="aaa__header__title">
             AAA Outages + Remedy Alignment
@@ -155,7 +148,12 @@ export const TripleAOutagesPlusRemedy = () => {
           </div>
         </div>
 
-        <div>
+        <div
+          style={{
+            margin: "auto",
+            width: "90vw",
+          }}
+        >
           <div>
             <Boxes
               key={`boxes-${refreshKey}`}
@@ -210,6 +208,7 @@ export const TripleAOutagesPlusRemedy = () => {
           </div>
         </div>
       </div>
+      <div style={{ marginBottom: "9rem" }}></div>
     </>
   );
 };
