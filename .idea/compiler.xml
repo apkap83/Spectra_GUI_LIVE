@@ -7,7 +7,6 @@
         <sourceTestOutputDir name="target/generated-test-sources/test-annotations" />
         <outputRelativeToContentRoot value="true" />
         <module name="Spectra_Live_Server_Port_4000" />
-        <module name="Spectra_GUI_LIVE" />
       </profile>
     </annotationProcessing>
   </component>

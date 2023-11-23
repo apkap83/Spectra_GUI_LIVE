@@ -1,178 +1,202 @@
-.aaa__header {
-  width: 100%;
+.pageWrapper {
   display: flex;
   flex-direction: column;
-  justify-content: center;
-  align-items: center;
-  margin-top: 2rem;
-  margin-left: 1.6rem;
+  gap: 2rem;
 
-  &__title {
-    font-size: 2rem;
-    font-weight: 600;
-  }
-
-  &__datePicker {
+  .aaa__header {
     width: 100%;
     display: flex;
+    flex-direction: column;
     justify-content: center;
     align-items: center;
-    gap: 0.5rem;
+    margin-top: 2rem;
+    margin-left: 1.6rem;
 
-    &--item {
-      width: 35%;
-      font-size: 15px;
-      font-weight: 700;
-    }
-  }
-
-  &__reload {
-    height: 100%;
-    width: 6.4rem;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-  }
-
-  .MuiButton-outlined {
-    height: 32px;
-    border: 1px solid #d9d9d9;
-    // height: 100%;
-    span {
-      color: #d9d9d9;
-    }
-  }
-}
-
-div.aaaOutagesDataGrid {
-  font-size: 1.3rem;
-  height: 73vh;
-}
-
-span.MuiTypography-root {
-  font-size: 1.3rem;
-}
-
-div.MuiDataGrid-filterForm {
-  font-size: 1.3rem !important;
-  label {
-    font-size: 1.3rem;
-  }
-}
-
-.datagridWrapper {
-  width: 100%;
-  height: calc(100vh - 260px);
-  position: relative;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-
-  &__upper {
-    width: 95vw;
-  }
-
-  &__flexContainer {
-    position: relative;
-    display: flex;
-    justify-content: flex-start;
-    align-items: center;
-    margin-bottom: 0.5rem;
-  }
-
-  &__selectColumn {
-    margin-left: auto;
-    margin-right: 10px;
-    font-size: 1.2rem;
-    line-height: 1.2rem;
-    font-weight: 500;
-  }
-
-  &__quickSearch {
-    width: 25rem;
-    font-size: 1.2rem;
-    line-height: 1.2rem;
-    font-family: inherit;
-    color: #000;
-    padding-left: 0.5rem;
-    font-weight: 600;
-  }
-
-  &__grid {
-    width: 100%;
-    height: 70vh;
-  }
-
-  &__loadingMessage {
-    color: rgba(255, 0, 0, 0.95);
-    // font-weight: rgba(255, 0, 0, 0.75);
-  }
-
-  &__rowsPerPage {
-    font-size: 1.3rem;
-    line-height: 1.3rem;
-    text-align: right;
-    margin: 1rem;
-
-    &__span {
+    &__title {
+      font-size: 2rem;
+      font-weight: 600;
     }
 
-    &__input {
-      border: 1px solid rgba(0, 0, 0, 0.3);
-      text-align: center;
-      width: 7rem;
-      font-size: 1.3rem;
-      line-height: 1.3rem;
-      font-family: inherit;
-      color: rgba(0, 0, 0, 0.7);
-      margin-left: 0.5rem;
-      -moz-appearance: textfield;
-      outline: none;
+    &__datePicker {
+      width: 100%;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      gap: 0.5rem;
 
-      &::-webkit-inner-spin-button,
-      &::-webkit-outer-spin-button {
-        -webkit-appearance: none;
-        margin: 0;
+      &--item {
+        width: 35%;
+        font-size: 15px;
+        font-weight: 700;
+      }
+    }
+
+    &__reload {
+      height: 100%;
+      width: 6.4rem;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+    }
+
+    .MuiButton-outlined {
+      height: 32px;
+      border: 1px solid #d9d9d9;
+      // height: 100%;
+      span {
+        color: #d9d9d9;
       }
     }
   }
 
-  .column-visibility-menu {
+  div.aaaOutagesDataGrid {
     font-size: 1.3rem;
-    position: absolute;
-    top: 100%; /* Positioned right below the button */
-    height: 60rem;
-    left: 0;
-    background-color: white; /* Or any color that suits your design */
-    border: 1px solid #ccc; /* Optional border */
-    box-shadow: 0px 2px 5px rgba(0, 0, 0, 0.2); /* Optional shadow for a floating effect */
-    z-index: 100; /* Ensures it floats above other content */
-    width: 25rem; /* Or adjust to your preference */
-    padding: 1rem; /* For some internal spacing */
-    overflow: scroll;
+    height: 73vh;
   }
-}
 
-.genericHeaderClass {
-  background-color: #fff2cc;
-}
+  span.MuiTypography-root {
+    font-size: 1.3rem;
+  }
 
-.aaaHeaderClass {
-  background-color: #b4c6e7;
-}
+  div.MuiDataGrid-filterForm {
+    font-size: 1.3rem !important;
+    label {
+      font-size: 1.3rem;
+    }
+  }
 
-.aaaHeaderClass {
-  background-color: #b4c6e7;
-}
+  .datagridWrapper {
+    width: 100%;
+    height: 80rem;
+    position: relative;
+    display: flex;
+    justify-content: center;
+    align-items: center;
 
-.remedyHeaderClass {
-  background-color: #c6e0b4;
-}
+    &__upper {
+      width: 95vw;
+    }
 
-.zabbixHeaderClass {
-  background-color: #ffe699;
-}
+    &__flexContainer {
+      position: relative;
+      display: flex;
+      justify-content: flex-start;
+      align-items: center;
+      margin-bottom: 0.5rem;
+    }
 
-.nceHeaderClass {
-  background-color: #d6dce4;
+    &__selectColumnsBtn {
+      margin-left: -0.7rem;
+      line-height: 1.2rem;
+    }
+
+    &__clearFiltersBtn {
+      line-height: 1.2rem;
+    }
+
+    &__clearFiltersBtn {
+      line-height: 1.2rem;
+    }
+
+    &__exportToExcelBtn {
+      line-height: 1.2rem;
+    }
+
+    &__loadingMessage {
+      color: rgba(255, 0, 0, 0.95);
+      font-weight: 600;
+      line-height: 1.2rem;
+    }
+
+    &__selectColumn {
+      margin-left: auto;
+      margin-right: 10px;
+      font-size: 1.2rem;
+      line-height: 1.2rem;
+      font-weight: 500;
+    }
+
+    &__quickSearch {
+      width: 25rem;
+      font-size: 1.2rem;
+      line-height: 1.2rem;
+      font-family: inherit;
+      color: #000;
+      padding-left: 0.5rem;
+      font-weight: 600;
+    }
+
+    &__grid {
+      width: 100%;
+      height: 74rem;
+    }
+
+    &__rowsPerPage {
+      font-size: 1.2rem;
+      line-height: 1.2rem;
+      text-align: right;
+      margin: 1rem;
+
+      &__span {
+      }
+
+      &__input {
+        border: 1px solid rgba(0, 0, 0, 0.3);
+        text-align: center;
+        width: 7rem;
+        font-size: 1.2rem;
+        line-height: 1.2rem;
+        font-family: inherit;
+        color: rgba(0, 0, 0, 0.7);
+        margin-left: 0.5rem;
+        -moz-appearance: textfield;
+        outline: none;
+
+        &::-webkit-inner-spin-button,
+        &::-webkit-outer-spin-button {
+          -webkit-appearance: none;
+          margin: 0;
+        }
+      }
+    }
+
+    .column-visibility-menu {
+      font-size: 1.3rem;
+      position: absolute;
+      top: 100%; /* Positioned right below the button */
+      height: 60rem;
+      left: 0;
+      background-color: white; /* Or any color that suits your design */
+      border: 1px solid #ccc; /* Optional border */
+      box-shadow: 0px 2px 5px rgba(0, 0, 0, 0.2); /* Optional shadow for a floating effect */
+      z-index: 100; /* Ensures it floats above other content */
+      width: 25rem; /* Or adjust to your preference */
+      padding: 1rem; /* For some internal spacing */
+      overflow: scroll;
+    }
+  }
+
+  .genericHeaderClass {
+    background-color: #fff2cc;
+  }
+
+  .aaaHeaderClass {
+    background-color: #b4c6e7;
+  }
+
+  .aaaHeaderClass {
+    background-color: #b4c6e7;
+  }
+
+  .remedyHeaderClass {
+    background-color: #c6e0b4;
+  }
+
+  .zabbixHeaderClass {
+    background-color: #ffe699;
+  }
+
+  .nceHeaderClass {
+    background-color: #d6dce4;
+  }
 }

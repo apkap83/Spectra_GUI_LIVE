@@ -111,16 +111,7 @@ const AppWrapper = () => {
         {/* <ScopedCssBaseline> */}
         <Router>
           <MyHeader />
-          <div
-            style={{
-              marginBottom: "15rem", // Distance from Fixed Footer
-              // height: "calc(100vh - 150px)",
-              display: "flex",
-              flexDirection: "column",
-            }}
-          >
-            <App />
-          </div>
+          <App />
           <MyFooter />
         </Router>
         {/* </ScopedCssBaseline> */}

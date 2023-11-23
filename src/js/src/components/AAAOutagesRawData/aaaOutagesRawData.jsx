@@ -30,7 +30,7 @@ import * as XLSX from "xlsx";
 
 import locale from "antd/es/date-picker/locale/en_GB";
 const rangePickerDateFormat = ["DD MMM YYYY"];
-const startDate = dayjs().subtract(1, "week").startOf("day");
+const startDate = dayjs().subtract(1, "day").startOf("day");
 const endDate = dayjs().startOf("day");
 const initialDates = {
   startDate,
@@ -129,6 +129,13 @@ export function AAAOutagesRawData() {
       field: "alarm_END_DATE",
       filter: true,
       headerName: "Alarm End Date",
+      headerClass: "aaaHeaderClass",
+      width: widthInPx + 18,
+    },
+    {
+      field: "MAINTENANCE_PERIOD",
+      filter: true,
+      headerName: "Maintenance Period",
       headerClass: "aaaHeaderClass",
       width: widthInPx + 18,
     },
@@ -236,6 +243,13 @@ export function AAAOutagesRawData() {
       field: "rmd_INCIDENT_NUMBER",
       filter: true,
       headerName: "RMD Incident Number",
+      headerClass: "remedyHeaderClass",
+      width: widthInPx + 40,
+    },
+    {
+      field: "RMD_IS_SCHEDULED",
+      filter: true,
+      headerName: "RMD Is Scheduled",
       headerClass: "remedyHeaderClass",
       width: widthInPx + 40,
     },
@@ -656,7 +670,7 @@ export function AAAOutagesRawData() {
   };
 
   return (
-    <>
+    <div className="pageWrapper">
       {tooltip.show && (
         <TooltipOnCursor
           x={tooltip.x}
@@ -664,7 +678,10 @@ export function AAAOutagesRawData() {
           message={tooltip.message}
         />
       )}
-      <div className="aaa__header">
+      <div
+        className="aaa__header"
+        style={{ marginTop: "1rem", marginBottom: "1rem" }}
+      >
         <div className="aaa__header__title">AAA Outages - Raw Data</div>
 
         <div className="aaa__header__datePicker">
@@ -702,11 +719,23 @@ export function AAAOutagesRawData() {
         ) : (
           <div className="datagridWrapper__upper">
             <div className="datagridWrapper__flexContainer">
-              <Button onClick={() => setIsMenuVisible(!isMenuVisible)}>
+              <Button
+                onClick={() => setIsMenuVisible(!isMenuVisible)}
+                className={"datagridWrapper__selectColumnsBtn"}
+              >
                 Select Columns
               </Button>
-              <Button onClick={clearFilters}>Clear Filters</Button>
-              <Button onClick={exportToExcel} disabled={excelLoading}>
+              <Button
+                onClick={clearFilters}
+                className={"datagridWrapper__clearFiltersBtn"}
+              >
+                Clear Filters
+              </Button>
+              <Button
+                onClick={exportToExcel}
+                disabled={excelLoading}
+                className={"datagridWrapper__exportToExcelBtn"}
+              >
                 Export to Excel
               </Button>
               {excelLoading && (
@@ -770,6 +799,8 @@ export function AAAOutagesRawData() {
           </div>
         )}
       </div>
-    </>
+
+      <div style={{ marginBottom: "9rem" }}></div>
+    </div>
   );
 }

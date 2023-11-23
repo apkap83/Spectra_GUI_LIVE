@@ -1,6 +1,6 @@
 {
   "appTitle": "Spectra Live",
-  "apiPrefix": "https://10.10.18.120:4000",
-  "apiPrefixForIframeDuringRemoteDev": "http://10.10.18.120:4000",
+  "apiPrefix": "http://localhost:8000",
+  "apiPrefixForIframeDuringRemoteDev": "http://localhost:8000",
   "jwtTokenKeyName": "JWT_Token"
 }

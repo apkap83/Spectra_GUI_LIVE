@@ -379,6 +379,7 @@ public class RemedyStatsDataAccessService {
                    OUTAGE_ID,
                    ALARM_START_DATE,
                    ALARM_END_DATE,
+                   MAINTENANCE_PERIOD,
                    DSLAM,
                    DSLAM_SLOT,
                    TECHNOLOGY,
@@ -392,6 +393,7 @@ public class RemedyStatsDataAccessService {
                    DATA_AFFECTED,
                    TOTAL_USERS_CALLED,
                    RMD_INCIDENT_NUMBER,
+                   RMD_IS_SCHEDULED,
                    RMD_ALARM_START_DATE,
                    RMD_ALARM_END_DATE,
                    RMD_SPECTRA_HIERARCHY,
@@ -433,6 +435,7 @@ public class RemedyStatsDataAccessService {
                     String OUTAGE_ID = resultSet.getString("OUTAGE_ID");
                     String ALARM_START_DATE = resultSet.getString("ALARM_START_DATE");
                     String ALARM_END_DATE = resultSet.getString("ALARM_END_DATE");
+                    String MAINTENANCE_PERIOD = resultSet.getString("MAINTENANCE_PERIOD");
                     String DSLAM = resultSet.getString("DSLAM");
                     String DSLAM_SLOT = resultSet.getString("DSLAM_SLOT");
                     String TECHNOLOGY = resultSet.getString("TECHNOLOGY");
@@ -446,7 +449,8 @@ public class RemedyStatsDataAccessService {
                     String DATA_AFFECTED = resultSet.getString("DATA_AFFECTED");
                     String TOTAL_USERS_CALLED = resultSet.getString("TOTAL_USERS_CALLED");
                     String RMD_INCIDENT_NUMBER = resultSet.getString("RMD_INCIDENT_NUMBER");
-                    String RMD_ALARM_START_DATE = resultSet.getString("RMD_ALARM_START_DATE");
+                    String RMD_IS_SCHEDULED = resultSet.getString("RMD_INCIDENT_NUMBER");
+                    String RMD_ALARM_START_DATE = resultSet.getString("RMD_IS_SCHEDULED");
                     String RMD_ALARM_END_DATE = resultSet.getString("RMD_ALARM_END_DATE");
                     String RMD_SPECTRA_HIERARCHY = resultSet.getString("RMD_SPECTRA_HIERARCHY");
                     String RMD_OPERATIONAL_CATEG_TIER_1 = resultSet.getString("RMD_OPERATIONAL_CATEG_TIER_1");
@@ -465,9 +469,9 @@ public class RemedyStatsDataAccessService {
                     String NCE_OPERATIONAL_DATA = resultSet.getString("NCE_OPERATIONAL_DATA");
 
                     return new AAARawData1(ID, ALARM_DAY, MATCHING_COMMENTS, NETWORK, DSLAM_OWNER,
-                            DSLAM_OWNER_GROUP, OUTAGE_ID, ALARM_START_DATE, ALARM_END_DATE, DSLAM, DSLAM_SLOT,
+                            DSLAM_OWNER_GROUP, OUTAGE_ID, ALARM_START_DATE, ALARM_END_DATE, MAINTENANCE_PERIOD, DSLAM, DSLAM_SLOT,
                             TECHNOLOGY, OTE_SITE_NAME, OTE_SITE_AREA, POST_CODE, LONGITUDE, LATITUDE, PROBLEM,
-                            DSLAM_USERS, DATA_AFFECTED, TOTAL_USERS_CALLED, RMD_INCIDENT_NUMBER, RMD_ALARM_START_DATE,
+                            DSLAM_USERS, DATA_AFFECTED, TOTAL_USERS_CALLED, RMD_INCIDENT_NUMBER, RMD_IS_SCHEDULED, RMD_ALARM_START_DATE,
                             RMD_ALARM_END_DATE, RMD_SPECTRA_HIERARCHY, RMD_OPERATIONAL_CATEG_TIER_1, RMD_OPERATIONAL_CATEG_TIER_2,
                             RMD_OPERATIONAL_CATEG_TIER_3, RMD_RESOLUTION_CATEG_TIER_1, RMD_RESOLUTION_CATEG_TIER_2,
                             ZBX_EVENT_ID, ZBX_PROBLEM, ZBX_ALARM_START_DATE, ZBX_ALARM_END_DATE, NCE_EVENT_ID, NCE_ALARM_START_DATE,
