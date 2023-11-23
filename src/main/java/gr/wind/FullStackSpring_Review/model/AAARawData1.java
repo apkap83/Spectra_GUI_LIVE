@@ -45,7 +45,20 @@ public class AAARawData1 {
     private final String NCE_PROBLEM;
     private final String NCE_OPERATIONAL_DATA;
 
-    public AAARawData1(BigInteger id, String ALARM_DAY, String MATCHING_COMMENTS, String NETWORK, String DSLAM_OWNER, String DSLAM_OWNER_GROUP, String OUTAGE_ID, String ALARM_START_DATE, String ALARM_END_DATE, String maintenance_period, String DSLAM, String DSLAM_SLOT, String TECHNOLOGY, String OTE_SITE_NAME, String OTE_SITE_AREA, String POST_CODE, String LONGITUDE, String LATITUDE, String PROBLEM, String DSLAM_USERS, String DATA_AFFECTED, String TOTAL_USERS_CALLED, String RMD_INCIDENT_NUMBER, String rmd_is_scheduled, String RMD_ALARM_START_DATE, String RMD_ALARM_END_DATE, String RMD_SPECTRA_HIERARCHY, String RMD_OPERATIONAL_CATEG_TIER_1, String RMD_OPERATIONAL_CATEG_TIER_2, String RMD_OPERATIONAL_CATEG_TIER_3, String RMD_RESOLUTION_CATEG_TIER_1, String RMD_RESOLUTION_CATEG_TIER_2, String ZBX_EVENT_ID, String ZBX_PROBLEM, String ZBX_ALARM_START_DATE, String ZBX_ALARM_END_DATE, String NCE_EVENT_ID, String NCE_ALARM_START_DATE, String NCE_ALARM_END_DATE, String NCE_PROBLEM, String NCE_OPERATIONAL_DATA) {
+    public AAARawData1(BigInteger id, String ALARM_DAY, String MATCHING_COMMENTS, String NETWORK,
+                       String DSLAM_OWNER, String DSLAM_OWNER_GROUP, String OUTAGE_ID,
+                       String ALARM_START_DATE, String ALARM_END_DATE, String MAINTENANCE_PERIOD,
+                       String DSLAM, String DSLAM_SLOT, String TECHNOLOGY, String OTE_SITE_NAME,
+                       String OTE_SITE_AREA, String POST_CODE, String LONGITUDE, String LATITUDE,
+                       String PROBLEM, String DSLAM_USERS, String DATA_AFFECTED, String TOTAL_USERS_CALLED,
+                       String RMD_INCIDENT_NUMBER, String RMD_IS_SCHEDULED, String RMD_ALARM_START_DATE,
+                       String RMD_ALARM_END_DATE, String RMD_SPECTRA_HIERARCHY,
+                       String RMD_OPERATIONAL_CATEG_TIER_1, String RMD_OPERATIONAL_CATEG_TIER_2,
+                       String RMD_OPERATIONAL_CATEG_TIER_3, String RMD_RESOLUTION_CATEG_TIER_1,
+                       String RMD_RESOLUTION_CATEG_TIER_2, String ZBX_EVENT_ID,
+                       String ZBX_PROBLEM, String ZBX_ALARM_START_DATE, String ZBX_ALARM_END_DATE,
+                       String NCE_EVENT_ID, String NCE_ALARM_START_DATE, String NCE_ALARM_END_DATE,
+                       String NCE_PROBLEM, String NCE_OPERATIONAL_DATA) {
         this.id = id;
         this.ALARM_DAY = ALARM_DAY;
         this.MATCHING_COMMENTS = MATCHING_COMMENTS;
@@ -55,7 +68,7 @@ public class AAARawData1 {
         this.OUTAGE_ID = OUTAGE_ID;
         this.ALARM_START_DATE = ALARM_START_DATE;
         this.ALARM_END_DATE = ALARM_END_DATE;
-        MAINTENANCE_PERIOD = maintenance_period;
+        this.MAINTENANCE_PERIOD = MAINTENANCE_PERIOD;
         this.DSLAM = DSLAM;
         this.DSLAM_SLOT = DSLAM_SLOT;
         this.TECHNOLOGY = TECHNOLOGY;
@@ -69,7 +82,7 @@ public class AAARawData1 {
         this.DATA_AFFECTED = DATA_AFFECTED;
         this.TOTAL_USERS_CALLED = TOTAL_USERS_CALLED;
         this.RMD_INCIDENT_NUMBER = RMD_INCIDENT_NUMBER;
-        RMD_IS_SCHEDULED = rmd_is_scheduled;
+        this.RMD_IS_SCHEDULED = RMD_IS_SCHEDULED;
         this.RMD_ALARM_START_DATE = RMD_ALARM_START_DATE;
         this.RMD_ALARM_END_DATE = RMD_ALARM_END_DATE;
         this.RMD_SPECTRA_HIERARCHY = RMD_SPECTRA_HIERARCHY;

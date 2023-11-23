@@ -158,6 +158,8 @@ public class RemedyChartsController {
     @PostMapping(path="/getAAARawData", produces="application/json")
     public List<AAARawData1> getAAARawData(@Valid @RequestBody DateRange myDateRange) {
 
+        logger.info(Environment + " " + userNameLoggedIn + " -> Getting AAA-Raw data");
+
         return remedyStatsService.getAAARawData(myDateRange.startDate(), myDateRange.endDate());
     }
 }
