@@ -58,6 +58,8 @@ export function AAAOutagesRawData() {
   const [selectedColumn, setSelectedColumn] = useState("all");
   const [excelLoading, setExcelLoading] = useState(false);
 
+  const [gridReady, setGridReady] = useState(false);
+
   const gridRef = useRef(); // Optional - for accessing Grid's API
   const menuRef = useRef(null);
   const selectAllRef = useRef(null);
@@ -133,7 +135,7 @@ export function AAAOutagesRawData() {
       width: widthInPx + 18,
     },
     {
-      field: "MAINTENANCE_PERIOD",
+      field: "maintenance_PERIOD",
       filter: true,
       headerName: "Maintenance Period",
       headerClass: "aaaHeaderClass",
@@ -233,7 +235,7 @@ export function AAAOutagesRawData() {
       field: "total_USERS_CALLED",
       filter: true,
       headerName: "Total Users Called",
-      headerClass: "remedyHeaderClass",
+      headerClass: "aaaHeaderClass",
       // type: "number",
       width: widthInPx + 20,
 
@@ -247,7 +249,7 @@ export function AAAOutagesRawData() {
       width: widthInPx + 40,
     },
     {
-      field: "RMD_IS_SCHEDULED",
+      field: "rmd_IS_SCHEDULED",
       filter: true,
       headerName: "RMD Is Scheduled",
       headerClass: "remedyHeaderClass",
@@ -393,8 +395,8 @@ export function AAAOutagesRawData() {
       ? [...value]
       : [dateRange.startDate, dateRange.endDate];
 
-    setValue(newValue);
     setRefreshKey((oldKey) => oldKey + 1); // Increment the key to force rerender
+    setValue(newValue);
   };
 
   // DefaultColDef sets props common to all Columns
@@ -449,7 +451,13 @@ export function AAAOutagesRawData() {
 
       if (myData) {
         setOriginalData(myData); // Store original data
-        setRetrievedRawData(myData); // Set retrieved data for display
+
+        if (searchTerm !== "") {
+          const filteredData = filterData();
+          setRetrievedRawData(filteredData);
+        } else {
+          setRetrievedRawData(myData); // Set retrieved data for display
+        }
       }
       setMasterLoading(false);
     };
@@ -646,7 +654,7 @@ export function AAAOutagesRawData() {
     }, 300);
 
     return () => clearTimeout(debounce);
-  }, [searchTerm]);
+  }, [searchTerm, refreshKey]);
 
   const columnSearchOptions = [
     { value: "all", label: "All Columns" },
@@ -783,6 +791,9 @@ export function AAAOutagesRawData() {
                 onCellClicked={cellClickedListener} // Optional - registering for Grid Event
                 pagination={true}
                 paginationPageSize={rowsPerPage} // Set the desired number of rows per page
+                onGridReady={() => {
+                  setGridReady(true);
+                }}
               />
             </div>
             <div className="datagridWrapper__rowsPerPage">
