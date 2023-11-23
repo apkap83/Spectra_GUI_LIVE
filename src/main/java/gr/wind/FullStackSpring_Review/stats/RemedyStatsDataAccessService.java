@@ -449,8 +449,8 @@ public class RemedyStatsDataAccessService {
                     String DATA_AFFECTED = resultSet.getString("DATA_AFFECTED");
                     String TOTAL_USERS_CALLED = resultSet.getString("TOTAL_USERS_CALLED");
                     String RMD_INCIDENT_NUMBER = resultSet.getString("RMD_INCIDENT_NUMBER");
-                    String RMD_IS_SCHEDULED = resultSet.getString("RMD_INCIDENT_NUMBER");
-                    String RMD_ALARM_START_DATE = resultSet.getString("RMD_IS_SCHEDULED");
+                    String RMD_IS_SCHEDULED = resultSet.getString("RMD_IS_SCHEDULED");
+                    String RMD_ALARM_START_DATE = resultSet.getString("RMD_ALARM_START_DATE");
                     String RMD_ALARM_END_DATE = resultSet.getString("RMD_ALARM_END_DATE");
                     String RMD_SPECTRA_HIERARCHY = resultSet.getString("RMD_SPECTRA_HIERARCHY");
                     String RMD_OPERATIONAL_CATEG_TIER_1 = resultSet.getString("RMD_OPERATIONAL_CATEG_TIER_1");
