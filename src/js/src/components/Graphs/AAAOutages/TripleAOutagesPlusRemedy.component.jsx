@@ -113,7 +113,14 @@ export const TripleAOutagesPlusRemedy = () => {
         </div>
       )}
 
-      <div className="pageWrapper">
+      <div
+        className="pageWrapper"
+        style={{
+          // width: "calc(100vw - 98px)",
+          marginLeft: "9.5rem",
+          marginRight: "9.5rem",
+        }}
+      >
         <div className="aaa__header">
           <div className="aaa__header__title">
             AAA Outages + Remedy Alignment

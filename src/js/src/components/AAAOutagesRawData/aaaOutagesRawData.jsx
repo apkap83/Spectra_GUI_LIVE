@@ -609,6 +609,8 @@ export function AAAOutagesRawData() {
 
     setTimeout(() => {
       const rowData = getCurrentGridData();
+      console.log("rowData", rowData);
+      console.log("rowData length", rowData.length);
       convertToExcel(rowData);
       setExcelLoading(false);
     }, 1500);
@@ -738,7 +740,7 @@ export function AAAOutagesRawData() {
               </Button>
               <Button
                 onClick={exportToExcel}
-                disabled={excelLoading}
+                disabled={excelLoading || !gridReady}
                 className={"datagridWrapper__exportToExcelBtn"}
               >
                 Export to Excel
@@ -789,6 +791,7 @@ export function AAAOutagesRawData() {
                 pagination={true}
                 paginationPageSize={rowsPerPage} // Set the desired number of rows per page
                 onGridReady={() => {
+                  console.log("Grid is Ready");
                   setGridReady(true);
                 }}
               />
