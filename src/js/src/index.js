@@ -1,7 +1,7 @@
 import React from "react";
 import AppWrapper from "./App";
 
-import config from "./config.json";
+import config from "./config";
 import { createRoot } from "react-dom/client";
 
 // import "./fonts/Chiller/chiller.ttf";

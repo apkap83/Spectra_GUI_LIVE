@@ -1,7 +1,7 @@
 import { useState, useEffect, useMemo } from "react";
 import PropTypes from "prop-types";
 import httpService from "../../../services/httpService";
-import config from "../../../config.json";
+import config from "../../../config";
 import Box from "@mui/material/Box";
 import Table from "@mui/material/Table";
 import TableBody from "@mui/material/TableBody";

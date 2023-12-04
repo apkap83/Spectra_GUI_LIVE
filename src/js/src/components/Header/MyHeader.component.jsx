@@ -9,7 +9,7 @@ import NavDropdown from "react-bootstrap/NavDropdown";
 import { LinkContainer } from "react-router-bootstrap";
 import { useLocation } from "react-router-dom";
 
-import config from "../../config.json";
+import config from "../../config";
 // const { appTitle } = Conf;
 
 // MUI Icons

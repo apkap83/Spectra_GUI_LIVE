@@ -7,7 +7,7 @@ import { getAdHocOutages } from "../services/incidentService";
 import { errorNotification } from "./common/Notification";
 import { ReactComponent as NovaLogo } from "../assets/novaLogo.svg";
 
-import config from "../config.json";
+import config from "../config";
 const apiEndPoint = config.apiPrefix + "/api/incidents";
 
 // Antd Library

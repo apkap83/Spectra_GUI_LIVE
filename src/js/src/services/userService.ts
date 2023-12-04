@@ -1,6 +1,6 @@
 import httpService from "./httpService";
 import axios from "axios";
-import config from "../config.json";
+import config from "../config";
 import { UserType } from "../types/UserType";
 
 const apiEndPoint = config.apiPrefix + "/api/users";

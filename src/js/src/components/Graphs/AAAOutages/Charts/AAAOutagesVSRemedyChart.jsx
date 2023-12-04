@@ -7,7 +7,7 @@ import { styled } from "@mui/material/styles";
 var CanvasJS = CanvasJSReact.CanvasJS;
 var CanvasJSChart = CanvasJSReact.CanvasJSChart;
 
-import config from "../../../../config.json";
+import config from "../../../../config";
 const apiEndPoint =
   config.apiPrefix + "/api/charts/aaa_outages_top_affected_areas";
 

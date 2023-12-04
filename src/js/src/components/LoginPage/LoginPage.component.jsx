@@ -1,6 +1,6 @@
 import { useState } from "react";
 import axios from "axios";
-import config from "../../config.json";
+import config from "../../config";
 import auth from "../../services/authService";
 import { getCurrentYear } from "./../../utils/myutils";
 import { ReactComponent as NovaLogo } from "../../assets/novaLogo.svg";

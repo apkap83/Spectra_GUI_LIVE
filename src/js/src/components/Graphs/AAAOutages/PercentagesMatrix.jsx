@@ -1,7 +1,7 @@
 import { useState, useEffect, useMemo } from "react";
 import PropTypes from "prop-types";
 import httpService from "../../../services/httpService";
-import config from "../../../config.json";
+import config from "../../../config";
 const apiEndPoint =
   config.apiPrefix + "/api/charts/aaa_outages_plus_remedy_query1";
 

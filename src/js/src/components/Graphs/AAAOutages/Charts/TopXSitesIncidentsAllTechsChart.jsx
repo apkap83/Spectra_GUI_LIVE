@@ -7,7 +7,7 @@ import { styled } from "@mui/material/styles";
 var CanvasJS = CanvasJSReact.CanvasJS;
 var CanvasJSChart = CanvasJSReact.CanvasJSChart;
 
-import config from "../../../../config.json";
+import config from "../../../../config";
 import { date } from "yup";
 const apiEndPoint = config.apiPrefix + "/api/charts/getTopXSitesAllTechs";
 

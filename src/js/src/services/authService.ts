@@ -1,6 +1,6 @@
 import httpService from "./httpService";
 import { jwtDecode } from "jwt-decode";
-import config from "../config.json";
+import config from "../config";
 const apiEndPoint = `${config.apiPrefix}/api/authenticate`;
 
 // Get JWT from Storage and Set it in Authorization Header

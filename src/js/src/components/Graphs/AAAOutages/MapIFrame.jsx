@@ -5,7 +5,7 @@ import FormControlLabel from "@mui/material/FormControlLabel";
 import FormControl from "@mui/material/FormControl";
 import FormLabel from "@mui/material/FormLabel";
 import { Spin } from "antd";
-import config from "../../../config.json";
+import config from "../../../config";
 
 export const MapIframe = ({ dateRange, masterLoading }) => {
   const [selectedValue, setSelectedValue] = useState(1);

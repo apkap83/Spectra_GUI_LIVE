@@ -5,7 +5,7 @@ import { TooltipOnCursor } from "../common/TooltipOnCursor";
 
 import { datesWithinRange } from "../../lib/helpFunctions";
 import httpService from "../../services/httpService";
-import config from "../../config.json";
+import config from "../../config";
 const apiEndPoint = config.apiPrefix + "/api/charts/getAAARawData";
 
 import { LoadingSpinnerCentered } from "../common/LoadingSpinnerCentered";

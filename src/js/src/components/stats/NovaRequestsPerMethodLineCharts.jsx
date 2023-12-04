@@ -4,7 +4,7 @@ import httpService from "../../services/httpService";
 import randomColor from "randomcolor";
 import { Spin } from "antd";
 import conf from "./config.json";
-import envConf from "../../config.json";
+import envConf from "../../config";
 import CanvasJSReact from "@canvasjs/react-charts";
 
 var CanvasJS = CanvasJSReact.CanvasJS;

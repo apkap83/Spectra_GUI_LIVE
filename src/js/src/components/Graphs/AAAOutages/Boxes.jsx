@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react";
 import httpService from "../../../services/httpService";
-import config from "../../../config.json";
+import config from "../../../config";
 const apiEndPoint =
   config.apiPrefix +
   "/api/charts/aaa_avg_outages_perday_uniq_dslam_sess_affacted";
