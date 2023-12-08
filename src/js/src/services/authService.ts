@@ -1,7 +1,7 @@
 import httpService from "./httpService";
 import { jwtDecode } from "jwt-decode";
 import config from "../config";
-const apiEndPoint = `${config.apiPrefix}/api/authenticate`;
+const apiEndPoint = `${config.apiPrefix}/api/auth/login`;
 
 // Get JWT from Storage and Set it in Authorization Header
 if (getJwt()) {
