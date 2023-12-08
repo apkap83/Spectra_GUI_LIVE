@@ -226,7 +226,7 @@ public class RemedyStatsDataAccessService {
                                      OTE_SITE_AREA,
                                      COUNT(1) OUTAGES,
                                      ROW_NUMBER() OVER (ORDER BY COUNT(1) DESC) ORDERING
-                                  FROM DIOANNID.Z_OUTAGES_MERGED_AAA_RAW_V M
+                                  FROM DIOANNID.Z_OUTAGES_MERGED_AAA_RAW M
                                   WHERE M.DATA_SOURCE = 'AAA'
                                   AND   M.ALARM_START_DATE >= ?
                                   AND   M.ALARM_START_DATE <  ?
@@ -260,7 +260,7 @@ public class RemedyStatsDataAccessService {
                          CEIL(COUNT(1) / COUNT(DISTINCT ALARM_DAY)) AVG_OUTAGES_PER_DAY,
                          COUNT(DISTINCT M.DSLAM) UNIQUE_DSLAM,
                          SUM(M.DATA_AFFECTED) SESSION_AFFECTED
-                      FROM DIOANNID.Z_OUTAGES_MERGED_AAA_RAW_V M
+                      FROM DIOANNID.Z_OUTAGES_MERGED_AAA_RAW M
                       WHERE M.ALARM_START_DATE >= ?
                       AND   M.ALARM_START_DATE <  ?
                 """;
@@ -288,7 +288,7 @@ public class RemedyStatsDataAccessService {
                          COUNT(DISTINCT CASE WHEN M.DSLAM_OWNER_GROUP = 'WIND+NOVA' THEN M.DSLAM ELSE NULL END) DSLAMS_WIND_NOVA,
                          COUNT(DISTINCT CASE WHEN M.DSLAM_OWNER_GROUP = 'OTE+VF' THEN M.DSLAM ELSE NULL END) DSLAMS_OTE_VF,
                          SUM(M.DATA_AFFECTED) AFFECTED_SESSIONS
-                      FROM DIOANNID.Z_OUTAGES_MERGED_AAA_RAW_V M
+                      FROM DIOANNID.Z_OUTAGES_MERGED_AAA_RAW M
                       WHERE M.RMD_INCIDENT_NUMBER IS NOT NULL
                       AND   M.ALARM_START_DATE >= ?
                       AND   M.ALARM_START_DATE <  ?
@@ -329,7 +329,7 @@ public class RemedyStatsDataAccessService {
                                COUNT(A.RMD_INCIDENT_NUMBER) MATCHED_WITH_TICKETS,
                                SUM(DATA_AFFECTED) AFFECTED_SESSIONS,
                                ROW_NUMBER() OVER (ORDER BY COUNT(1) DESC) ORDERING
-                            FROM Z_OUTAGES_MERGED_AAA_RAW_V A
+                            FROM Z_OUTAGES_MERGED_AAA_RAW A
                             WHERE A.ALARM_START_DATE >= ?
                             AND   A.ALARM_START_DATE < ?
                             GROUP BY
@@ -412,7 +412,7 @@ public class RemedyStatsDataAccessService {
                    NCE_PROBLEM,
                    NCE_OPERATIONAL_DATA,
                    ROW_NUMBER() OVER (ORDER BY ALARM_START_DATE) ORDERING --do not show
-                FROM DIOANNID.Z_OUTAGES_MERGED_AAA_RAW_V
+                FROM DIOANNID.Z_OUTAGES_MERGED_AAA_RAW
                 WHERE ALARM_START_DATE >= ?
                 AND   ALARM_START_DATE <  ?
                 )
