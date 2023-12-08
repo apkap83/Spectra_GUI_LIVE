@@ -104,7 +104,7 @@ export function RemedyTickets({ dateRange, setLoading }) {
             id: "DSLAM_OWNER_GROUP",
             numeric: true,
             disablePadding: false,
-            label: "DSLAM Owner Group",
+            label: "Comments",
           },
           ...dateLabels,
         ]);
