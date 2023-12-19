@@ -40,11 +40,9 @@ export const Boxes = ({
     getDataFromDB();
   }, []);
 
-  const showBoxes =
-    !currentlyLoading &&
-    avgOutagesPerDay &&
-    netWorkOutagesAvgPercentage &&
-    windNovaOutagesOverTotalEvents;
+  const showBoxes = !currentlyLoading && avgOutagesPerDay; //&&
+  // netWorkOutagesAvgPercentage &&
+  // windNovaOutagesOverTotalEvents;
 
   useEffect(() => {
     if (
