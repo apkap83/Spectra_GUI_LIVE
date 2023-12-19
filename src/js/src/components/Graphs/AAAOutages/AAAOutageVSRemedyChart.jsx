@@ -161,7 +161,7 @@ function windNovaOutagesOverWindNovaTotalEventsAVG(data) {
   return (summedData / numOfItems).toFixed(1);
 }
 
-export function PercentagesTable({
+export function AAAOutageVSRemedyChart({
   dateRange,
   setNetWorkOutagesAvgPercentage,
   setWindNovaOutagesOverTotalEvents,
@@ -243,8 +243,8 @@ export function PercentagesTable({
       });
 
       setQuery1Data(dataTobeShown);
-      setNetWorkOutagesAvgPercentage(networkOutagesOverAllEventsAVG);
-      setWindNovaOutagesOverTotalEvents(windNovaNetworkOutagesOverAllEventsAVG);
+      // setNetWorkOutagesAvgPercentage(networkOutagesOverAllEventsAVG);
+      // setWindNovaOutagesOverTotalEvents(windNovaNetworkOutagesOverAllEventsAVG);
     };
 
     setTimeout(() => {
@@ -252,81 +252,9 @@ export function PercentagesTable({
     }, 1200);
   }, [dateRange]);
 
-  function EnhancedTableHead(props) {
-    return (
-      <TableHead>
-        <TableRow>
-          {headCells.map((headCell, index) => (
-            <TableCell
-              key={headCell.id}
-              align={index === 0 ? "left" : "right"}
-              padding={headCell.disablePadding ? "none" : "normal"}
-              style={{
-                position: index === 0 ? "sticky" : "normal",
-                left: 0,
-                background: "white",
-                zIndex: 10,
-              }}
-            >
-              <TableSortLabel
-                active={false}
-                // hideSortIcon={true}
-              >
-                {headCell.label}
-              </TableSortLabel>
-            </TableCell>
-          ))}
-        </TableRow>
-      </TableHead>
-    );
-  }
-
   return (
     <div>
       <AAAOutagesVSRemedyCharts chartData={rows} />
-      {/* <p>{showSelectedDates(dateRange, masterLoading)}</p> */}
-      {/* <Box sx={{ width: "100%" }}>
-        <Paper sx={{ width: "100%", mb: 2 }}>
-          <EnhancedTableToolbar />
-          <TableContainer>
-            <Table sx={{ minWidth: 750 }} aria-labelledby="tableTitle">
-              <EnhancedTableHead rowCount={rows.length} />
-              <TableBody>
-                {rows.map((row, index) => {
-                  return (
-                    <TableRow tabIndex={-1} key={row.id} sx={{}}>
-                      <TableCell
-                        align="right"
-                        sx={{
-                          position: "sticky",
-                          whiteSpace: "nowrap",
-                          textAlign: "left",
-                          left: 0,
-                          zIndex: 10, // higher than the table body cells
-                          background: "white",
-                        }}
-                      >
-                        {row.DSLAM_OWNER_GROUP}
-                      </TableCell>
-
-                      {row &&
-                        Object.keys(row.dateValuePair)
-                          .sort(sortDates)
-                          .map((key) => {
-                            return (
-                              <TableCell key={key} align="right">
-                                {`${row.dateValuePair[key]} %`}
-                              </TableCell>
-                            );
-                          })}
-                    </TableRow>
-                  );
-                })}
-              </TableBody>
-            </Table>
-          </TableContainer>
-        </Paper>
-      </Box> */}
     </div>
   );
 }

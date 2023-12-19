@@ -7,7 +7,9 @@ import CircularIndeterminate from "../../common/CircularIndeterminate";
 import locale from "antd/es/date-picker/locale/en_GB";
 import { datesWithinRange } from "../../../lib/helpFunctions";
 import { AAAOutagesTable } from "./AAAOutagesMatrix.component";
-import { PercentagesTable } from "./PercentagesMatrix";
+import { AAAOutagesCategorization } from "./AAAOutagesCategorization.component";
+
+import { AAAOutageVSRemedyChart } from "./AAAOutageVSRemedyChart";
 import { Boxes } from "./Boxes";
 import Button from "@mui/material/Button";
 import CachedIcon from "@mui/icons-material/Cached";
@@ -17,6 +19,9 @@ import { formatDateForIFrame } from "../../../lib/helpFunctions";
 import { TopXSitesIncidentsAllTechs } from "./Charts/TopXSitesIncidentsAllTechsChart";
 import { showSelectedDates } from "../../../lib/helpFunctions";
 import { MapIframe } from "./MapIFrame";
+import { PowerVSNTWOutagesWindNovaChart } from "./Charts/PowerVSNTWOutagesWindNovaChart";
+import { PowerVSNTWOutagesOTEVodafoneChart } from "./Charts/PowerVSNTWOutagesOteVF";
+
 const rangePickerDateFormat = ["DD MMM YYYY"];
 const startDate = dayjs().subtract(1, "week").startOf("day");
 const endDate = dayjs().startOf("day");
@@ -92,11 +97,9 @@ export const TripleAOutagesPlusRemedy = () => {
     setRefreshKey((oldKey) => oldKey + 1); // Increment the key to force rerender
   };
 
-  const masterLoading =
-    loadingAAA ||
-    loadingRemedyTickets ||
-    !netWorkOutagesAvgPercentage ||
-    !windNovaOutagesOverTotalEvents;
+  const masterLoading = loadingAAA || loadingRemedyTickets; //||
+  // !netWorkOutagesAvgPercentage ||
+  // !windNovaOutagesOverTotalEvents;
 
   function disabledDate(current) {
     // Disable dates in the future
@@ -159,6 +162,7 @@ export const TripleAOutagesPlusRemedy = () => {
           style={{
             margin: "auto",
             width: "90vw",
+            font: "Chiller_Embedded",
           }}
         >
           <div>
@@ -171,8 +175,8 @@ export const TripleAOutagesPlusRemedy = () => {
             />
           </div>
 
-          <div>
-            <PercentagesTable
+          {/* <div>
+            <AAAOutageVSRemedyChart
               key={`percentages-${refreshKey}`}
               dateRange={dateRange}
               setNetWorkOutagesAvgPercentage={setNetWorkOutagesAvgPercentage}
@@ -180,6 +184,28 @@ export const TripleAOutagesPlusRemedy = () => {
                 setWindNovaOutagesOverTotalEvents
               }
               masterLoading={masterLoading}
+            />
+          </div> */}
+
+          <div>
+            <PowerVSNTWOutagesWindNovaChart
+              key={`powerVSNTWOutagesWindNovaChart-${refreshKey}`}
+              dateRange={dateRange}
+            />
+          </div>
+
+          <div>
+            <PowerVSNTWOutagesOTEVodafoneChart
+              key={`powerVSNTWOutagesOteVFChart-${refreshKey}`}
+              dateRange={dateRange}
+            />
+          </div>
+
+          <div>
+            <AAAOutagesCategorization
+              key={`outagesCateg-${refreshKey}`}
+              dateRange={dateRange}
+              setLoading={setLoadingAAA}
             />
           </div>
 
