@@ -112,6 +112,7 @@ const AppWrapper = () => {
         <Router>
           <MyHeader />
           <App />
+          <div style={{ marginBottom: "9rem" }}></div>
           <MyFooter />
         </Router>
         {/* </ScopedCssBaseline> */}

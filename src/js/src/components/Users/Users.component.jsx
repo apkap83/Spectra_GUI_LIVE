@@ -33,6 +33,8 @@ import { successNotification, errorNotification } from "../common/Notification";
 
 import { UserSelector } from "../common/UserSelector.component";
 
+import { Spin } from "antd";
+
 import { filter } from "lodash";
 export const Users = () => {
   const pageSize = 20;
@@ -561,29 +563,38 @@ export const Users = () => {
           style={createUserFormVisible ? mountedStyle : unmountedStyle}
         />
       ) : null}
-      <div style={{ position: "relative", height: "60vh", zIndex: "10" }}>
-        <LoadingSpinnerCentered isFetching={isFetchingUsers}>
-          <Table
-            sx={{
-              margin: "auto",
-              minWidth: 650,
-              position: "relative",
-              width: "98.5vw",
-            }}
-            size="large"
-            aria-label="a table"
-          >
-            {generateTableHeadAndColumns(columnsForUsersList)}
+      <div style={{ position: "relative", zIndex: "10" }}>
+        {isFetchingUsers ? (
+          <div style={{ height: "60vh" }}>
+            <div className="loadingIndicatorCentered">
+              <Spin className="loadingIndicator__spinner" size="medium" />
+              <span className="loadingIndicator__message">Loading...</span>
+            </div>
+          </div>
+        ) : (
+          <>
+            <Table
+              sx={{
+                margin: "auto",
+                minWidth: 650,
+                position: "relative",
+                width: "98.5vw",
+              }}
+              size="large"
+              aria-label="a table"
+            >
+              {generateTableHeadAndColumns(columnsForUsersList)}
 
-            {MyTableBody(paginatedList)}
-          </Table>
-          <PaginationAndTotalRecords
-            recordsNumber={users && users.length}
-            pageNumber={pageNumber}
-            pagesCount={pagesCount}
-            handlePageChange={handlePageChange}
-          />
-        </LoadingSpinnerCentered>
+              {MyTableBody(paginatedList)}
+            </Table>
+            <PaginationAndTotalRecords
+              recordsNumber={users && users.length}
+              pageNumber={pageNumber}
+              pagesCount={pagesCount}
+              handlePageChange={handlePageChange}
+            />
+          </>
+        )}
       </div>
     </>
   );

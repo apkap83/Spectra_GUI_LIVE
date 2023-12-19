@@ -52,15 +52,6 @@ export function CdrDBOutages(props) {
   const [dslamSelected, setDslamSelected] = useState();
   const [oteSiteSelected, setOteSiteSelected] = useState();
 
-  const StyledTableRow = styled(TableRow)(({ theme }) => ({
-    // "&:nth-of-type(odd)": {
-    //   backgroundColor: "white",
-    // },
-    // "&:nth-of-type(even)": {
-    //   backgroundColor: "#f8f8f8",
-    // },
-  }));
-
   const generateTableHeadAndColumns = (columnsArray) => {
     return (
       <TableHead>
@@ -111,8 +102,10 @@ export function CdrDBOutages(props) {
           <TableRow
             key={(Math.random() + 1).toString(36).substring(7)}
             sx={{
-              "&:last-child td, &:last-child th": { border: 0 },
-              background: stringToColor("ABC" + incident.dslam_Owner) + "30",
+              backgroundColor: "rgba(0, 0, 0, 0.06)",
+              // "&:last-child td, &:last-child th": { border: 0 },
+              // background: "rgba(",
+              // borderBottom: "2px solid rgba(#fff, .3)",
             }}
           >
             <TableCell align="center" component="th" scope="row">
@@ -273,6 +266,7 @@ export function CdrDBOutages(props) {
                 <span
                   style={{
                     marginLeft: "0.4rem",
+                    fontWeight: 600,
                   }}
                 >
                   Open DSLAM Outages

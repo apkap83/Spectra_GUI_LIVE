@@ -155,11 +155,12 @@ export function AAAOutagesCategorization({ dateRange, setLoading }) {
             numeric: false,
             disablePadding: true,
             label: "Category",
+            width: "150px",
           },
           {
             id: "DSLAM_OWNER_GROUP",
             numeric: true,
-            disablePadding: false,
+            disablePadding: true,
             label: "DSLAM Owner Group",
           },
           ...dateLabels,
@@ -179,14 +180,14 @@ export function AAAOutagesCategorization({ dateRange, setLoading }) {
           {headCells.map((headCell, index) => (
             <TableCell
               key={headCell.id}
-              align={index === 0 ? "left" : "right"}
+              align={index < 2 ? "left" : "right"}
               padding={headCell.disablePadding ? "none" : "normal"}
               sx={{
                 whiteSpace: "nowrap",
                 fontWeight: 600,
 
                 position: index < 2 ? "sticky" : "normal",
-                left: index === 0 ? 0 : index === 1 ? 240 : "",
+                left: index === 0 ? 0 : index === 1 ? 247 : "",
                 background: index < 2 ? "white" : "white",
                 zIndex: 20, // higher than the table body cells
               }}
@@ -220,7 +221,8 @@ export function AAAOutagesCategorization({ dateRange, setLoading }) {
                     key={row.id}
                     sx={{
                       // cursor: "pointer",
-                      backgroundColor: determineColor(row.COMMENTS),
+                      // backgroundColor: determineColor(row.COMMENTS),
+                      backgroundColor: row.id % 2 === 0 ? "#f9f9f9" : "fff",
                     }}
                   >
                     <TableCell
@@ -231,10 +233,10 @@ export function AAAOutagesCategorization({ dateRange, setLoading }) {
                       sx={{
                         whiteSpace: "nowrap",
                         fontWeight: 600,
-
                         position: "sticky",
                         left: 0,
-                        background: "white",
+
+                        backgroundColor: row.id % 2 === 0 ? "#f9f9f9" : "fff",
                         zIndex: 10, // higher than the table body cells
                       }}
                     >
@@ -242,12 +244,12 @@ export function AAAOutagesCategorization({ dateRange, setLoading }) {
                     </TableCell>
 
                     <TableCell
-                      align="right"
+                      align="left"
                       sx={{
                         position: "sticky",
-                        left: 240,
+                        left: 247,
                         zIndex: 10, // higher than the table body cells
-                        background: "white",
+                        backgroundColor: row.id % 2 === 0 ? "#f9f9f9" : "fff",
                       }}
                     >
                       {row.DSLAM_OWNER_GROUP}

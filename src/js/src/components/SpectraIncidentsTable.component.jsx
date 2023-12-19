@@ -21,6 +21,8 @@ import {
   getStatsForRespectiveCompanyAndIncident,
 } from "../services/incidentService";
 
+import { Spin } from "antd";
+
 import LoadingSpinnerCentered from "./Spinner/LoadingSpinnerCentered.component";
 
 import { paginate } from "../utils/paginate";
@@ -413,33 +415,45 @@ export default function SpectraIncidentsTable(props) {
         setIncidents={setIncidents}
       />
 
-      <div style={{ position: "relative", height: "80vh" }}>
+      <div style={{ position: "relative" }}>
         <LogoAndTitle company={company} title={title} />
-        <LoadingSpinnerCentered isFetching={isFetching}>
-          <Table
-            sx={{
-              width: "98.5vw",
-              minWidth: 650,
-              margin: "auto",
-              marginTop: "-20px",
-              borderTop: "var(--line)",
-            }}
-            size="medium"
-            aria-label="a dense table"
-          >
-            {generateTableHeadAndColumns(columnsForOpenSpectraIncidents)}
-            {TableBodyForIncidents(paginatedList)}
-          </Table>
 
-          <EmptyTableIndication recordsNumber={incidents && incidents.length} />
+        {isFetching ? (
+          <div style={{ height: "80vh" }}>
+            <div className="loadingIndicatorCentered">
+              <Spin className="loadingIndicator__spinner" size="medium" />
+              <span className="loadingIndicator__message">Loading...</span>
+            </div>
+          </div>
+        ) : (
+          <>
+            <Table
+              sx={{
+                width: "98.5vw",
+                minWidth: 650,
+                margin: "auto",
+                marginTop: "-20px",
+                borderTop: "var(--line)",
+              }}
+              size="medium"
+              aria-label="a dense table"
+            >
+              {generateTableHeadAndColumns(columnsForOpenSpectraIncidents)}
+              {TableBodyForIncidents(paginatedList)}
+            </Table>
 
-          <PaginationAndTotalRecords
-            recordsNumber={incidents && incidents.length}
-            pageNumber={pageNumber}
-            pagesCount={pagesCount}
-            handlePageChange={handlePageChange}
-          />
-        </LoadingSpinnerCentered>
+            <EmptyTableIndication
+              recordsNumber={incidents && incidents.length}
+            />
+
+            <PaginationAndTotalRecords
+              recordsNumber={incidents && incidents.length}
+              pageNumber={pageNumber}
+              pagesCount={pagesCount}
+              handlePageChange={handlePageChange}
+            />
+          </>
+        )}
       </div>
     </>
   );

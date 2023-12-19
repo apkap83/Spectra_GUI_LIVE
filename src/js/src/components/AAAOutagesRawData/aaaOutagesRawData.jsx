@@ -135,6 +135,13 @@ export function AAAOutagesRawData() {
       width: widthInPx + 18,
     },
     {
+      field: "aaa_OUTAGE_DURATION_SEC",
+      filter: true,
+      headerName: "AAA Outage Duration SEC",
+      headerClass: "aaaHeaderClass",
+      width: widthInPx + 18,
+    },
+    {
       field: "maintenance_PERIOD",
       filter: true,
       headerName: "Maintenance Period",
@@ -452,6 +459,7 @@ export function AAAOutagesRawData() {
       if (myData) {
         setOriginalData(myData); // Store original data
 
+        console.log("myData", myData);
         if (searchTerm !== "") {
           const filteredData = filterData();
           setRetrievedRawData(filteredData);
@@ -810,8 +818,6 @@ export function AAAOutagesRawData() {
           </div>
         )}
       </div>
-
-      <div style={{ marginBottom: "9rem" }}></div>
     </div>
   );
 }

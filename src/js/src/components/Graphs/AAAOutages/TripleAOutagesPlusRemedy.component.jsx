@@ -20,10 +20,11 @@ import { TopXSitesIncidentsAllTechs } from "./Charts/TopXSitesIncidentsAllTechsC
 import { showSelectedDates } from "../../../lib/helpFunctions";
 import { MapIframe } from "./MapIFrame";
 import { PowerVSNTWOutagesWindNovaChart } from "./Charts/PowerVSNTWOutagesWindNovaChart";
-import { PowerVSNTWOutagesOTEVodafoneChart } from "./Charts/PowerVSNTWOutagesOteVF";
+import { PowerVSNTWOutagesOTEVodafoneChart } from "./Charts/PowerVSNTWOutagesOteVFChart";
 
 const rangePickerDateFormat = ["DD MMM YYYY"];
-const startDate = dayjs().subtract(1, "week").startOf("day");
+// const startDate = dayjs().subtract(0, "day").startOf("day");
+const startDate = dayjs().startOf("day");
 const endDate = dayjs().startOf("day");
 const initialDates = {
   startDate,
@@ -209,13 +210,13 @@ export const TripleAOutagesPlusRemedy = () => {
             />
           </div>
 
-          <div>
+          {/* <div>
             <AAAOutagesTable
               key={`outages-${refreshKey}`}
               dateRange={dateRange}
               setLoading={setLoadingAAA}
             />
-          </div>
+          </div> */}
 
           <div>
             <RemedyTickets

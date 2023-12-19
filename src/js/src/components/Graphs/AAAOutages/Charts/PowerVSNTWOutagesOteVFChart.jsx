@@ -265,27 +265,29 @@ export const PowerVSNTWOutagesOTEVodafoneChart = ({ dateRange }) => {
 
     const data1 = {
       type: "column",
-      indexLabel: numberOfDaysForChart < 28 ? "{y} %" : null,
+      indexLabel: numberOfDaysForChart < 60 ? "{y} %" : null,
       indexLabelFontSize: numberOfDaysForChart > 20 ? 10 : 12.5,
-      indexLabelFontColor: "#3D1410",
+      indexLabelFontColor: "#3f1916",
       showInLegend: true,
       name: "Network",
       markerType: "square",
       // toolTipContent: "{x}: {y}",
       xValueType: "dateTime",
       dataPoints: constructData1,
+      color: "#37A7D9",
     };
 
     const data2 = {
       type: "column",
-      indexLabel: numberOfDaysForChart < 28 ? "{y} %" : null,
+      indexLabel: numberOfDaysForChart < 60 ? "{y} %" : null,
       indexLabelFontSize: numberOfDaysForChart > 20 ? 10 : 12.5,
-      indexLabelFontColor: "#3D1410",
+      indexLabelFontColor: "#3f1916",
       showInLegend: true,
       name: "Power",
       showInLegend: true,
       // toolTipContent: "{x}: {y}",
       xValueType: "dateTime",
+      color: "#FCBD7A",
       dataPoints: constructData2,
     };
     // console.log("Orig data1", data1);
@@ -302,14 +304,14 @@ export const PowerVSNTWOutagesOTEVodafoneChart = ({ dateRange }) => {
       animationEnabled: true,
       exportEnabled: true,
       zoomEnabled: true,
-      theme: "light1", // "light1", "dark1", "dark2"
+      theme: "light2", // "light1", "dark1", "dark2"
       title: {
         text: chartTitle,
       },
       axisX: {
         valueFormatString: "DD MMM",
-        interval: 1,
-        intervalType: "day",
+        interval: numberOfDaysForChart === 1 ? 0 : 1,
+        intervalType: numberOfDaysForChart < 40 ? "day" : "month",
       },
       axisY: {
         title: axisYTitle,
@@ -381,7 +383,6 @@ export const PowerVSNTWOutagesOTEVodafoneChart = ({ dateRange }) => {
           }}
         ></div>
         <div>
-          Hello World!
           <CanvasJSChart options={chartOptionsChart} />
         </div>
       </div>

@@ -1,21 +1,55 @@
 import { useEffect, useState } from "react";
 import httpService from "../../../services/httpService";
 import config from "../../../config";
+
 const apiEndPoint =
   config.apiPrefix +
   "/api/charts/aaa_avg_outages_perday_uniq_dslam_sess_affacted";
 
+const apiEndPointTotal =
+  config.apiPrefix + "/api/charts/getPowerVSNTWOutagesTotal";
+
 import { formatNumberWithThousandsSeparator } from "../../../lib/helpFunctions";
 
-export const Boxes = ({
-  dateRange,
-  loading,
-  netWorkOutagesAvgPercentage,
-  windNovaOutagesOverTotalEvents,
-}) => {
+const enrichObject = (myDataTotal) => {
+  // Calculating the sum of all 'total' values
+  let nextId = myDataTotal.reduce(
+    (sum, item) => sum + parseInt(item.id, 10),
+    0
+  );
+
+  // Calculating the sum of all 'total' values
+  let totalSum = myDataTotal.reduce(
+    (sum, item) => sum + parseInt(item.total, 10),
+    0
+  );
+
+  // Calculating the sum of all 'total' values
+  let windNovaSum = myDataTotal.reduce(
+    (sum, item) => sum + parseInt(item.wind_NOVA, 10),
+    0
+  );
+
+  const networkObj = myDataTotal.find((item) => item.outage_TYPE === "Network");
+
+  myDataTotal.push({
+    id: nextId,
+    totalPercentage: ((parseFloat(networkObj.total) / totalSum) * 100).toFixed(
+      1
+    ),
+    windNovaPercentage: (
+      (parseFloat(networkObj.wind_NOVA) / windNovaSum) *
+      100
+    ).toFixed(1),
+  });
+};
+
+export const Boxes = ({ dateRange }) => {
   const [avgOutagesPerDay, setAvgOutagesPerDay] = useState(0);
   const [dslamAffected, setDslamAffected] = useState(0);
   const [usersAffected, setUsersAffected] = useState(0);
+
+  const [myDataTotal, setMyDataTotal] = useState([]);
 
   const [currentlyLoading, setCurrentlyLoading] = useState(true);
 
@@ -29,31 +63,32 @@ export const Boxes = ({
       const { data: myData } = await httpService.post(apiEndPoint, {
         dateRange: { startDate, endDate },
       });
+      const { data: myDataTotal } = await httpService.post(apiEndPointTotal, {
+        dateRange: { startDate, endDate },
+      });
 
-      if (myData) {
+      if (myData && myDataTotal) {
         setAvgOutagesPerDay(myData[0]["avgOutagesPerDay"]);
         setDslamAffected(myData[0]["uniqueDslam"]);
         setUsersAffected(myData[0]["sessionAffected"]);
+
+        // Add Total and Wind Nova Percentages
+        enrichObject(myDataTotal);
+        setMyDataTotal(myDataTotal);
       }
+      setCurrentlyLoading(false);
     };
 
     getDataFromDB();
   }, []);
 
-  const showBoxes = !currentlyLoading && avgOutagesPerDay; //&&
-  // netWorkOutagesAvgPercentage &&
+  const showBoxes =
+    !currentlyLoading &&
+    avgOutagesPerDay &&
+    dslamAffected &&
+    usersAffected &&
+    myDataTotal;
   // windNovaOutagesOverTotalEvents;
-
-  useEffect(() => {
-    if (
-      loading &&
-      loading.length > 0 &&
-      loading[0] === true &&
-      loading[1] === true
-    ) {
-      setCurrentlyLoading(false);
-    }
-  }, [loading]);
 
   return (
     <div className="infoBoxContainer">
@@ -67,28 +102,6 @@ export const Boxes = ({
         <h4 className="infoBox__title">Average Outages Per Day</h4>
 
         <h1 className="infoBox__avgNumber">{avgOutagesPerDay}</h1>
-
-        {/* <table className="infoBox__table">
-          <tbody>
-            <tr className="infoBox__table--1">
-              <td className="infoBox__table--1-td1">
-                Cabinets/
-                <br />
-                DSLAMs Affected:
-              </td>
-              <td className="infoBox__table--1-td2">
-                {formatNumberWithThousandsSeparator(parseFloat(dslamAffected))}
-              </td>
-            </tr>
-            <tr className="infoBox__table--2">
-              <td className="infoBox__table--2-td1">Users Affected:</td>
-              <td className="infoBox__table--2-td2">
-                {formatNumberWithThousandsSeparator(parseFloat(usersAffected))}
-              </td>
-            </tr>
-          </tbody>
-        </table> */}
-
         <div className="infoBox__details">
           <div className="infoBox__details__row">
             <div className="infoBox__details__row--left">
@@ -113,7 +126,12 @@ export const Boxes = ({
           transition: "height 0.2s ease-out",
         }}
       >
-        <h4 className="infoBox__title">
+        <h4
+          className="infoBox__title"
+          style={{
+            margin: "-1.3rem 0 1rem",
+          }}
+        >
           Entire Network Outages over all Events on Average
         </h4>
 
@@ -123,25 +141,8 @@ export const Boxes = ({
             marginLeft: "1.4rem",
           }}
         >
-          {netWorkOutagesAvgPercentage}%
+          {myDataTotal[3]?.totalPercentage}%
         </h1>
-
-        {/* <table className="infoBox__table">
-          <tbody>
-            <tr className="infoBox__table--1">
-              <td>
-                Cabinets/
-                <br />
-                DSLAMs Affected:
-              </td>
-              <td>{dslamAffected}</td>
-            </tr>
-            <tr>
-              <td>Users Affected:</td>
-              <td>{usersAffected}</td>
-            </tr>
-          </tbody>
-        </table> */}
       </div>
 
       <div
@@ -151,30 +152,18 @@ export const Boxes = ({
           transition: "height 0.2s ease-out",
         }}
       >
-        <h4 className="infoBox__title">
+        <h4
+          className="infoBox__title"
+          style={{
+            margin: "-1.3rem 0 1.3rem",
+          }}
+        >
           Wind + Nova Outages over Wind+Nova total Events
         </h4>
 
-        <h1 className="infoBox__avgNumber" style={{ marginLeft: "1.8rem" }}>
-          {windNovaOutagesOverTotalEvents}%
+        <h1 className="infoBox__avgNumber" style={{ marginLeft: "1rem" }}>
+          {myDataTotal[3]?.windNovaPercentage}%
         </h1>
-
-        {/* <table className="infoBox__table">
-          <tbody>
-            <tr className="infoBox__table--1">
-              <td>
-                Cabinets/
-                <br />
-                DSLAMs Affected:
-              </td>
-              <td>{dslamAffected}</td>
-            </tr>
-            <tr>
-              <td>Users Affected:</td>
-              <td>{usersAffected}</td>
-            </tr>
-          </tbody>
-        </table> */}
       </div>
     </div>
   );
