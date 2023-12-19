@@ -58,6 +58,40 @@ public class RemedyStatsDataAccessService {
         return queryBuilder.toString();
     }
 
+    private static String generateCountCaseStatement2(LocalDate date, DateTimeFormatter formatter) {
+        String dateString = formatter.format(date);
+        return "COUNT(CASE WHEN TRUNC(A.ALARM_DAY) = TO_DATE('" + dateString + "','DD/MM/YYYY') THEN 1 ELSE NULL END) \"" + dateString + "\"";
+    }
+
+    private static String generateCountCaseStatements2(Date startDateObj, Date endDateObj) {
+        // Convert Dates to LocalDates
+        LocalDate startDate = startDateObj.toInstant().atZone(ZoneId.systemDefault()).toLocalDate();
+        LocalDate endDate = endDateObj.toInstant().atZone(ZoneId.systemDefault()).toLocalDate();
+
+        // Define the formatter for output
+        DateTimeFormatter outputFormatter = DateTimeFormatter.ofPattern("dd/MM/yyyy");
+
+        // Use StringBuilder to construct the query part
+        StringBuilder queryBuilder = new StringBuilder();
+
+        // Track the first iteration to avoid adding a comma before it
+        boolean firstIteration = true;
+
+        // Generate a COUNT CASE statement for each day
+        for (LocalDate date = startDate; !date.isAfter(endDate.minusDays(1)); date = date.plusDays(1)) {
+            if (firstIteration) {
+                firstIteration = false;
+            } else {
+                // Append a comma and newline for separation between statements
+                queryBuilder.append(",\n");
+            }
+            // Append the COUNT CASE statement for the current date
+            queryBuilder.append(generateCountCaseStatement2(date, outputFormatter));
+        }
+
+        return queryBuilder.toString();
+    }
+
     public List<AaaOutagesRemedy> getStatsForDatesQuery1(Date StartDate, Date EndDate) {
 
         String sql = """
@@ -216,6 +250,143 @@ public class RemedyStatsDataAccessService {
         return stats;
     }
 
+    public List<AaaOutagesRemedy> getStatsForDatesQuery3(Date StartDate, Date EndDate) {
+
+        String sql = """
+        SELECT
+           SYSTEM_FOUND,
+           DSLAM_OWNER_GROUP,
+           """ +
+                generateCountCaseStatements2(StartDate, EndDate) + """
+         FROM DIOANNID.Z_OUTAGES_MERGED_AAA_RAW A
+        WHERE DATA_SOURCE = 'AAA'
+        AND   A.ALARM_DAY >= ?
+        AND   A.ALARM_DAY <  ?
+        GROUP BY\s
+           SYSTEM_FOUND,
+           DSLAM_OWNER_GROUP
+        ORDER BY
+           SYSTEM_FOUND,
+           DSLAM_OWNER_GROUP
+        """;
+
+        List<AaaOutagesRemedy> stats = jdbcTemplate.query(sql,
+                new Object[]{StartDate, EndDate},
+                (resultSet, i) -> {
+                    // First 2 Columns are Static
+                    String DSLAM_OWNER_GROUP = resultSet.getString("DSLAM_OWNER_GROUP");
+                    String SYSTEM_FOUND = resultSet.getString("SYSTEM_FOUND");
+
+                    // Create a new HashMap and add some key-value pairs
+                    Map<String, Integer> newMap = new HashMap<>();
+
+                    // Rest of Columns are Dynamic - from position 3 and afterwards...
+                    ResultSetMetaData metaData = resultSet.getMetaData();
+                    int columnCount = metaData.getColumnCount(); // Number of column
+                    for (int column = 3; column <= columnCount; column++) {
+                        String columnName = metaData.getColumnName(column); // Get column name
+                        Integer columnValue = resultSet.getInt(column); // Get column value
+
+                        newMap.put(columnName, columnValue);
+                    }
+
+
+                    return new AaaOutagesRemedy(i, DSLAM_OWNER_GROUP, SYSTEM_FOUND, newMap);
+                });
+
+        return stats;
+    }
+
+
+    public List<PowerVSNTWOutages> getPowerVSNTWOutagesWindNova(Date StartDate, Date EndDate) {
+
+        String sql = """
+        SELECT
+        DECODE(OUTAGE_TYPE,'n','Network','p','Power','u', 'Unknown') OUTAGE_TYPE,
+           """ +
+                generateCountCaseStatements2(StartDate, EndDate) + """
+         FROM DIOANNID.Z_OUTAGES_MERGED_AAA_RAW A
+         WHERE DATA_SOURCE = 'AAA'
+         AND   A.DSLAM_OWNER_GROUP = 'WIND+NOVA'
+         AND   A.ALARM_DAY >= ?
+         AND   A.ALARM_DAY <  ?
+         GROUP BY
+            DECODE(OUTAGE_TYPE,'n','Network','p','Power','u', 'Unknown')
+         ORDER BY
+            OUTAGE_TYPE
+        """;
+
+        List<PowerVSNTWOutages> stats = jdbcTemplate.query(sql,
+                new Object[]{StartDate, EndDate},
+                (resultSet, i) -> {
+                    // First 2 Columns are Static
+                    String OUTAGE_TYPE = resultSet.getString("OUTAGE_TYPE");
+
+                    // Create a new HashMap and add some key-value pairs
+                    Map<String, Integer> newMap = new HashMap<>();
+
+                    // Rest of Columns are Dynamic - from position 3 and afterwards...
+                    ResultSetMetaData metaData = resultSet.getMetaData();
+                    int columnCount = metaData.getColumnCount(); // Number of column
+
+                    for (int column = 2; column <= columnCount; column++) {
+                        String columnName = metaData.getColumnName(column); // Get column name
+                        Integer columnValue = resultSet.getInt(column); // Get column value
+
+                        newMap.put(columnName, columnValue);
+                    }
+
+
+                    return new PowerVSNTWOutages(i, OUTAGE_TYPE, newMap);
+                });
+
+        return stats;
+    }
+
+    public List<PowerVSNTWOutages> getPowerVSNTWOutagesOteVF(Date StartDate, Date EndDate) {
+
+        String sql = """
+        SELECT
+        DECODE(OUTAGE_TYPE,'n','Network','p','Power','u', 'Unknown') OUTAGE_TYPE,
+           """ +
+                generateCountCaseStatements2(StartDate, EndDate) + """
+         FROM DIOANNID.Z_OUTAGES_MERGED_AAA_RAW A
+         WHERE DATA_SOURCE = 'AAA'
+         AND   A.DSLAM_OWNER_GROUP = 'OTE+VF'
+         AND   A.ALARM_DAY >= ?
+         AND   A.ALARM_DAY <  ?
+         GROUP BY
+            DECODE(OUTAGE_TYPE,'n','Network','p','Power','u', 'Unknown')
+         ORDER BY
+            OUTAGE_TYPE
+        """;
+
+        List<PowerVSNTWOutages> stats = jdbcTemplate.query(sql,
+                new Object[]{StartDate, EndDate},
+                (resultSet, i) -> {
+                    // First 2 Columns are Static
+                    String OUTAGE_TYPE = resultSet.getString("OUTAGE_TYPE");
+
+                    // Create a new HashMap and add some key-value pairs
+                    Map<String, Integer> newMap = new HashMap<>();
+
+                    // Rest of Columns are Dynamic - from position 3 and afterwards...
+                    ResultSetMetaData metaData = resultSet.getMetaData();
+                    int columnCount = metaData.getColumnCount(); // Number of column
+
+                    for (int column = 2; column <= columnCount; column++) {
+                        String columnName = metaData.getColumnName(column); // Get column name
+                        Integer columnValue = resultSet.getInt(column); // Get column value
+
+                        newMap.put(columnName, columnValue);
+                    }
+
+
+                    return new PowerVSNTWOutages(i, OUTAGE_TYPE, newMap);
+                });
+
+        return stats;
+    }
 
     public List<TopAffected> getStatsForTopXAffected(Date startDate, Date endDate) {
         String sql = """

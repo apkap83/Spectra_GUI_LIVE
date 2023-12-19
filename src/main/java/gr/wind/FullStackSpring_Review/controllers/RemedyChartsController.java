@@ -65,6 +65,24 @@ public class RemedyChartsController {
     }
 
     @CrossOrigin
+    @PostMapping(path= "/aaa_outages_plus_remedy_query3", produces = "application/json")
+    public List<AaaOutagesRemedy> getStatsNumOfRequestsPerMethodForDatesQuery3(@Valid @RequestBody DateRange myDateRange) {
+        return remedyStatsService.getStatsForDateRangeQuery3(myDateRange.startDate(), myDateRange.endDate());
+    }
+
+    @CrossOrigin
+    @PostMapping(path= "/getPowerVSNTWOutagesWindNova", produces = "application/json")
+    public List<PowerVSNTWOutages> getPowerVSNTWOutagesWindNova(@Valid @RequestBody DateRange myDateRange) {
+        return remedyStatsService.getPowerVSNTWOutagesWindNova(myDateRange.startDate(), myDateRange.endDate());
+    }
+
+    @CrossOrigin
+    @PostMapping(path= "/getPowerVSNTWOutagesOteVF", produces = "application/json")
+    public List<PowerVSNTWOutages> getPowerVSNTWOutagesOteVF(@Valid @RequestBody DateRange myDateRange) {
+        return remedyStatsService.getPowerVSNTWOutagesOteVF(myDateRange.startDate(), myDateRange.endDate());
+    }
+
+    @CrossOrigin
     @PostMapping(path= "/aaa_outages_top_affected_areas", produces = "application/json")
     public List<TopAffected> getStatsForTopAffectedAreas(@Valid @RequestBody DateRange myDateRange) {
 

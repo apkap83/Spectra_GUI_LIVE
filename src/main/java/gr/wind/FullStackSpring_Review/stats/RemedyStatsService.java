@@ -45,4 +45,16 @@ public class RemedyStatsService {
     public List<AAARawData1> getAAARawData(Date startDate, Date endDate) {
         return remedyStatsDataAccessService.getAAARawData(startDate, endDate);
     }
+
+    public List<AaaOutagesRemedy> getStatsForDateRangeQuery3(Date startDate, Date endDate) {
+        return remedyStatsDataAccessService.getStatsForDatesQuery3(startDate, endDate);
+    }
+
+    public List<PowerVSNTWOutages> getPowerVSNTWOutagesWindNova(Date startDate, Date endDate) {
+        return remedyStatsDataAccessService.getPowerVSNTWOutagesWindNova(startDate, endDate);
+    }
+
+    public List<PowerVSNTWOutages> getPowerVSNTWOutagesOteVF(Date startDate, Date endDate) {
+        return remedyStatsDataAccessService.getPowerVSNTWOutagesOteVF(startDate, endDate);
+    }
 }
