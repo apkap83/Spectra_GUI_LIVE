@@ -5,6 +5,7 @@ const config = {
   // apiPrefix: `https://${window.location.hostname}:${window.location.port}`,
   // apiPrefixForIframeDuringRemoteDev: `https://${window.location.hostname}:${window.location.port}`,
   jwtTokenKeyName: "JWT_Token",
+  userDetailsVarName: "User_Details",
 };
 
 export default config;

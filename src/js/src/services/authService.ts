@@ -1,7 +1,9 @@
 import httpService from "./httpService";
 import { jwtDecode } from "jwt-decode";
 import config from "../config";
-const apiEndPoint = `${config.apiPrefix}/api/auth/login`;
+const apiEndPointLogin = `${config.apiPrefix}/api/auth/login`;
+const apiEndPointGetUserInfo = `${config.apiPrefix}/api/auth/me`;
+const apiEndPointLogout = `${config.apiPrefix}/api/auth/logout`;
 
 // Get JWT from Storage and Set it in Authorization Header
 if (getJwt()) {
@@ -13,15 +15,18 @@ export function getJwt() {
 }
 
 export async function login(username: string, password: string) {
-  const { data } = await httpService.post(apiEndPoint, {
+  await httpService.post(apiEndPointLogin, {
     username,
     password,
   });
-  sessionStorage.setItem(config.jwtTokenKeyName, data.jwt);
+
+  const { data } = await httpService.get(apiEndPointGetUserInfo);
+  console.log("Login data", data);
 }
 
 export async function logout() {
-  sessionStorage.removeItem(config.jwtTokenKeyName);
+  // sessionStorage.removeItem(config.jwtTokenKeyName);
+  await httpService.delete(apiEndPointLogout);
 }
 
 export function getCurrentUser() {
