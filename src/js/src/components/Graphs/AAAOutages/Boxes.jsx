@@ -31,16 +31,17 @@ const enrichObject = (myDataTotal) => {
   );
 
   const networkObj = myDataTotal.find((item) => item.outage_TYPE === "Network");
+  const powerObj = myDataTotal.find((item) => item.outage_TYPE === "Power");
 
+  console.log("myDataTotal", myDataTotal);
   myDataTotal.push({
     id: nextId,
     totalPercentage: ((parseFloat(networkObj.total) / totalSum) * 100).toFixed(
       1
     ),
-    windNovaPercentage: (
-      (parseFloat(networkObj.wind_NOVA) / windNovaSum) *
-      100
-    ).toFixed(1),
+    windNovaPercentage: ((parseFloat(powerObj.total) / totalSum) * 100).toFixed(
+      1
+    ),
   });
 };
 
@@ -132,7 +133,7 @@ export const Boxes = ({ dateRange }) => {
             margin: "-1.3rem 0 1rem",
           }}
         >
-          Entire Network Outages over all Events on Average
+          Network Outages over all Events on Average
         </h4>
 
         <h1
@@ -158,7 +159,7 @@ export const Boxes = ({ dateRange }) => {
             margin: "-1.3rem 0 1.3rem",
           }}
         >
-          Wind + Nova Outages over Wind+Nova total Events
+          Power Outages over all Events on Average
         </h4>
 
         <h1 className="infoBox__avgNumber" style={{ marginLeft: "1rem" }}>
