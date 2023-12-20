@@ -102,7 +102,7 @@ export function CdrDBOutages(props) {
           <TableRow
             key={(Math.random() + 1).toString(36).substring(7)}
             sx={{
-              backgroundColor: "rgba(0, 0, 0, 0.06)",
+              backgroundColor: "rgba(0, 0, 0, 0.01)",
               // "&:last-child td, &:last-child th": { border: 0 },
               // background: "rgba(",
               // borderBottom: "2px solid rgba(#fff, .3)",

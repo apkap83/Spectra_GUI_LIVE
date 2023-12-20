@@ -120,6 +120,28 @@ export const Boxes = ({ dateRange }) => {
           </div>
         </div>
       </div>
+
+      <div
+        className="infoBox collapsibleConent"
+        style={{
+          height: showBoxes ? "var(--infoBox-height)" : "0",
+          transition: "height 0.2s ease-out",
+        }}
+      >
+        <h4
+          className="infoBox__title"
+          style={{
+            margin: "-1.3rem 0 1.3rem",
+          }}
+        >
+          Power Outages over all Events on Average
+        </h4>
+
+        <h1 className="infoBox__avgNumber" style={{ marginLeft: "1rem" }}>
+          {myDataTotal[3]?.windNovaPercentage}%
+        </h1>
+      </div>
+
       <div
         className="infoBox collapsibleConent"
         style={{
@@ -143,27 +165,6 @@ export const Boxes = ({ dateRange }) => {
           }}
         >
           {myDataTotal[3]?.totalPercentage}%
-        </h1>
-      </div>
-
-      <div
-        className="infoBox collapsibleConent"
-        style={{
-          height: showBoxes ? "var(--infoBox-height)" : "0",
-          transition: "height 0.2s ease-out",
-        }}
-      >
-        <h4
-          className="infoBox__title"
-          style={{
-            margin: "-1.3rem 0 1.3rem",
-          }}
-        >
-          Power Outages over all Events on Average
-        </h4>
-
-        <h1 className="infoBox__avgNumber" style={{ marginLeft: "1rem" }}>
-          {myDataTotal[3]?.windNovaPercentage}%
         </h1>
       </div>
     </div>
