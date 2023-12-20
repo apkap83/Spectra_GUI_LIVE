@@ -12,6 +12,7 @@ public class AAARawData1 {
     private final String OUTAGE_ID;
     private final String ALARM_START_DATE;
     private final String ALARM_END_DATE;
+    private final String AAA_OUTAGE_DURATION_SEC;
     private final String MAINTENANCE_PERIOD;
     private final String DSLAM;
     private final String DSLAM_SLOT;
@@ -25,6 +26,7 @@ public class AAARawData1 {
     private final String DSLAM_USERS;
     private final String DATA_AFFECTED;
     private final String TOTAL_USERS_CALLED;
+    private final String SMP_UNIQUE_USERS;
     private final String RMD_INCIDENT_NUMBER;
     private final String RMD_IS_SCHEDULED;
     private final String RMD_ALARM_START_DATE;
@@ -45,12 +47,30 @@ public class AAARawData1 {
     private final String NCE_PROBLEM;
     private final String NCE_OPERATIONAL_DATA;
 
+    private final String AMS_EVENT_TIME;
+    private final String AMS_PROBABLE_CAUSE;
+    private final String AMS_SPECIFIC_PROBLEM;
+    private final String AMS_FTTH_EVENT_TIME;
+    private final String AMS_FTTH_PROBABLE_CAUSE;
+    private final String AMS_FTTH_SPECIFIC_PROBLEM;
+    private final String SOEM_EVENT_ID;
+    private final String SOEM_RAISED_ON;
+    private final String SOEM_ALARM_TYPE;
+    private final String SOEM_PROBABLE_CAUSE;
+    private final String HDM_LAST_SNAPSHOT_DATE;
+    private final String HDM_MATCHING_OUTCOME;
+    private final String HDM_MATCHING_OUTCOME_FULL;
+    private final String SYSTEM_FOUND;
+    private final String SYSTEM_GROUP_FOUND;
+    private final String OUTAGE_TYPE_DESC;
+    private final String OUTAGE_TYPE;
+
     public AAARawData1(BigInteger id, String ALARM_DAY, String MATCHING_COMMENTS, String NETWORK,
                        String DSLAM_OWNER, String DSLAM_OWNER_GROUP, String OUTAGE_ID,
-                       String ALARM_START_DATE, String ALARM_END_DATE, String MAINTENANCE_PERIOD,
+                       String ALARM_START_DATE, String ALARM_END_DATE, String AAA_OUTAGE_DURATION_SEC, String MAINTENANCE_PERIOD,
                        String DSLAM, String DSLAM_SLOT, String TECHNOLOGY, String OTE_SITE_NAME,
                        String OTE_SITE_AREA, String POST_CODE, String LONGITUDE, String LATITUDE,
-                       String PROBLEM, String DSLAM_USERS, String DATA_AFFECTED, String TOTAL_USERS_CALLED,
+                       String PROBLEM, String DSLAM_USERS, String DATA_AFFECTED, String TOTAL_USERS_CALLED, String SMP_UNIQUE_USERS,
                        String RMD_INCIDENT_NUMBER, String RMD_IS_SCHEDULED, String RMD_ALARM_START_DATE,
                        String RMD_ALARM_END_DATE, String RMD_SPECTRA_HIERARCHY,
                        String RMD_OPERATIONAL_CATEG_TIER_1, String RMD_OPERATIONAL_CATEG_TIER_2,
@@ -58,7 +78,27 @@ public class AAARawData1 {
                        String RMD_RESOLUTION_CATEG_TIER_2, String ZBX_EVENT_ID,
                        String ZBX_PROBLEM, String ZBX_ALARM_START_DATE, String ZBX_ALARM_END_DATE,
                        String NCE_EVENT_ID, String NCE_ALARM_START_DATE, String NCE_ALARM_END_DATE,
-                       String NCE_PROBLEM, String NCE_OPERATIONAL_DATA) {
+                       String NCE_PROBLEM, String NCE_OPERATIONAL_DATA,
+                       String AMS_EVENT_TIME,
+                       String AMS_PROBABLE_CAUSE,
+                       String AMS_SPECIFIC_PROBLEM,
+                       String AMS_FTTH_EVENT_TIME,
+                       String AMS_FTTH_PROBABLE_CAUSE,
+                       String AMS_FTTH_SPECIFIC_PROBLEM,
+                       String SOEM_EVENT_ID,
+                       String SOEM_RAISED_ON,
+                       String SOEM_ALARM_TYPE,
+                       String SOEM_PROBABLE_CAUSE,
+                       String HDM_LAST_SNAPSHOT_DATE,
+                       String HDM_MATCHING_OUTCOME,
+                       String HDM_MATCHING_OUTCOME_FULL,
+                       String SYSTEM_FOUND,
+                       String SYSTEM_GROUP_FOUND,
+                       String OUTAGE_TYPE_DESC,
+                       String OUTAGE_TYPE
+
+
+                       ) {
         this.id = id;
         this.ALARM_DAY = ALARM_DAY;
         this.MATCHING_COMMENTS = MATCHING_COMMENTS;
@@ -68,6 +108,7 @@ public class AAARawData1 {
         this.OUTAGE_ID = OUTAGE_ID;
         this.ALARM_START_DATE = ALARM_START_DATE;
         this.ALARM_END_DATE = ALARM_END_DATE;
+        this.AAA_OUTAGE_DURATION_SEC = AAA_OUTAGE_DURATION_SEC;
         this.MAINTENANCE_PERIOD = MAINTENANCE_PERIOD;
         this.DSLAM = DSLAM;
         this.DSLAM_SLOT = DSLAM_SLOT;
@@ -81,6 +122,7 @@ public class AAARawData1 {
         this.DSLAM_USERS = DSLAM_USERS;
         this.DATA_AFFECTED = DATA_AFFECTED;
         this.TOTAL_USERS_CALLED = TOTAL_USERS_CALLED;
+        this.SMP_UNIQUE_USERS = SMP_UNIQUE_USERS;
         this.RMD_INCIDENT_NUMBER = RMD_INCIDENT_NUMBER;
         this.RMD_IS_SCHEDULED = RMD_IS_SCHEDULED;
         this.RMD_ALARM_START_DATE = RMD_ALARM_START_DATE;
@@ -100,6 +142,100 @@ public class AAARawData1 {
         this.NCE_ALARM_END_DATE = NCE_ALARM_END_DATE;
         this.NCE_PROBLEM = NCE_PROBLEM;
         this.NCE_OPERATIONAL_DATA = NCE_OPERATIONAL_DATA;
+        this.AMS_EVENT_TIME = AMS_EVENT_TIME;
+        this.AMS_PROBABLE_CAUSE = AMS_PROBABLE_CAUSE;
+        this.AMS_SPECIFIC_PROBLEM = AMS_SPECIFIC_PROBLEM;
+        this.AMS_FTTH_EVENT_TIME = AMS_FTTH_EVENT_TIME;
+        this.AMS_FTTH_PROBABLE_CAUSE = AMS_FTTH_PROBABLE_CAUSE;
+        this.AMS_FTTH_SPECIFIC_PROBLEM = AMS_FTTH_SPECIFIC_PROBLEM;
+        this.SOEM_EVENT_ID = SOEM_EVENT_ID;
+        this.SOEM_RAISED_ON = SOEM_RAISED_ON;
+        this.SOEM_ALARM_TYPE =SOEM_ALARM_TYPE;
+        this.SOEM_PROBABLE_CAUSE = SOEM_PROBABLE_CAUSE;
+        this.HDM_LAST_SNAPSHOT_DATE = HDM_LAST_SNAPSHOT_DATE;
+        this.HDM_MATCHING_OUTCOME = HDM_MATCHING_OUTCOME;
+        this.HDM_MATCHING_OUTCOME_FULL = HDM_MATCHING_OUTCOME_FULL;
+        this.SYSTEM_FOUND =SYSTEM_FOUND;
+        this.SYSTEM_GROUP_FOUND = SYSTEM_GROUP_FOUND;
+        this.OUTAGE_TYPE_DESC =OUTAGE_TYPE_DESC;
+        this.OUTAGE_TYPE = OUTAGE_TYPE;
+
+    }
+
+    public String getAAA_OUTAGE_DURATION_SEC() {
+        return AAA_OUTAGE_DURATION_SEC;
+    }
+
+    public String getSMP_UNIQUE_USERS() {
+        return SMP_UNIQUE_USERS;
+    }
+
+    public String getAMS_EVENT_TIME() {
+        return AMS_EVENT_TIME;
+    }
+
+    public String getAMS_PROBABLE_CAUSE() {
+        return AMS_PROBABLE_CAUSE;
+    }
+
+    public String getAMS_SPECIFIC_PROBLEM() {
+        return AMS_SPECIFIC_PROBLEM;
+    }
+
+    public String getAMS_FTTH_EVENT_TIME() {
+        return AMS_FTTH_EVENT_TIME;
+    }
+
+    public String getAMS_FTTH_PROBABLE_CAUSE() {
+        return AMS_FTTH_PROBABLE_CAUSE;
+    }
+
+    public String getAMS_FTTH_SPECIFIC_PROBLEM() {
+        return AMS_FTTH_SPECIFIC_PROBLEM;
+    }
+
+    public String getSOEM_EVENT_ID() {
+        return SOEM_EVENT_ID;
+    }
+
+    public String getSOEM_RAISED_ON() {
+        return SOEM_RAISED_ON;
+    }
+
+    public String getSOEM_ALARM_TYPE() {
+        return SOEM_ALARM_TYPE;
+    }
+
+    public String getSOEM_PROBABLE_CAUSE() {
+        return SOEM_PROBABLE_CAUSE;
+    }
+
+    public String getHDM_LAST_SNAPSHOT_DATE() {
+        return HDM_LAST_SNAPSHOT_DATE;
+    }
+
+    public String getHDM_MATCHING_OUTCOME() {
+        return HDM_MATCHING_OUTCOME;
+    }
+
+    public String getHDM_MATCHING_OUTCOME_FULL() {
+        return HDM_MATCHING_OUTCOME_FULL;
+    }
+
+    public String getSYSTEM_FOUND() {
+        return SYSTEM_FOUND;
+    }
+
+    public String getSYSTEM_GROUP_FOUND() {
+        return SYSTEM_GROUP_FOUND;
+    }
+
+    public String getOUTAGE_TYPE_DESC() {
+        return OUTAGE_TYPE_DESC;
+    }
+
+    public String getOUTAGE_TYPE() {
+        return OUTAGE_TYPE;
     }
 
     public String getRMD_IS_SCHEDULED() {

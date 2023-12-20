@@ -298,6 +298,7 @@ public class RemedyStatsDataAccessService {
     }
 
 
+
     public List<PowerVSNTWOutages> getPowerVSNTWOutagesWindNova(Date StartDate, Date EndDate) {
 
         String sql = """
@@ -383,6 +384,36 @@ public class RemedyStatsDataAccessService {
 
 
                     return new PowerVSNTWOutages(i, OUTAGE_TYPE, newMap);
+                });
+
+        return stats;
+    }
+
+    public List<PowerVSNTWOutagesTotal> getPowerVSNTWOutagesTotal(Date StartDate, Date EndDate) {
+
+        String sql = """
+        SELECT
+        DECODE(OUTAGE_TYPE,'n','Network','p','Power','u', 'Unknown') OUTAGE_TYPE,
+        COUNT(1) TOTAL,
+        COUNT(CASE WHEN DSLAM_OWNER_GROUP = 'WIND+NOVA' then 1 else null end) WIND_NOVA
+         FROM DIOANNID.Z_OUTAGES_MERGED_AAA_RAW A
+         WHERE DATA_SOURCE = 'AAA'
+         AND   A.ALARM_DAY >= ?
+         AND   A.ALARM_DAY <  ?
+         GROUP BY
+            DECODE(OUTAGE_TYPE,'n','Network','p','Power','u', 'Unknown')
+         ORDER BY
+            OUTAGE_TYPE
+        """;
+
+        List<PowerVSNTWOutagesTotal> stats = jdbcTemplate.query(sql,
+                new Object[]{StartDate, EndDate},
+                (resultSet, i) -> {
+                    String OUTAGE_TYPE = resultSet.getString("OUTAGE_TYPE");
+                    String TOTAL = resultSet.getString("TOTAL");
+                    String WIND_NOVA = resultSet.getString("WIND_NOVA");
+
+                   return new PowerVSNTWOutagesTotal(i, OUTAGE_TYPE, TOTAL, WIND_NOVA);
                 });
 
         return stats;
@@ -550,6 +581,7 @@ public class RemedyStatsDataAccessService {
                    OUTAGE_ID,
                    ALARM_START_DATE,
                    ALARM_END_DATE,
+                   AAA_OUTAGE_DURATION_SEC,
                    MAINTENANCE_PERIOD,
                    DSLAM,
                    DSLAM_SLOT,
@@ -563,6 +595,7 @@ public class RemedyStatsDataAccessService {
                    DSLAM_USERS,
                    DATA_AFFECTED,
                    TOTAL_USERS_CALLED,
+                   SMP_UNIQUE_USERS,
                    RMD_INCIDENT_NUMBER,
                    RMD_IS_SCHEDULED,
                    RMD_ALARM_START_DATE,
@@ -582,6 +615,24 @@ public class RemedyStatsDataAccessService {
                    NCE_ALARM_END_DATE,
                    NCE_PROBLEM,
                    NCE_OPERATIONAL_DATA,
+                   AMS_EVENT_TIME,
+                   AMS_PROBABLE_CAUSE,
+                   AMS_SPECIFIC_PROBLEM,
+                   AMS_FTTH_EVENT_TIME,
+                   AMS_FTTH_PROBABLE_CAUSE,
+                   AMS_FTTH_SPECIFIC_PROBLEM,
+                   SOEM_EVENT_ID,
+                   SOEM_RAISED_ON,
+                   SOEM_ALARM_TYPE,
+                   SOEM_PROBABLE_CAUSE,
+                   HDM_LAST_SNAPSHOT_DATE,
+                   HDM_MATCHING_OUTCOME,
+                   HDM_MATCHING_OUTCOME_FULL,
+                   SYSTEM_FOUND,
+                   SYSTEM_GROUP_FOUND,
+                   OUTAGE_TYPE_DESC,
+                   OUTAGE_TYPE,
+                   
                    ROW_NUMBER() OVER (ORDER BY ALARM_START_DATE) ORDERING --do not show
                 FROM DIOANNID.Z_OUTAGES_MERGED_AAA_RAW
                 WHERE ALARM_START_DATE >= ?
@@ -590,6 +641,7 @@ public class RemedyStatsDataAccessService {
                 SELECT *
                 FROM DATA
                 WHERE ORDERING <= 1048570
+                ORDER BY ALARM_START_DATE DESC
                 """;
 
         List<AAARawData1> stats = jdbcTemplate.query(sql,
@@ -606,6 +658,7 @@ public class RemedyStatsDataAccessService {
                     String OUTAGE_ID = resultSet.getString("OUTAGE_ID");
                     String ALARM_START_DATE = resultSet.getString("ALARM_START_DATE");
                     String ALARM_END_DATE = resultSet.getString("ALARM_END_DATE");
+                    String AAA_OUTAGE_DURATION_SEC = resultSet.getString("AAA_OUTAGE_DURATION_SEC");
                     String MAINTENANCE_PERIOD = resultSet.getString("MAINTENANCE_PERIOD");
                     String DSLAM = resultSet.getString("DSLAM");
                     String DSLAM_SLOT = resultSet.getString("DSLAM_SLOT");
@@ -619,6 +672,7 @@ public class RemedyStatsDataAccessService {
                     String DSLAM_USERS = resultSet.getString("DSLAM_USERS");
                     String DATA_AFFECTED = resultSet.getString("DATA_AFFECTED");
                     String TOTAL_USERS_CALLED = resultSet.getString("TOTAL_USERS_CALLED");
+                    String SMP_UNIQUE_USERS = resultSet.getString("SMP_UNIQUE_USERS");
                     String RMD_INCIDENT_NUMBER = resultSet.getString("RMD_INCIDENT_NUMBER");
                     String RMD_IS_SCHEDULED = resultSet.getString("RMD_IS_SCHEDULED");
                     String RMD_ALARM_START_DATE = resultSet.getString("RMD_ALARM_START_DATE");
@@ -639,14 +693,51 @@ public class RemedyStatsDataAccessService {
                     String NCE_PROBLEM = resultSet.getString("NCE_PROBLEM");
                     String NCE_OPERATIONAL_DATA = resultSet.getString("NCE_OPERATIONAL_DATA");
 
+                    String AMS_EVENT_TIME = resultSet.getString("AMS_EVENT_TIME");
+                    String AMS_PROBABLE_CAUSE = resultSet.getString("AMS_PROBABLE_CAUSE");
+                    String AMS_SPECIFIC_PROBLEM = resultSet.getString("AMS_SPECIFIC_PROBLEM");
+                    String AMS_FTTH_EVENT_TIME = resultSet.getString("AMS_FTTH_EVENT_TIME");
+                    String AMS_FTTH_PROBABLE_CAUSE = resultSet.getString("AMS_FTTH_PROBABLE_CAUSE");
+                    String AMS_FTTH_SPECIFIC_PROBLEM = resultSet.getString("AMS_FTTH_SPECIFIC_PROBLEM");
+                    String SOEM_EVENT_ID = resultSet.getString("SOEM_EVENT_ID");
+                    String SOEM_RAISED_ON = resultSet.getString("SOEM_RAISED_ON");
+                    String SOEM_ALARM_TYPE = resultSet.getString("SOEM_ALARM_TYPE");
+                    String SOEM_PROBABLE_CAUSE = resultSet.getString("SOEM_PROBABLE_CAUSE");
+                    String HDM_LAST_SNAPSHOT_DATE = resultSet.getString("HDM_LAST_SNAPSHOT_DATE");
+                    String HDM_MATCHING_OUTCOME = resultSet.getString("HDM_MATCHING_OUTCOME");
+                    String HDM_MATCHING_OUTCOME_FULL = resultSet.getString("HDM_MATCHING_OUTCOME_FULL");
+                    String SYSTEM_FOUND = resultSet.getString("SYSTEM_FOUND");
+                    String SYSTEM_GROUP_FOUND = resultSet.getString("SYSTEM_GROUP_FOUND");
+                    String OUTAGE_TYPE_DESC = resultSet.getString("OUTAGE_TYPE_DESC");
+                    String OUTAGE_TYPE = resultSet.getString("OUTAGE_TYPE");
+
+
                     return new AAARawData1(ID, ALARM_DAY, MATCHING_COMMENTS, NETWORK, DSLAM_OWNER,
-                            DSLAM_OWNER_GROUP, OUTAGE_ID, ALARM_START_DATE, ALARM_END_DATE, MAINTENANCE_PERIOD, DSLAM, DSLAM_SLOT,
+                            DSLAM_OWNER_GROUP, OUTAGE_ID, ALARM_START_DATE, ALARM_END_DATE, AAA_OUTAGE_DURATION_SEC, MAINTENANCE_PERIOD, DSLAM, DSLAM_SLOT,
                             TECHNOLOGY, OTE_SITE_NAME, OTE_SITE_AREA, POST_CODE, LONGITUDE, LATITUDE, PROBLEM,
-                            DSLAM_USERS, DATA_AFFECTED, TOTAL_USERS_CALLED, RMD_INCIDENT_NUMBER, RMD_IS_SCHEDULED, RMD_ALARM_START_DATE,
+                            DSLAM_USERS, DATA_AFFECTED, TOTAL_USERS_CALLED, SMP_UNIQUE_USERS, RMD_INCIDENT_NUMBER, RMD_IS_SCHEDULED, RMD_ALARM_START_DATE,
                             RMD_ALARM_END_DATE, RMD_SPECTRA_HIERARCHY, RMD_OPERATIONAL_CATEG_TIER_1, RMD_OPERATIONAL_CATEG_TIER_2,
                             RMD_OPERATIONAL_CATEG_TIER_3, RMD_RESOLUTION_CATEG_TIER_1, RMD_RESOLUTION_CATEG_TIER_2,
                             ZBX_EVENT_ID, ZBX_PROBLEM, ZBX_ALARM_START_DATE, ZBX_ALARM_END_DATE, NCE_EVENT_ID, NCE_ALARM_START_DATE,
-                            NCE_ALARM_END_DATE, NCE_PROBLEM, NCE_OPERATIONAL_DATA);
+                            NCE_ALARM_END_DATE, NCE_PROBLEM, NCE_OPERATIONAL_DATA,
+                            AMS_EVENT_TIME,
+                            AMS_PROBABLE_CAUSE,
+                            AMS_SPECIFIC_PROBLEM,
+                            AMS_FTTH_EVENT_TIME,
+                            AMS_FTTH_PROBABLE_CAUSE,
+                            AMS_FTTH_SPECIFIC_PROBLEM,
+                            SOEM_EVENT_ID,
+                            SOEM_RAISED_ON,
+                            SOEM_ALARM_TYPE,
+                            SOEM_PROBABLE_CAUSE,
+                            HDM_LAST_SNAPSHOT_DATE,
+                            HDM_MATCHING_OUTCOME,
+                            HDM_MATCHING_OUTCOME_FULL,
+                            SYSTEM_FOUND,
+                            SYSTEM_GROUP_FOUND,
+                            OUTAGE_TYPE_DESC,
+                            OUTAGE_TYPE
+                            );
                 });
 
         return stats;

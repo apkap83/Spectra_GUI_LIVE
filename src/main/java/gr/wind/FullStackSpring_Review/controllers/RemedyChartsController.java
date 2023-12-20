@@ -83,6 +83,12 @@ public class RemedyChartsController {
     }
 
     @CrossOrigin
+    @PostMapping(path= "/getPowerVSNTWOutagesTotal", produces = "application/json")
+    public List<PowerVSNTWOutagesTotal> getPowerVSNTWOutagesTotal(@Valid @RequestBody DateRange myDateRange) {
+        return remedyStatsService.getPowerVSNTWOutagesTotal(myDateRange.startDate(), myDateRange.endDate());
+    }
+
+    @CrossOrigin
     @PostMapping(path= "/aaa_outages_top_affected_areas", produces = "application/json")
     public List<TopAffected> getStatsForTopAffectedAreas(@Valid @RequestBody DateRange myDateRange) {
 

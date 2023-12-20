@@ -57,4 +57,8 @@ public class RemedyStatsService {
     public List<PowerVSNTWOutages> getPowerVSNTWOutagesOteVF(Date startDate, Date endDate) {
         return remedyStatsDataAccessService.getPowerVSNTWOutagesOteVF(startDate, endDate);
     }
+
+    public List<PowerVSNTWOutagesTotal> getPowerVSNTWOutagesTotal(Date startDate, Date endDate) {
+        return remedyStatsDataAccessService.getPowerVSNTWOutagesTotal(startDate, endDate);
+    }
 }
