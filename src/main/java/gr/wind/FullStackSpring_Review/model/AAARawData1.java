@@ -41,6 +41,12 @@ public class AAARawData1 {
     private final String ZBX_PROBLEM;
     private final String ZBX_ALARM_START_DATE;
     private final String ZBX_ALARM_END_DATE;
+
+    private final String ZBX_RMU_EVENT_ID;
+    private final String ZBX_RMU_PROBLEM;
+    private final String ZBX_RMU_ALARM_START_DATE;
+    private final String ZBX_RMU_ALARM_END_DATE;
+
     private final String NCE_EVENT_ID;
     private final String NCE_ALARM_START_DATE;
     private final String NCE_ALARM_END_DATE;
@@ -77,6 +83,12 @@ public class AAARawData1 {
                        String RMD_OPERATIONAL_CATEG_TIER_3, String RMD_RESOLUTION_CATEG_TIER_1,
                        String RMD_RESOLUTION_CATEG_TIER_2, String ZBX_EVENT_ID,
                        String ZBX_PROBLEM, String ZBX_ALARM_START_DATE, String ZBX_ALARM_END_DATE,
+
+                       String ZBX_RMU_EVENT_ID,
+                       String ZBX_RMU_PROBLEM,
+                       String ZBX_RMU_ALARM_START_DATE,
+                       String ZBX_RMU_ALARM_END_DATE,
+
                        String NCE_EVENT_ID, String NCE_ALARM_START_DATE, String NCE_ALARM_END_DATE,
                        String NCE_PROBLEM, String NCE_OPERATIONAL_DATA,
                        String AMS_EVENT_TIME,
@@ -137,6 +149,12 @@ public class AAARawData1 {
         this.ZBX_PROBLEM = ZBX_PROBLEM;
         this.ZBX_ALARM_START_DATE = ZBX_ALARM_START_DATE;
         this.ZBX_ALARM_END_DATE = ZBX_ALARM_END_DATE;
+
+        this.ZBX_RMU_EVENT_ID = ZBX_RMU_EVENT_ID;
+        this.ZBX_RMU_PROBLEM = ZBX_RMU_PROBLEM;
+        this.ZBX_RMU_ALARM_START_DATE = ZBX_RMU_ALARM_START_DATE;
+        this.ZBX_RMU_ALARM_END_DATE = ZBX_RMU_ALARM_END_DATE;
+
         this.NCE_EVENT_ID = NCE_EVENT_ID;
         this.NCE_ALARM_START_DATE = NCE_ALARM_START_DATE;
         this.NCE_ALARM_END_DATE = NCE_ALARM_END_DATE;
@@ -160,6 +178,22 @@ public class AAARawData1 {
         this.OUTAGE_TYPE_DESC =OUTAGE_TYPE_DESC;
         this.OUTAGE_TYPE = OUTAGE_TYPE;
 
+    }
+
+    public String getZBX_RMU_EVENT_ID() {
+        return ZBX_RMU_EVENT_ID;
+    }
+
+    public String getZBX_RMU_PROBLEM() {
+        return ZBX_RMU_PROBLEM;
+    }
+
+    public String getZBX_RMU_ALARM_START_DATE() {
+        return ZBX_RMU_ALARM_START_DATE;
+    }
+
+    public String getZBX_RMU_ALARM_END_DATE() {
+        return ZBX_RMU_ALARM_END_DATE;
     }
 
     public String getAAA_OUTAGE_DURATION_SEC() {

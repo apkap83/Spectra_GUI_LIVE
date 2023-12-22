@@ -610,6 +610,13 @@ public class RemedyStatsDataAccessService {
                    ZBX_PROBLEM,
                    ZBX_ALARM_START_DATE,
                    ZBX_ALARM_END_DATE,
+                   
+                   ZBX_RMU_EVENT_ID,
+                   ZBX_RMU_PROBLEM,
+                   ZBX_RMU_ALARM_START_DATE,
+                   ZBX_RMU_ALARM_END_DATE,
+                   
+                   
                    NCE_EVENT_ID,
                    NCE_ALARM_START_DATE,
                    NCE_ALARM_END_DATE,
@@ -687,6 +694,13 @@ public class RemedyStatsDataAccessService {
                     String ZBX_PROBLEM = resultSet.getString("ZBX_PROBLEM");
                     String ZBX_ALARM_START_DATE = resultSet.getString("ZBX_ALARM_START_DATE");
                     String ZBX_ALARM_END_DATE = resultSet.getString("ZBX_ALARM_END_DATE");
+
+
+                    String ZBX_RMU_EVENT_ID = resultSet.getString("ZBX_RMU_EVENT_ID");
+                    String ZBX_RMU_PROBLEM = resultSet.getString("ZBX_RMU_PROBLEM");
+                    String ZBX_RMU_ALARM_START_DATE = resultSet.getString("ZBX_RMU_ALARM_START_DATE");
+                    String ZBX_RMU_ALARM_END_DATE = resultSet.getString("ZBX_RMU_ALARM_END_DATE");
+
                     String NCE_EVENT_ID = resultSet.getString("NCE_EVENT_ID");
                     String NCE_ALARM_START_DATE = resultSet.getString("NCE_ALARM_START_DATE");
                     String NCE_ALARM_END_DATE = resultSet.getString("NCE_ALARM_END_DATE");
@@ -711,14 +725,15 @@ public class RemedyStatsDataAccessService {
                     String OUTAGE_TYPE_DESC = resultSet.getString("OUTAGE_TYPE_DESC");
                     String OUTAGE_TYPE = resultSet.getString("OUTAGE_TYPE");
 
-
                     return new AAARawData1(ID, ALARM_DAY, MATCHING_COMMENTS, NETWORK, DSLAM_OWNER,
                             DSLAM_OWNER_GROUP, OUTAGE_ID, ALARM_START_DATE, ALARM_END_DATE, AAA_OUTAGE_DURATION_SEC, MAINTENANCE_PERIOD, DSLAM, DSLAM_SLOT,
                             TECHNOLOGY, OTE_SITE_NAME, OTE_SITE_AREA, POST_CODE, LONGITUDE, LATITUDE, PROBLEM,
                             DSLAM_USERS, DATA_AFFECTED, TOTAL_USERS_CALLED, SMP_UNIQUE_USERS, RMD_INCIDENT_NUMBER, RMD_IS_SCHEDULED, RMD_ALARM_START_DATE,
                             RMD_ALARM_END_DATE, RMD_SPECTRA_HIERARCHY, RMD_OPERATIONAL_CATEG_TIER_1, RMD_OPERATIONAL_CATEG_TIER_2,
                             RMD_OPERATIONAL_CATEG_TIER_3, RMD_RESOLUTION_CATEG_TIER_1, RMD_RESOLUTION_CATEG_TIER_2,
-                            ZBX_EVENT_ID, ZBX_PROBLEM, ZBX_ALARM_START_DATE, ZBX_ALARM_END_DATE, NCE_EVENT_ID, NCE_ALARM_START_DATE,
+                            ZBX_EVENT_ID, ZBX_PROBLEM, ZBX_ALARM_START_DATE, ZBX_ALARM_END_DATE,
+                            ZBX_RMU_EVENT_ID, ZBX_RMU_PROBLEM, ZBX_RMU_ALARM_START_DATE, ZBX_RMU_ALARM_END_DATE,
+                            NCE_EVENT_ID, NCE_ALARM_START_DATE,
                             NCE_ALARM_END_DATE, NCE_PROBLEM, NCE_OPERATIONAL_DATA,
                             AMS_EVENT_TIME,
                             AMS_PROBABLE_CAUSE,
@@ -741,6 +756,5 @@ public class RemedyStatsDataAccessService {
                 });
 
         return stats;
-
     }
 }
