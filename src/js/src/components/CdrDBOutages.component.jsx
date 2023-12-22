@@ -43,7 +43,7 @@ export function CdrDBOutages(props) {
 
   const MENU_COMPANY_ITEMS = [COMPANY.WINDplusNova, COMPANY.WIND, COMPANY.NOVA];
 
-  const pageSize = 20;
+  const pageSize = 100;
   const [isFetching, setIsFetching] = useState(false);
   const [pageNumber, setPageNumber] = useState(1);
   const [incidents, setIncidents] = useState();

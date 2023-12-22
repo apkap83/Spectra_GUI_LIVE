@@ -217,7 +217,6 @@ export const PowerVSNTWOutagesWindNovaChart = ({ dateRange }) => {
         id: Math.random(),
       });
 
-      console.log(myData);
       setChartData(myData);
     };
 
@@ -263,8 +262,6 @@ export const PowerVSNTWOutagesWindNovaChart = ({ dateRange }) => {
 
     // Sorting the array by date
     constructData2.sort((a, b) => a.x - b.x);
-
-    console.log("constructData1", constructData1);
 
     const data1 = {
       type: "column",

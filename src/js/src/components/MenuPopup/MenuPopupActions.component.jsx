@@ -18,6 +18,9 @@ import BackupIcon from "@mui/icons-material/Backup";
 import DownloadIcon from "@mui/icons-material/Download";
 import { MenuPopupDownloads } from "./MenuPopupDownloads.component";
 
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { faGear } from "@fortawesome/free-solid-svg-icons";
+
 const ColorButton = styled(MuiButton)(({ theme }) => ({
   color: theme.palette.getContrastText(grey[900]),
   backgroundColor: green[500],
@@ -69,8 +72,15 @@ export function ActionsMenu(
             // }}
             {...bindTrigger(popupState)}
           >
-            <div>
-              <SettingsIcon fontSize="medium" />
+            <div
+              style={{
+                display: "flex",
+                justifyContent: "center",
+                alignItems: "center",
+                lineHeight: "1.3rem",
+              }}
+            >
+              <FontAwesomeIcon icon={faGear} />
               <span
                 style={{
                   marginLeft: "0.7rem",
