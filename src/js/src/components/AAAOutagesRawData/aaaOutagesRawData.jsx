@@ -84,7 +84,7 @@ export function AAAOutagesRawData() {
       filter: true,
       headerName: "System Found",
       headerClass: "genericHeaderClass",
-      width: widthInPx + 50,
+      width: widthInPx + 90,
     },
     {
       field: "system_GROUP_FOUND",
@@ -98,14 +98,14 @@ export function AAAOutagesRawData() {
       filter: true,
       headerName: "Outage Type",
       headerClass: "genericHeaderClass",
-      width: widthInPx + 50,
+      width: widthInPx,
     },
     {
       field: "network",
       filter: true,
       headerName: "Network",
       headerClass: "aaaHeaderClass",
-      width: widthInPx,
+      width: widthInPx - 50,
       cellDataType: "text",
     },
     {
@@ -113,7 +113,7 @@ export function AAAOutagesRawData() {
       filter: true,
       headerName: "DSLAM Owner",
       headerClass: "aaaHeaderClass",
-      width: widthInPx - 2,
+      width: widthInPx - 20,
       cellDataType: "text",
     },
     {
@@ -121,7 +121,7 @@ export function AAAOutagesRawData() {
       filter: true,
       headerName: "DSLAM Owner Group",
       headerClass: "aaaHeaderClass",
-      width: widthInPx + 40,
+      width: widthInPx + 15,
       cellDataType: "text",
     },
 
@@ -372,6 +372,37 @@ export function AAAOutagesRawData() {
       headerClass: "zabbixHeaderClass",
       width: widthInPx + 40,
     },
+
+    {
+      field: "zbx_RMU_EVENT_ID",
+      filter: true,
+      headerName: "ZBX RMU Event ID",
+      headerClass: "zabbixHeaderClass",
+      width: widthInPx + 40,
+      type: "numericColumn",
+    },
+    {
+      field: "zbx_RMU_PROBLEM",
+      filter: true,
+      headerName: "ZBX RMU Problem",
+      headerClass: "zabbixHeaderClass",
+      width: widthInPx + 40,
+    },
+    {
+      field: "zbx_RMU_ALARM_START_DATE",
+      filter: true,
+      headerName: "ZBX RMU Alarm Start Date",
+      headerClass: "zabbixHeaderClass",
+      width: widthInPx + 50,
+    },
+    {
+      field: "zbx_RMU_ALARM_END_DATE",
+      filter: true,
+      headerName: "ZBX RMU Alarm End Date",
+      headerClass: "zabbixHeaderClass",
+      width: widthInPx + 50,
+    },
+
     {
       field: "nce_EVENT_ID",
       filter: true,
@@ -574,7 +605,6 @@ export function AAAOutagesRawData() {
       if (myData) {
         setOriginalData(myData); // Store original data
 
-        console.log("myData", myData);
         if (searchTerm !== "") {
           const filteredData = filterData();
           setRetrievedRawData(filteredData);
@@ -615,15 +645,28 @@ export function AAAOutagesRawData() {
     };
   }, [isMenuVisible]);
 
+  // const handleColumnVisibilityChange = (columnName, isVisible) => {
+  //   setColumnDefs((currentDefs) =>
+  //     currentDefs.map((colDef) => {
+  //       if (colDef.headerName === columnName) {
+  //         return { ...colDef, hide: !isVisible };
+  //       }
+  //       return colDef;
+  //     })
+  //   );
+  // };
+
   const handleColumnVisibilityChange = (columnName, isVisible) => {
-    setColumnDefs((currentDefs) =>
-      currentDefs.map((colDef) => {
-        if (colDef.headerName === columnName) {
-          return { ...colDef, hide: !isVisible };
-        }
-        return colDef;
-      })
-    );
+    setColumnDefs((currentDefs) => {
+      const newDefs = [...currentDefs];
+      const index = newDefs.findIndex(
+        (colDef) => colDef.headerName === columnName
+      );
+      if (index !== -1) {
+        newDefs[index] = { ...newDefs[index], hide: !isVisible };
+      }
+      return newDefs;
+    });
   };
 
   const selectAllColumns = () => {
@@ -654,6 +697,7 @@ export function AAAOutagesRawData() {
     onSelectAll,
     onUnselectAll,
   }) => {
+    // console.log("ColumnVisibilityMenu Render");
     const handleSelectAllChange = (e) => {
       if (e.target.checked) {
         onSelectAll();
@@ -661,6 +705,41 @@ export function AAAOutagesRawData() {
         onUnselectAll();
       }
     };
+
+    const ColumnCheckbox = React.memo(({ colDef, onChange }) => {
+      return (
+        <div key={colDef.field}>
+          <label htmlFor={colDef.field}>
+            <input
+              id={colDef.field}
+              type="checkbox"
+              checked={!colDef.hide}
+              onChange={onChange}
+            />
+            &nbsp;&nbsp;{colDef.headerName}
+          </label>
+        </div>
+      );
+    });
+
+    const columnCheckboxes = useMemo(() => {
+      // console.log("Column CheckBoxes Render");
+      return columnDefs.map((colDef) => (
+        <div key={colDef.field}>
+          <label htmlFor={colDef.field}>
+            <input
+              id={colDef.field}
+              type="checkbox"
+              checked={!colDef.hide}
+              onChange={(e) =>
+                onVisibilityChange(colDef.headerName, e.target.checked)
+              }
+            />
+            &nbsp;&nbsp;{colDef.headerName}
+          </label>
+        </div>
+      ));
+    }, []);
 
     return (
       <div ref={menuRef} className="column-visibility-menu">
@@ -675,21 +754,7 @@ export function AAAOutagesRawData() {
           &nbsp;&nbsp;
           <span>Select All</span>
         </div>
-        {columnDefs.map((colDef) => (
-          <div key={colDef.field}>
-            <label htmlFor={colDef.field}>
-              <input
-                id={colDef.field}
-                type="checkbox"
-                checked={!colDef.hide}
-                onChange={(e) =>
-                  onVisibilityChange(colDef.headerName, e.target.checked)
-                }
-              />
-              &nbsp;&nbsp;{colDef.headerName}
-            </label>
-          </div>
-        ))}
+        {columnCheckboxes} {/* Use memoized checkboxes */}
       </div>
     );
   };
@@ -732,8 +797,6 @@ export function AAAOutagesRawData() {
 
     setTimeout(() => {
       const rowData = getCurrentGridData();
-      console.log("rowData", rowData);
-      console.log("rowData length", rowData.length);
       convertToExcel(rowData);
       setExcelLoading(false);
     }, 1500);
@@ -914,7 +977,6 @@ export function AAAOutagesRawData() {
                 pagination={true}
                 paginationPageSize={rowsPerPage} // Set the desired number of rows per page
                 onGridReady={() => {
-                  console.log("Grid is Ready");
                   setGridReady(true);
                 }}
               />

@@ -44,6 +44,9 @@ import { HideScheduledCheckBox } from "./common/HideScheduledCheckBox.component"
 import { LogoAndTitle } from "./common/LogoAndTitle.component";
 import { IncidentSelector } from "./common/IncidentSelector.component";
 
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { faChartSimple } from "@fortawesome/free-solid-svg-icons";
+
 const generateTableHeadAndColumns = (columnsArray) => {
   return (
     <TableHead>
@@ -112,15 +115,17 @@ export default function SpectraIncidentsTable(props) {
             key={incident.id}
             sx={{
               "&:last-child td, &:last-child th": { border: 0 },
-              background: stringToColor(incident.incidentId) + "12", // Add Opacity in Color
+              // backgroundColor: stringToColor(incident.incidentId) + "25",
             }}
           >
-            <TableCell align="left" component="th" scope="row">
+            <TableCell align="left" component="th" scope="row" width="50px">
               {incident.incidentId}
             </TableCell>
             <TableCell align="center">{incident.outageId}</TableCell>
             <TableCell align="center">
-              <span style={{ fontWeight: 600 }}>{incident.incidentStatus}</span>
+              <span style={{ fontWeight: 600, backgroundColor: "#fff" }}>
+                {incident.incidentStatus}
+              </span>
             </TableCell>
             <TableCell
               align="center"
@@ -221,7 +226,10 @@ export default function SpectraIncidentsTable(props) {
                 onMouseEnter={(e) => handlePopoverOpen(e, incident.incidentId)}
                 onMouseLeave={handlePopoverClose}
               >
-                <QueryStatsIcon className="statsIcon" />
+                <FontAwesomeIcon
+                  icon={faChartSimple}
+                  style={{ color: "#fff" }}
+                />
               </button>
             </TableCell>
             <TableCell></TableCell>

@@ -33,7 +33,6 @@ const enrichObject = (myDataTotal) => {
   const networkObj = myDataTotal.find((item) => item.outage_TYPE === "Network");
   const powerObj = myDataTotal.find((item) => item.outage_TYPE === "Power");
 
-  console.log("myDataTotal", myDataTotal);
   myDataTotal.push({
     id: nextId,
     totalPercentage: ((parseFloat(networkObj.total) / totalSum) * 100).toFixed(

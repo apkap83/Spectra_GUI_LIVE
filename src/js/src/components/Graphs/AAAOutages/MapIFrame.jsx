@@ -17,7 +17,7 @@ export const MapIframe = ({ dateRange, masterLoading }) => {
     setTimeout(() => {
       setSelectedValue(event.target.value);
       setLoading(false);
-    }, 2500);
+    }, 3500);
   };
 
   if (masterLoading) {

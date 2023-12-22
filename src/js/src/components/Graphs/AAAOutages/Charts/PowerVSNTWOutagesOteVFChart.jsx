@@ -216,7 +216,6 @@ export const PowerVSNTWOutagesOTEVodafoneChart = ({ dateRange }) => {
         id: Math.random(),
       });
 
-      console.log(myData);
       setChartData(myData);
     };
 
@@ -290,7 +289,6 @@ export const PowerVSNTWOutagesOTEVodafoneChart = ({ dateRange }) => {
       color: "#FCBD7A",
       dataPoints: constructData2,
     };
-    // console.log("Orig data1", data1);
     return [data2, data1];
   };
 
