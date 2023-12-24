@@ -73,6 +73,10 @@ public class RemedyChartsController {
     @CrossOrigin
     @PostMapping(path= "/getPowerVSNTWOutagesWindNova", produces = "application/json")
     public List<PowerVSNTWOutages> getPowerVSNTWOutagesWindNova(@Valid @RequestBody DateRange myDateRange) {
+        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+        userNameLoggedIn = authentication.getName();
+
+        logger.info(Environment + " " + userNameLoggedIn + " -> Getting Graph AAA-Remedy Alignment Stats");
         return remedyStatsService.getPowerVSNTWOutagesWindNova(myDateRange.startDate(), myDateRange.endDate());
     }
 
@@ -80,6 +84,12 @@ public class RemedyChartsController {
     @PostMapping(path= "/getPowerVSNTWOutagesOteVF", produces = "application/json")
     public List<PowerVSNTWOutages> getPowerVSNTWOutagesOteVF(@Valid @RequestBody DateRange myDateRange) {
         return remedyStatsService.getPowerVSNTWOutagesOteVF(myDateRange.startDate(), myDateRange.endDate());
+    }
+
+    @CrossOrigin
+    @PostMapping(path= "/getPowerVSNTWOutagesTotal", produces = "application/json")
+    public List<PowerVSNTWOutagesTotal> getPowerVSNTWOutagesTotal(@Valid @RequestBody DateRange myDateRange) {
+        return remedyStatsService.getPowerVSNTWOutagesTotal(myDateRange.startDate(), myDateRange.endDate());
     }
 
     @CrossOrigin
@@ -175,6 +185,9 @@ public class RemedyChartsController {
     @CrossOrigin
     @PostMapping(path="/getAAARawData", produces="application/json")
     public List<AAARawData1> getAAARawData(@Valid @RequestBody DateRange myDateRange) {
+
+        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+        userNameLoggedIn = authentication.getName();
 
         logger.info(Environment + " " + userNameLoggedIn + " -> Getting AAA-Raw data");
 
