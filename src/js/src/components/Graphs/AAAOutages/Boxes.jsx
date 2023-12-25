@@ -99,10 +99,29 @@ export const Boxes = ({ dateRange }) => {
           transition: "height 0.2s ease-out",
         }}
       >
-        <h4 className="infoBox__title">Average Outages Per Day</h4>
+        <h4
+          style={{
+            marginTop: "1rem",
+          }}
+          className="infoBox__title"
+        >
+          Average Outages Per Day
+        </h4>
 
-        <h1 className="infoBox__avgNumber">{avgOutagesPerDay}</h1>
-        <div className="infoBox__details">
+        <h1
+          className="infoBox__avgNumber"
+          style={{
+            margin: "0.3rem 0 2.5rem 0",
+          }}
+        >
+          {avgOutagesPerDay}
+        </h1>
+        <div
+          className="infoBox__details"
+          style={{
+            marginTop: "-1rem",
+          }}
+        >
           <div className="infoBox__details__row">
             <div className="infoBox__details__row--left">
               Cabinets/ DSLAMs Affected:
