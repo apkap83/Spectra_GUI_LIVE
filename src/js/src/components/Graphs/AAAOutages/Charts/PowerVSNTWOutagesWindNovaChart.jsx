@@ -304,6 +304,8 @@ export const PowerVSNTWOutagesWindNovaChart = ({ dateRange }) => {
       theme: "light2", // "light1", "dark1", "dark2"
       title: {
         text: chartTitle,
+        fontFamily: "Nunito",
+        fontSize: 30,
       },
       axisX: {
         valueFormatString: "DD MMM",

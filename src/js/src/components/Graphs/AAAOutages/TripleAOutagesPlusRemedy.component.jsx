@@ -163,10 +163,13 @@ export const TripleAOutagesPlusRemedy = () => {
           style={{
             margin: "auto",
             width: "90vw",
-            font: "Chiller_Embedded",
           }}
         >
-          <div>
+          <div
+            style={{
+              marginBottom: "8rem",
+            }}
+          >
             <Boxes
               key={`boxes-${refreshKey}`}
               dateRange={dateRange}
@@ -188,21 +191,33 @@ export const TripleAOutagesPlusRemedy = () => {
             />
           </div> */}
 
-          <div>
+          <div
+            style={{
+              marginBottom: "8rem",
+            }}
+          >
             <PowerVSNTWOutagesWindNovaChart
               key={`powerVSNTWOutagesWindNovaChart-${refreshKey}`}
               dateRange={dateRange}
             />
           </div>
 
-          <div>
+          <div
+            style={{
+              marginBottom: "8rem",
+            }}
+          >
             <PowerVSNTWOutagesOTEVodafoneChart
               key={`powerVSNTWOutagesOteVFChart-${refreshKey}`}
               dateRange={dateRange}
             />
           </div>
 
-          <div>
+          <div
+            style={{
+              marginBottom: "8rem",
+            }}
+          >
             <AAAOutagesCategorization
               key={`outagesCateg-${refreshKey}`}
               dateRange={dateRange}
@@ -218,7 +233,11 @@ export const TripleAOutagesPlusRemedy = () => {
             />
           </div> */}
 
-          <div>
+          <div
+            style={{
+              marginBottom: "8rem",
+            }}
+          >
             <RemedyTickets
               key={`remedy-${refreshKey}`}
               dateRange={dateRange}
@@ -226,7 +245,11 @@ export const TripleAOutagesPlusRemedy = () => {
             />
           </div>
 
-          <div>
+          <div
+            style={{
+              marginBottom: "8rem",
+            }}
+          >
             <RemedyTicketsPerResolution
               key={`remedyTicketsPerResolution-${refreshKey}`}
               dateRange={dateRange}
