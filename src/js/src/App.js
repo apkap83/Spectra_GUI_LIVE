@@ -1,5 +1,10 @@
 import React, { useState, useEffect } from "react";
-import { BrowserRouter as Router, Navigate, useRoutes } from "react-router-dom";
+import {
+  BrowserRouter as Router,
+  Navigate,
+  useRoutes,
+  useLocation,
+} from "react-router-dom";
 
 import UserContext from "./contexts/UserContext";
 
@@ -7,8 +12,6 @@ import NotFound from "./components/Errors/NotFound.component";
 
 import { LoginPage } from "./components/LoginPage/LoginPage.component";
 import { LogoutPage } from "./components/LogoutPage/LogoutPage.component";
-
-import ProtectedRoute from "./components/common/ProtectedRoute.component";
 
 import { AllWindSpectraIncidents } from "./components/Routes/WindAllSpectraIncidents";
 import { WindOpenSpectraIncidents } from "./components/Routes/WindOpenSpectraIncidents";
@@ -39,81 +42,126 @@ import { AAAOutagesRawData } from "./components/AAAOutagesRawData/aaaOutagesRawD
 import auth from "./services/authService";
 import { ErrorBoundary } from "./components/Errors/ErrorBoundary.component";
 
-const routes = [
-  { path: "login", element: <LoginPage />, exact: true },
-  { path: "mylogout", element: <LogoutPage />, exact: true },
-  {
-    path: "wind/allspectraincidents",
-    element: <AllWindSpectraIncidents />,
-    exact: true,
-  },
-  {
-    path: "wind/openspectraincidents",
-    element: <WindOpenSpectraIncidents />,
-    exact: true,
-  },
-  {
-    path: "nova/openspectraincidents",
-    element: <NovaOpenSpectraIncidents />,
-    exact: true,
-  },
-  {
-    path: "nova/allspectraincidents",
-    element: <AllNovaSpectraIncidents />,
-    exact: true,
-  },
-  { path: "cdr-db/openincidents", element: <CdrDBOpenOutages />, exact: true },
-  {
-    path: "cdr-db/closedincidents",
-    element: <CdrDBClosedOutages />,
-    exact: true,
-  },
-  { path: "wind/stats", element: <WindStats />, exact: true },
-  { path: "nova/stats", element: <NovaStats />, exact: true },
-  { path: "wind/adhocoutages", element: <AdHocOutages />, exact: true },
-  { path: "nova/adhocoutages", element: <NovaAdHocOutages />, exact: true },
-  { path: "user_management", element: <Users />, exact: true },
-  {
-    path: "graphs/aaa-outagesplus-remedy",
-    element: <TripleAOutagesPlusRemedy />,
-    exact: true,
-  },
-  {
-    path: "/graphs/aaa-outages-rawdata",
-    element: <AAAOutagesRawData />,
-    exact: true,
-  },
-  // { path: "/user_management_2", element: <Users_2 />, exact: true },
-  {
-    path: "/",
-    element: <Navigate to={"nova/allspectraincidents"} />,
-    exact: true,
-  },
-  { path: "*", element: <NotFound /> },
-];
-
-const App = () => {
-  const routing = useRoutes(routes);
-  return routing;
-};
-
 const AppWrapper = () => {
   const [userDetails, setUserDetails] = useState(null);
+  const [isAuthenticated, setIsAuthenticated] = useState(false);
+
+  const currentPath = location.pathname;
 
   useEffect(() => {
     const userDetails = auth.getCurrentUser();
     setUserDetails(userDetails);
-  }, []);
+  }, [isAuthenticated]);
+
+  const App = () => {
+    // Create a Higher-Order Component for protected routes
+    const ProtectedRoute = ({ component: Component }) => {
+      if (!isAuthenticated) {
+        // Write in your session the window location
+        // It will be used from login component to redirect to the correct page
+        sessionStorage.setItem("preLoginURL", window.location.href);
+
+        // Redirect to login page if not authenticated
+        return <Navigate to="/login" />;
+      }
+
+      return <Component />;
+    };
+
+    const routes = [
+      {
+        path: "login",
+        element: <LoginPage setIsAuthenticated={setIsAuthenticated} />,
+        exact: true,
+      },
+      { path: "mylogout", element: <LogoutPage />, exact: true },
+      {
+        path: "wind/allspectraincidents",
+        element: <ProtectedRoute component={AllWindSpectraIncidents} />,
+        exact: true,
+      },
+      {
+        path: "wind/openspectraincidents",
+        element: <ProtectedRoute component={WindOpenSpectraIncidents} />,
+        exact: true,
+      },
+      {
+        path: "nova/openspectraincidents",
+        element: <ProtectedRoute component={NovaOpenSpectraIncidents} />,
+        exact: true,
+      },
+      {
+        path: "nova/allspectraincidents",
+        element: <ProtectedRoute component={AllNovaSpectraIncidents} />,
+        exact: true,
+      },
+      {
+        path: "cdr-db/openincidents",
+        element: <ProtectedRoute component={CdrDBOpenOutages} />,
+        exact: true,
+      },
+      {
+        path: "cdr-db/closedincidents",
+        element: <ProtectedRoute component={CdrDBClosedOutages} />,
+        exact: true,
+      },
+      {
+        path: "wind/stats",
+        element: <ProtectedRoute component={WindStats} />,
+        exact: true,
+      },
+      {
+        path: "nova/stats",
+        element: <ProtectedRoute component={NovaStats} />,
+        exact: true,
+      },
+      {
+        path: "wind/adhocoutages",
+        element: <ProtectedRoute component={AdHocOutages} />,
+        exact: true,
+      },
+      {
+        path: "nova/adhocoutages",
+        element: <ProtectedRoute component={NovaAdHocOutages} />,
+        exact: true,
+      },
+      {
+        path: "user_management",
+        element: <ProtectedRoute component={Users} />,
+        exact: true,
+      },
+      {
+        path: "graphs/aaa-outagesplus-remedy",
+        element: <ProtectedRoute component={TripleAOutagesPlusRemedy} />,
+        exact: true,
+      },
+      {
+        path: "/graphs/aaa-outages-rawdata",
+        element: <ProtectedRoute component={AAAOutagesRawData} />,
+        exact: true,
+      },
+      {
+        path: "/",
+        element: <Navigate to={"nova/allspectraincidents"} />,
+        exact: true,
+      },
+      { path: "*", element: <NotFound /> },
+    ];
+    const routing = useRoutes(routes);
+    return routing;
+  };
+
+  console.log("Is Authenticated", isAuthenticated);
 
   return (
     <ErrorBoundary>
       <UserContext.Provider value={userDetails}>
         {/* <ScopedCssBaseline> */}
         <Router>
-          <MyHeader />
+          {currentPath !== "/login" && <MyHeader />}
           <App />
           <div style={{ marginBottom: "9rem" }}></div>
-          <MyFooter />
+          {currentPath !== "/login" && <MyFooter />}
         </Router>
         {/* </ScopedCssBaseline> */}
       </UserContext.Provider>

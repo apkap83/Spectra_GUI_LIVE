@@ -12,7 +12,7 @@ export const MyFooter = () => {
   const userDetails = useContext(UserContext);
   return (
     <>
-      {window.location.pathname !== "/login" && userDetails && (
+      {userDetails && (
         <>
           <Footer
             className={footerClass}

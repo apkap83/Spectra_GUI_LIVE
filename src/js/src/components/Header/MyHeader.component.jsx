@@ -7,7 +7,7 @@ import Nav from "react-bootstrap/Nav";
 import Navbar from "react-bootstrap/Navbar";
 import NavDropdown from "react-bootstrap/NavDropdown";
 import { LinkContainer } from "react-router-bootstrap";
-import { useLocation } from "react-router-dom";
+import { Link } from "react-router-dom";
 
 import config from "../../config";
 // const { appTitle } = Conf;
@@ -23,26 +23,24 @@ export function MyHeader() {
   const userDetails = useContext(UserContext);
   const isUserAdmin =
     userDetails && userDetails.roles.includes(PERMISSION.USER_CAN_MANAGE_USERS);
+
   return (
     <>
-      {window.location.pathname !== "/login" && userDetails && (
+      {userDetails && (
         <Navbar bg="dark" variant="dark">
           <Container>
-            <Navbar.Brand
-              href="/"
-              className="navBar__brand"
-              // style={{
-              //   fontFamily: "Nunito, sans-serif",
-              //   letterSpacing: 1.5,
-              // }}
-            >
+            <Navbar.Brand href="/" className="navBar__brand">
               {config.appTitle}
             </Navbar.Brand>
             <Navbar.Toggle aria-controls="responsive-navbar-nav" />
             <Navbar.Collapse id="responsive-navbar-nav">
               <Nav className="me-auto">
                 {isUserAdmin ? (
-                  <Nav.Link className="navBar__link" href="/user_management">
+                  <Nav.Link
+                    as={Link}
+                    className="navBar__link"
+                    to="/user_management"
+                  >
                     User Management
                   </Nav.Link>
                 ) : (

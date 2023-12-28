@@ -33,7 +33,7 @@ export default function Stats() {
   return (
     <div className="container">
       <div className="d-flex flex-column justify-content-center align-items-center">
-        <WindLogo className="mt-3" style={{ width: "200px" }} />
+        <WindLogo className="mt-5" style={{ width: "200px" }} />
         <span>Spectra</span>
         <RangePicker
           className="w-50"

@@ -107,6 +107,7 @@ export const Users = () => {
     setAvailableRoles(roles);
     setIsFetchingUsers(false);
   };
+
   useEffect(() => {
     getUsersAndRoles();
   }, []);

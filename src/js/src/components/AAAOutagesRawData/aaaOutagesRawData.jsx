@@ -93,7 +93,7 @@ export function AAAOutagesRawData() {
   const menuRef = useRef(null);
   const selectAllRef = useRef(null);
 
-  const [masterLoading, setMasterLoading] = useState(false);
+  const [masterLoading, setMasterLoading] = useState(true);
 
   const [columnDefs, setColumnDefs] = useState([
     // { field: "id", headerName: "ID", width: 90 },
@@ -632,11 +632,11 @@ export function AAAOutagesRawData() {
       });
 
       if (myData) {
-        setOriginalData(myData); // Store original data
+        setOriginalData([...myData]); // Store original data
 
         if (searchTerm !== "") {
           const filteredData = filterData();
-          setRetrievedRawData(filteredData);
+          // setRetrievedRawData(filteredData);
         } else {
           setRetrievedRawData(myData); // Set retrieved data for display
         }
@@ -859,14 +859,17 @@ export function AAAOutagesRawData() {
 
   useEffect(() => {
     const debounce = setTimeout(() => {
-      if (searchTerm !== "") {
-        const filteredData = filterData();
-        setRetrievedRawData(filteredData);
-      } else {
-        // Reset to original data when search term is cleared
-        setRetrievedRawData(originalData);
-      }
-    }, 300);
+      const filteredData = searchTerm !== "" ? filterData() : originalData;
+      setRetrievedRawData(filteredData);
+    }, 10);
+
+    // const debounce = setTimeout(() => {
+    //   if (searchTerm !== "") {
+    //     const filteredData = filterData();
+    //     setRetrievedRawData(filteredData);
+    //   }
+    // }
+    // , 300);
 
     return () => clearTimeout(debounce);
   }, [searchTerm, refreshKey]);

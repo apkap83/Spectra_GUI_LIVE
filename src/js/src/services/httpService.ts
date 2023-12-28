@@ -29,12 +29,13 @@ axios.interceptors.response.use(null, (error) => {
   // Redirect the user to the login page (in case of HTTP 401 Unauthorized)
   if (error.response.status === 401) {
     // Remove JWT from Session
+    console.log("http service 32");
     localStorage.removeItem(config.jwtTokenKeyName);
 
     sessionStorage.setItem("preLoginURL", window.location.href);
 
     // Redirect to login page
-    window.location = "/login" as unknown as Location;
+    // window.location = "/login" as unknown as Location;
   }
 
   return Promise.reject(error);

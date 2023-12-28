@@ -66,7 +66,7 @@ export default function SpectraIncidentsTable(props) {
   // State
   const [title, setTitle] = useState();
   const [company, setCompany] = useState();
-  const [isFetching, setIsFetching] = useState(false);
+  const [isFetching, setIsFetching] = useState(true);
   const [pageNumber, setPageNumber] = useState(1);
   const [incidents, setIncidents] = useState([]);
   const [retrievedIncidents, setRetrievedIncidents] = useState();

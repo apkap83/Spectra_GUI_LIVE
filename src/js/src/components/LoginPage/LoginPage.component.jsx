@@ -6,7 +6,7 @@ import auth from "../../services/authService";
 import { getCurrentYear } from "./../../utils/myutils";
 import { ReactComponent as NovaLogo } from "../../assets/novaLogo.svg";
 
-export function LoginPage() {
+export function LoginPage({ setIsAuthenticated }) {
   const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");
   const [error, setError] = useState("");
@@ -41,13 +41,20 @@ export function LoginPage() {
         originalUrl = urlObj.pathname + urlObj.search;
       }
 
-      navigate(originalUrl); // Use navigate for redirection
+      // window.location = originalUrl;
 
       // Remove preLoginURL from session storage
       sessionStorage.removeItem("preLoginURL");
 
-      // window.location = "/nova/allspectraincidents";
+      console.log("originalUrl", originalUrl);
+
+      setIsAuthenticated(true);
+
+      // Use navigate for redirection
+      navigate(originalUrl, { replace: true });
     } catch (ex) {
+      setIsAuthenticated(false);
+      console.log("login page 57");
       localStorage.removeItem("JWT_Token");
       setError("Invalid username or password");
       setUsername("");
