@@ -15,7 +15,7 @@ axios.interceptors.response.use(null, (error) => {
     errorNotification("An unexpected error occured");
   }
 
-  if (sessionStorage.getItem(config.jwtTokenKeyName)) {
+  if (localStorage.getItem(config.jwtTokenKeyName)) {
     if (error.response) {
       const { data, status, headers } = error.response;
       errorNotification(data.error, data.message);
@@ -29,7 +29,9 @@ axios.interceptors.response.use(null, (error) => {
   // Redirect the user to the login page (in case of HTTP 401 Unauthorized)
   if (error.response.status === 401) {
     // Remove JWT from Session
-    sessionStorage.removeItem(config.jwtTokenKeyName);
+    localStorage.removeItem(config.jwtTokenKeyName);
+
+    sessionStorage.setItem("preLoginURL", window.location.href);
 
     // Redirect to login page
     window.location = "/login" as unknown as Location;

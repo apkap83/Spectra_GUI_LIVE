@@ -9,7 +9,7 @@ if (getJwt()) {
 }
 
 export function getJwt() {
-  return sessionStorage.getItem(config.jwtTokenKeyName);
+  return localStorage.getItem(config.jwtTokenKeyName);
 }
 
 export async function login(username: string, password: string) {
@@ -17,16 +17,16 @@ export async function login(username: string, password: string) {
     username,
     password,
   });
-  sessionStorage.setItem(config.jwtTokenKeyName, data.jwt);
+  localStorage.setItem(config.jwtTokenKeyName, data.jwt);
 }
 
 export async function logout() {
-  sessionStorage.removeItem(config.jwtTokenKeyName);
+  localStorage.removeItem(config.jwtTokenKeyName);
 }
 
 export function getCurrentUser() {
   try {
-    const jwt = sessionStorage.getItem(config.jwtTokenKeyName);
+    const jwt = localStorage.getItem(config.jwtTokenKeyName);
 
     if (jwt === null) {
       return null; // or handle the case when jwt is null

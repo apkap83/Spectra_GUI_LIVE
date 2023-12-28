@@ -1,5 +1,6 @@
 import * as React from "react";
 import { useState, useEffect, useRef, useMemo, useCallback } from "react";
+import { useLocation } from "react-router-dom";
 
 import { TooltipOnCursor } from "../common/TooltipOnCursor";
 
@@ -30,12 +31,12 @@ import * as XLSX from "xlsx";
 
 import locale from "antd/es/date-picker/locale/en_GB";
 const rangePickerDateFormat = ["DD MMM YYYY"];
-const startDate = dayjs().subtract(1, "day").startOf("day");
-const endDate = dayjs().startOf("day");
-const initialDates = {
-  startDate,
-  endDate,
-};
+// const startDate = dayjs().subtract(1, "day").startOf("day");
+// const endDate = dayjs().startOf("day");
+// const initialDates = {
+//   startDate,
+//   endDate,
+// };
 
 function disabledDate(current) {
   // Disable dates in the future
@@ -45,6 +46,34 @@ function disabledDate(current) {
 const widthInPx = 145;
 
 export function AAAOutagesRawData() {
+  const location = useLocation();
+  // Parse query parameters
+  const searchParams = new URLSearchParams(location.search);
+  const startDateQueryParam = searchParams.get("startDate");
+  const endDateQueryParam = searchParams.get("endDate");
+
+  // Function to check if a string is a valid date using dayjs
+  const isValidDate = (dateStr) => {
+    return dayjs(dateStr).isValid();
+  };
+
+  // Check if the dates are valid
+  const isStartDateValid = isValidDate(startDateQueryParam);
+  const isEndDateValid = isValidDate(endDateQueryParam);
+
+  const startDate = isStartDateValid
+    ? dayjs(startDateQueryParam).startOf("day")
+    : dayjs().subtract(1, "day").startOf("day");
+
+  const endDate = isEndDateValid
+    ? dayjs(endDateQueryParam).startOf("day")
+    : dayjs().startOf("day");
+
+  const initialDates = {
+    startDate,
+    endDate,
+  };
+
   const [dateRange, setDateRange] = useState(initialDates);
   const [value, setValue] = useState(null);
 
@@ -697,7 +726,6 @@ export function AAAOutagesRawData() {
     onSelectAll,
     onUnselectAll,
   }) => {
-    // console.log("ColumnVisibilityMenu Render");
     const handleSelectAllChange = (e) => {
       if (e.target.checked) {
         onSelectAll();
@@ -723,7 +751,6 @@ export function AAAOutagesRawData() {
     });
 
     const columnCheckboxes = useMemo(() => {
-      // console.log("Column CheckBoxes Render");
       return columnDefs.map((colDef) => (
         <div key={colDef.field}>
           <label htmlFor={colDef.field}>

@@ -1,4 +1,5 @@
 import { useState } from "react";
+import { useNavigate } from "react-router-dom";
 import axios from "axios";
 import config from "../../config";
 import auth from "../../services/authService";
@@ -9,6 +10,7 @@ export function LoginPage() {
   const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");
   const [error, setError] = useState("");
+  const navigate = useNavigate();
 
   const handleUsernameChange = (event) => {
     setUsername(event.target.value);
@@ -24,9 +26,29 @@ export function LoginPage() {
     // Call the server
     try {
       await auth.login(username, password);
-      window.location = "/nova/allspectraincidents";
+
+      // Retrieve the original URL
+      let originalUrl =
+        sessionStorage.getItem("preLoginURL") || "/nova/allspectraincidents";
+
+      // Check if the URL is absolute and convert it to relative if necessary
+      if (
+        originalUrl.startsWith("http://") ||
+        originalUrl.startsWith("https://")
+      ) {
+        // Creating a URL object to extract pathname and search params
+        const urlObj = new URL(originalUrl);
+        originalUrl = urlObj.pathname + urlObj.search;
+      }
+
+      navigate(originalUrl); // Use navigate for redirection
+
+      // Remove preLoginURL from session storage
+      sessionStorage.removeItem("preLoginURL");
+
+      // window.location = "/nova/allspectraincidents";
     } catch (ex) {
-      sessionStorage.removeItem("JWT_Token");
+      localStorage.removeItem("JWT_Token");
       setError("Invalid username or password");
       setUsername("");
       setPassword("");
