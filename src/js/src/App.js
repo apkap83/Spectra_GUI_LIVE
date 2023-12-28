@@ -1,10 +1,5 @@
 import React, { useState, useEffect } from "react";
-import {
-  BrowserRouter as Router,
-  Navigate,
-  useRoutes,
-  useLocation,
-} from "react-router-dom";
+import { BrowserRouter as Router, Navigate, useRoutes } from "react-router-dom";
 
 import UserContext from "./contexts/UserContext";
 
@@ -56,16 +51,17 @@ const AppWrapper = () => {
   const App = () => {
     // Create a Higher-Order Component for protected routes
     const ProtectedRoute = ({ component: Component }) => {
-      if (!isAuthenticated) {
-        // Write in your session the window location
-        // It will be used from login component to redirect to the correct page
-        sessionStorage.setItem("preLoginURL", window.location.href);
-
-        // Redirect to login page if not authenticated
-        return <Navigate to="/login" />;
+      // There is active JWT Token in Local Storage
+      if (auth.getCurrentUser()) {
+        return <Component />;
       }
 
-      return <Component />;
+      // Write in your session the window location
+      // It will be used from login component to redirect to the correct page
+      sessionStorage.setItem("preLoginURL", window.location.href);
+
+      // Redirect to login page if there is no valid JWT Token in Local Storage
+      return <Navigate to="/login" />;
     };
 
     const routes = [

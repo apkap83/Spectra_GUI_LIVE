@@ -52,6 +52,11 @@ export function AAAOutagesRawData() {
   const startDateQueryParam = searchParams.get("startDate");
   const endDateQueryParam = searchParams.get("endDate");
 
+  const columns = searchParams.get("columns");
+  // If columns are separated by pipes
+  const columnList = columns ? columns.split("|") : [];
+  console.log("columnList", columnList);
+
   // Function to check if a string is a valid date using dayjs
   const isValidDate = (dateStr) => {
     return dayjs(dateStr).isValid();
