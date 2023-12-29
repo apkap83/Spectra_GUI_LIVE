@@ -1,6 +1,6 @@
 import * as React from "react";
 import { useState, useEffect, useRef, useMemo, useCallback } from "react";
-import { useLocation } from "react-router-dom";
+import { useLocation, useNavigate } from "react-router-dom";
 
 import { TooltipOnCursor } from "../../common/TooltipOnCursor";
 
@@ -81,12 +81,24 @@ function useColumnVisibilityParams() {
   const location = useLocation();
   // Parse query parameters
   const searchParams = new URLSearchParams(location.search);
-  const columns = searchParams.get("columns");
+  const initialColumns = searchParams.get("columns")
+    ? searchParams.get("columns").split("|").map(decodeURIComponent)
+    : [];
 
-  // If columns are separated by pipes
-  const columnList = columns ? columns.split("|") : [];
+  // State to store the current list of columns
+  const [columnList, setColumnList] = useState(initialColumns);
 
-  return [...columnList];
+  // Effect to update the column list when the URL changes
+  useEffect(() => {
+    setColumnList(initialColumns);
+  }, [location.search]); // Re-run the effect if the URL search parameters change
+
+  // Function to reset the column list
+  const resetColumnList = () => {
+    setColumnList(initialColumns);
+  };
+
+  return { columnList, resetColumnList };
 }
 
 function useFilterColumnByString() {
@@ -96,29 +108,47 @@ function useFilterColumnByString() {
 
   const location = useLocation();
 
-  // Parse query parameters
-  const searchParams = new URLSearchParams(location.search);
+  // Function to parse and construct initial column filter values
+  const parseColumnFilterValues = () => {
+    const searchParams = new URLSearchParams(location.search);
+    const values = {};
 
-  const columnFilterValues = {};
+    for (const [key, value] of searchParams.entries()) {
+      const match = key.match(columnNameRegex);
 
-  for (const [key, value] of searchParams.entries()) {
-    const match = key.match(columnNameRegex);
+      if (match) {
+        const columnName = match[1];
 
-    if (match) {
-      const columnName = match[1];
+        if (!values.hasOwnProperty(columnName)) {
+          values[columnName] = [];
+        }
 
-      if (!columnFilterValues.hasOwnProperty(columnName)) {
-        columnFilterValues[columnName] = [];
+        // split value using pipe separator
+        const allValues = value.split("|");
+        values[columnName].push(...allValues);
       }
-
-      // split value using pipe separator
-      const allValues = value.split("|");
-
-      columnFilterValues[columnName].push([...allValues]);
     }
-  }
 
-  return columnFilterValues;
+    return values;
+  };
+
+  // State to store the current filter values
+  const [columnFilterValues, setColumnFilterValues] = useState(
+    parseColumnFilterValues
+  );
+
+  // Effect to update the filter values when the URL changes
+  useEffect(() => {
+    setColumnFilterValues(parseColumnFilterValues());
+  }, [location.search]); // Re-run the effect if the URL search parameters change
+
+  // Function to reset the filter values
+  const resetFilterValues = () => {
+    console.log(147);
+    setColumnFilterValues({});
+  };
+
+  return { columnFilterValues, resetFilterValues };
 }
 
 function applyColumnFilter(setColumnDefs, columnList) {
@@ -139,9 +169,10 @@ function applyColumnFilter(setColumnDefs, columnList) {
 }
 
 export function AAAOutagesRawData() {
+  const navigate = useNavigate();
   const [startDate, endDate] = useDateParams();
-  const columnList = useColumnVisibilityParams();
-  const columnFilterValues = useFilterColumnByString(); // {column: [value1, value2]}
+  const { columnList, resetColumnList } = useColumnVisibilityParams();
+  const { columnFilterValues, resetFilterValues } = useFilterColumnByString(); // {column: [value1, value2]}
 
   const initialDates = {
     startDate,
@@ -635,56 +666,41 @@ export function AAAOutagesRawData() {
     },
   ]);
 
+  const removeUri = () => {
+    if (
+      columnList.length !== 0 ||
+      Object.keys(columnFilterValues).length !== 0
+    ) {
+      navigate("/graphs/aaa-outages-rawdata");
+    }
+  };
+
   useEffect(() => {
     applyColumnFilter(setColumnDefs, columnList);
   }, []);
 
   useEffect(() => {
     let filteredData = [...originalData];
-    console.log("columnFilterValues", columnFilterValues);
     if (Object.keys(columnFilterValues).length !== 0) {
+      // {column: [value1, value2]}
+
       for (const column in columnFilterValues) {
         // {column: [value1, value2]}
-        for (const valuesArray of columnFilterValues[column]) {
-          // ["NOVA", "WIND"]
-          console.log("valuesArray", valuesArray);
+        const labelValueObject = columnSearchOptions.find(
+          // { "value": "network",  "label": "Network" }
+          (obj) => obj.label === column
+        );
 
-          const labelValueObject = columnSearchOptions.find(
-            // { "value": "network",  "label": "Network" }
-            (obj) => obj.label === column
-          );
-
-          filteredData = filteredData.filter((row) => {
-            const valueForColumn = row[`${labelValueObject.value}`];
-            // console.log(row);
-            // console.log(`${labelValueObject.value}`);
-            // console.log("valueForColumn", valueForColumn);
-            return valuesArray.includes(valueForColumn);
-          });
-          // console.log("*** filter", filter);
-          // filteredData = filteredData.concat(filter);
-
-          // const columnId = objectWithLabel.value;
-
-          // const filter = originalData.filter((row) => {
-          //   const valueInOrigData = row[columnId];
-          //   return (
-          //     valueInOrigData !== null &&
-          //     valueInOrigData
-          //       .toString()
-          //       .toLowerCase()
-          //       .includes(value.toLowerCase())
-          //   );
-          // });
-        }
+        console.log("value", value);
+        filteredData = filteredData.filter((row) => {
+          const valueForColumn = row[`${labelValueObject.value}`];
+          return columnFilterValues[column].includes(valueForColumn);
+        });
       }
-      // console.log("filteredData", filteredData);
     }
 
-    // if (filteredData && filteredData.length > 0) {
     setRetrievedRawData(filteredData);
-    // }
-  }, [originalData]);
+  }, [originalData, columnFilterValues]);
 
   const [tooltip, setTooltip] = useState({
     show: false,
@@ -762,7 +778,9 @@ export function AAAOutagesRawData() {
           const filteredData = filterData();
           // setRetrievedRawData(filteredData);
         } else {
-          setRetrievedRawData(myData); // Set retrieved data for display
+          if (!columnFilterValues || !columnList) {
+            setRetrievedRawData(myData); // Set retrieved data for display
+          }
         }
       }
       setMasterLoading(false);
@@ -914,6 +932,9 @@ export function AAAOutagesRawData() {
     gridRef.current.api.setFilterModel(null);
     setSearchTerm("");
     selectAllColumns();
+    resetColumnList();
+    resetFilterValues();
+    removeUri();
   };
 
   const getCurrentGridData = () => {
