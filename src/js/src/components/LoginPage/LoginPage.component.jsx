@@ -46,17 +46,20 @@ export function LoginPage({ setIsAuthenticated }) {
       // Remove preLoginURL from session storage
       sessionStorage.removeItem("preLoginURL");
 
-      console.log("originalUrl", originalUrl);
-
       setIsAuthenticated(true);
 
       // Use navigate for redirection
       navigate(originalUrl, { replace: true });
-    } catch (ex) {
+    } catch (error) {
       setIsAuthenticated(false);
-      console.log("login page 57");
-      localStorage.removeItem("JWT_Token");
-      setError("Invalid username or password");
+      localStorage.removeItem(config.jwtTokenKeyName);
+
+      if (error.message === "Request failed with status code 403") {
+        setError("Incorrect user name or password");
+      } else {
+        setError(error.message);
+      }
+
       setUsername("");
       setPassword("");
     }
@@ -79,7 +82,7 @@ export function LoginPage({ setIsAuthenticated }) {
             <div className="form-group">
               {error && (
                 <div
-                  className="mt-3 alert alert-danger"
+                  className="mt-3 alert alert-danger text-center"
                   style={{ width: "300px" }}
                 >
                   {error}

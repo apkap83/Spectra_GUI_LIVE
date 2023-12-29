@@ -1,4 +1,5 @@
 import { useState, useEffect, useMemo } from "react";
+import { Link } from "react-router-dom";
 import PropTypes from "prop-types";
 import httpService from "../../../services/httpService";
 import config from "../../../config";
@@ -109,6 +110,23 @@ function sumByDate(data) {
   return summedByDate;
 }
 
+function convertDateFormat(dateStr) {
+  // Split the date string into parts
+  const [day, month, year] = dateStr
+    .split("/")
+    .map((part) => parseInt(part, 10));
+
+  // Create a new Date object (month is 0-indexed in JavaScript Date)
+  const date = new Date(year, month - 1, day);
+
+  // Format the date to YYYY-MM-DD manually
+  const formattedDate = `${date.getFullYear()}-${String(
+    date.getMonth() + 1
+  ).padStart(2, "0")}-${String(date.getDate()).padStart(2, "0")}`;
+
+  return formattedDate;
+}
+
 export function AAAOutagesCategorization({ dateRange, setLoading }) {
   const [rows, setQuery1Data] = useState([]);
   const [headCells, setHeadCells] = useState([]);
@@ -188,7 +206,7 @@ export function AAAOutagesCategorization({ dateRange, setLoading }) {
 
                 position: index < 2 ? "sticky" : "normal",
                 left: index === 0 ? 0 : index === 1 ? 247 : "",
-                background: index < 2 ? "white" : "white",
+                background: "white",
                 zIndex: 20, // higher than the table body cells
               }}
             >
@@ -259,13 +277,29 @@ export function AAAOutagesCategorization({ dateRange, setLoading }) {
                       Object.keys(row.dateValuePair)
                         .sort(sortDates)
                         .map((key) => {
+                          const YearMonthDayFormat = convertDateFormat(key);
                           return (
                             <TableCell
                               key={key}
                               align="right"
                               style={{ background: "inherit" }}
                             >
-                              {row.dateValuePair[key]}
+                              {row.COMMENTS !== "Grand Total" ? (
+                                <Link
+                                  style={{
+                                    textDecoration: "none",
+                                  }}
+                                  to={`/graphs/aaa-outages-rawdata?startDate=${YearMonthDayFormat}&endDate=${YearMonthDayFormat}&filterColumn_System%20Found=${encodeURIComponent(
+                                    row.COMMENTS
+                                  )}&filterColumn_DSLAM%20Owner%20Group=${encodeURIComponent(
+                                    row.DSLAM_OWNER_GROUP
+                                  )}`}
+                                >
+                                  {row.dateValuePair[key]}
+                                </Link>
+                              ) : (
+                                <span>{row.dateValuePair[key]}</span>
+                              )}
                             </TableCell>
                           );
                         })}

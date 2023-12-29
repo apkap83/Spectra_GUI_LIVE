@@ -3,6 +3,10 @@ import { jwtDecode } from "jwt-decode";
 import config from "../config";
 const apiEndPoint = `${config.apiPrefix}/api/authenticate`;
 
+interface LoginResponse {
+  jwt: string;
+}
+
 // Get JWT from Storage and Set it in Authorization Header
 if (getJwt()) {
   httpService.setJwtAuthHeader(getJwt());
@@ -13,17 +17,23 @@ export function getJwt() {
 }
 
 export async function login(username: string, password: string) {
-  const { data } = await httpService.post(apiEndPoint, {
+  const response = await httpService.post<LoginResponse>(apiEndPoint, {
     username,
     password,
   });
-  const { jwt } = data;
-  localStorage.setItem(config.jwtTokenKeyName, jwt);
-  httpService.setJwtAuthHeader(jwt);
+
+  if (response.data) {
+    const { jwt } = response.data;
+    localStorage.setItem(config.jwtTokenKeyName, jwt);
+    httpService.setJwtAuthHeader(jwt);
+  } else {
+    // Handle the case where data is undefined
+    console.error("Login failed: No data received");
+    // Perform additional error handling as needed
+  }
 }
 
 export async function logout() {
-  console.log("auth service 32");
   localStorage.removeItem(config.jwtTokenKeyName);
 }
 
@@ -39,13 +49,11 @@ export function getCurrentUser() {
     // Check if token has expired
     const currentTime = Date.now() / 1000; // Convert to seconds
     if (decodedToken.exp && decodedToken.exp < currentTime) {
-      console.log("Token has expired");
       return null;
     }
 
     return decodedToken;
   } catch (ex) {
-    console.error("Error decoding JWT:", ex);
     return null;
   }
 }

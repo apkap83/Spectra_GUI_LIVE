@@ -32,16 +32,23 @@ import { Users } from "./components/Users/Users.component";
 // import { Users_2 } from "./components/Users/Users_2.component";
 
 import { TripleAOutagesPlusRemedy } from "./components/Graphs/AAAOutages/TripleAOutagesPlusRemedy.component";
-import { AAAOutagesRawData } from "./components/AAAOutagesRawData/aaaOutagesRawData";
+import { AAAOutagesRawData } from "./components/Graphs/AAAOutagesRawData/aaaOutagesRawData";
 
 import auth from "./services/authService";
 import { ErrorBoundary } from "./components/Errors/ErrorBoundary.component";
+import { set } from "lodash";
 
 const AppWrapper = () => {
   const [userDetails, setUserDetails] = useState(null);
   const [isAuthenticated, setIsAuthenticated] = useState(false);
 
   const currentPath = location.pathname;
+
+  useEffect(() => {
+    if (auth.getCurrentUser()) {
+      setIsAuthenticated(true);
+    }
+  }, []);
 
   useEffect(() => {
     const userDetails = auth.getCurrentUser();

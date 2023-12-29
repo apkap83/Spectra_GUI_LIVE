@@ -37,4 +37,10 @@ window.onunhandledrejection = (event) => {
 
 const container = document.getElementById("root");
 const root = createRoot(container);
+
+// Remove JWT from Localstorage upon browser window exit
+// window.addEventListener("beforeunload", function () {
+//   localStorage.clear();
+// });
+
 root.render(<AppWrapper style={{ position: "relative" }} />);

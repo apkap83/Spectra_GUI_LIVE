@@ -2,14 +2,14 @@ import * as React from "react";
 import { useState, useEffect, useRef, useMemo, useCallback } from "react";
 import { useLocation } from "react-router-dom";
 
-import { TooltipOnCursor } from "../common/TooltipOnCursor";
+import { TooltipOnCursor } from "../../common/TooltipOnCursor";
 
-import { datesWithinRange } from "../../lib/helpFunctions";
-import httpService from "../../services/httpService";
-import config from "../../config";
+import { datesWithinRange } from "../../../lib/helpFunctions";
+import httpService from "../../../services/httpService";
+import config from "../../../config";
 const apiEndPoint = config.apiPrefix + "/api/charts/getAAARawData";
 
-import { LoadingSpinnerCentered } from "../common/LoadingSpinnerCentered";
+import { LoadingSpinnerCentered } from "../../common/LoadingSpinnerCentered";
 
 import Button from "@mui/material/Button";
 import CachedIcon from "@mui/icons-material/Cached";
@@ -18,7 +18,7 @@ import { DatePicker } from "antd";
 import dayjs from "dayjs";
 const { RangePicker } = DatePicker;
 
-import CircularIndeterminate from "../common/CircularIndeterminate";
+import CircularIndeterminate from "../../common/CircularIndeterminate";
 import { Spin } from "antd";
 
 import { AgGridReact } from "ag-grid-react"; // the AG Grid React Component
@@ -30,6 +30,7 @@ import "ag-grid-community/styles/ag-theme-material.min.css"; // Optional theme C
 import * as XLSX from "xlsx";
 
 import locale from "antd/es/date-picker/locale/en_GB";
+import { set } from "lodash";
 const rangePickerDateFormat = ["DD MMM YYYY"];
 // const startDate = dayjs().subtract(1, "day").startOf("day");
 // const endDate = dayjs().startOf("day");
@@ -45,17 +46,14 @@ function disabledDate(current) {
 
 const widthInPx = 145;
 
-export function AAAOutagesRawData() {
+function useDateParams() {
+  // startDate=2023-12-01&endDate=2023-12-10
   const location = useLocation();
+
   // Parse query parameters
   const searchParams = new URLSearchParams(location.search);
   const startDateQueryParam = searchParams.get("startDate");
   const endDateQueryParam = searchParams.get("endDate");
-
-  const columns = searchParams.get("columns");
-  // If columns are separated by pipes
-  const columnList = columns ? columns.split("|") : [];
-  console.log("columnList", columnList);
 
   // Function to check if a string is a valid date using dayjs
   const isValidDate = (dateStr) => {
@@ -73,6 +71,77 @@ export function AAAOutagesRawData() {
   const endDate = isEndDateValid
     ? dayjs(endDateQueryParam).startOf("day")
     : dayjs().startOf("day");
+
+  return [startDate, endDate];
+}
+
+function useColumnVisibilityParams() {
+  // columns=System%20Found|Network|Alarm%20Day
+
+  const location = useLocation();
+  // Parse query parameters
+  const searchParams = new URLSearchParams(location.search);
+  const columns = searchParams.get("columns");
+
+  // If columns are separated by pipes
+  const columnList = columns ? columns.split("|") : [];
+
+  return [...columnList];
+}
+
+function useFilterColumnByString() {
+  // filterColumn_{columnName}=string
+
+  const columnNameRegex = /filterColumn_(.+)$/;
+
+  const location = useLocation();
+
+  // Parse query parameters
+  const searchParams = new URLSearchParams(location.search);
+
+  const columnFilterValues = {};
+
+  for (const [key, value] of searchParams.entries()) {
+    const match = key.match(columnNameRegex);
+
+    if (match) {
+      const columnName = match[1];
+
+      if (!columnFilterValues.hasOwnProperty(columnName)) {
+        columnFilterValues[columnName] = [];
+      }
+
+      // split value using pipe separator
+      const allValues = value.split("|");
+
+      columnFilterValues[columnName].push([...allValues]);
+    }
+  }
+
+  return columnFilterValues;
+}
+
+function applyColumnFilter(setColumnDefs, columnList) {
+  if (columnList && columnList.length > 0) {
+    let finalList = [];
+    setColumnDefs((currentDefs) => {
+      const columns = currentDefs.map((colDef) => {
+        if (!columnList.includes(colDef.headerName)) {
+          colDef["hide"] = true;
+        }
+        // console.log(colDef);
+        return colDef;
+      });
+
+      return [...columns];
+    });
+  }
+}
+
+export function AAAOutagesRawData() {
+  const [startDate, endDate] = useDateParams();
+  const columnList = useColumnVisibilityParams();
+  const columnFilterValues = useFilterColumnByString(); // {column: [value1, value2]}
 
   const initialDates = {
     startDate,
@@ -101,7 +170,6 @@ export function AAAOutagesRawData() {
   const [masterLoading, setMasterLoading] = useState(true);
 
   const [columnDefs, setColumnDefs] = useState([
-    // { field: "id", headerName: "ID", width: 90 },
     {
       field: "alarm_DAY",
       filter: true,
@@ -567,6 +635,57 @@ export function AAAOutagesRawData() {
     },
   ]);
 
+  useEffect(() => {
+    applyColumnFilter(setColumnDefs, columnList);
+  }, []);
+
+  useEffect(() => {
+    let filteredData = [...originalData];
+    console.log("columnFilterValues", columnFilterValues);
+    if (Object.keys(columnFilterValues).length !== 0) {
+      for (const column in columnFilterValues) {
+        // {column: [value1, value2]}
+        for (const valuesArray of columnFilterValues[column]) {
+          // ["NOVA", "WIND"]
+          console.log("valuesArray", valuesArray);
+
+          const labelValueObject = columnSearchOptions.find(
+            // { "value": "network",  "label": "Network" }
+            (obj) => obj.label === column
+          );
+
+          filteredData = filteredData.filter((row) => {
+            const valueForColumn = row[`${labelValueObject.value}`];
+            // console.log(row);
+            // console.log(`${labelValueObject.value}`);
+            // console.log("valueForColumn", valueForColumn);
+            return valuesArray.includes(valueForColumn);
+          });
+          // console.log("*** filter", filter);
+          // filteredData = filteredData.concat(filter);
+
+          // const columnId = objectWithLabel.value;
+
+          // const filter = originalData.filter((row) => {
+          //   const valueInOrigData = row[columnId];
+          //   return (
+          //     valueInOrigData !== null &&
+          //     valueInOrigData
+          //       .toString()
+          //       .toLowerCase()
+          //       .includes(value.toLowerCase())
+          //   );
+          // });
+        }
+      }
+      // console.log("filteredData", filteredData);
+    }
+
+    // if (filteredData && filteredData.length > 0) {
+    setRetrievedRawData(filteredData);
+    // }
+  }, [originalData]);
+
   const [tooltip, setTooltip] = useState({
     show: false,
     x: 0,
@@ -946,6 +1065,7 @@ export function AAAOutagesRawData() {
           <LoadingSpinnerCentered />
         ) : (
           <div className="datagridWrapper__upper">
+            {/* <p>Hello World</p> */}
             <div className="datagridWrapper__flexContainer">
               <Button
                 onClick={() => setIsMenuVisible(!isMenuVisible)}
