@@ -278,6 +278,7 @@ export function AAAOutagesCategorization({ dateRange, setLoading }) {
                         .sort(sortDates)
                         .map((key) => {
                           const YearMonthDayFormat = convertDateFormat(key);
+                          //
                           return (
                             <TableCell
                               key={key}
