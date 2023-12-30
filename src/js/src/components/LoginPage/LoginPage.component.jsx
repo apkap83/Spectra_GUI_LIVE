@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import axios from "axios";
 import config from "../../config";
@@ -11,6 +11,13 @@ export function LoginPage({ setIsAuthenticated }) {
   const [password, setPassword] = useState("");
   const [error, setError] = useState("");
   const navigate = useNavigate();
+
+  useEffect(() => {
+    const userDetails = auth.getCurrentUser();
+    if (userDetails) {
+      navigate(config.homePage, { replace: true });
+    }
+  }, []);
 
   const handleUsernameChange = (event) => {
     setUsername(event.target.value);
@@ -29,7 +36,7 @@ export function LoginPage({ setIsAuthenticated }) {
 
       // Retrieve the original URL
       let originalUrl =
-        sessionStorage.getItem("preLoginURL") || "/nova/allspectraincidents";
+        sessionStorage.getItem("preLoginURL") || config.homePage;
 
       // Check if the URL is absolute and convert it to relative if necessary
       if (

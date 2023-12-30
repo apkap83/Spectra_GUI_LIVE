@@ -45,9 +45,14 @@ const AppWrapper = () => {
   const currentPath = location.pathname;
 
   useEffect(() => {
-    if (auth.getCurrentUser()) {
+    const userDetails = auth.getCurrentUser();
+    if (userDetails) {
       setIsAuthenticated(true);
+      setUserDetails(userDetails);
     }
+
+    setIsAuthenticated(false);
+    setUserDetails(null);
   }, []);
 
   useEffect(() => {
@@ -63,6 +68,9 @@ const AppWrapper = () => {
         return <Component />;
       }
 
+      setIsAuthenticated(false);
+      setUserDetails(null);
+
       // Write in your session the window location
       // It will be used from login component to redirect to the correct page
       sessionStorage.setItem("preLoginURL", window.location.href);
@@ -77,7 +85,7 @@ const AppWrapper = () => {
         element: <LoginPage setIsAuthenticated={setIsAuthenticated} />,
         exact: true,
       },
-      { path: "mylogout", element: <LogoutPage />, exact: true },
+      { path: "logout", element: <LogoutPage />, exact: true },
       {
         path: "wind/allspectraincidents",
         element: <ProtectedRoute component={AllWindSpectraIncidents} />,
@@ -153,8 +161,6 @@ const AppWrapper = () => {
     const routing = useRoutes(routes);
     return routing;
   };
-
-  console.log("Is Authenticated", isAuthenticated);
 
   return (
     <ErrorBoundary>

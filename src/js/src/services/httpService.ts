@@ -28,15 +28,15 @@ axios.interceptors.response.use(null, (error) => {
   // }
 
   // Redirect the user to the login page (in case of HTTP 401 Unauthorized)
-  //if (error.response.status === 401) {
-  // Remove JWT from Session
-  //localStorage.removeItem(config.jwtTokenKeyName);
+  if (error.response.status === 401) {
+    // Remove JWT from Session
+    //localStorage.removeItem(config.jwtTokenKeyName);
 
-  //sessionStorage.setItem("preLoginURL", window.location.href);
+    //sessionStorage.setItem("preLoginURL", window.location.href);
 
-  // Redirect to login page
-  // window.location = "/login" as unknown as Location;
-  //}
+    // Redirect to login page
+    window.location = "/login" as unknown as Location;
+  }
 
   if (error.message === "Network Error" && !error.response) {
     // Handle the network error
@@ -91,6 +91,9 @@ const httpService = {
     handleRequest<T>(axios.delete, url, config),
   setJwtAuthHeader: (jwt: string | null) => {
     axios.defaults.headers.common["Authorization"] = `Bearer: ${jwt}`;
+  },
+  removeJwtAuthHeader: () => {
+    axios.defaults.headers.common["Authorization"] = undefined;
   },
 };
 

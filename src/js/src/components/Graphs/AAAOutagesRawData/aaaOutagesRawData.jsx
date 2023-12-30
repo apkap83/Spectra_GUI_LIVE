@@ -169,10 +169,11 @@ function applyColumnFilter(setColumnDefs, columnList) {
 }
 
 export function AAAOutagesRawData() {
+  // URL Filters
   const navigate = useNavigate();
-  const [startDate, endDate] = useDateParams();
-  const { columnList, resetColumnList } = useColumnVisibilityParams();
-  const { columnFilterValues, resetFilterValues } = useFilterColumnByString(); // {column: [value1, value2]}
+  const [startDate, endDate] = useDateParams(); // Date
+  const { columnList, resetColumnList } = useColumnVisibilityParams(); // Column Visibility
+  const { columnFilterValues, resetFilterValues } = useFilterColumnByString(); // Column Data Filter {column: [value1, value2]}
 
   const initialDates = {
     startDate,
@@ -666,6 +667,49 @@ export function AAAOutagesRawData() {
     },
   ]);
 
+  const [rowsPerPage, setRowsPerPage] = useState(100);
+  const [refreshKey, setRefreshKey] = useState(0);
+
+  const [refreshKeyForFilter, setRefreshKeyForFilter] = useState(0);
+
+  function isGridFilterObjectEmpty(obj) {
+    // Check if it's an object and not null
+    if (typeof obj === "object" && obj !== null) {
+      // Check if the object has no own properties
+      return Object.keys(obj).length === 0;
+    }
+    return false; // Not an object or is null
+  }
+
+  const dataGridFilterObject = gridRef?.current?.api.onFilterChanged();
+  // Get a reference to the filter instance
+  const filterInstance = gridRef?.current?.api.getFilterInstance("name");
+
+  // Example function to be called to set the filter
+  function setAgeFilter(api) {
+    gridRef?.current?.api.setFilterModel({
+      network: {
+        filterType: "text",
+        type: "startsWith",
+        filter: "NOVA",
+      },
+    });
+
+    gridRef?.current?.api.onFilterChanged();
+  }
+
+  const determineFilterButtonStatus = () => {
+    if (
+      columnList.length !== 0 ||
+      Object.keys(columnFilterValues).length !== 0 ||
+      !isGridFilterObjectEmpty(gridRef?.current?.api.getFilterModel())
+    ) {
+      return "outlined";
+    }
+
+    return "text";
+  };
+
   const removeUri = () => {
     if (
       columnList.length !== 0 ||
@@ -691,7 +735,6 @@ export function AAAOutagesRawData() {
           (obj) => obj.label === column
         );
 
-        console.log("value", value);
         filteredData = filteredData.filter((row) => {
           const valueForColumn = row[`${labelValueObject.value}`];
           return columnFilterValues[column].includes(valueForColumn);
@@ -708,9 +751,6 @@ export function AAAOutagesRawData() {
     y: 0,
     message: "",
   });
-
-  const [rowsPerPage, setRowsPerPage] = useState(100);
-  const [refreshKey, setRefreshKey] = useState(0);
 
   const handleRefreshClick = () => {
     // Check if value is set, otherwise use the initial date range
@@ -827,18 +867,20 @@ export function AAAOutagesRawData() {
   //   );
   // };
 
-  const handleColumnVisibilityChange = (columnName, isVisible) => {
+  const handleColumnVisibilityChange = useCallback((columnName, isVisible) => {
     setColumnDefs((currentDefs) => {
-      const newDefs = [...currentDefs];
-      const index = newDefs.findIndex(
+      const index = currentDefs.findIndex(
         (colDef) => colDef.headerName === columnName
       );
-      if (index !== -1) {
+      if (index !== -1 && currentDefs[index].hide !== !isVisible) {
+        // Only update if there's an actual change in visibility
+        const newDefs = [...currentDefs];
         newDefs[index] = { ...newDefs[index], hide: !isVisible };
+        return newDefs;
       }
-      return newDefs;
+      return currentDefs; // No change, return original array
     });
-  };
+  }, []);
 
   const selectAllColumns = () => {
     setColumnDefs((currentDefs) =>
@@ -876,24 +918,9 @@ export function AAAOutagesRawData() {
       }
     };
 
-    const ColumnCheckbox = React.memo(({ colDef, onChange }) => {
+    const ColumnCheckbox = React.memo(({ colDef, onVisibilityChange }) => {
+      console.log("Rendering Checkbox");
       return (
-        <div key={colDef.field}>
-          <label htmlFor={colDef.field}>
-            <input
-              id={colDef.field}
-              type="checkbox"
-              checked={!colDef.hide}
-              onChange={onChange}
-            />
-            &nbsp;&nbsp;{colDef.headerName}
-          </label>
-        </div>
-      );
-    });
-
-    const columnCheckboxes = useMemo(() => {
-      return columnDefs.map((colDef) => (
         <div key={colDef.field}>
           <label htmlFor={colDef.field}>
             <input
@@ -907,9 +934,21 @@ export function AAAOutagesRawData() {
             &nbsp;&nbsp;{colDef.headerName}
           </label>
         </div>
-      ));
-    }, []);
+      );
+    });
 
+    const columnCheckboxes = useMemo(() => {
+      console.log("Rendering Checkboxes");
+      return columnDefs.map((colDef) => (
+        <ColumnCheckbox
+          key={colDef.field}
+          colDef={colDef}
+          onVisibilityChange={onVisibilityChange}
+        />
+      ));
+    }, [columnDefs, onVisibilityChange]); // Include necessary dependencies
+
+    console.log("Rendering Column Visiblility Menu");
     return (
       <div ref={menuRef} className="column-visibility-menu">
         <div>
@@ -923,7 +962,7 @@ export function AAAOutagesRawData() {
           &nbsp;&nbsp;
           <span>Select All</span>
         </div>
-        {columnCheckboxes} {/* Use memoized checkboxes */}
+        {columnCheckboxes}
       </div>
     );
   };
@@ -1095,6 +1134,8 @@ export function AAAOutagesRawData() {
                 Select Columns
               </Button>
               <Button
+                key={`filter-${refreshKeyForFilter}`}
+                variant={determineFilterButtonStatus()}
                 onClick={clearFilters}
                 className={"datagridWrapper__clearFiltersBtn"}
               >
@@ -1132,7 +1173,7 @@ export function AAAOutagesRawData() {
               />
               {isMenuVisible && (
                 <ColumnVisibilityMenu
-                  columnDefs={columnDefs}
+                  columnDefs={[...columnDefs]}
                   onVisibilityChange={handleColumnVisibilityChange}
                   onSelectAll={selectAllColumns}
                   onUnselectAll={unselectAllColumns}

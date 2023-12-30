@@ -205,9 +205,9 @@ export function AAAOutagesCategorization({ dateRange, setLoading }) {
                 fontWeight: 600,
 
                 position: index < 2 ? "sticky" : "normal",
-                left: index === 0 ? 0 : index === 1 ? 247 : "",
+                left: index === 0 ? 0 : index === 1 ? 222 : "",
                 background: "white",
-                zIndex: 20, // higher than the table body cells
+                zIndex: 20,
               }}
             >
               <TableSortLabel
@@ -240,11 +240,11 @@ export function AAAOutagesCategorization({ dateRange, setLoading }) {
                     sx={{
                       // cursor: "pointer",
                       // backgroundColor: determineColor(row.COMMENTS),
-                      backgroundColor: row.id % 2 === 0 ? "#f9f9f9" : "fff",
+                      backgroundColor: row.id % 2 === 0 ? "#f5f5f5" : "fff",
                     }}
                   >
                     <TableCell
-                      component="th"
+                      component="td"
                       id={labelId}
                       scope="row"
                       padding="none"
@@ -253,21 +253,21 @@ export function AAAOutagesCategorization({ dateRange, setLoading }) {
                         fontWeight: 600,
                         position: "sticky",
                         left: 0,
-
-                        backgroundColor: row.id % 2 === 0 ? "#f9f9f9" : "fff",
-                        zIndex: 10, // higher than the table body cells
+                        backgroundColor: row.id % 2 === 0 ? "#f9f9f9" : "#fff",
+                        zIndex: 100,
                       }}
                     >
                       {row.COMMENTS}
                     </TableCell>
 
                     <TableCell
+                      component="td"
                       align="left"
                       sx={{
+                        marginLeft: "-10px !important",
                         position: "sticky",
-                        left: 247,
-                        zIndex: 10, // higher than the table body cells
-                        backgroundColor: row.id % 2 === 0 ? "#f9f9f9" : "fff",
+                        left: 222,
+                        backgroundColor: row.id % 2 === 0 ? "#f9f9f9" : "#fff",
                       }}
                     >
                       {row.DSLAM_OWNER_GROUP}
@@ -282,21 +282,23 @@ export function AAAOutagesCategorization({ dateRange, setLoading }) {
                             <TableCell
                               key={key}
                               align="right"
-                              style={{ background: "inherit" }}
+                              style={{ backgroundColor: "inherit" }}
+                              zIndex="1"
                             >
                               {row.COMMENTS !== "Grand Total" ? (
-                                <Link
+                                <a
                                   style={{
                                     textDecoration: "none",
                                   }}
-                                  to={`/graphs/aaa-outages-rawdata?startDate=${YearMonthDayFormat}&endDate=${YearMonthDayFormat}&filterColumn_System%20Found=${encodeURIComponent(
+                                  href={`/graphs/aaa-outages-rawdata?startDate=${YearMonthDayFormat}&endDate=${YearMonthDayFormat}&filterColumn_System%20Found=${encodeURIComponent(
                                     row.COMMENTS
                                   )}&filterColumn_DSLAM%20Owner%20Group=${encodeURIComponent(
                                     row.DSLAM_OWNER_GROUP
                                   )}`}
+                                  target="_blank"
                                 >
                                   {row.dateValuePair[key]}
-                                </Link>
+                                </a>
                               ) : (
                                 <span>{row.dateValuePair[key]}</span>
                               )}

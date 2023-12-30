@@ -145,7 +145,7 @@ export function MyHeader() {
                   <Nav.Link
                     className="navBar__link"
                     eventKey={2}
-                    href="/mylogout"
+                    href="/logout"
                   >
                     Log Out &mdash; {userDetails?.username}
                   </Nav.Link>
