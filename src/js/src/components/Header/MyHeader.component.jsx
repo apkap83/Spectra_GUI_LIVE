@@ -147,7 +147,7 @@ export function MyHeader() {
                     eventKey={2}
                     href="/logout"
                   >
-                    Log Out &mdash; {userDetails?.username}
+                    Log Out &mdash; {userDetails?.username}.
                   </Nav.Link>
                 ) : (
                   ""
