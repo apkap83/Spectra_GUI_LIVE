@@ -284,7 +284,6 @@ export function AAAOutagesCategorization({ dateRange, setLoading }) {
                               key={key}
                               align="right"
                               style={{ backgroundColor: "inherit" }}
-                              zIndex="1"
                             >
                               {row.COMMENTS !== "Grand Total" ? (
                                 <a

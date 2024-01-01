@@ -141,17 +141,9 @@ export function MyHeader() {
               </Nav>
 
               <Nav>
-                {userDetails ? (
-                  <Nav.Link
-                    className="navBar__link"
-                    eventKey={2}
-                    href="/logout"
-                  >
-                    Log Out &mdash; {userDetails?.username}
-                  </Nav.Link>
-                ) : (
-                  ""
-                )}
+                <Nav.Link as={Link} to="/logout" className="navBar__link">
+                  Log Out &mdash; {userDetails?.username}
+                </Nav.Link>
               </Nav>
             </Navbar.Collapse>
           </Container>

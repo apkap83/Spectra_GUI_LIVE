@@ -1,16 +1,13 @@
-import { Component } from "react";
+import { useEffect } from "react";
 import { Navigate } from "react-router-dom";
 import { logout } from "../../services/authService";
 
-export class LogoutPage extends Component {
-  constructor(props) {
-    super(props);
-
+export const LogoutPage = ({ setIsAuthenticated }) => {
+  useEffect(() => {
+    setIsAuthenticated(false);
     // Remove token from local storage
     logout();
-  }
+  }, []);
 
-  render() {
-    return <Navigate to="/login" />;
-  }
-}
+  return <Navigate to="/login" />;
+};

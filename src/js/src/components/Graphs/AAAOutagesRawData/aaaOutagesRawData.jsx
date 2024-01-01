@@ -32,12 +32,6 @@ import * as XLSX from "xlsx";
 import locale from "antd/es/date-picker/locale/en_GB";
 import { set } from "lodash";
 const rangePickerDateFormat = ["DD MMM YYYY"];
-// const startDate = dayjs().subtract(1, "day").startOf("day");
-// const endDate = dayjs().startOf("day");
-// const initialDates = {
-//   startDate,
-//   endDate,
-// };
 
 function disabledDate(current) {
   // Disable dates in the future
@@ -672,6 +666,23 @@ export function AAAOutagesRawData() {
 
   const [refreshKeyForFilter, setRefreshKeyForFilter] = useState(0);
 
+  // const dataGridFilterObject = gridRef?.current?.api.onFilterChanged();
+  // Get a reference to the filter instance
+  // const filterInstance = gridRef?.current?.api.getFilterInstance("name");
+
+  // Example function to be called to set the filter
+  // function setAgeFilter(api) {
+  //   gridRef?.current?.api.setFilterModel({
+  //     network: {
+  //       filterType: "text",
+  //       type: "startsWith",
+  //       filter: "NOVA",
+  //     },
+  //   });
+
+  //   gridRef?.current?.api.onFilterChanged();
+  // }
+
   function isGridFilterObjectEmpty(obj) {
     // Check if it's an object and not null
     if (typeof obj === "object" && obj !== null) {
@@ -679,23 +690,6 @@ export function AAAOutagesRawData() {
       return Object.keys(obj).length === 0;
     }
     return false; // Not an object or is null
-  }
-
-  const dataGridFilterObject = gridRef?.current?.api.onFilterChanged();
-  // Get a reference to the filter instance
-  const filterInstance = gridRef?.current?.api.getFilterInstance("name");
-
-  // Example function to be called to set the filter
-  function setAgeFilter(api) {
-    gridRef?.current?.api.setFilterModel({
-      network: {
-        filterType: "text",
-        type: "startsWith",
-        filter: "NOVA",
-      },
-    });
-
-    gridRef?.current?.api.onFilterChanged();
   }
 
   const determineFilterButtonStatus = () => {
@@ -1125,7 +1119,26 @@ export function AAAOutagesRawData() {
           <LoadingSpinnerCentered />
         ) : (
           <div className="datagridWrapper__upper">
-            {/* <p>Hello World</p> */}
+            {/* Filter View */}
+            {Object.keys(columnFilterValues).length !== 0 && (
+              <React.Fragment>
+                <div className="datagridWrapper__filters">
+                  <h3>Selected Filters</h3>
+                  <div>
+                    <ol>
+                      {Object.keys(columnFilterValues).map((item, id) => {
+                        return (
+                          <li key={id}>
+                            <strong>{`${item}:`} </strong>{" "}
+                            {columnFilterValues[item]}
+                          </li>
+                        );
+                      })}
+                    </ol>
+                  </div>
+                </div>
+              </React.Fragment>
+            )}
             <div className="datagridWrapper__flexContainer">
               <Button
                 onClick={() => setIsMenuVisible(!isMenuVisible)}

@@ -40,21 +40,9 @@ import { set } from "lodash";
 
 const AppWrapper = () => {
   const [userDetails, setUserDetails] = useState(null);
-  const [isAuthenticated, setIsAuthenticated] = useState(false);
+  const [isAuthenticated, setIsAuthenticated] = useState(auth.getCurrentUser());
 
   const currentPath = location.pathname;
-
-  useEffect(() => {
-    const userDetails = auth.getCurrentUser();
-    if (userDetails) {
-      setIsAuthenticated(true);
-      setUserDetails(userDetails);
-    }
-
-    setIsAuthenticated(false);
-    setUserDetails(null);
-  }, []);
-
   useEffect(() => {
     const userDetails = auth.getCurrentUser();
     setUserDetails(userDetails);
@@ -85,7 +73,11 @@ const AppWrapper = () => {
         element: <LoginPage setIsAuthenticated={setIsAuthenticated} />,
         exact: true,
       },
-      { path: "logout", element: <LogoutPage />, exact: true },
+      {
+        path: "logout",
+        element: <LogoutPage setIsAuthenticated={setIsAuthenticated} />,
+        exact: true,
+      },
       {
         path: "wind/allspectraincidents",
         element: <ProtectedRoute component={AllWindSpectraIncidents} />,
@@ -167,10 +159,10 @@ const AppWrapper = () => {
       <UserContext.Provider value={userDetails}>
         {/* <ScopedCssBaseline> */}
         <Router>
-          {currentPath !== "/login" && <MyHeader />}
+          {isAuthenticated && <MyHeader />}
           <App />
           <div style={{ marginBottom: "9rem" }}></div>
-          {currentPath !== "/login" && <MyFooter />}
+          {isAuthenticated && <MyFooter />}
         </Router>
         {/* </ScopedCssBaseline> */}
       </UserContext.Provider>
