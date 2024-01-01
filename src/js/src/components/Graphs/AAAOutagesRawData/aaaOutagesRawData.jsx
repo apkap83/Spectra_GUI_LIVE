@@ -1074,7 +1074,7 @@ export function AAAOutagesRawData() {
   };
 
   return (
-    <div className="pageWrapper">
+    <div className="pageWrapperForRawData">
       {tooltip.show && (
         <TooltipOnCursor
           x={tooltip.x}
@@ -1195,7 +1195,15 @@ export function AAAOutagesRawData() {
             </div>
 
             {/* On div wrapping Grid a) specify theme CSS Class Class and b) sets Grid size */}
-            <div className="datagridWrapper__grid ag-theme-balham">
+            <div
+              className="datagridWrapper__grid ag-theme-balham"
+              style={{
+                height:
+                  Object.keys(columnFilterValues).length !== 0
+                    ? "calc(100% - 15.1rem)"
+                    : null,
+              }}
+            >
               <AgGridReact
                 ref={gridRef} // Ref for accessing Grid's API
                 rowData={retrivedRawData} // Row Data for Rows
