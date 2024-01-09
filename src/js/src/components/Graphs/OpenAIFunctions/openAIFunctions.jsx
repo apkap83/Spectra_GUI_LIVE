@@ -48,6 +48,15 @@ export function OpenAIFunctions() {
           }
         });
 
+        // Modify the form's action attribute
+        const form = tempDiv.querySelector('form[name="createForm"]');
+        if (form) {
+          form.setAttribute(
+            "action",
+            `${backEndAPIPrefix}/performSelectSpectra`
+          );
+        }
+
         // Extract the modified HTML from the temporary element
         const modifiedHtml = tempDiv.innerHTML;
 
