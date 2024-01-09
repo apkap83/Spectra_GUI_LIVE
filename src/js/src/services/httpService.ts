@@ -3,6 +3,11 @@ import config from "../config";
 import { errorNotification } from "../components/common/Notification";
 import { getCurrentUser } from "./authService";
 
+// Set withCredentials to true for all requests
+// you're instructing Axios to send cookies and other credentials in every HTTP request made by your application.
+// This is important for scenarios where your backend relies on cookies for session management or authentication.
+axios.defaults.withCredentials = true;
+
 axios.interceptors.response.use(null, (error) => {
   // Unexpected Errors (network down, server down, db down, bug)
   // - Log them

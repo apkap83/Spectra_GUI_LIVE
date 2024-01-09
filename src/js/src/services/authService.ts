@@ -2,7 +2,10 @@ import httpService from "./httpService";
 import axios, { AxiosRequestConfig, AxiosResponse } from "axios";
 import { jwtDecode } from "jwt-decode";
 import config from "../config";
-const apiEndPoint = `${config.apiPrefix}/api/authenticate`;
+
+const apiEndPointLogin = `${config.apiPrefix}/api/auth/login`;
+const apiEndPointGetUserInfo = `${config.apiPrefix}/api/auth/me`;
+const apiEndPointLogout = `${config.apiPrefix}/api/auth/logout`;
 
 interface LoginResponse {
   jwt: string;
@@ -43,7 +46,7 @@ export async function login(username: string, password: string) {
   removeJWTFromBrowserStorage();
 
   try {
-    const response = await httpService.post<LoginResponse>(apiEndPoint, {
+    const response = await httpService.post<LoginResponse>(apiEndPointLogin, {
       username,
       password,
     });
