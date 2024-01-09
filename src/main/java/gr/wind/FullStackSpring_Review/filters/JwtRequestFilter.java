@@ -57,6 +57,20 @@ public class JwtRequestFilter extends OncePerRequestFilter {
             return;
         }
 
+
+        // Disable JWT Authorization for iFrame of Ioannis Polychonopoulos
+        // Logic for dynamicUserName extraction and bypassing JWT for specific iFrame requests
+        String dynamicUserUriPattern = "/api/charts/openaifunctionspage/";
+        if (requestUri.startsWith(dynamicUserUriPattern)) {
+            // Extract dynamicUserName from the URI
+//            String dynamicUserName = requestUri.substring(dynamicUserUriPattern.length()).split("/")[0];
+            // Check if dynamicUserName is as expected or implement additional logic as needed
+
+            // Bypass JWT Authorization and forward the request
+            chain.doFilter(request, response);
+            return;
+        }
+
         // If no JWT Token provided and not using the authorization URI, then return HTTP 401 (unauthorized)
         if (authorizationHeader == null && !request.getRequestURI().equals("/api/authenticate")) {
 

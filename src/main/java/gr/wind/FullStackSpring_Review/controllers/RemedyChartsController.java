@@ -11,15 +11,21 @@ import org.springframework.http.HttpHeaders;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.util.AntPathMatcher;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.client.RestTemplate;
+import org.springframework.web.servlet.HandlerMapping;
 
+import javax.servlet.http.HttpServletRequest;
 import javax.validation.Valid;
 import java.text.SimpleDateFormat;
 import java.time.LocalDate;
 import java.time.ZoneId;
 import java.util.Date;
 import java.util.List;
+
+import org.springframework.http.MediaType;
+
 
 @RestController
 @RequestMapping("api/charts")
@@ -176,6 +182,68 @@ public class RemedyChartsController {
         headers.remove("X-Frame-Options");
         // Set Content-Security-Policy to allow framing from anywhere
         headers.set("Content-Security-Policy", "frame-ancestors *");
+        return ResponseEntity.status(response.getStatusCode())
+                .headers(headers)
+                .body(response.getBody());
+    }
+
+    @CrossOrigin
+    @GetMapping("/openaifunctionspage/{dynamicUserName}/**")
+    public ResponseEntity<byte[]> getOpenAIFunctionsPAge(@PathVariable String dynamicUserName, HttpServletRequest request) throws Exception {
+        // Extract the additional path beyond the dynamic user name
+        String additionalPath = (String) request.getAttribute(HandlerMapping.PATH_WITHIN_HANDLER_MAPPING_ATTRIBUTE);
+        String bestMatchingPattern = (String) request.getAttribute(HandlerMapping.BEST_MATCHING_PATTERN_ATTRIBUTE);
+        String path = new AntPathMatcher().extractPathWithinPattern(bestMatchingPattern, additionalPath);
+
+//        System.out.println("Path: " + path );
+//        System.out.println("additionalPath"+additionalPath);
+//        System.out.println("bestMatchingPattern"+bestMatchingPattern);
+//        System.out.println("path: " + path );
+
+        // Base URL for forwarding
+        String url = "http://10.10.18.121:1900";
+
+        String intermediatePath = "";
+        // Check if the request is not for a static resource (like CSS)
+        if (!path.matches(".*(css|js|png|jpg|jpeg|gif|svg)$")) {
+            // For other requests, include the dynamic user name
+            url += String.format("/dynamicPageSpectra/%s", dynamicUserName);
+        } else {
+            url += additionalPath.replace("/api/charts/openaifunctionspage", "");
+        }
+
+        // Determine the MIME type based on the file extension
+        String mimeType = "text/html"; // Default MIME type
+        if (path.endsWith(".css")) {
+            mimeType = "text/css";
+        } else if (path.endsWith(".js")) {
+            mimeType = "text/javascript";
+        } else if (path.endsWith(".png")) {
+            mimeType = "image/png";
+        } else if (path.endsWith(".jpg") || path.endsWith(".jpeg")) {
+            mimeType = "image/jpeg";
+        } else if (path.endsWith(".gif")) {
+            mimeType = "image/gif";
+        } else if (path.endsWith(".svg")) {
+            mimeType = "image/svg+xml";
+        } else if (path.endsWith(".woff2")) {
+            mimeType = "font/woff2";
+        } else if (path.endsWith(".ttf")) {
+            mimeType = "font/ttf";
+        }
+
+//        System.out.println("URL: " +  url);
+        // Fetch the resource
+        ResponseEntity<byte[]> response = restTemplate.getForEntity(url, byte[].class);
+
+        HttpHeaders headers = new HttpHeaders();
+        headers.addAll(response.getHeaders());
+        headers.setContentType(MediaType.parseMediaType(mimeType));
+
+        // Remove X-Frame-Options and set Content-Security-Policy
+        headers.remove("X-Frame-Options");
+        headers.set("Content-Security-Policy", "frame-ancestors *");
+
         return ResponseEntity.status(response.getStatusCode())
                 .headers(headers)
                 .body(response.getBody());
