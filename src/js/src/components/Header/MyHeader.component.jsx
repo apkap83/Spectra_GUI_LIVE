@@ -18,6 +18,7 @@ import HistoryToggleOffIcon from "@mui/icons-material/HistoryToggleOff";
 import TimelineIcon from "@mui/icons-material/Timeline";
 import RawOnIcon from "@mui/icons-material/RawOn";
 import TextSnippetOutlinedIcon from "@mui/icons-material/TextSnippetOutlined";
+import AutoModeOutlinedIcon from "@mui/icons-material/AutoModeOutlined";
 
 export function MyHeader() {
   const userDetails = useContext(UserContext);
@@ -137,6 +138,21 @@ export function MyHeader() {
                       &nbsp;AAA Raw Data
                     </NavDropdown.Item>
                   </LinkContainer>
+
+                  {isUserAdmin ? (
+                    <LinkContainer to="/graphs/openai_functions">
+                      <NavDropdown.Item
+                        style={{
+                          padding: "0.5rem 0.5rem",
+                        }}
+                      >
+                        <AutoModeOutlinedIcon />
+                        &nbsp;Open AI Functions
+                      </NavDropdown.Item>
+                    </LinkContainer>
+                  ) : (
+                    ""
+                  )}
                 </NavDropdown>
               </Nav>
 

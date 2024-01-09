@@ -33,6 +33,7 @@ import { Users } from "./components/Users/Users.component";
 
 import { TripleAOutagesPlusRemedy } from "./components/Graphs/AAAOutages/TripleAOutagesPlusRemedy.component";
 import { AAAOutagesRawData } from "./components/Graphs/AAAOutagesRawData/aaaOutagesRawData";
+import { OpenAIFunctions } from "./components/Graphs/OpenAIFunctions/openAIFunctions";
 
 import auth from "./services/authService";
 import { ErrorBoundary } from "./components/Errors/ErrorBoundary.component";
@@ -42,7 +43,6 @@ const AppWrapper = () => {
   const [userDetails, setUserDetails] = useState(null);
   const [isAuthenticated, setIsAuthenticated] = useState(auth.getCurrentUser());
 
-  const currentPath = location.pathname;
   useEffect(() => {
     const userDetails = auth.getCurrentUser();
     setUserDetails(userDetails);
@@ -144,14 +144,18 @@ const AppWrapper = () => {
         exact: true,
       },
       {
+        path: "/graphs/openai_functions",
+        element: <ProtectedRoute component={OpenAIFunctions} />,
+        exact: true,
+      },
+      {
         path: "/",
         element: <Navigate to={"nova/allspectraincidents"} />,
         exact: true,
       },
       { path: "*", element: <NotFound /> },
     ];
-    const routing = useRoutes(routes);
-    return routing;
+    return useRoutes(routes);
   };
 
   return (
