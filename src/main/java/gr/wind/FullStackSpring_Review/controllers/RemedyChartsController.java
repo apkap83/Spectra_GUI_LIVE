@@ -7,8 +7,7 @@ import org.apache.logging.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.format.annotation.DateTimeFormat;
-import org.springframework.http.HttpHeaders;
-import org.springframework.http.ResponseEntity;
+import org.springframework.http.*;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.util.AntPathMatcher;
@@ -22,9 +21,8 @@ import java.text.SimpleDateFormat;
 import java.time.LocalDate;
 import java.time.ZoneId;
 import java.util.Date;
+import java.util.Enumeration;
 import java.util.List;
-
-import org.springframework.http.MediaType;
 
 
 @RestController
@@ -188,6 +186,19 @@ public class RemedyChartsController {
     }
 
     @CrossOrigin
+    @PostMapping(path="/getAAARawData", produces="application/json")
+    public List<AAARawData1> getAAARawData(@Valid @RequestBody DateRange myDateRange) {
+
+        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+        userNameLoggedIn = authentication.getName();
+
+        logger.info(Environment + " " + userNameLoggedIn + " -> Getting AAA-Raw data");
+
+        return remedyStatsService.getAAARawData(myDateRange.startDate(), myDateRange.endDate());
+    }
+
+    /*
+    @CrossOrigin()
     @GetMapping("/openaifunctionspage/{dynamicUserName}/**")
     public ResponseEntity<byte[]> getOpenAIFunctionsPAge(@PathVariable String dynamicUserName, HttpServletRequest request) throws Exception {
         // Extract the additional path beyond the dynamic user name
@@ -230,8 +241,9 @@ public class RemedyChartsController {
             mimeType = "font/woff2";
         } else if (path.endsWith(".ttf")) {
             mimeType = "font/ttf";
+        } else if (path.endsWith(".js.map")) {
+            mimeType = "application/json";
         }
-
 //        System.out.println("URL: " +  url);
         // Fetch the resource
         ResponseEntity<byte[]> response = restTemplate.getForEntity(url, byte[].class);
@@ -250,15 +262,31 @@ public class RemedyChartsController {
     }
 
 
-    @CrossOrigin
-    @PostMapping(path="/getAAARawData", produces="application/json")
-    public List<AAARawData1> getAAARawData(@Valid @RequestBody DateRange myDateRange) {
+    @CrossOrigin()
+    @PostMapping("/openaifunctionspage/performSelectSpectra")
+    public ResponseEntity<byte[]> postOpenAIFunctionsPage(HttpServletRequest request, @RequestBody(required = false) byte[] requestBody) throws Exception {
+        String targetUrl = "http://10.10.18.121:1900/performSelectSpectra";
 
-        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
-        userNameLoggedIn = authentication.getName();
+        System.out.println(256);
+        HttpHeaders headers = new HttpHeaders();
+        // Consider adding only necessary headers
+        // Example: headers.set("Content-Type", request.getHeader("Content-Type"));
 
-        logger.info(Environment + " " + userNameLoggedIn + " -> Getting AAA-Raw data");
+        HttpEntity<byte[]> entity = new HttpEntity<>(requestBody, headers);
 
-        return remedyStatsService.getAAARawData(myDateRange.startDate(), myDateRange.endDate());
+        ResponseEntity<byte[]> response = restTemplate.exchange(targetUrl, HttpMethod.POST, entity, byte[].class);
+
+        HttpHeaders responseHeaders = new HttpHeaders();
+        responseHeaders.addAll(response.getHeaders());
+        responseHeaders.remove("X-Frame-Options");
+        responseHeaders.remove("Access-Control-Allow-Origin");
+        responseHeaders.set("Content-Security-Policy", "frame-ancestors *");
+
+        return ResponseEntity.status(response.getStatusCode())
+                .headers(responseHeaders)
+                .body(response.getBody());
     }
+
+*/
+
 }

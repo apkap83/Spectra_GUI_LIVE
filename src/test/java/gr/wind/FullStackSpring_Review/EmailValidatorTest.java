@@ -1,5 +1,6 @@
 package gr.wind.FullStackSpring_Review;
 
+import gr.wind.FullStackSpring_Review.util.EmailValidator;
 import org.junit.jupiter.api.Test;
 
 import static java.lang.System.out;

@@ -1,4 +1,4 @@
-package gr.wind.FullStackSpring_Review;
+package gr.wind.FullStackSpring_Review.util;
 
 import org.springframework.stereotype.Component;
 
