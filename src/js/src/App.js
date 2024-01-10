@@ -33,6 +33,7 @@ import { Users } from "./components/Users/Users.component";
 
 import { TripleAOutagesPlusRemedy } from "./components/Graphs/AAAOutages/TripleAOutagesPlusRemedy.component";
 import { AAAOutagesRawData } from "./components/Graphs/AAAOutagesRawData/aaaOutagesRawData";
+// import { OpenAIFunctions } from "./components/Graphs/OpenAIFunctions/openAIFunctions";
 
 import auth from "./services/authService";
 import { ErrorBoundary } from "./components/Errors/ErrorBoundary.component";
