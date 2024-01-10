@@ -37,7 +37,7 @@ import { Spin } from "antd";
 
 import { filter } from "lodash";
 export const Users = () => {
-  const pageSize = 20;
+  const [pageSize, setPageSize] = useState(10);
   const initialEmptyUser = {
     userName: "",
     realName: "",
@@ -97,6 +97,23 @@ export const Users = () => {
     role: selectedRole,
     active: 1,
   };
+
+  const updatePageSize = () => {
+    const rowHeight = 36; // Height of each row in pixels
+    const availableHeight = window.innerHeight - 383;
+    const newPageSize = Math.floor(availableHeight / rowHeight);
+    setPageSize(newPageSize);
+  };
+
+  useEffect(() => {
+    window.addEventListener("resize", updatePageSize);
+
+    // Set initial page size on component mount
+    updatePageSize();
+
+    // Cleanup listener
+    return () => window.removeEventListener("resize", updatePageSize);
+  }, []);
 
   const getUsersAndRoles = async () => {
     setIsFetchingUsers(true);
@@ -564,7 +581,7 @@ export const Users = () => {
           style={createUserFormVisible ? mountedStyle : unmountedStyle}
         />
       ) : null}
-      <div style={{ position: "relative", zIndex: "10" }}>
+      <div className="usersList" style={{ position: "relative", zIndex: "10" }}>
         {isFetchingUsers ? (
           <div style={{ height: "60vh" }}>
             <div className="loadingIndicatorCentered">

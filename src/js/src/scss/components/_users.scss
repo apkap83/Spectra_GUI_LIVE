@@ -131,3 +131,8 @@ $green-900: #22543d;
   filter: brightness(0.5) !important;
   font-size: 1.3rem !important;
 }
+
+.usersList {
+  height: calc(100vh - 285px);
+  // overflow: auto;
+}
