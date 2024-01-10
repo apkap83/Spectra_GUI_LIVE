@@ -1,4 +1,4 @@
-import { useState, useEffect } from "react";
+import { useState, useEffect, Fragment } from "react";
 import { ErrorBoundary } from "./Errors/ErrorBoundary.component";
 
 import stringToColor from "../utils/stringToColor";
@@ -41,9 +41,13 @@ export function CdrDBOutages(props) {
     NOVA: "NOVA",
   };
 
+  // State
+  const [pageSize, setPageSize] = useState(undefined);
+  const [rowHeight, setRowHeight] = useState(40);
+
   const MENU_COMPANY_ITEMS = [COMPANY.WINDplusNova, COMPANY.WIND, COMPANY.NOVA];
 
-  const pageSize = 100;
+  // const pageSize = 100;
   const [isFetching, setIsFetching] = useState(false);
   const [pageNumber, setPageNumber] = useState(1);
   const [incidents, setIncidents] = useState();
@@ -51,6 +55,22 @@ export function CdrDBOutages(props) {
   const [companySelected, setCompanySelected] = useState(COMPANY.WINDplusNova);
   const [dslamSelected, setDslamSelected] = useState();
   const [oteSiteSelected, setOteSiteSelected] = useState();
+
+  const updatePageSize = () => {
+    const availableHeight = window.innerHeight - 300;
+    const newPageSize = Math.floor(availableHeight / rowHeight);
+    setPageSize(newPageSize);
+  };
+
+  useEffect(() => {
+    window.addEventListener("resize", updatePageSize);
+
+    // Set initial page size on component mount
+    updatePageSize();
+
+    // Cleanup listener
+    return () => window.removeEventListener("resize", updatePageSize);
+  }, [isFetching, window.innerHeight, rowHeight]);
 
   const generateTableHeadAndColumns = (columnsArray) => {
     return (
@@ -98,39 +118,45 @@ export function CdrDBOutages(props) {
   const TableBodyForOutages = (myIncidents) => {
     return (
       <TableBody>
-        {myIncidents.map((incident) => (
-          <TableRow
-            key={(Math.random() + 1).toString(36).substring(7)}
-            sx={{
-              backgroundColor: "rgba(0, 0, 0, 0.01)",
-              // "&:last-child td, &:last-child th": { border: 0 },
-              // background: "rgba(",
-              // borderBottom: "2px solid rgba(#fff, .3)",
-            }}
-          >
-            <TableCell align="center" component="th" scope="row">
-              {incident.outage_ID}
-            </TableCell>
-            <TableCell align="center" component="th" scope="row">
-              {incident.outage_LEVEL}
-            </TableCell>
-            <TableCell align="center">{incident.status}</TableCell>
-            <TableCell align="center">{incident.capture_Date}</TableCell>
-            <TableCell align="center">{incident.network}</TableCell>
-            <TableCell align="center">{incident.ote_SITE_NAME}</TableCell>
-            <TableCell align="center">{incident.dslam}</TableCell>
-            <TableCell align="center">{incident.dslam_SLOT}</TableCell>
-            <TableCell align="center">{incident.dslam_Owner}</TableCell>
-            <TableCell align="center">{incident.last_Occured}</TableCell>
-            <TableCell align="center">{incident.duration_Pretty}</TableCell>
-            <TableCell align="center">{incident.duration_Sec}</TableCell>
-            <TableCell align="center">{incident.dslam_Users}</TableCell>
-            <TableCell align="center">{incident.disconnected_Users}</TableCell>
-            <TableCell align="center">
-              {incident.disconnections_Ratio}
-            </TableCell>
-            <TableCell align="center">{incident.total_Users_Called}</TableCell>
-          </TableRow>
+        {myIncidents.map((incident, id) => (
+          <Fragment key={id}>
+            <TableRow
+              key={(Math.random() + 1).toString(36).substring(7)}
+              sx={{
+                backgroundColor: "rgba(0, 0, 0, 0.01)",
+                // "&:last-child td, &:last-child th": { border: 0 },
+                // background: "rgba(",
+                // borderBottom: "2px solid rgba(#fff, .3)",
+              }}
+            >
+              <TableCell align="center" component="th" scope="row">
+                {incident.outage_ID}
+              </TableCell>
+              <TableCell align="center" component="th" scope="row">
+                {incident.outage_LEVEL}
+              </TableCell>
+              <TableCell align="center">{incident.status}</TableCell>
+              <TableCell align="center">{incident.capture_Date}</TableCell>
+              <TableCell align="center">{incident.network}</TableCell>
+              <TableCell align="center">{incident.ote_SITE_NAME}</TableCell>
+              <TableCell align="center">{incident.dslam}</TableCell>
+              <TableCell align="center">{incident.dslam_SLOT}</TableCell>
+              <TableCell align="center">{incident.dslam_Owner}</TableCell>
+              <TableCell align="center">{incident.last_Occured}</TableCell>
+              <TableCell align="center">{incident.duration_Pretty}</TableCell>
+              <TableCell align="center">{incident.duration_Sec}</TableCell>
+              <TableCell align="center">{incident.dslam_Users}</TableCell>
+              <TableCell align="center">
+                {incident.disconnected_Users}
+              </TableCell>
+              <TableCell align="center">
+                {incident.disconnections_Ratio}
+              </TableCell>
+              <TableCell align="center">
+                {incident.total_Users_Called}
+              </TableCell>
+            </TableRow>
+          </Fragment>
         ))}
       </TableBody>
     );

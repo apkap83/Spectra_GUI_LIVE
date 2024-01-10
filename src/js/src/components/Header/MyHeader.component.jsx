@@ -138,21 +138,6 @@ export function MyHeader() {
                       &nbsp;AAA Raw Data
                     </NavDropdown.Item>
                   </LinkContainer>
-
-                  {isUserAdmin ? (
-                    <LinkContainer to="/graphs/openai_functions">
-                      <NavDropdown.Item
-                        style={{
-                          padding: "0.5rem 0.5rem",
-                        }}
-                      >
-                        <AutoModeOutlinedIcon />
-                        &nbsp;Open AI Functions
-                      </NavDropdown.Item>
-                    </LinkContainer>
-                  ) : (
-                    ""
-                  )}
                 </NavDropdown>
               </Nav>
 

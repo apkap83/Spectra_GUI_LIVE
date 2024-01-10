@@ -62,8 +62,10 @@ const generateTableHeadAndColumns = (columnsArray) => {
 };
 
 export default function SpectraIncidentsTable(props) {
-  const pageSize = 20;
   // State
+  const [pageSize, setPageSize] = useState(undefined);
+  const [rowHeight, setRowHeight] = useState(40);
+
   const [title, setTitle] = useState();
   const [company, setCompany] = useState();
   const [isFetching, setIsFetching] = useState(true);
@@ -390,6 +392,24 @@ export default function SpectraIncidentsTable(props) {
   const pagesCount = incidents && Math.ceil(incidents.length / pageSize);
   let paginatedList = getPagedData();
 
+  const updatePageSize = () => {
+    // const rowHeight = rowHeight; // Height of each row in pixels
+
+    const availableHeight = window.innerHeight - 315;
+    const newPageSize = Math.floor(availableHeight / rowHeight);
+    setPageSize(newPageSize);
+  };
+
+  useEffect(() => {
+    window.addEventListener("resize", updatePageSize);
+
+    // Set initial page size on component mount
+    updatePageSize();
+
+    // Cleanup listener
+    return () => window.removeEventListener("resize", updatePageSize);
+  }, [isFetching, window.innerHeight, rowHeight]);
+
   return (
     <>
       <MyPopOver
@@ -423,7 +443,7 @@ export default function SpectraIncidentsTable(props) {
         setIncidents={setIncidents}
       />
 
-      <div style={{ position: "relative" }}>
+      <div className="incidentsTableAndLogo" style={{ position: "relative" }}>
         <LogoAndTitle company={company} title={title} />
 
         {isFetching ? (
@@ -455,6 +475,9 @@ export default function SpectraIncidentsTable(props) {
             />
 
             <PaginationAndTotalRecords
+              sx={{
+                margin: "10px 0 !important",
+              }}
               recordsNumber={incidents && incidents.length}
               pageNumber={pageNumber}
               pagesCount={pagesCount}
