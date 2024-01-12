@@ -14,6 +14,7 @@ const config = {
 
   jwtTokenKeyName: "JWT_Token",
   sessionStorageKey: "Session",
+  loggedInUser: "LoggedInUser",
 };
 
 export default config;

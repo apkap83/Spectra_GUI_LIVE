@@ -121,12 +121,12 @@ export default function SpectraIncidentsTable(props) {
             }}
           >
             <TableCell align="left" component="th" scope="row" width="50px">
-              {incident.incidentId}
+              {incident.IncidentID}
             </TableCell>
-            <TableCell align="center">{incident.outageId}</TableCell>
+            <TableCell align="center">{incident.OutageId}</TableCell>
             <TableCell align="center">
               <span style={{ fontWeight: 600, backgroundColor: "#fff" }}>
-                {incident.incidentStatus}
+                {incident.IncidentStatus}
               </span>
             </TableCell>
             <TableCell
@@ -135,7 +135,7 @@ export default function SpectraIncidentsTable(props) {
                 fontSize: "14px",
               }}
             >
-              {getColorYesNo(incident.willBePublished)}
+              {getColorYesNo(incident.WillBePublished)}
             </TableCell>
             <TableCell
               align="center"
@@ -143,7 +143,7 @@ export default function SpectraIncidentsTable(props) {
                 fontSize: "14px",
               }}
             >
-              {getColorMsg(incident.outageMsg)}
+              {getColorMsg(incident.OutageMsg)}
             </TableCell>
             <TableCell
               align="center"
@@ -151,27 +151,19 @@ export default function SpectraIncidentsTable(props) {
                 fontSize: "14px",
               }}
             >
-              {getColorYesNo(incident.backupEligible)}
+              {getColorYesNo(incident.BackupEligible)}
             </TableCell>
             <TableCell align="center">
-              {incident.hierarchySelected} &nbsp;
+              {incident.HierarchySelected} &nbsp;
             </TableCell>
-            <TableCell align="center">{incident.affectedServices}</TableCell>
+            <TableCell align="center">{incident.AffectedServices}</TableCell>
             <TableCell
               align="center"
               sx={{
                 fontSize: "12px",
               }}
             >
-              <span style={{ fontWeight: 600 }}>{incident.scheduled}</span>
-            </TableCell>
-            <TableCell
-              align="center"
-              sx={{
-                fontSize: "12px",
-              }}
-            >
-              {incident.startTime}
+              <span style={{ fontWeight: 600 }}>{incident.Scheduled}</span>
             </TableCell>
             <TableCell
               align="center"
@@ -179,7 +171,7 @@ export default function SpectraIncidentsTable(props) {
                 fontSize: "12px",
               }}
             >
-              {incident.endTime}
+              {incident.StartTime}
             </TableCell>
             <TableCell
               align="center"
@@ -187,7 +179,15 @@ export default function SpectraIncidentsTable(props) {
                 fontSize: "12px",
               }}
             >
-              {incident.duration}
+              {incident.EndTime}
+            </TableCell>
+            <TableCell
+              align="center"
+              sx={{
+                fontSize: "12px",
+              }}
+            >
+              {incident.Duration}
             </TableCell>
 
             <TableCell
@@ -196,7 +196,7 @@ export default function SpectraIncidentsTable(props) {
                 fontSize: "12px",
               }}
             >
-              {incident.incidentAffectedVoice}
+              {incident.IncidentAffectedVoiceCustomers}
             </TableCell>
             <TableCell
               align="center"
@@ -204,7 +204,7 @@ export default function SpectraIncidentsTable(props) {
                 fontSize: "12px",
               }}
             >
-              {incident.incidentAffectedData}
+              {incident.IncidentAffectedDataCustomers}
             </TableCell>
             <TableCell
               align="center"
@@ -212,7 +212,7 @@ export default function SpectraIncidentsTable(props) {
                 fontSize: "12px",
               }}
             >
-              {incident.incidentAffectedIPTV}
+              {incident.IncidentAffectedIPTVCustomers}
             </TableCell>
             <TableCell
               align="center"
@@ -220,12 +220,12 @@ export default function SpectraIncidentsTable(props) {
                 fontSize: "12px",
               }}
             >
-              {incident.userId}
+              {incident.UserID}
             </TableCell>
             <TableCell>
               <button
                 className="statsButton"
-                onMouseEnter={(e) => handlePopoverOpen(e, incident.incidentId)}
+                onMouseEnter={(e) => handlePopoverOpen(e, incident.IncidentID)}
                 onMouseLeave={handlePopoverClose}
               >
                 <FontAwesomeIcon

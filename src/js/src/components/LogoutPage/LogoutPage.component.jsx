@@ -1,12 +1,12 @@
 import { useEffect } from "react";
 import { Navigate } from "react-router-dom";
-import { logout } from "../../services/authService";
+import auth from "../../services/authService";
 
-export const LogoutPage = ({ setIsAuthenticated }) => {
+export const LogoutPage = ({ setUserDetails }) => {
   useEffect(() => {
-    setIsAuthenticated(false);
+    setUserDetails(null);
     // Remove token from local storage
-    logout();
+    auth.logout();
   }, []);
 
   return <Navigate to="/login" />;

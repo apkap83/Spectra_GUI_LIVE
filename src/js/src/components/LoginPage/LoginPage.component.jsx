@@ -6,18 +6,24 @@ import auth from "../../services/authService";
 import { getCurrentYear } from "./../../utils/myutils";
 import { ReactComponent as NovaLogo } from "../../assets/novaLogo.svg";
 
-export function LoginPage({ setIsAuthenticated }) {
+export function LoginPage({ setUserDetails }) {
+  console.log("Executing: Login");
   const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");
   const [error, setError] = useState("");
   const navigate = useNavigate();
 
-  useEffect(() => {
-    const userDetails = auth.getCurrentUser();
-    if (userDetails) {
-      navigate(config.homePage, { replace: true });
-    }
-  }, []);
+  // useEffect(() => {
+  //   const getUserDetails = async () => {
+  //     const userDetails = await auth.getUserDetailsFromBackend();
+  //     console.log("user details", userDetails);
+  //     if (userDetails) {
+  //       // navigate(config.homePage, { replace: true });
+  //     }
+  //   };
+
+  //   getUserDetails();
+  // }, []);
 
   const handleUsernameChange = (event) => {
     setUsername(event.target.value);
@@ -53,12 +59,14 @@ export function LoginPage({ setIsAuthenticated }) {
       // Remove preLoginURL from session storage
       sessionStorage.removeItem("preLoginURL");
 
-      setIsAuthenticated(true);
+      // Now get my JWT Passport
+      const userDetailsObject = auth.getUserDetailsFromBackend();
+      setUserDetails(userDetailsObject);
 
       // Use navigate for redirection
       navigate(originalUrl, { replace: true });
     } catch (error) {
-      setIsAuthenticated(false);
+      setUserDetails(null);
       localStorage.removeItem(config.jwtTokenKeyName);
 
       if (error.message === "Request failed with status code 403") {

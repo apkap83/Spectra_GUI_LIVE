@@ -8,7 +8,11 @@ const apiEndPointGetUserInfo = `${config.apiPrefix}/api/auth/me`;
 const apiEndPointLogout = `${config.apiPrefix}/api/auth/logout`;
 
 interface LoginResponse {
-  jwt: string;
+  message: string;
+}
+
+interface IdentityResponse {
+  user: string;
 }
 
 // Get JWT from Storage and Set it in Authorization Header
@@ -17,15 +21,34 @@ if (getJWTFromBrowserStorage()) {
   httpService.setJwtAuthHeader(getJWTFromBrowserStorage());
 }
 
-export function getJWTFromBrowserStorage() {
+function getJWTFromBrowserStorage() {
   return localStorage.getItem(config.jwtTokenKeyName);
 }
 
-export function setJWTInBrowserStorage(jwt: string) {
+function getUserDetailsFromBrowserStorage() {
+  const jwt = localStorage.getItem(config.jwtTokenKeyName);
+
+  if (!jwt) {
+    return null;
+  }
+
+  // Decode the Token
+  const decodedToken: { exp?: number } = jwtDecode(jwt as string);
+
+  // Check if token has expired
+  const currentTime = Date.now() / 1000; // Convert to seconds
+  if (decodedToken.exp && decodedToken.exp < currentTime) {
+    return null;
+  }
+  console.log("decoded token", decodedToken);
+  return decodedToken;
+}
+
+function setJWTInBrowserStorage(jwt: string) {
   localStorage.setItem(config.jwtTokenKeyName, jwt);
 }
 
-export function removeJWTFromBrowserStorage() {
+function removeJWTFromBrowserStorage() {
   localStorage.removeItem(config.jwtTokenKeyName);
 }
 
@@ -52,10 +75,11 @@ export async function login(username: string, password: string) {
     });
 
     if (response.data) {
-      const { jwt } = response.data;
+      const { message } = response.data;
 
-      httpService.setJwtAuthHeader(jwt);
-      setJWTInBrowserStorage(jwt);
+      if (message !== "Logged in successfully") {
+        throw new Error("Login failed: No data received");
+      }
     } else {
       throw new Error("Login failed: No data received");
     }
@@ -65,26 +89,36 @@ export async function login(username: string, password: string) {
 }
 
 export async function logout() {
+  const response = await httpService.delete(apiEndPointLogout);
   removeJWTFromBrowserStorage();
-  httpService.removeJwtAuthHeader();
+  // httpService.removeJwtAuthHeader();
 }
 
-export function getCurrentUser() {
+export async function getUserDetailsFromBackend() {
   try {
-    const jwt = getJWTFromBrowserStorage();
-    if (!jwt) {
+    const response = await httpService.get<IdentityResponse>(
+      apiEndPointGetUserInfo
+    );
+
+    if (response.data) {
+      const { user: jwt } = response.data;
+
+      // Set JWT in Browser Storage
+      setJWTInBrowserStorage(jwt);
+
+      // Decode the Token
+      const decodedToken: { exp?: number } = jwtDecode(jwt);
+
+      // Check if token has expired
+      const currentTime = Date.now() / 1000; // Convert to seconds
+      if (decodedToken.exp && decodedToken.exp < currentTime) {
+        return null;
+      }
+
+      return null;
+    } else {
       return null;
     }
-
-    const decodedToken: { exp?: number } = jwtDecode(jwt);
-
-    // Check if token has expired
-    const currentTime = Date.now() / 1000; // Convert to seconds
-    if (decodedToken.exp && decodedToken.exp < currentTime) {
-      return null;
-    }
-
-    return decodedToken;
   } catch (ex) {
     return null;
   }
@@ -93,5 +127,7 @@ export function getCurrentUser() {
 export default {
   login,
   logout,
-  getCurrentUser,
+  getUserDetailsFromBackend,
+  getJWTFromBrowserStorage,
+  getUserDetailsFromBrowserStorage,
 };

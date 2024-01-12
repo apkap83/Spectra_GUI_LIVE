@@ -40,25 +40,27 @@ import { ErrorBoundary } from "./components/Errors/ErrorBoundary.component";
 import { set } from "lodash";
 
 const AppWrapper = () => {
-  const [userDetails, setUserDetails] = useState(null);
-  const [isAuthenticated, setIsAuthenticated] = useState(auth.getCurrentUser());
+  console.log("Executing: AppWrapper");
+  const [userDetails, setUserDetails] = useState(
+    auth.getUserDetailsFromBrowserStorage()
+  );
+  // const [isAuthenticated, setIsAuthenticated] = useState();
 
-  const currentPath = location.pathname;
-  useEffect(() => {
-    const userDetails = auth.getCurrentUser();
-    setUserDetails(userDetails);
-  }, [isAuthenticated]);
+  // useEffect(() => {
+  //   const userDetails = auth.getCurrentUser();
+  //   setUserDetails(userDetails);
+  // }, [isAuthenticated]);
 
   const App = () => {
+    console.log("Executing: App");
     // Create a Higher-Order Component for protected routes
     const ProtectedRoute = ({ component: Component }) => {
       // There is active JWT Token in Local Storage
-      if (auth.getCurrentUser()) {
+      if (userDetails) {
         return <Component />;
       }
 
-      setIsAuthenticated(false);
-      setUserDetails(null);
+      // setIsAuthenticated(false);
 
       // Write in your session the window location
       // It will be used from login component to redirect to the correct page
@@ -71,12 +73,12 @@ const AppWrapper = () => {
     const routes = [
       {
         path: "login",
-        element: <LoginPage setIsAuthenticated={setIsAuthenticated} />,
+        element: <LoginPage setUserDetails={setUserDetails} />,
         exact: true,
       },
       {
         path: "logout",
-        element: <LogoutPage setIsAuthenticated={setIsAuthenticated} />,
+        element: <LogoutPage setUserDetails={setUserDetails} />,
         exact: true,
       },
       {
@@ -160,10 +162,10 @@ const AppWrapper = () => {
       <UserContext.Provider value={userDetails}>
         {/* <ScopedCssBaseline> */}
         <Router>
-          {isAuthenticated && <MyHeader />}
+          {userDetails && <MyHeader />}
           <App />
           <div style={{ marginBottom: "9rem" }}></div>
-          {isAuthenticated && <MyFooter />}
+          {userDetails && <MyFooter />}
         </Router>
         {/* </ScopedCssBaseline> */}
       </UserContext.Provider>

@@ -21,8 +21,9 @@ import TextSnippetOutlinedIcon from "@mui/icons-material/TextSnippetOutlined";
 
 export function MyHeader() {
   const userDetails = useContext(UserContext);
-  const isUserAdmin =
-    userDetails && userDetails.roles.includes(PERMISSION.USER_CAN_MANAGE_USERS);
+  console.log("Header User Details:", userDetails);
+  const isUserAdmin = true;
+  // userDetails && userDetails.roles.includes(PERMISSION.USER_CAN_MANAGE_USERS);
 
   return (
     <>
@@ -142,7 +143,7 @@ export function MyHeader() {
 
               <Nav>
                 <Nav.Link as={Link} to="/logout" className="navBar__link">
-                  Log Out &mdash; {userDetails?.username}
+                  Log Out &mdash; {userDetails?.userName}
                 </Nav.Link>
               </Nav>
             </Navbar.Collapse>

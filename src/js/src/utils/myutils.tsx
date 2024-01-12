@@ -35,13 +35,13 @@ export const getColorYesNo: React.FC<string> = (text) => {
 };
 
 export const getColorMsg = (text: string) => {
-  if (text.startsWith("msg")) {
-    return (
-      <span style={{ color: "#1890ff" }}>
-        <b>{text}</b>
-      </span>
-    );
-  } else {
-    return <span>{text}</span>;
+  if (!text) {
+    return <span>Default</span>;
   }
+
+  return (
+    <span style={{ color: "#1890ff" }}>
+      <b>{text}</b>
+    </span>
+  );
 };

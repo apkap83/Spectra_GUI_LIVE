@@ -1,7 +1,7 @@
 import axios, { AxiosRequestConfig, AxiosResponse } from "axios";
 import config from "../config";
 import { errorNotification } from "../components/common/Notification";
-import { getCurrentUser } from "./authService";
+// import { getCurrentUser } from "./authService";
 
 // Set withCredentials to true for all requests
 // you're instructing Axios to send cookies and other credentials in every HTTP request made by your application.
