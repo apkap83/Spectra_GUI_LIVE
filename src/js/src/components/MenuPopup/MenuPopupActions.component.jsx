@@ -35,20 +35,19 @@ export function ActionsMenu(
   userDetails,
   company
 ) {
-  const IsDisabledPublishing = false;
-  // userDetails &&
-  // !userDetails.roles.includes(PERMISSION.USER_CAN_DISABLE_PUBLISHING);
-  const IsDisabledAlterMessage = false;
-  // userDetails &&
-  // !userDetails.roles.includes(PERMISSION.USER_CAN_ALTER_MESSAGE);
-  const isDisabledAlterBackup = false;
-  // userDetails &&
-  // !userDetails.roles.includes(PERMISSION.USER_CAN_ALTER_BACKUP_POLICY);
+  const IsDisabledPublishing =
+    userDetails &&
+    !userDetails.permissions.includes(PERMISSION.USER_CAN_DISABLE_PUBLISHING);
+  const IsDisabledAlterMessage =
+    userDetails &&
+    !userDetails.permissions.includes(PERMISSION.USER_CAN_ALTER_MESSAGE);
+  const isDisabledAlterBackup =
+    userDetails &&
+    !userDetails.permissions.includes(PERMISSION.USER_CAN_ALTER_BACKUP_POLICY);
 
-  const IsDisabledDownload = false;
-  // !userDetails.roles.includes(
-  //   PERMISSION.USER_CAN_DOWNLOAD_FILES
-  // );
+  const IsDisabledDownload = !userDetails.permissions.includes(
+    PERMISSION.USER_CAN_DOWNLOAD_FILES
+  );
 
   const {
     setSelectedIncident,
@@ -57,7 +56,7 @@ export function ActionsMenu(
     setShowModalAlterBackup,
   } = restContextProperties;
 
-  const incidentIsOpen = incident.incidentStatus === "OPEN";
+  const incidentIsOpen = incident.IncidentStatus === "OPEN";
   return (
     <PopupState variant="popover" popupId="demo-popup-menu">
       {(popupState) => (
@@ -102,7 +101,7 @@ export function ActionsMenu(
                     setSelectedIncident(incident);
                   }}
                 >
-                  {incident.willBePublished === "Yes" ? (
+                  {incident.WillBePublished === "Yes" ? (
                     <span style={{ color: "red", fontSize: "1.2rem" }}>
                       <DisabledByDefaultIcon />
                       &nbsp;

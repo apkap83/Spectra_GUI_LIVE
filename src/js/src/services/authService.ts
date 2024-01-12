@@ -8,7 +8,7 @@ const apiEndPointGetUserInfo = `${config.apiPrefix}/api/auth/me`;
 const apiEndPointLogout = `${config.apiPrefix}/api/auth/logout`;
 
 interface LoginResponse {
-  message: string;
+  data: { message: string };
 }
 
 interface IdentityResponse {
@@ -22,11 +22,19 @@ if (getJWTFromBrowserStorage()) {
 }
 
 function getJWTFromBrowserStorage() {
-  return localStorage.getItem(config.jwtTokenKeyName);
+  return sessionStorage.getItem(config.jwtTokenKeyName);
+}
+
+function setJWTInBrowserStorage(jwt: string) {
+  sessionStorage.setItem(config.jwtTokenKeyName, jwt);
+}
+
+function removeJWTFromBrowserStorage() {
+  sessionStorage.removeItem(config.jwtTokenKeyName);
 }
 
 function getUserDetailsFromBrowserStorage() {
-  const jwt = localStorage.getItem(config.jwtTokenKeyName);
+  const jwt = sessionStorage.getItem(config.jwtTokenKeyName);
 
   if (!jwt) {
     return null;
@@ -40,16 +48,7 @@ function getUserDetailsFromBrowserStorage() {
   if (decodedToken.exp && decodedToken.exp < currentTime) {
     return null;
   }
-  console.log("decoded token", decodedToken);
   return decodedToken;
-}
-
-function setJWTInBrowserStorage(jwt: string) {
-  localStorage.setItem(config.jwtTokenKeyName, jwt);
-}
-
-function removeJWTFromBrowserStorage() {
-  localStorage.removeItem(config.jwtTokenKeyName);
 }
 
 // export function setJWTInBrowserSessionStorage() {
@@ -69,20 +68,10 @@ export async function login(username: string, password: string) {
   removeJWTFromBrowserStorage();
 
   try {
-    const response = await httpService.post<LoginResponse>(apiEndPointLogin, {
+    await httpService.post<LoginResponse>(apiEndPointLogin, {
       username,
       password,
     });
-
-    if (response.data) {
-      const { message } = response.data;
-
-      if (message !== "Logged in successfully") {
-        throw new Error("Login failed: No data received");
-      }
-    } else {
-      throw new Error("Login failed: No data received");
-    }
   } catch (error) {
     throw error;
   }
@@ -96,6 +85,7 @@ export async function logout() {
 
 export async function getUserDetailsFromBackend() {
   try {
+    console.log("Getting User Details from Backend");
     const response = await httpService.get<IdentityResponse>(
       apiEndPointGetUserInfo
     );
@@ -115,7 +105,7 @@ export async function getUserDetailsFromBackend() {
         return null;
       }
 
-      return null;
+      return decodedToken;
     } else {
       return null;
     }
@@ -130,4 +120,5 @@ export default {
   getUserDetailsFromBackend,
   getJWTFromBrowserStorage,
   getUserDetailsFromBrowserStorage,
+  removeJWTFromBrowserStorage,
 };

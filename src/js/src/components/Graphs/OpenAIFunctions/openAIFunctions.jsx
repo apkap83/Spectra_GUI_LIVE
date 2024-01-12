@@ -36,7 +36,6 @@ export function OpenAIFunctions() {
     })
       .then((response) => response.json()) // or response.text() if your server returns text
       .then((data) => {
-        console.log("Success:", data);
         // Handle success - update UI or notify user
       })
       .catch((error) => {
@@ -46,7 +45,6 @@ export function OpenAIFunctions() {
   }
 
   useEffect(() => {
-    console.log("backEndAPIPrefix", backEndAPIPrefix);
     fetch(`${backEndAPIPrefix}/userSpectra`)
       .then((response) => {
         // Check if the Set-Cookie header is accessible
@@ -54,7 +52,6 @@ export function OpenAIFunctions() {
         // if (setCookieHeader) {
         //   // Set the cookie in the parent document
         //   document.cookie = setCookieHeader;
-        //   console.log("Setting Cookie", setCookieHeader);
         // }
 
         return response.text();
@@ -107,7 +104,6 @@ export function OpenAIFunctions() {
         // Serialize the modified document back to a string
         const modifiedHtml = doc.documentElement.outerHTML;
 
-        // console.log("modified HTML", modifiedHtml);
         if (iframe.current) {
           // Inject the modified HTML into the iframe
           iframe.current.srcdoc = modifiedHtml;

@@ -6,24 +6,18 @@ import auth from "../../services/authService";
 import { getCurrentYear } from "./../../utils/myutils";
 import { ReactComponent as NovaLogo } from "../../assets/novaLogo.svg";
 
-export function LoginPage({ setUserDetails }) {
-  console.log("Executing: Login");
+export function LoginPage({ userDetails, setUserDetails }) {
   const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");
   const [error, setError] = useState("");
   const navigate = useNavigate();
 
-  // useEffect(() => {
-  //   const getUserDetails = async () => {
-  //     const userDetails = await auth.getUserDetailsFromBackend();
-  //     console.log("user details", userDetails);
-  //     if (userDetails) {
-  //       // navigate(config.homePage, { replace: true });
-  //     }
-  //   };
-
-  //   getUserDetails();
-  // }, []);
+  useEffect(() => {
+    // If user is already logged in go to Home Page
+    if (userDetails) {
+      navigate(config.homePage, { replace: true });
+    }
+  }, [userDetails]);
 
   const handleUsernameChange = (event) => {
     setUsername(event.target.value);
@@ -60,25 +54,31 @@ export function LoginPage({ setUserDetails }) {
       sessionStorage.removeItem("preLoginURL");
 
       // Now get my JWT Passport
-      const userDetailsObject = auth.getUserDetailsFromBackend();
+      const userDetailsObject = await auth.getUserDetailsFromBackend();
       setUserDetails(userDetailsObject);
 
       // Use navigate for redirection
       navigate(originalUrl, { replace: true });
     } catch (error) {
       setUserDetails(null);
-      localStorage.removeItem(config.jwtTokenKeyName);
+      auth.removeJWTFromBrowserStorage();
 
-      if (error.message === "Request failed with status code 403") {
-        setError("Incorrect user name or password");
-      } else {
-        setError(error.message);
+      if (error.response.data.errors) {
+        setError(error.response.data.errors[0].msg);
+      }
+
+      if (error.response.data.error) {
+        setError(error.response.data.error);
       }
 
       setUsername("");
       setPassword("");
     }
   };
+
+  if (userDetails) {
+    return null;
+  }
 
   return (
     <div className="allscreen">

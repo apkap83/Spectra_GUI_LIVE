@@ -138,7 +138,6 @@ function useFilterColumnByString() {
 
   // Function to reset the filter values
   const resetFilterValues = () => {
-    console.log(147);
     setColumnFilterValues({});
   };
 
@@ -153,7 +152,6 @@ function applyColumnFilter(setColumnDefs, columnList) {
         if (!columnList.includes(colDef.headerName)) {
           colDef["hide"] = true;
         }
-        // console.log(colDef);
         return colDef;
       });
 
@@ -913,7 +911,6 @@ export function AAAOutagesRawData() {
     };
 
     const ColumnCheckbox = React.memo(({ colDef, onVisibilityChange }) => {
-      console.log("Rendering Checkbox");
       return (
         <div key={colDef.field}>
           <label htmlFor={colDef.field}>
@@ -932,7 +929,6 @@ export function AAAOutagesRawData() {
     });
 
     const columnCheckboxes = useMemo(() => {
-      console.log("Rendering Checkboxes");
       return columnDefs.map((colDef) => (
         <ColumnCheckbox
           key={colDef.field}
@@ -942,7 +938,6 @@ export function AAAOutagesRawData() {
       ));
     }, [columnDefs, onVisibilityChange]); // Include necessary dependencies
 
-    console.log("Rendering Column Visiblility Menu");
     return (
       <div ref={menuRef} className="column-visibility-menu">
         <div>

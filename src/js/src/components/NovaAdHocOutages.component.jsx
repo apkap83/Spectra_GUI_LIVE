@@ -267,7 +267,7 @@ export function NovaAdHocOutages() {
 
   const IsDisabled =
     userDetails &&
-    !userDetails.roles.includes(PERMISSION.USER_CAN_UPLOAD_ADHOC);
+    !userDetails.permissions.includes(PERMISSION.USER_CAN_UPLOAD_ADHOC);
 
   return (
     <div className="row">

@@ -21,9 +21,10 @@ import TextSnippetOutlinedIcon from "@mui/icons-material/TextSnippetOutlined";
 
 export function MyHeader() {
   const userDetails = useContext(UserContext);
-  console.log("Header User Details:", userDetails);
-  const isUserAdmin = true;
-  // userDetails && userDetails.roles.includes(PERMISSION.USER_CAN_MANAGE_USERS);
+  console.log("userDetails", userDetails);
+  const isUserAdmin =
+    userDetails &&
+    userDetails.permissions.includes(PERMISSION.USER_CAN_MANAGE_USERS);
 
   return (
     <>

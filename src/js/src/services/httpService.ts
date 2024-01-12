@@ -1,6 +1,7 @@
 import axios, { AxiosRequestConfig, AxiosResponse } from "axios";
 import config from "../config";
 import { errorNotification } from "../components/common/Notification";
+import auth from "./authService";
 // import { getCurrentUser } from "./authService";
 
 // Set withCredentials to true for all requests
@@ -33,11 +34,12 @@ axios.interceptors.response.use(null, (error) => {
   // }
 
   // Redirect the user to the login page (in case of HTTP 401 Unauthorized)
-  if (error.response.status === 401) {
+  if (
+    // error.response.status === 401 /*Unauthorized*/ ||
+    error.response.status === 403 /*Forbiden*/
+  ) {
     // Remove JWT from Session
-    //localStorage.removeItem(config.jwtTokenKeyName);
-
-    //sessionStorage.setItem("preLoginURL", window.location.href);
+    auth.removeJWTFromBrowserStorage();
 
     // Redirect to login page
     window.location = "/login" as unknown as Location;
@@ -45,11 +47,8 @@ axios.interceptors.response.use(null, (error) => {
 
   if (error.message === "Network Error" && !error.response) {
     // Handle the network error
-    console.error("Network error: Make sure API is running!");
-    // You can also display a notification to the user here
+    errorNotification("Network error: Make sure API is running!");
   }
-
-  // You can handle other kinds of errors here (e.g., response errors)
 
   return Promise.reject(error);
 });
@@ -69,15 +68,20 @@ async function handleRequest<T>(
     return { success: true, data: response.data };
   } catch (error: any) {
     if (axios.isAxiosError(error)) {
+      // Check if the URL is '/api/auth/me'
+      const isAuthMeEndpoint =
+        error.config && error.config.url?.endsWith("/api/auth/me");
+
       if (error.response) {
-        console.error("Server Error:", error.response);
-        errorNotification("Server Error", error.response.data.message);
+        // Execute errorNotification only if it's not the '/api/auth/me' endpoint
+        if (!isAuthMeEndpoint) {
+          throw error;
+          errorNotification("Server Error", error.response.data.message);
+        }
       } else if (error.request) {
-        console.error("Network Error", error.request);
         errorNotification("Network Error", "No response was received");
       }
     } else {
-      console.error("Error", error.message);
       errorNotification("Error", error.message);
     }
 

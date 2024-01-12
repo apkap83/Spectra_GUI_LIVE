@@ -16,9 +16,9 @@ import { downloadPosSpectraForCompanyAndINC } from "../../utils/downloadPositive
 
 export const MenuPopupDownloads = ({ incident, company }) => {
   const userDetails = useContext(UserContext);
-  // const IsDisabled = !userDetails.roles.includes(
-  //   PERMISSION.USER_CAN_DOWNLOAD_FILES
-  // );
+  const IsDisabled = !userDetails.permissions.includes(
+    PERMISSION.USER_CAN_DOWNLOAD_FILES
+  );
 
   const [anchorEl, setAnchorEl] = useState(null);
   const open = Boolean(anchorEl);

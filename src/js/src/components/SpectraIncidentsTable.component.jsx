@@ -235,7 +235,7 @@ export default function SpectraIncidentsTable(props) {
               </button>
             </TableCell>
             <TableCell></TableCell>
-            <TableCell align="center" style={{}}>
+            <TableCell align="center">
               {ActionsMenu(
                 incident,
                 restActionMenuProperties,

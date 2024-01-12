@@ -40,11 +40,27 @@ import { ErrorBoundary } from "./components/Errors/ErrorBoundary.component";
 import { set } from "lodash";
 
 const AppWrapper = () => {
-  console.log("Executing: AppWrapper");
   const [userDetails, setUserDetails] = useState(
     auth.getUserDetailsFromBrowserStorage()
   );
   // const [isAuthenticated, setIsAuthenticated] = useState();
+
+  useEffect(() => {
+    const getUserFromBackEnd = async () => {
+      try {
+        const response = await auth.getUserDetailsFromBackend();
+
+        if (response) {
+          setUserDetails(response);
+
+          // Use navigate for redirection
+          navigate("/nova/allspectraincidents", { replace: true });
+        }
+      } catch (error) {}
+    };
+
+    getUserFromBackEnd();
+  }, []);
 
   // useEffect(() => {
   //   const userDetails = auth.getCurrentUser();
@@ -52,7 +68,6 @@ const AppWrapper = () => {
   // }, [isAuthenticated]);
 
   const App = () => {
-    console.log("Executing: App");
     // Create a Higher-Order Component for protected routes
     const ProtectedRoute = ({ component: Component }) => {
       // There is active JWT Token in Local Storage
@@ -73,7 +88,12 @@ const AppWrapper = () => {
     const routes = [
       {
         path: "login",
-        element: <LoginPage setUserDetails={setUserDetails} />,
+        element: (
+          <LoginPage
+            userDetails={userDetails}
+            setUserDetails={setUserDetails}
+          />
+        ),
         exact: true,
       },
       {
