@@ -1073,6 +1073,20 @@ export function AAAOutagesRawData() {
     }
   };
 
+  const onColumnMoved = (event) => {
+    if (event.source !== "api") {
+      const updatedColumnDefs = gridRef.current.columnApi
+        .getAllDisplayedColumns()
+        .map((col) => {
+          return {
+            ...columnDefs.find((def) => def.field === col.colId),
+            width: col.actualWidth,
+          };
+        });
+      setColumnDefs(updatedColumnDefs);
+    }
+  };
+
   return (
     <div className="pageWrapperForRawData">
       {tooltip.show && (
@@ -1217,6 +1231,7 @@ export function AAAOutagesRawData() {
                 onGridReady={() => {
                   setGridReady(true);
                 }}
+                onColumnMoved={onColumnMoved}
               />
             </div>
             <div className="datagridWrapper__rowsPerPage">
