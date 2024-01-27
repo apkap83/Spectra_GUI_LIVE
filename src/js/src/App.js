@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, lazy, Suspense, Fragment } from "react";
 import { BrowserRouter as Router, Navigate, useRoutes } from "react-router-dom";
 
 import UserContext from "./contexts/UserContext";
@@ -6,38 +6,126 @@ import UserContext from "./contexts/UserContext";
 import NotFound from "./components/Errors/NotFound.component";
 
 import { LoginPage } from "./components/LoginPage/LoginPage.component";
-import { LogoutPage } from "./components/LogoutPage/LogoutPage.component";
+// const LoginPage = lazy(() =>
+//   import("./components/LoginPage/LoginPage.component").then((module) => ({
+//     default: module.LoginPage,
+//   }))
+// );
+
+// import { LogoutPage } from "./components/LogoutPage/LogoutPage.component";
+const LogoutPage = lazy(() =>
+  import("./components/LogoutPage/LogoutPage.component").then((module) => ({
+    default: module.LogoutPage,
+  }))
+);
 
 import { AllWindSpectraIncidents } from "./components/Routes/WindAllSpectraIncidents";
+// const AllWindSpectraIncidents = lazy(() =>
+//   import("./components/Routes/WindAllSpectraIncidents").then((module) => ({
+//     default: module.AllWindSpectraIncidents,
+//   }))
+// );
+
 import { WindOpenSpectraIncidents } from "./components/Routes/WindOpenSpectraIncidents";
+// const WindOpenSpectraIncidents = lazy(() =>
+//   import("./components/Routes/WindOpenSpectraIncidents").then((module) => ({
+//     default: module.WindOpenSpectraIncidents,
+//   }))
+// );
 
 import { AllNovaSpectraIncidents } from "./components/Routes/NovaAllSpectraIncidents";
+// const AllNovaSpectraIncidents = lazy(() =>
+//   import("./components/Routes/NovaAllSpectraIncidents").then((module) => ({
+//     default: module.AllNovaSpectraIncidents,
+//   }))
+// );
+
 import { NovaOpenSpectraIncidents } from "./components/Routes/NovaOpenSpectraIncidents";
+// const NovaOpenSpectraIncidents = lazy(() =>
+//   import("./components/Routes/NovaOpenSpectraIncidents").then((module) => ({
+//     default: module.NovaOpenSpectraIncidents,
+//   }))
+// );
 
 import { CdrDBOpenOutages } from "./components/Routes/CdrDBOpenInc";
-import { CdrDBClosedOutages } from "./components/Routes/CdrDBClosedInc";
+// const CdrDBOpenOutages = lazy(() =>
+//   import("./components/Routes/CdrDBOpenInc").then((module) => ({
+//     default: module.CdrDBOpenOutages,
+//   }))
+// );
 
-import { AdHocOutages } from "./components/AdHocOutages.component";
-import { NovaAdHocOutages } from "./components/NovaAdHocOutages.component";
+// import { CdrDBClosedOutages } from "./components/Routes/CdrDBClosedInc";
+const CdrDBClosedOutages = lazy(() =>
+  import("./components/Routes/CdrDBClosedInc").then((module) => ({
+    default: module.CdrDBClosedOutages,
+  }))
+);
+
+// import { AdHocOutages } from "./components/AdHocOutages.component";
+const AdHocOutages = lazy(() =>
+  import("./components/AdHocOutages.component").then((module) => ({
+    default: module.AdHocOutages,
+  }))
+);
+
+// import { NovaAdHocOutages } from "./components/NovaAdHocOutages.component";
+const NovaAdHocOutages = lazy(() =>
+  import("./components/NovaAdHocOutages.component").then((module) => ({
+    default: module.NovaAdHocOutages,
+  }))
+);
 
 import WindStats from "./components/stats/WindStats.component";
+// const WindStats = lazy(() => import("./components/stats/WindStats.component"));
+
 import NovaStats from "./components/stats/NovaStats.component";
+// const NovaStats = lazy(() => import("./components/stats/NovaStats.component"));
 
 import ScopedCssBaseline from "@mui/material/ScopedCssBaseline";
 
 import { MyHeader } from "./components/Header/MyHeader.component";
-import { MyFooter } from "./components/Footer/MyFooter.component";
+// const MyHeader = lazy(() =>
+//   import("./components/Header/MyHeader.component").then((module) => ({
+//     default: module.MyHeader,
+//   }))
+// );
 
-import { Users } from "./components/Users/Users.component";
+import { MyFooter } from "./components/Footer/MyFooter.component";
+// const MyFooter = lazy(() =>
+//   import("./components/Footer/MyFooter.component").then((module) => ({
+//     default: module.MyFooter,
+//   }))
+// );
+
+// import { Users } from "./components/Users/Users.component";
+const Users = lazy(() =>
+  import("./components/Users/Users.component").then((module) => ({
+    default: module.Users,
+  }))
+);
+
 // import { Users_2 } from "./components/Users/Users_2.component";
 
 import { TripleAOutagesPlusRemedy } from "./components/Graphs/AAAOutages/TripleAOutagesPlusRemedy.component";
+// const TripleAOutagesPlusRemedy = lazy(() =>
+//   import(
+//     "./components/Graphs/AAAOutages/TripleAOutagesPlusRemedy.component"
+//   ).then((module) => ({ default: module.TripleAOutagesPlusRemedy }))
+// );
+
 import { AAAOutagesRawData } from "./components/Graphs/AAAOutagesRawData/aaaOutagesRawData";
+// const AAAOutagesRawData = lazy(() =>
+//   import("./components/Graphs/AAAOutagesRawData/aaaOutagesRawData").then(
+//     (module) => ({ default: module.AAAOutagesRawData })
+//   )
+// );
+
 // import { OpenAIFunctions } from "./components/Graphs/OpenAIFunctions/openAIFunctions";
 
 import auth from "./services/authService";
 import { ErrorBoundary } from "./components/Errors/ErrorBoundary.component";
 import { set } from "lodash";
+import { Spin } from "antd";
 
 const AppWrapper = () => {
   const [userDetails, setUserDetails] = useState(null);
@@ -153,19 +241,31 @@ const AppWrapper = () => {
     return useRoutes(routes);
   };
 
+  const HeaderAndFooter = () => {
+    return (
+      <Fragment>
+        {<MyHeader />}
+        <div style={{ marginBottom: "9rem" }}></div>
+        {<MyFooter />}
+      </Fragment>
+    );
+  };
+
   return (
-    <ErrorBoundary>
-      <UserContext.Provider value={userDetails}>
-        {/* <ScopedCssBaseline> */}
-        <Router>
-          {isAuthenticated && <MyHeader />}
-          <App />
-          <div style={{ marginBottom: "9rem" }}></div>
-          {isAuthenticated && <MyFooter />}
-        </Router>
-        {/* </ScopedCssBaseline> */}
-      </UserContext.Provider>
-    </ErrorBoundary>
+    <Suspense fallback={<Spin />}>
+      <ErrorBoundary>
+        <UserContext.Provider value={userDetails}>
+          {/* <ScopedCssBaseline> */}
+          <Router>
+            {isAuthenticated && <MyHeader />}
+            <App />
+            <div style={{ marginBottom: "9rem" }}></div>
+            {isAuthenticated && <MyFooter />}
+          </Router>
+          {/* </ScopedCssBaseline> */}
+        </UserContext.Provider>
+      </ErrorBoundary>
+    </Suspense>
   );
 };
 

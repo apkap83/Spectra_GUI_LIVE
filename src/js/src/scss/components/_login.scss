@@ -54,7 +54,7 @@
   left: 50%;
   transform: translate(-50%, -70%);
   opacity: 0.93;
-  animation: opacityChange 0.5s ease-in-out;
+  animation: opacityChange 0.5s backwards ease-in-out;
 
   & form {
     display: block;

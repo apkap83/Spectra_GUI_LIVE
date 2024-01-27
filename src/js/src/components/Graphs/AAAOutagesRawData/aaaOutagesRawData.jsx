@@ -138,7 +138,6 @@ function useFilterColumnByString() {
 
   // Function to reset the filter values
   const resetFilterValues = () => {
-    console.log(147);
     setColumnFilterValues({});
   };
 
@@ -153,7 +152,6 @@ function applyColumnFilter(setColumnDefs, columnList) {
         if (!columnList.includes(colDef.headerName)) {
           colDef["hide"] = true;
         }
-        // console.log(colDef);
         return colDef;
       });
 
@@ -192,10 +190,11 @@ export function AAAOutagesRawData() {
   const gridRef = useRef(); // Optional - for accessing Grid's API
   const menuRef = useRef(null);
   const selectAllRef = useRef(null);
+  const scrollRef = useRef(0);
 
   const [masterLoading, setMasterLoading] = useState(true);
 
-  const [columnDefs, setColumnDefs] = useState([
+  const [originalColumnDefs, setOriginalColumnDefs] = useState([
     {
       field: "alarm_DAY",
       filter: true,
@@ -661,10 +660,36 @@ export function AAAOutagesRawData() {
     },
   ]);
 
+  const [columnDefs, setColumnDefs] = useState(originalColumnDefs);
+
   const [rowsPerPage, setRowsPerPage] = useState(100);
   const [refreshKey, setRefreshKey] = useState(0);
 
   const [refreshKeyForFilter, setRefreshKeyForFilter] = useState(0);
+
+  const [scrollPosition, setScrollPosition] = useState(null);
+
+  const [determineFilterButtonStatus, setDetermineFilterButtonStatus] =
+    useState("text");
+
+  const [agGridFilter, setAgFilter] = useState();
+
+  useEffect(() => {
+    if (
+      columnList.length !== 0 ||
+      Object.keys(columnFilterValues).length !== 0
+    ) {
+      setDetermineFilterButtonStatus("outlined");
+    } else {
+      setDetermineFilterButtonStatus("text");
+    }
+  }, [columnList, columnFilterValues]); // Add dependencies as necessary
+
+  useEffect(() => {
+    if (menuRef && menuRef.current && scrollPosition) {
+      menuRef.current.scrollTop = scrollPosition;
+    }
+  }, [scrollPosition, columnDefs]);
 
   // const dataGridFilterObject = gridRef?.current?.api.onFilterChanged();
   // Get a reference to the filter instance
@@ -683,26 +708,22 @@ export function AAAOutagesRawData() {
   //   gridRef?.current?.api.onFilterChanged();
   // }
 
-  function isGridFilterObjectEmpty(obj) {
-    // Check if it's an object and not null
-    if (typeof obj === "object" && obj !== null) {
-      // Check if the object has no own properties
-      return Object.keys(obj).length === 0;
-    }
-    return false; // Not an object or is null
-  }
-
-  const determineFilterButtonStatus = () => {
-    if (
-      columnList.length !== 0 ||
-      Object.keys(columnFilterValues).length !== 0 ||
-      !isGridFilterObjectEmpty(gridRef?.current?.api.getFilterModel())
-    ) {
-      return "outlined";
-    }
-
-    return "text";
+  const areFiltersApplied = (gridApi) => {
+    const filterModel = gridApi.getFilterModel();
+    return Object.keys(filterModel).length > 0;
   };
+
+  // const determineFilterButtonStatus = () => {
+  //   if (
+  //     columnList.length !== 0 ||
+  //     Object.keys(columnFilterValues).length !== 0 ||
+  //     !isGridFilterObjectEmpty(gridRef?.current?.api.getFilterModel())
+  //   ) {
+  //     return "outlined";
+  //   }
+
+  //   return "text";
+  // };
 
   const removeUri = () => {
     if (
@@ -862,6 +883,9 @@ export function AAAOutagesRawData() {
   // };
 
   const handleColumnVisibilityChange = useCallback((columnName, isVisible) => {
+    if (menuRef && menuRef.current) {
+      setScrollPosition(menuRef.current.scrollTop);
+    }
     setColumnDefs((currentDefs) => {
       const index = currentDefs.findIndex(
         (colDef) => colDef.headerName === columnName
@@ -877,12 +901,18 @@ export function AAAOutagesRawData() {
   }, []);
 
   const selectAllColumns = () => {
+    if (menuRef && menuRef.current) {
+      setScrollPosition(menuRef.current.scrollTop);
+    }
     setColumnDefs((currentDefs) =>
       currentDefs.map((colDef) => ({ ...colDef, hide: false }))
     );
   };
 
   const unselectAllColumns = () => {
+    if (menuRef && menuRef.current) {
+      setScrollPosition(menuRef.current.scrollTop);
+    }
     setColumnDefs((currentDefs) =>
       currentDefs.map((colDef) => ({ ...colDef, hide: true }))
     );
@@ -913,7 +943,6 @@ export function AAAOutagesRawData() {
     };
 
     const ColumnCheckbox = React.memo(({ colDef, onVisibilityChange }) => {
-      console.log("Rendering Checkbox");
       return (
         <div key={colDef.field}>
           <label htmlFor={colDef.field}>
@@ -932,7 +961,6 @@ export function AAAOutagesRawData() {
     });
 
     const columnCheckboxes = useMemo(() => {
-      console.log("Rendering Checkboxes");
       return columnDefs.map((colDef) => (
         <ColumnCheckbox
           key={colDef.field}
@@ -942,7 +970,6 @@ export function AAAOutagesRawData() {
       ));
     }, [columnDefs, onVisibilityChange]); // Include necessary dependencies
 
-    console.log("Rendering Column Visiblility Menu");
     return (
       <div ref={menuRef} className="column-visibility-menu">
         <div>
@@ -1087,6 +1114,33 @@ export function AAAOutagesRawData() {
     }
   };
 
+  const onFilterChanged = () => {
+    if (gridRef.current) {
+      const filtersApplied = areFiltersApplied(gridRef.current.api);
+      if (filtersApplied) {
+        setDetermineFilterButtonStatus("outlined");
+        setAgFilter(gridRef.current.api.getFilterModel());
+        const filterModel = gridRef.current.api.getFilterModel();
+        // Save this filterModel
+        saveFilterState(filterModel); // Implement this function to save the state
+      }
+    }
+
+    setAgFilter(null);
+  };
+
+  const saveFilterState = (filterModel) => {
+    sessionStorage.setItem("gridFilter", JSON.stringify(filterModel));
+  };
+
+  const onGridReady = () => {
+    const savedFilterModel = JSON.parse(sessionStorage.getItem("gridFilter"));
+    if (savedFilterModel) {
+      gridRef.current.api.setFilterModel(savedFilterModel);
+    }
+    setGridReady(true);
+  };
+
   return (
     <div className="pageWrapperForRawData">
       {tooltip.show && (
@@ -1162,7 +1216,7 @@ export function AAAOutagesRawData() {
               </Button>
               <Button
                 key={`filter-${refreshKeyForFilter}`}
-                variant={determineFilterButtonStatus()}
+                variant={determineFilterButtonStatus}
                 onClick={clearFilters}
                 className={"datagridWrapper__clearFiltersBtn"}
               >
@@ -1207,7 +1261,15 @@ export function AAAOutagesRawData() {
                 />
               )}
             </div>
-
+            {agGridFilter && (
+              <p
+                style={{
+                  fontSize: "2rem",
+                }}
+              >
+                Table Filters: {JSON.stringify(agGridFilter)}
+              </p>
+            )}
             {/* On div wrapping Grid a) specify theme CSS Class Class and b) sets Grid size */}
             <div
               className="datagridWrapper__grid ag-theme-balham"
@@ -1228,10 +1290,9 @@ export function AAAOutagesRawData() {
                 onCellClicked={cellClickedListener} // Optional - registering for Grid Event
                 pagination={true}
                 paginationPageSize={rowsPerPage} // Set the desired number of rows per page
-                onGridReady={() => {
-                  setGridReady(true);
-                }}
+                onGridReady={() => onGridReady()}
                 onColumnMoved={onColumnMoved}
+                onFilterChanged={onFilterChanged}
               />
             </div>
             <div className="datagridWrapper__rowsPerPage">
