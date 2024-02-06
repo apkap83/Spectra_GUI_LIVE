@@ -14,12 +14,6 @@ import { LoadingSpinnerCentered } from "../../common/LoadingSpinnerCentered";
 import Button from "@mui/material/Button";
 import CachedIcon from "@mui/icons-material/Cached";
 
-import FormGroup from "@mui/material/FormGroup";
-import FormControlLabel from "@mui/material/FormControlLabel";
-import Checkbox from "@mui/material/Checkbox";
-import TextField from "@mui/material/TextField";
-import Switch from "@mui/material/Switch";
-
 import { DatePicker } from "antd";
 import dayjs from "dayjs";
 const { RangePicker } = DatePicker;
@@ -38,6 +32,7 @@ import * as XLSX from "xlsx";
 import locale from "antd/es/date-picker/locale/en_GB";
 import { set } from "lodash";
 import { setRef } from "@mui/material";
+import { ReloadInterval } from "./components/reloadInterval";
 const rangePickerDateFormat = ["DD MMM YYYY"];
 
 function disabledDate(current) {
@@ -679,9 +674,9 @@ export function AAAOutagesRawData() {
   const [determineFilterButtonStatus, setDetermineFilterButtonStatus] =
     useState("text");
 
-  const defaultRefreshIntervalTime = 10;
+  const defaultRefreshIntervalTime = 60;
   const [refreshIntervalTime, setRefreshIntervalTime] = useState(0);
-  const inputRef = useRef(null);
+  const refreshIntervalInputRef = useRef(null);
 
   const [agGridFilter, setAgFilter] = useState();
   const allColumnsVisible = columnDefs.every((colDef) => !colDef.hide);
@@ -709,21 +704,6 @@ export function AAAOutagesRawData() {
       }
     }
     setMasterLoading(false);
-  };
-
-  const handleInput = (event) => {
-    const cursorPosition = inputRef.current.selectionStart;
-    const newInputChar = event.nativeEvent.data; // Get the newly entered character
-
-    // Check if the new input is a valid number
-    if (!isNaN(newInputChar)) {
-      let newValue = refreshIntervalTime.toString().split(""); // Convert the value to an array of characters
-      newValue[0] = newInputChar; // Replace the character at the cursor position
-
-      newValue = newValue.join(""); // Convert the array back to a string
-
-      setRefreshIntervalTime(newValue);
-    }
   };
 
   useEffect(() => {
@@ -1016,6 +996,7 @@ export function AAAOutagesRawData() {
     resetColumnList();
     resetFilterValues();
     removeUri();
+    sessionStorage.clear();
   };
 
   const getCurrentGridData = () => {
@@ -1145,7 +1126,6 @@ export function AAAOutagesRawData() {
     setGridReady(true);
   };
 
-  const label = { inputProps: { "aria-label": "Checkbox demo" } };
   return (
     <div className="pageWrapperForRawData">
       {tooltip.show && (
@@ -1186,64 +1166,12 @@ export function AAAOutagesRawData() {
               </>
             )}
           </div>
-
-          <div className="aaa__header__reloadInterval">
-            <Switch
-              {...label}
-              checked={!!refreshIntervalTime}
-              onClick={() => {
-                if (refreshIntervalTime) {
-                  console.log("refreshIntervalTime", refreshIntervalTime);
-                  setRefreshIntervalTime(0);
-                } else {
-                  setRefreshIntervalTime(defaultRefreshIntervalTime);
-                }
-              }}
-            />
-            <TextField
-              ref={inputRef}
-              className={`aaa__header__reloadInterval__time ${
-                refreshIntervalTime ? "active" : "inactive"
-              }`}
-              id="outlined-basic"
-              variant="outlined"
-              value={refreshIntervalTime}
-              onInput={handleInput}
-              // onFocus={handleFocus}
-              // onChange={(e) => {
-              //   setRefreshIntervalTime(e.target.value);
-              // }}
-              sx={{
-                "& .MuiInputBase-root": {
-                  fontSize: "2rem",
-                  lineHeight: "2rem",
-                  width: "5rem",
-                  textAlign: "center",
-                  height: "3.2rem",
-                },
-
-                "& .MuiInputBase-input": {
-                  textAlign: "center",
-                  height: "1rem",
-                },
-              }}
-            />
-            <span
-              className={`aaa__header__reloadInterval__time ${
-                refreshIntervalTime ? "active" : "inactive"
-              }`}
-              style={{
-                lineHeight: "0.5rem",
-                height: "0.5rem",
-                paddingTop: "2.5rem",
-                paddingLeft: "0.5rem",
-                fontWeight: 600,
-                fontSize: "1.3rem",
-              }}
-            >
-              sec
-            </span>
-          </div>
+          <ReloadInterval
+            defaultRefreshIntervalTime={defaultRefreshIntervalTime}
+            refreshIntervalTime={refreshIntervalTime}
+            setRefreshIntervalTime={setRefreshIntervalTime}
+            refreshIntervalInputRef={refreshIntervalInputRef}
+          />
         </div>
       </div>
 
