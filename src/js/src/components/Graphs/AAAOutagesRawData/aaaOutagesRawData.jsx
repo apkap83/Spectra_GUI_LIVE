@@ -14,6 +14,12 @@ import { LoadingSpinnerCentered } from "../../common/LoadingSpinnerCentered";
 import Button from "@mui/material/Button";
 import CachedIcon from "@mui/icons-material/Cached";
 
+import FormGroup from "@mui/material/FormGroup";
+import FormControlLabel from "@mui/material/FormControlLabel";
+import Checkbox from "@mui/material/Checkbox";
+import TextField from "@mui/material/TextField";
+import Switch from "@mui/material/Switch";
+
 import { DatePicker } from "antd";
 import dayjs from "dayjs";
 const { RangePicker } = DatePicker;
@@ -31,6 +37,7 @@ import * as XLSX from "xlsx";
 
 import locale from "antd/es/date-picker/locale/en_GB";
 import { set } from "lodash";
+import { setRef } from "@mui/material";
 const rangePickerDateFormat = ["DD MMM YYYY"];
 
 function disabledDate(current) {
@@ -672,7 +679,65 @@ export function AAAOutagesRawData() {
   const [determineFilterButtonStatus, setDetermineFilterButtonStatus] =
     useState("text");
 
+  const defaultRefreshIntervalTime = 10;
+  const [refreshIntervalTime, setRefreshIntervalTime] = useState(0);
+  const inputRef = useRef(null);
+
   const [agGridFilter, setAgFilter] = useState();
+  const allColumnsVisible = columnDefs.every((colDef) => !colDef.hide);
+  const allColumnsHidden = columnDefs.every((colDef) => colDef.hide);
+
+  const getDataFromDB = async () => {
+    setMasterLoading(true);
+    let { startDate, endDate } = dateRange;
+    endDate = endDate.add(1, "day");
+
+    const { data: myData } = await httpService.post(apiEndPoint, {
+      dateRange: { startDate, endDate },
+    });
+
+    if (myData) {
+      setOriginalData([...myData]); // Store original data
+
+      if (searchTerm !== "") {
+        const filteredData = filterData();
+        // setRetrievedRawData(filteredData);
+      } else {
+        if (!columnFilterValues || !columnList) {
+          setRetrievedRawData(myData); // Set retrieved data for display
+        }
+      }
+    }
+    setMasterLoading(false);
+  };
+
+  const handleInput = (event) => {
+    const cursorPosition = inputRef.current.selectionStart;
+    const newInputChar = event.nativeEvent.data; // Get the newly entered character
+
+    // Check if the new input is a valid number
+    if (!isNaN(newInputChar)) {
+      let newValue = refreshIntervalTime.toString().split(""); // Convert the value to an array of characters
+      newValue[0] = newInputChar; // Replace the character at the cursor position
+
+      newValue = newValue.join(""); // Convert the array back to a string
+
+      setRefreshIntervalTime(newValue);
+    }
+  };
+
+  useEffect(() => {
+    applyColumnFilter(setColumnDefs, columnList);
+
+    if (refreshIntervalTime) {
+      if (refreshIntervalTime < 10 || refreshIntervalTime > 99) {
+        setRefreshIntervalTime(10);
+        return;
+      }
+      const intervalId = setInterval(getDataFromDB, refreshIntervalTime * 1000);
+      return () => clearInterval(intervalId);
+    }
+  }, [refreshIntervalTime]);
 
   useEffect(() => {
     if (
@@ -683,60 +748,13 @@ export function AAAOutagesRawData() {
     } else {
       setDetermineFilterButtonStatus("text");
     }
-  }, [columnList, columnFilterValues]); // Add dependencies as necessary
+  }, [columnList, columnFilterValues]);
 
   useEffect(() => {
     if (menuRef && menuRef.current && scrollPosition) {
       menuRef.current.scrollTop = scrollPosition;
     }
   }, [scrollPosition, columnDefs]);
-
-  // const dataGridFilterObject = gridRef?.current?.api.onFilterChanged();
-  // Get a reference to the filter instance
-  // const filterInstance = gridRef?.current?.api.getFilterInstance("name");
-
-  // Example function to be called to set the filter
-  // function setAgeFilter(api) {
-  //   gridRef?.current?.api.setFilterModel({
-  //     network: {
-  //       filterType: "text",
-  //       type: "startsWith",
-  //       filter: "NOVA",
-  //     },
-  //   });
-
-  //   gridRef?.current?.api.onFilterChanged();
-  // }
-
-  const areFiltersApplied = (gridApi) => {
-    const filterModel = gridApi.getFilterModel();
-    return Object.keys(filterModel).length > 0;
-  };
-
-  // const determineFilterButtonStatus = () => {
-  //   if (
-  //     columnList.length !== 0 ||
-  //     Object.keys(columnFilterValues).length !== 0 ||
-  //     !isGridFilterObjectEmpty(gridRef?.current?.api.getFilterModel())
-  //   ) {
-  //     return "outlined";
-  //   }
-
-  //   return "text";
-  // };
-
-  const removeUri = () => {
-    if (
-      columnList.length !== 0 ||
-      Object.keys(columnFilterValues).length !== 0
-    ) {
-      navigate("/graphs/aaa-outages-rawdata");
-    }
-  };
-
-  useEffect(() => {
-    applyColumnFilter(setColumnDefs, columnList);
-  }, []);
 
   useEffect(() => {
     let filteredData = [...originalData];
@@ -759,6 +777,69 @@ export function AAAOutagesRawData() {
 
     setRetrievedRawData(filteredData);
   }, [originalData, columnFilterValues]);
+
+  useEffect(() => {
+    getDataFromDB();
+  }, [dateRange]);
+
+  useEffect(() => {
+    if (value && value.length == 2) {
+      setDateRange({
+        startDate: value[0],
+        endDate: value[1],
+      });
+    }
+  }, [value]);
+
+  useEffect(() => {
+    if (isMenuVisible) {
+      document.addEventListener("mousedown", handleClickOutside);
+    } else {
+      document.removeEventListener("mousedown", handleClickOutside);
+    }
+
+    return () => {
+      document.removeEventListener("mousedown", handleClickOutside);
+    };
+  }, [isMenuVisible]);
+
+  useEffect(() => {
+    if (selectAllRef.current) {
+      selectAllRef.current.indeterminate =
+        !allColumnsVisible && !allColumnsHidden;
+    }
+  }, [allColumnsVisible, allColumnsHidden]);
+
+  useEffect(() => {
+    const debounce = setTimeout(() => {
+      const filteredData = searchTerm !== "" ? filterData() : originalData;
+      setRetrievedRawData(filteredData);
+    }, 10);
+
+    // const debounce = setTimeout(() => {
+    //   if (searchTerm !== "") {
+    //     const filteredData = filterData();
+    //     setRetrievedRawData(filteredData);
+    //   }
+    // }
+    // , 300);
+
+    return () => clearTimeout(debounce);
+  }, [searchTerm, refreshKey]);
+
+  const areFiltersApplied = (gridApi) => {
+    const filterModel = gridApi.getFilterModel();
+    return Object.keys(filterModel).length > 0;
+  };
+
+  const removeUri = () => {
+    if (
+      columnList.length !== 0 ||
+      Object.keys(columnFilterValues).length !== 0
+    ) {
+      navigate("/graphs/aaa-outages-rawdata");
+    }
+  };
 
   const [tooltip, setTooltip] = useState({
     show: false,
@@ -815,61 +896,11 @@ export function AAAOutagesRawData() {
     }
   }, []);
 
-  useEffect(() => {
-    setMasterLoading(true);
-    let { startDate, endDate } = dateRange;
-
-    endDate = endDate.add(1, "day");
-
-    const getDataFromDB = async () => {
-      const { data: myData } = await httpService.post(apiEndPoint, {
-        dateRange: { startDate, endDate },
-      });
-
-      if (myData) {
-        setOriginalData([...myData]); // Store original data
-
-        if (searchTerm !== "") {
-          const filteredData = filterData();
-          // setRetrievedRawData(filteredData);
-        } else {
-          if (!columnFilterValues || !columnList) {
-            setRetrievedRawData(myData); // Set retrieved data for display
-          }
-        }
-      }
-      setMasterLoading(false);
-    };
-
-    getDataFromDB();
-  }, [dateRange]);
-
-  useEffect(() => {
-    if (value && value.length == 2) {
-      setDateRange({
-        startDate: value[0],
-        endDate: value[1],
-      });
-    }
-  }, [value]);
-
   const handleClickOutside = (event) => {
     if (menuRef.current && !menuRef.current.contains(event.target)) {
       setIsMenuVisible(false);
     }
   };
-
-  useEffect(() => {
-    if (isMenuVisible) {
-      document.addEventListener("mousedown", handleClickOutside);
-    } else {
-      document.removeEventListener("mousedown", handleClickOutside);
-    }
-
-    return () => {
-      document.removeEventListener("mousedown", handleClickOutside);
-    };
-  }, [isMenuVisible]);
 
   // const handleColumnVisibilityChange = (columnName, isVisible) => {
   //   setColumnDefs((currentDefs) =>
@@ -917,16 +948,6 @@ export function AAAOutagesRawData() {
       currentDefs.map((colDef) => ({ ...colDef, hide: true }))
     );
   };
-
-  const allColumnsVisible = columnDefs.every((colDef) => !colDef.hide);
-  const allColumnsHidden = columnDefs.every((colDef) => colDef.hide);
-
-  useEffect(() => {
-    if (selectAllRef.current) {
-      selectAllRef.current.indeterminate =
-        !allColumnsVisible && !allColumnsHidden;
-    }
-  }, [allColumnsVisible, allColumnsHidden]);
 
   const ColumnVisibilityMenu = ({
     columnDefs,
@@ -1062,23 +1083,6 @@ export function AAAOutagesRawData() {
     }
   };
 
-  useEffect(() => {
-    const debounce = setTimeout(() => {
-      const filteredData = searchTerm !== "" ? filterData() : originalData;
-      setRetrievedRawData(filteredData);
-    }, 10);
-
-    // const debounce = setTimeout(() => {
-    //   if (searchTerm !== "") {
-    //     const filteredData = filterData();
-    //     setRetrievedRawData(filteredData);
-    //   }
-    // }
-    // , 300);
-
-    return () => clearTimeout(debounce);
-  }, [searchTerm, refreshKey]);
-
   const columnSearchOptions = [
     { value: "all", label: "All Columns" },
     ...columnDefs
@@ -1141,6 +1145,7 @@ export function AAAOutagesRawData() {
     setGridReady(true);
   };
 
+  const label = { inputProps: { "aria-label": "Checkbox demo" } };
   return (
     <div className="pageWrapperForRawData">
       {tooltip.show && (
@@ -1170,14 +1175,74 @@ export function AAAOutagesRawData() {
             {masterLoading ? (
               <CircularIndeterminate size={25} loading={true} />
             ) : (
-              <Button
-                className="aaa__header__reloadButton"
-                variant="outlined"
-                onClick={handleRefreshClick}
-              >
-                <CachedIcon fontSize="medium" />
-              </Button>
+              <>
+                <Button
+                  className="aaa__header__reloadButton"
+                  variant="outlined"
+                  onClick={handleRefreshClick}
+                >
+                  <CachedIcon fontSize="medium" />
+                </Button>
+              </>
             )}
+          </div>
+
+          <div className="aaa__header__reloadInterval">
+            <Switch
+              {...label}
+              checked={!!refreshIntervalTime}
+              onClick={() => {
+                if (refreshIntervalTime) {
+                  console.log("refreshIntervalTime", refreshIntervalTime);
+                  setRefreshIntervalTime(0);
+                } else {
+                  setRefreshIntervalTime(defaultRefreshIntervalTime);
+                }
+              }}
+            />
+            <TextField
+              ref={inputRef}
+              className={`aaa__header__reloadInterval__time ${
+                refreshIntervalTime ? "active" : "inactive"
+              }`}
+              id="outlined-basic"
+              variant="outlined"
+              value={refreshIntervalTime}
+              onInput={handleInput}
+              // onFocus={handleFocus}
+              // onChange={(e) => {
+              //   setRefreshIntervalTime(e.target.value);
+              // }}
+              sx={{
+                "& .MuiInputBase-root": {
+                  fontSize: "2rem",
+                  lineHeight: "2rem",
+                  width: "5rem",
+                  textAlign: "center",
+                  height: "3.2rem",
+                },
+
+                "& .MuiInputBase-input": {
+                  textAlign: "center",
+                  height: "1rem",
+                },
+              }}
+            />
+            <span
+              className={`aaa__header__reloadInterval__time ${
+                refreshIntervalTime ? "active" : "inactive"
+              }`}
+              style={{
+                lineHeight: "0.5rem",
+                height: "0.5rem",
+                paddingTop: "2.5rem",
+                paddingLeft: "0.5rem",
+                fontWeight: 600,
+                fontSize: "1.3rem",
+              }}
+            >
+              sec
+            </span>
           </div>
         </div>
       </div>
