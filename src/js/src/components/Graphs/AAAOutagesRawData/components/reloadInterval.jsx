@@ -34,6 +34,7 @@ export const ReloadInterval = ({
           flexDirection: "column",
           alignItems: "center",
           justifyContent: "center",
+          marginLeft: "-0.5rem",
         }}
       >
         <Switch
