@@ -1,5 +1,6 @@
 import TextField from "@mui/material/TextField";
 import Switch from "@mui/material/Switch";
+import { Flex } from "antd";
 
 const label = { inputProps: { "aria-label": "Checkbox demo" } };
 
@@ -26,17 +27,34 @@ export const ReloadInterval = ({
 
   return (
     <div className="aaa__header__reloadInterval">
-      <Switch
-        {...label}
-        checked={!!refreshIntervalTime}
-        onClick={() => {
-          if (refreshIntervalTime) {
-            setRefreshIntervalTime(0);
-          } else {
-            setRefreshIntervalTime(defaultRefreshIntervalTime);
-          }
+      <div
+        style={{
+          height: "3.2rem",
+          display: "flex",
+          flexDirection: "column",
+          alignItems: "center",
+          justifyContent: "center",
         }}
-      />
+      >
+        <Switch
+          {...label}
+          checked={!!refreshIntervalTime}
+          onClick={() => {
+            if (refreshIntervalTime) {
+              setRefreshIntervalTime(0);
+            } else {
+              setRefreshIntervalTime(defaultRefreshIntervalTime);
+            }
+          }}
+        />
+        <span
+          style={{
+            marginTop: "-1.4rem",
+          }}
+        >
+          Refresh
+        </span>
+      </div>
       <TextField
         ref={refreshIntervalInputRef}
         className={`aaa__header__reloadInterval__time ${
@@ -48,11 +66,11 @@ export const ReloadInterval = ({
         onInput={handleInput}
         sx={{
           "& .MuiInputBase-root": {
-            fontSize: "2rem",
-            lineHeight: "2rem",
+            fontSize: "1.4rem",
+            lineHeight: "1.4rem",
             width: "5rem",
             textAlign: "center",
-            height: "3.2rem",
+            height: "2.5rem",
           },
 
           "& .MuiInputBase-input": {
@@ -68,9 +86,8 @@ export const ReloadInterval = ({
         style={{
           lineHeight: "0.5rem",
           height: "0.5rem",
-          paddingTop: "2.5rem",
-          paddingLeft: "0.5rem",
-          fontWeight: 600,
+          paddingTop: "2rem",
+          paddingLeft: "0.3rem",
           fontSize: "1.3rem",
         }}
       >

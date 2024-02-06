@@ -1,10 +1,9 @@
 import * as React from "react";
 import { useState, useEffect, useRef, useMemo, useCallback } from "react";
-import { useLocation, useNavigate } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 
 import { TooltipOnCursor } from "../../common/TooltipOnCursor";
 
-import { datesWithinRange } from "../../../lib/helpFunctions";
 import httpService from "../../../services/httpService";
 import config from "../../../config";
 const apiEndPoint = config.apiPrefix + "/api/charts/getAAARawData";
@@ -12,14 +11,26 @@ const apiEndPoint = config.apiPrefix + "/api/charts/getAAARawData";
 import { LoadingSpinnerCentered } from "../../common/LoadingSpinnerCentered";
 
 import Button from "@mui/material/Button";
-import CachedIcon from "@mui/icons-material/Cached";
 
 import { DatePicker } from "antd";
 import dayjs from "dayjs";
-const { RangePicker } = DatePicker;
 
-import CircularIndeterminate from "../../common/CircularIndeterminate";
-import { Spin } from "antd";
+import { Header } from "./components/header";
+
+import {
+  useDateParams,
+  useColumnVisibilityParams,
+  applyColumnFilter,
+  useFilterColumnByString,
+  convertToExcel,
+} from "./lib/utils";
+
+import { FilterView } from "./components/filterView";
+
+import { Footer } from "./components/footer";
+import { ColumnVisibilityMenu } from "./components/columnsMenu";
+
+import { UpperButtons } from "./components/buttons";
 
 import { AgGridReact } from "ag-grid-react"; // the AG Grid React Component
 import "ag-grid-community/styles/ag-grid.css"; // Core grid CSS, always needed
@@ -27,140 +38,7 @@ import "ag-grid-community/styles/ag-theme-alpine.css"; // Optional theme CSS
 import "ag-grid-community/styles/ag-theme-balham.min.css"; // Optional theme CSS
 import "ag-grid-community/styles/ag-theme-material.min.css"; // Optional theme CSS
 
-import * as XLSX from "xlsx";
-
-import locale from "antd/es/date-picker/locale/en_GB";
-import { set } from "lodash";
-import { setRef } from "@mui/material";
-import { ReloadInterval } from "./components/reloadInterval";
-const rangePickerDateFormat = ["DD MMM YYYY"];
-
-function disabledDate(current) {
-  // Disable dates in the future
-  return current && current > dayjs().startOf("day");
-}
-
 const widthInPx = 145;
-
-function useDateParams() {
-  // startDate=2023-12-01&endDate=2023-12-10
-  const location = useLocation();
-
-  // Parse query parameters
-  const searchParams = new URLSearchParams(location.search);
-  const startDateQueryParam = searchParams.get("startDate");
-  const endDateQueryParam = searchParams.get("endDate");
-
-  // Function to check if a string is a valid date using dayjs
-  const isValidDate = (dateStr) => {
-    return dayjs(dateStr).isValid();
-  };
-
-  // Check if the dates are valid
-  const isStartDateValid = isValidDate(startDateQueryParam);
-  const isEndDateValid = isValidDate(endDateQueryParam);
-
-  const startDate = isStartDateValid
-    ? dayjs(startDateQueryParam).startOf("day")
-    : dayjs().subtract(1, "day").startOf("day");
-
-  const endDate = isEndDateValid
-    ? dayjs(endDateQueryParam).startOf("day")
-    : dayjs().startOf("day");
-
-  return [startDate, endDate];
-}
-
-function useColumnVisibilityParams() {
-  // columns=System%20Found|Network|Alarm%20Day
-
-  const location = useLocation();
-  // Parse query parameters
-  const searchParams = new URLSearchParams(location.search);
-  const initialColumns = searchParams.get("columns")
-    ? searchParams.get("columns").split("|").map(decodeURIComponent)
-    : [];
-
-  // State to store the current list of columns
-  const [columnList, setColumnList] = useState(initialColumns);
-
-  // Effect to update the column list when the URL changes
-  useEffect(() => {
-    setColumnList(initialColumns);
-  }, [location.search]); // Re-run the effect if the URL search parameters change
-
-  // Function to reset the column list
-  const resetColumnList = () => {
-    setColumnList(initialColumns);
-  };
-
-  return { columnList, resetColumnList };
-}
-
-function useFilterColumnByString() {
-  // filterColumn_{columnName}=string
-
-  const columnNameRegex = /filterColumn_(.+)$/;
-
-  const location = useLocation();
-
-  // Function to parse and construct initial column filter values
-  const parseColumnFilterValues = () => {
-    const searchParams = new URLSearchParams(location.search);
-    const values = {};
-
-    for (const [key, value] of searchParams.entries()) {
-      const match = key.match(columnNameRegex);
-
-      if (match) {
-        const columnName = match[1];
-
-        if (!values.hasOwnProperty(columnName)) {
-          values[columnName] = [];
-        }
-
-        // split value using pipe separator
-        const allValues = value.split("|");
-        values[columnName].push(...allValues);
-      }
-    }
-
-    return values;
-  };
-
-  // State to store the current filter values
-  const [columnFilterValues, setColumnFilterValues] = useState(
-    parseColumnFilterValues
-  );
-
-  // Effect to update the filter values when the URL changes
-  useEffect(() => {
-    setColumnFilterValues(parseColumnFilterValues());
-  }, [location.search]); // Re-run the effect if the URL search parameters change
-
-  // Function to reset the filter values
-  const resetFilterValues = () => {
-    setColumnFilterValues({});
-  };
-
-  return { columnFilterValues, resetFilterValues };
-}
-
-function applyColumnFilter(setColumnDefs, columnList) {
-  if (columnList && columnList.length > 0) {
-    let finalList = [];
-    setColumnDefs((currentDefs) => {
-      const columns = currentDefs.map((colDef) => {
-        if (!columnList.includes(colDef.headerName)) {
-          colDef["hide"] = true;
-        }
-        return colDef;
-      });
-
-      return [...columns];
-    });
-  }
-}
 
 export function AAAOutagesRawData() {
   // URL Filters
@@ -189,7 +67,7 @@ export function AAAOutagesRawData() {
 
   const [gridReady, setGridReady] = useState(false);
 
-  const gridRef = useRef(); // Optional - for accessing Grid's API
+  const gridRef = useRef();
   const menuRef = useRef(null);
   const selectAllRef = useRef(null);
   const scrollRef = useRef(0);
@@ -882,17 +760,6 @@ export function AAAOutagesRawData() {
     }
   };
 
-  // const handleColumnVisibilityChange = (columnName, isVisible) => {
-  //   setColumnDefs((currentDefs) =>
-  //     currentDefs.map((colDef) => {
-  //       if (colDef.headerName === columnName) {
-  //         return { ...colDef, hide: !isVisible };
-  //       }
-  //       return colDef;
-  //     })
-  //   );
-  // };
-
   const handleColumnVisibilityChange = useCallback((columnName, isVisible) => {
     if (menuRef && menuRef.current) {
       setScrollPosition(menuRef.current.scrollTop);
@@ -929,66 +796,6 @@ export function AAAOutagesRawData() {
     );
   };
 
-  const ColumnVisibilityMenu = ({
-    columnDefs,
-    onVisibilityChange,
-    onSelectAll,
-    onUnselectAll,
-  }) => {
-    const handleSelectAllChange = (e) => {
-      if (e.target.checked) {
-        onSelectAll();
-      } else {
-        onUnselectAll();
-      }
-    };
-
-    const ColumnCheckbox = React.memo(({ colDef, onVisibilityChange }) => {
-      return (
-        <div key={colDef.field}>
-          <label htmlFor={colDef.field}>
-            <input
-              id={colDef.field}
-              type="checkbox"
-              checked={!colDef.hide}
-              onChange={(e) =>
-                onVisibilityChange(colDef.headerName, e.target.checked)
-              }
-            />
-            &nbsp;&nbsp;{colDef.headerName}
-          </label>
-        </div>
-      );
-    });
-
-    const columnCheckboxes = useMemo(() => {
-      return columnDefs.map((colDef) => (
-        <ColumnCheckbox
-          key={colDef.field}
-          colDef={colDef}
-          onVisibilityChange={onVisibilityChange}
-        />
-      ));
-    }, [columnDefs, onVisibilityChange]); // Include necessary dependencies
-
-    return (
-      <div ref={menuRef} className="column-visibility-menu">
-        <div>
-          <input
-            type="checkbox"
-            ref={selectAllRef}
-            checked={allColumnsVisible}
-            // indeterminate={!allColumnsVisible && !allColumnsHidden}
-            onChange={handleSelectAllChange}
-          />
-          &nbsp;&nbsp;
-          <span>Select All</span>
-        </div>
-        {columnCheckboxes}
-      </div>
-    );
-  };
-
   const clearFilters = () => {
     gridRef.current.api.setFilterModel(null);
     setSearchTerm("");
@@ -1013,17 +820,6 @@ export function AAAOutagesRawData() {
       setExcelLoading({ isLoading: true });
     });
     return rowData;
-  };
-
-  const convertToExcel = (rowData) => {
-    // Create a new workbook
-    const workbook = XLSX.utils.book_new();
-    // Convert the data to a worksheet
-    const worksheet = XLSX.utils.json_to_sheet(rowData);
-    // Add the worksheet to the workbook
-    XLSX.utils.book_append_sheet(workbook, worksheet, "Sheet1");
-    // Generate an Excel file
-    XLSX.writeFile(workbook, "exported_data.xlsx");
   };
 
   const exportToExcel = () => {
@@ -1071,7 +867,6 @@ export function AAAOutagesRawData() {
       .map((col) => ({ value: col.field, label: col.headerName })),
   ];
 
-  // Dropdown change handler
   const handleDropdownChange = (e) => {
     setSearchTerm("");
     setSelectedColumn(e.target.value);
@@ -1132,48 +927,19 @@ export function AAAOutagesRawData() {
         <TooltipOnCursor
           x={tooltip.x}
           y={tooltip.y}
-          message={tooltip.message}
+          message={"tooltip.message"}
         />
       )}
-      <div className="aaa__header">
-        <div className="aaa__header__title">AAA Outages - Raw Data</div>
-
-        <div className="aaa__header__datePicker">
-          <RangePicker
-            locale={locale}
-            format={rangePickerDateFormat}
-            defaultValue={[dateRange.startDate, dateRange.endDate]}
-            className="aaa__header__datePicker--item"
-            onChange={(dates) => {
-              if (datesWithinRange(dates)) {
-                setValue(dates);
-              }
-            }}
-            disabledDate={disabledDate}
-          />
-          <div className="aaa__header__reload">
-            {masterLoading ? (
-              <CircularIndeterminate size={25} loading={true} />
-            ) : (
-              <>
-                <Button
-                  className="aaa__header__reloadButton"
-                  variant="outlined"
-                  onClick={handleRefreshClick}
-                >
-                  <CachedIcon fontSize="medium" />
-                </Button>
-              </>
-            )}
-          </div>
-          <ReloadInterval
-            defaultRefreshIntervalTime={defaultRefreshIntervalTime}
-            refreshIntervalTime={refreshIntervalTime}
-            setRefreshIntervalTime={setRefreshIntervalTime}
-            refreshIntervalInputRef={refreshIntervalInputRef}
-          />
-        </div>
-      </div>
+      <Header
+        masterLoading={masterLoading}
+        dateRange={dateRange}
+        setValue={setValue}
+        handleRefreshClick={handleRefreshClick}
+        defaultRefreshIntervalTime={defaultRefreshIntervalTime}
+        refreshIntervalTime={refreshIntervalTime}
+        setRefreshIntervalTime={setRefreshIntervalTime}
+        refreshIntervalInputRef={refreshIntervalInputRef}
+      />
 
       <div key={`wrapper-${refreshKey}`} className="datagridWrapper">
         {masterLoading ? (
@@ -1181,88 +947,30 @@ export function AAAOutagesRawData() {
         ) : (
           <div className="datagridWrapper__upper">
             {/* Filter View */}
-            {Object.keys(columnFilterValues).length !== 0 && (
-              <React.Fragment>
-                <div className="datagridWrapper__filters">
-                  <h3>Selected Filters</h3>
-                  <div>
-                    <ol>
-                      {Object.keys(columnFilterValues).map((item, id) => {
-                        return (
-                          <li key={id}>
-                            <strong>{`${item}:`} </strong>{" "}
-                            {columnFilterValues[item]}
-                          </li>
-                        );
-                      })}
-                    </ol>
-                  </div>
-                </div>
-              </React.Fragment>
-            )}
-            <div className="datagridWrapper__flexContainer">
-              <Button
-                onClick={() => setIsMenuVisible(!isMenuVisible)}
-                className={"datagridWrapper__selectColumnsBtn"}
-              >
-                Select Columns
-              </Button>
-              <Button
-                key={`filter-${refreshKeyForFilter}`}
-                variant={determineFilterButtonStatus}
-                onClick={clearFilters}
-                className={"datagridWrapper__clearFiltersBtn"}
-              >
-                Clear Filters
-              </Button>
-              <Button
-                onClick={exportToExcel}
-                disabled={excelLoading || !gridReady}
-                className={"datagridWrapper__exportToExcelBtn"}
-              >
-                Export to Excel
-              </Button>
-              {excelLoading && (
-                <span className={"datagridWrapper__loadingMessage"} style={{}}>
-                  Preparing Data Export...
-                </span>
-              )}
-              <select
-                value={selectedColumn}
-                onChange={handleDropdownChange}
-                className="datagridWrapper__selectColumn"
-              >
-                {columnSearchOptions.map((option) => (
-                  <option key={option.value} value={option.value}>
-                    {option.label}
-                  </option>
-                ))}
-              </select>
-              <input
-                type="text"
-                placeholder="Quick Search..."
-                value={searchTerm}
-                onChange={handleSearchChange}
-                className="datagridWrapper__quickSearch"
-              />
-              {isMenuVisible && (
-                <ColumnVisibilityMenu
-                  columnDefs={[...columnDefs]}
-                  onVisibilityChange={handleColumnVisibilityChange}
-                  onSelectAll={selectAllColumns}
-                  onUnselectAll={unselectAllColumns}
-                />
-              )}
-            </div>
-            {agGridFilter && (
-              <p
-                style={{
-                  fontSize: "2rem",
-                }}
-              >
-                Table Filters: {JSON.stringify(agGridFilter)}
-              </p>
-            )}
+            <FilterView columnFilterValues={columnFilterValues} />
+            <UpperButtons
+              isMenuVisible={isMenuVisible}
+              refreshKeyForFilter={refreshKeyForFilter}
+              determineFilterButtonStatus={determineFilterButtonStatus}
+              clearFilters={clearFilters}
+              exportToExcel={exportToExcel}
+              excelLoading={excelLoading}
+              gridReady={gridReady}
+              selectedColumn={selectedColumn}
+              handleDropdownChange={handleDropdownChange}
+              columnSearchOptions={columnSearchOptions}
+              searchTerm={searchTerm}
+              handleSearchChange={handleSearchChange}
+              setIsMenuVisible={setIsMenuVisible}
+              columnDefs={columnDefs}
+              handleColumnVisibilityChange={handleColumnVisibilityChange}
+              selectAllColumns={selectAllColumns}
+              unselectAllColumns={unselectAllColumns}
+              menuRef={menuRef}
+              selectAllRef={selectAllRef}
+              allColumnsVisible={allColumnsVisible}
+            />
+
             {/* On div wrapping Grid a) specify theme CSS Class Class and b) sets Grid size */}
             <div
               className="datagridWrapper__grid ag-theme-balham"
@@ -1288,17 +996,10 @@ export function AAAOutagesRawData() {
                 onFilterChanged={onFilterChanged}
               />
             </div>
-            <div className="datagridWrapper__rowsPerPage">
-              <span className="datagridWrapper__rowsPerPage__span">
-                Rows Per Page:
-              </span>
-              <input
-                className="datagridWrapper__rowsPerPage__input"
-                type="number"
-                value={rowsPerPage}
-                onChange={handleRowsPerPage}
-              />
-            </div>
+            <Footer
+              rowsPerPage={rowsPerPage}
+              handleRowsPerPage={handleRowsPerPage}
+            />
           </div>
         )}
       </div>

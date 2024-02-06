@@ -41,6 +41,7 @@
 
     &__reloadInterval {
       display: flex;
+      padding-right: 1rem;
 
       &__time.inactive {
         visibility: hidden;
