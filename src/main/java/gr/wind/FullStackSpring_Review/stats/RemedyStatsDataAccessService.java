@@ -623,9 +623,15 @@ public class RemedyStatsDataAccessService {
                    NCE_PROBLEM,
                    NCE_OPERATIONAL_DATA,
                    AMS_EVENT_TIME,
+                   
+                   AMS_CLEARED_TIME,
+                   
                    AMS_PROBABLE_CAUSE,
                    AMS_SPECIFIC_PROBLEM,
                    AMS_FTTH_EVENT_TIME,
+                   
+                   AMS_FTTH_CLEARED_TIME,
+                   
                    AMS_FTTH_PROBABLE_CAUSE,
                    AMS_FTTH_SPECIFIC_PROBLEM,
                    SOEM_EVENT_ID,
@@ -708,9 +714,11 @@ public class RemedyStatsDataAccessService {
                     String NCE_OPERATIONAL_DATA = resultSet.getString("NCE_OPERATIONAL_DATA");
 
                     String AMS_EVENT_TIME = resultSet.getString("AMS_EVENT_TIME");
+                    String AMS_CLEARED_TIME = resultSet.getString("AMS_CLEARED_TIME");
                     String AMS_PROBABLE_CAUSE = resultSet.getString("AMS_PROBABLE_CAUSE");
                     String AMS_SPECIFIC_PROBLEM = resultSet.getString("AMS_SPECIFIC_PROBLEM");
                     String AMS_FTTH_EVENT_TIME = resultSet.getString("AMS_FTTH_EVENT_TIME");
+                    String AMS_FTTH_CLEARED_TIME = resultSet.getString("AMS_FTTH_CLEARED_TIME");
                     String AMS_FTTH_PROBABLE_CAUSE = resultSet.getString("AMS_FTTH_PROBABLE_CAUSE");
                     String AMS_FTTH_SPECIFIC_PROBLEM = resultSet.getString("AMS_FTTH_SPECIFIC_PROBLEM");
                     String SOEM_EVENT_ID = resultSet.getString("SOEM_EVENT_ID");
@@ -736,9 +744,11 @@ public class RemedyStatsDataAccessService {
                             NCE_EVENT_ID, NCE_ALARM_START_DATE,
                             NCE_ALARM_END_DATE, NCE_PROBLEM, NCE_OPERATIONAL_DATA,
                             AMS_EVENT_TIME,
+                            AMS_CLEARED_TIME,
                             AMS_PROBABLE_CAUSE,
                             AMS_SPECIFIC_PROBLEM,
                             AMS_FTTH_EVENT_TIME,
+                            AMS_FTTH_CLEARED_TIME,
                             AMS_FTTH_PROBABLE_CAUSE,
                             AMS_FTTH_SPECIFIC_PROBLEM,
                             SOEM_EVENT_ID,

@@ -54,9 +54,12 @@ public class AAARawData1 {
     private final String NCE_OPERATIONAL_DATA;
 
     private final String AMS_EVENT_TIME;
+
+    private final String AMS_CLEARED_TIME;
     private final String AMS_PROBABLE_CAUSE;
     private final String AMS_SPECIFIC_PROBLEM;
     private final String AMS_FTTH_EVENT_TIME;
+    private final String AMS_FTTH_CLEARED_TIME;
     private final String AMS_FTTH_PROBABLE_CAUSE;
     private final String AMS_FTTH_SPECIFIC_PROBLEM;
     private final String SOEM_EVENT_ID;
@@ -92,9 +95,11 @@ public class AAARawData1 {
                        String NCE_EVENT_ID, String NCE_ALARM_START_DATE, String NCE_ALARM_END_DATE,
                        String NCE_PROBLEM, String NCE_OPERATIONAL_DATA,
                        String AMS_EVENT_TIME,
+                       String AMS_CLEARED_TIME,
                        String AMS_PROBABLE_CAUSE,
                        String AMS_SPECIFIC_PROBLEM,
                        String AMS_FTTH_EVENT_TIME,
+                       String AMS_FTTH_CLEARED_TIME,
                        String AMS_FTTH_PROBABLE_CAUSE,
                        String AMS_FTTH_SPECIFIC_PROBLEM,
                        String SOEM_EVENT_ID,
@@ -161,9 +166,11 @@ public class AAARawData1 {
         this.NCE_PROBLEM = NCE_PROBLEM;
         this.NCE_OPERATIONAL_DATA = NCE_OPERATIONAL_DATA;
         this.AMS_EVENT_TIME = AMS_EVENT_TIME;
+        this.AMS_CLEARED_TIME = AMS_CLEARED_TIME;
         this.AMS_PROBABLE_CAUSE = AMS_PROBABLE_CAUSE;
         this.AMS_SPECIFIC_PROBLEM = AMS_SPECIFIC_PROBLEM;
         this.AMS_FTTH_EVENT_TIME = AMS_FTTH_EVENT_TIME;
+        this.AMS_FTTH_CLEARED_TIME = AMS_FTTH_CLEARED_TIME;
         this.AMS_FTTH_PROBABLE_CAUSE = AMS_FTTH_PROBABLE_CAUSE;
         this.AMS_FTTH_SPECIFIC_PROBLEM = AMS_FTTH_SPECIFIC_PROBLEM;
         this.SOEM_EVENT_ID = SOEM_EVENT_ID;
@@ -178,6 +185,14 @@ public class AAARawData1 {
         this.OUTAGE_TYPE_DESC =OUTAGE_TYPE_DESC;
         this.OUTAGE_TYPE = OUTAGE_TYPE;
 
+    }
+
+    public String getAMS_FTTH_CLEARED_TIME() {
+        return AMS_FTTH_CLEARED_TIME;
+    }
+
+    public String getAMS_CLEARED_TIME() {
+        return AMS_CLEARED_TIME;
     }
 
     public String getZBX_RMU_EVENT_ID() {
