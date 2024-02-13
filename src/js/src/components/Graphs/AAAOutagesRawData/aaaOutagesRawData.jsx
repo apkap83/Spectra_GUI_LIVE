@@ -455,6 +455,13 @@ export function AAAOutagesRawData() {
       width: widthInPx + 50,
     },
     {
+      field: "ams_CLEARED_TIME",
+      filter: true,
+      headerName: "AMS Cleared Time",
+      headerClass: "amsHeaderClass",
+      width: widthInPx + 50,
+    },
+    {
       field: "ams_PROBABLE_CAUSE",
       filter: true,
       headerName: "AMS Probable Cause",
@@ -472,6 +479,13 @@ export function AAAOutagesRawData() {
       field: "ams_FTTH_EVENT_TIME",
       filter: true,
       headerName: "AMS FTTH Event Time",
+      headerClass: "amsFTTHHeaderClass",
+      width: widthInPx + 50,
+    },
+    {
+      field: "ams_FTTH_CLEARED_TIME",
+      filter: true,
+      headerName: "AMS FTTH Cleared Time",
       headerClass: "amsFTTHHeaderClass",
       width: widthInPx + 50,
     },
