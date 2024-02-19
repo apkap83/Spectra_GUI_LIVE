@@ -589,6 +589,10 @@ public class RemedyStatsDataAccessService {
                    OTE_SITE_NAME,
                    OTE_SITE_AREA,
                    POST_CODE,
+                   
+                   OTHER_CARRIER_SYMEFS,
+                   NOVA_SYMEFS,
+                   
                    LONGITUDE,
                    LATITUDE,
                    PROBLEM,
@@ -606,6 +610,18 @@ public class RemedyStatsDataAccessService {
                    RMD_OPERATIONAL_CATEG_TIER_3,
                    RMD_RESOLUTION_CATEG_TIER_1,
                    RMD_RESOLUTION_CATEG_TIER_2,
+                   
+                   RTCS_INCIDENT_NUMBER,
+                   RTCS_ALARM_START_DATE,
+                   RTCS_ALARM_END_DATE,
+                   RTCS_NOTES,
+                   RTCS_OPERATIONAL_CATEG_TIER_1,
+                   RTCS_OPERATIONAL_CATEG_TIER_2,
+                   RTCS_OPERATIONAL_CATEG_TIER_3,
+                   RTCS_RESOLUTION_CATEG_TIER_1,
+                   RTCS_RESOLUTION_CATEG_TIER_2,	
+                   
+                   
                    ZBX_EVENT_ID,
                    ZBX_PROBLEM,
                    ZBX_ALARM_START_DATE,
@@ -641,6 +657,9 @@ public class RemedyStatsDataAccessService {
                    HDM_LAST_SNAPSHOT_DATE,
                    HDM_MATCHING_OUTCOME,
                    HDM_MATCHING_OUTCOME_FULL,
+                   
+                   IS_FILTERED,
+                   
                    SYSTEM_FOUND,
                    SYSTEM_GROUP_FOUND,
                    OUTAGE_TYPE_DESC,
@@ -679,6 +698,10 @@ public class RemedyStatsDataAccessService {
                     String OTE_SITE_NAME = resultSet.getString("OTE_SITE_NAME");
                     String OTE_SITE_AREA = resultSet.getString("OTE_SITE_AREA");
                     String POST_CODE = resultSet.getString("POST_CODE");
+
+                    String OTHER_CARRIER_SYMEFS = resultSet.getString("OTHER_CARRIER_SYMEFS");
+                    String NOVA_SYMEFS = resultSet.getString("NOVA_SYMEFS");
+
                     String LONGITUDE = resultSet.getString("LONGITUDE");
                     String LATITUDE = resultSet.getString("LATITUDE");
                     String PROBLEM = resultSet.getString("PROBLEM");
@@ -696,6 +719,17 @@ public class RemedyStatsDataAccessService {
                     String RMD_OPERATIONAL_CATEG_TIER_3 = resultSet.getString("RMD_OPERATIONAL_CATEG_TIER_3");
                     String RMD_RESOLUTION_CATEG_TIER_1 = resultSet.getString("RMD_RESOLUTION_CATEG_TIER_1");
                     String RMD_RESOLUTION_CATEG_TIER_2 = resultSet.getString("RMD_RESOLUTION_CATEG_TIER_2");
+
+                    String RTCS_INCIDENT_NUMBER = resultSet.getString("RTCS_INCIDENT_NUMBER");
+                    String RTCS_ALARM_START_DATE = resultSet.getString("RTCS_ALARM_START_DATE");
+                    String RTCS_ALARM_END_DATE = resultSet.getString("RTCS_ALARM_END_DATE");
+                    String RTCS_NOTES = resultSet.getString("RTCS_NOTES");
+                    String RTCS_OPERATIONAL_CATEG_TIER_1 = resultSet.getString("RTCS_OPERATIONAL_CATEG_TIER_1");
+                    String RTCS_OPERATIONAL_CATEG_TIER_2 = resultSet.getString("RTCS_OPERATIONAL_CATEG_TIER_2");
+                    String RTCS_OPERATIONAL_CATEG_TIER_3 = resultSet.getString("RTCS_OPERATIONAL_CATEG_TIER_3");
+                    String RTCS_RESOLUTION_CATEG_TIER_1 = resultSet.getString("RTCS_RESOLUTION_CATEG_TIER_1");
+                    String RTCS_RESOLUTION_CATEG_TIER_2 = resultSet.getString("RTCS_RESOLUTION_CATEG_TIER_2");
+
                     String ZBX_EVENT_ID = resultSet.getString("ZBX_EVENT_ID");
                     String ZBX_PROBLEM = resultSet.getString("ZBX_PROBLEM");
                     String ZBX_ALARM_START_DATE = resultSet.getString("ZBX_ALARM_START_DATE");
@@ -728,6 +762,9 @@ public class RemedyStatsDataAccessService {
                     String HDM_LAST_SNAPSHOT_DATE = resultSet.getString("HDM_LAST_SNAPSHOT_DATE");
                     String HDM_MATCHING_OUTCOME = resultSet.getString("HDM_MATCHING_OUTCOME");
                     String HDM_MATCHING_OUTCOME_FULL = resultSet.getString("HDM_MATCHING_OUTCOME_FULL");
+
+                    String IS_FILTERED = resultSet.getString("IS_FILTERED");
+
                     String SYSTEM_FOUND = resultSet.getString("SYSTEM_FOUND");
                     String SYSTEM_GROUP_FOUND = resultSet.getString("SYSTEM_GROUP_FOUND");
                     String OUTAGE_TYPE_DESC = resultSet.getString("OUTAGE_TYPE_DESC");
@@ -735,10 +772,19 @@ public class RemedyStatsDataAccessService {
 
                     return new AAARawData1(ID, ALARM_DAY, MATCHING_COMMENTS, NETWORK, DSLAM_OWNER,
                             DSLAM_OWNER_GROUP, OUTAGE_ID, ALARM_START_DATE, ALARM_END_DATE, AAA_OUTAGE_DURATION_SEC, MAINTENANCE_PERIOD, DSLAM, DSLAM_SLOT,
-                            TECHNOLOGY, OTE_SITE_NAME, OTE_SITE_AREA, POST_CODE, LONGITUDE, LATITUDE, PROBLEM,
+                            TECHNOLOGY, OTE_SITE_NAME, OTE_SITE_AREA, POST_CODE, OTHER_CARRIER_SYMEFS, NOVA_SYMEFS, LONGITUDE, LATITUDE, PROBLEM,
                             DSLAM_USERS, DATA_AFFECTED, TOTAL_USERS_CALLED, SMP_UNIQUE_USERS, RMD_INCIDENT_NUMBER, RMD_IS_SCHEDULED, RMD_ALARM_START_DATE,
                             RMD_ALARM_END_DATE, RMD_SPECTRA_HIERARCHY, RMD_OPERATIONAL_CATEG_TIER_1, RMD_OPERATIONAL_CATEG_TIER_2,
                             RMD_OPERATIONAL_CATEG_TIER_3, RMD_RESOLUTION_CATEG_TIER_1, RMD_RESOLUTION_CATEG_TIER_2,
+                            RTCS_INCIDENT_NUMBER,
+                            RTCS_ALARM_START_DATE,
+                            RTCS_ALARM_END_DATE,
+                            RTCS_NOTES,
+                            RTCS_OPERATIONAL_CATEG_TIER_1,
+                            RTCS_OPERATIONAL_CATEG_TIER_2,
+                            RTCS_OPERATIONAL_CATEG_TIER_3,
+                            RTCS_RESOLUTION_CATEG_TIER_1,
+                            RTCS_RESOLUTION_CATEG_TIER_2,
                             ZBX_EVENT_ID, ZBX_PROBLEM, ZBX_ALARM_START_DATE, ZBX_ALARM_END_DATE,
                             ZBX_RMU_EVENT_ID, ZBX_RMU_PROBLEM, ZBX_RMU_ALARM_START_DATE, ZBX_RMU_ALARM_END_DATE,
                             NCE_EVENT_ID, NCE_ALARM_START_DATE,
@@ -758,6 +804,7 @@ public class RemedyStatsDataAccessService {
                             HDM_LAST_SNAPSHOT_DATE,
                             HDM_MATCHING_OUTCOME,
                             HDM_MATCHING_OUTCOME_FULL,
+                            IS_FILTERED,
                             SYSTEM_FOUND,
                             SYSTEM_GROUP_FOUND,
                             OUTAGE_TYPE_DESC,

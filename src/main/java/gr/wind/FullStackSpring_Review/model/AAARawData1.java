@@ -20,6 +20,10 @@ public class AAARawData1 {
     private final String OTE_SITE_NAME;
     private final String OTE_SITE_AREA;
     private final String POST_CODE;
+
+    private final String OTHER_CARRIER_SYMEFS;
+    private final String NOVA_SYMEFS;
+
     private final String LONGITUDE;
     private final String LATITUDE;
     private final String PROBLEM;
@@ -37,6 +41,19 @@ public class AAARawData1 {
     private final String RMD_OPERATIONAL_CATEG_TIER_3;
     private final String RMD_RESOLUTION_CATEG_TIER_1;
     private final String RMD_RESOLUTION_CATEG_TIER_2;
+
+
+    private final String RTCS_INCIDENT_NUMBER;
+    private final String RTCS_ALARM_START_DATE;
+    private final String RTCS_ALARM_END_DATE;
+    private final String RTCS_NOTES;
+    private final String RTCS_OPERATIONAL_CATEG_TIER_1;
+    private final String RTCS_OPERATIONAL_CATEG_TIER_2;
+    private final String RTCS_OPERATIONAL_CATEG_TIER_3;
+    private final String RTCS_RESOLUTION_CATEG_TIER_1;
+    private final String RTCS_RESOLUTION_CATEG_TIER_2;
+
+
     private final String ZBX_EVENT_ID;
     private final String ZBX_PROBLEM;
     private final String ZBX_ALARM_START_DATE;
@@ -69,6 +86,7 @@ public class AAARawData1 {
     private final String HDM_LAST_SNAPSHOT_DATE;
     private final String HDM_MATCHING_OUTCOME;
     private final String HDM_MATCHING_OUTCOME_FULL;
+    private final String IS_FILTERED;
     private final String SYSTEM_FOUND;
     private final String SYSTEM_GROUP_FOUND;
     private final String OUTAGE_TYPE_DESC;
@@ -78,13 +96,28 @@ public class AAARawData1 {
                        String DSLAM_OWNER, String DSLAM_OWNER_GROUP, String OUTAGE_ID,
                        String ALARM_START_DATE, String ALARM_END_DATE, String AAA_OUTAGE_DURATION_SEC, String MAINTENANCE_PERIOD,
                        String DSLAM, String DSLAM_SLOT, String TECHNOLOGY, String OTE_SITE_NAME,
-                       String OTE_SITE_AREA, String POST_CODE, String LONGITUDE, String LATITUDE,
+                       String OTE_SITE_AREA, String POST_CODE,
+                       String OTHER_CARRIER_SYMEFS,
+                       String NOVA_SYMEFS,
+                       String LONGITUDE, String LATITUDE,
                        String PROBLEM, String DSLAM_USERS, String DATA_AFFECTED, String TOTAL_USERS_CALLED, String SMP_UNIQUE_USERS,
                        String RMD_INCIDENT_NUMBER, String RMD_IS_SCHEDULED, String RMD_ALARM_START_DATE,
                        String RMD_ALARM_END_DATE, String RMD_SPECTRA_HIERARCHY,
                        String RMD_OPERATIONAL_CATEG_TIER_1, String RMD_OPERATIONAL_CATEG_TIER_2,
                        String RMD_OPERATIONAL_CATEG_TIER_3, String RMD_RESOLUTION_CATEG_TIER_1,
-                       String RMD_RESOLUTION_CATEG_TIER_2, String ZBX_EVENT_ID,
+                       String RMD_RESOLUTION_CATEG_TIER_2,
+
+                       String RTCS_INCIDENT_NUMBER,
+                       String RTCS_ALARM_START_DATE,
+                       String RTCS_ALARM_END_DATE,
+                       String RTCS_NOTES,
+                       String RTCS_OPERATIONAL_CATEG_TIER_1,
+                       String RTCS_OPERATIONAL_CATEG_TIER_2,
+                       String RTCS_OPERATIONAL_CATEG_TIER_3,
+                       String RTCS_RESOLUTION_CATEG_TIER_1,
+                       String RTCS_RESOLUTION_CATEG_TIER_2,
+
+                       String ZBX_EVENT_ID,
                        String ZBX_PROBLEM, String ZBX_ALARM_START_DATE, String ZBX_ALARM_END_DATE,
 
                        String ZBX_RMU_EVENT_ID,
@@ -109,6 +142,7 @@ public class AAARawData1 {
                        String HDM_LAST_SNAPSHOT_DATE,
                        String HDM_MATCHING_OUTCOME,
                        String HDM_MATCHING_OUTCOME_FULL,
+                       String IS_FILTERED,
                        String SYSTEM_FOUND,
                        String SYSTEM_GROUP_FOUND,
                        String OUTAGE_TYPE_DESC,
@@ -133,6 +167,8 @@ public class AAARawData1 {
         this.OTE_SITE_NAME = OTE_SITE_NAME;
         this.OTE_SITE_AREA = OTE_SITE_AREA;
         this.POST_CODE = POST_CODE;
+        this.OTHER_CARRIER_SYMEFS =OTHER_CARRIER_SYMEFS;
+        this.NOVA_SYMEFS = NOVA_SYMEFS;
         this.LONGITUDE = LONGITUDE;
         this.LATITUDE = LATITUDE;
         this.PROBLEM = PROBLEM;
@@ -150,6 +186,16 @@ public class AAARawData1 {
         this.RMD_OPERATIONAL_CATEG_TIER_3 = RMD_OPERATIONAL_CATEG_TIER_3;
         this.RMD_RESOLUTION_CATEG_TIER_1 = RMD_RESOLUTION_CATEG_TIER_1;
         this.RMD_RESOLUTION_CATEG_TIER_2 = RMD_RESOLUTION_CATEG_TIER_2;
+        this.RTCS_INCIDENT_NUMBER =RTCS_INCIDENT_NUMBER;
+        this.RTCS_ALARM_START_DATE =RTCS_ALARM_START_DATE;
+        this.RTCS_ALARM_END_DATE = RTCS_ALARM_END_DATE;
+        this.RTCS_NOTES = RTCS_NOTES;
+        this.RTCS_OPERATIONAL_CATEG_TIER_1 =RTCS_OPERATIONAL_CATEG_TIER_1;
+        this.RTCS_OPERATIONAL_CATEG_TIER_2 = RTCS_OPERATIONAL_CATEG_TIER_2;
+        this.RTCS_OPERATIONAL_CATEG_TIER_3 = RTCS_OPERATIONAL_CATEG_TIER_3;
+        this.RTCS_RESOLUTION_CATEG_TIER_1 = RTCS_RESOLUTION_CATEG_TIER_1;
+        this.RTCS_RESOLUTION_CATEG_TIER_2 = RTCS_RESOLUTION_CATEG_TIER_2;
+
         this.ZBX_EVENT_ID = ZBX_EVENT_ID;
         this.ZBX_PROBLEM = ZBX_PROBLEM;
         this.ZBX_ALARM_START_DATE = ZBX_ALARM_START_DATE;
@@ -180,11 +226,60 @@ public class AAARawData1 {
         this.HDM_LAST_SNAPSHOT_DATE = HDM_LAST_SNAPSHOT_DATE;
         this.HDM_MATCHING_OUTCOME = HDM_MATCHING_OUTCOME;
         this.HDM_MATCHING_OUTCOME_FULL = HDM_MATCHING_OUTCOME_FULL;
+        this.IS_FILTERED = IS_FILTERED;
         this.SYSTEM_FOUND =SYSTEM_FOUND;
         this.SYSTEM_GROUP_FOUND = SYSTEM_GROUP_FOUND;
         this.OUTAGE_TYPE_DESC =OUTAGE_TYPE_DESC;
         this.OUTAGE_TYPE = OUTAGE_TYPE;
 
+    }
+
+    public String getOTHER_CARRIER_SYMEFS() {
+        return OTHER_CARRIER_SYMEFS;
+    }
+
+    public String getNOVA_SYMEFS() {
+        return NOVA_SYMEFS;
+    }
+
+    public String getRTCS_INCIDENT_NUMBER() {
+        return RTCS_INCIDENT_NUMBER;
+    }
+
+    public String getRTCS_ALARM_START_DATE() {
+        return RTCS_ALARM_START_DATE;
+    }
+
+    public String getRTCS_ALARM_END_DATE() {
+        return RTCS_ALARM_END_DATE;
+    }
+
+    public String getRTCS_NOTES() {
+        return RTCS_NOTES;
+    }
+
+    public String getRTCS_OPERATIONAL_CATEG_TIER_1() {
+        return RTCS_OPERATIONAL_CATEG_TIER_1;
+    }
+
+    public String getRTCS_OPERATIONAL_CATEG_TIER_2() {
+        return RTCS_OPERATIONAL_CATEG_TIER_2;
+    }
+
+    public String getRTCS_OPERATIONAL_CATEG_TIER_3() {
+        return RTCS_OPERATIONAL_CATEG_TIER_3;
+    }
+
+    public String getRTCS_RESOLUTION_CATEG_TIER_1() {
+        return RTCS_RESOLUTION_CATEG_TIER_1;
+    }
+
+    public String getRTCS_RESOLUTION_CATEG_TIER_2() {
+        return RTCS_RESOLUTION_CATEG_TIER_2;
+    }
+
+    public String getIS_FILTERED() {
+        return IS_FILTERED;
     }
 
     public String getAMS_FTTH_CLEARED_TIME() {
