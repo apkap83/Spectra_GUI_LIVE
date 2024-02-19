@@ -336,6 +336,24 @@ export function AAAOutagesRawData() {
       // type: "number",
       width: widthInPx,
     },
+
+    {
+      field: "other_CARRIER_SYMEFS",
+      filter: true,
+      headerName: "Other Carrier Symefs",
+      headerClass: "aaaHeaderClass",
+      // type: "number",
+      width: widthInPx + 50,
+    },
+    {
+      field: "nova_SYMEFS",
+      filter: true,
+      headerName: "Nova Symefs",
+      headerClass: "aaaHeaderClass",
+      // type: "number",
+      width: widthInPx,
+    },
+
     {
       field: "longitude",
       filter: true,
@@ -468,13 +486,83 @@ export function AAAOutagesRawData() {
       headerClass: "remedyHeaderClass",
       width: widthInPx + 120,
     },
+
+    {
+      field: "rtcs_INCIDENT_NUMBER",
+      filter: true,
+      headerName: "RTCS Incident Number",
+      headerClass: "rtcsHeaderClass",
+      width: widthInPx + 25,
+    },
+    {
+      field: "rtcs_ALARM_START_DATE",
+      filter: true,
+      headerName: "RTCS Alarm Start Date",
+      headerClass: "rtcsHeaderClass",
+      width: widthInPx + 37,
+    },
+    {
+      field: "rtcs_ALARM_END_DATE",
+      filter: true,
+      headerName: "RTCS Alarm End Date",
+      headerClass: "rtcsHeaderClass",
+      width: widthInPx + 30,
+    },
+
+    {
+      field: "rtcs_NOTES",
+      filter: true,
+      headerName: "RTCS Notes",
+      headerClass: "rtcsHeaderClass",
+      width: widthInPx + 200,
+    },
+
+    {
+      field: "rtcs_OPERATIONAL_CATEG_TIER_1",
+      filter: true,
+      headerName: "RTCS Operational Categ. Tier 1",
+      headerClass: "rtcsHeaderClass",
+      width: widthInPx + 80,
+    },
+
+    {
+      field: "rtcs_OPERATIONAL_CATEG_TIER_2",
+      filter: true,
+      headerName: "RTCS Operational Categ. Tier 2",
+      headerClass: "rtcsHeaderClass",
+      width: widthInPx + 80,
+    },
+
+    {
+      field: "rtcs_OPERATIONAL_CATEG_TIER_3",
+      filter: true,
+      headerName: "RTCS Operational Categ. Tier 3",
+      headerClass: "rtcsHeaderClass",
+      width: widthInPx + 100,
+    },
+
+    {
+      field: "rtcs_RESOLUTION_CATEG_TIER_1",
+      filter: true,
+      headerName: "RTCS Resolution Categ. Tier 1",
+      headerClass: "rtcsHeaderClass",
+      width: widthInPx + 60,
+    },
+
+    {
+      field: "rtcs_RESOLUTION_CATEG_TIER_2",
+      filter: true,
+      headerName: "RTCS Resolution Categ. Tier 2",
+      headerClass: "rtcsHeaderClass",
+      width: widthInPx + 60,
+    },
+
     {
       field: "zbx_EVENT_ID",
       filter: true,
       headerName: "ZBX Event ID",
       headerClass: "zabbixHeaderClass",
       width: widthInPx,
-
       type: "numericColumn",
     },
     {
@@ -656,6 +744,14 @@ export function AAAOutagesRawData() {
       headerName: "HDM Matching Outcome Full",
       headerClass: "hdmHeaderClass",
       width: widthInPx + 600,
+    },
+
+    {
+      field: "is_FILTERED",
+      filter: true,
+      headerName: "Is Filtered",
+      headerClass: "hdmHeaderClass",
+      width: widthInPx,
     },
   ]);
 
