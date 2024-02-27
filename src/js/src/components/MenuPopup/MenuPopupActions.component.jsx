@@ -56,7 +56,7 @@ export function ActionsMenu(
     setShowModalAlterBackup,
   } = restContextProperties;
 
-  const incidentIsOpen = incident.IncidentStatus === "OPEN";
+  const incidentIsOpen = incident.incidentStatus === "OPEN";
   return (
     <PopupState variant="popover" popupId="demo-popup-menu">
       {(popupState) => (
@@ -101,7 +101,7 @@ export function ActionsMenu(
                     setSelectedIncident(incident);
                   }}
                 >
-                  {incident.WillBePublished === "Yes" ? (
+                  {incident.willBePublished === "Yes" ? (
                     <span style={{ color: "red", fontSize: "1.2rem" }}>
                       <DisabledByDefaultIcon />
                       &nbsp;

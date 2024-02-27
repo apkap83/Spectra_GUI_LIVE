@@ -18,13 +18,12 @@ import HistoryToggleOffIcon from "@mui/icons-material/HistoryToggleOff";
 import TimelineIcon from "@mui/icons-material/Timeline";
 import RawOnIcon from "@mui/icons-material/RawOn";
 import TextSnippetOutlinedIcon from "@mui/icons-material/TextSnippetOutlined";
+import AutoModeOutlinedIcon from "@mui/icons-material/AutoModeOutlined";
 
 export function MyHeader() {
   const userDetails = useContext(UserContext);
-  console.log("userDetails", userDetails);
   const isUserAdmin =
-    userDetails &&
-    userDetails.permissions.includes(PERMISSION.USER_CAN_MANAGE_USERS);
+    userDetails && userDetails.roles.includes(PERMISSION.USER_CAN_MANAGE_USERS);
 
   return (
     <>
@@ -144,7 +143,7 @@ export function MyHeader() {
 
               <Nav>
                 <Nav.Link as={Link} to="/logout" className="navBar__link">
-                  Log Out &mdash; {userDetails?.userName}
+                  Log Out &mdash; {userDetails?.username}
                 </Nav.Link>
               </Nav>
             </Navbar.Collapse>

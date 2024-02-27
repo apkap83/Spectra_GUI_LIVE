@@ -39,6 +39,10 @@ export const getColorMsg = (text: string) => {
     return <span>Default</span>;
   }
 
+  if (text === "Default") {
+    return <span>Default</span>;
+  }
+
   return (
     <span style={{ color: "#1890ff" }}>
       <b>{text}</b>
