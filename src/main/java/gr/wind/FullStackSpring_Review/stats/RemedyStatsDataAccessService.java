@@ -655,7 +655,7 @@ public class RemedyStatsDataAccessService {
                    SOEM_ALARM_TYPE,
                    SOEM_PROBABLE_CAUSE,
                    HDM_LAST_SNAPSHOT_DATE,
-                   HDM_MATCHING_OUTCOME,
+                   HDM_REDEFINED_OUTCOME,
                    HDM_MATCHING_OUTCOME_FULL,
                    
                    IS_FILTERED,
@@ -760,7 +760,7 @@ public class RemedyStatsDataAccessService {
                     String SOEM_ALARM_TYPE = resultSet.getString("SOEM_ALARM_TYPE");
                     String SOEM_PROBABLE_CAUSE = resultSet.getString("SOEM_PROBABLE_CAUSE");
                     String HDM_LAST_SNAPSHOT_DATE = resultSet.getString("HDM_LAST_SNAPSHOT_DATE");
-                    String HDM_MATCHING_OUTCOME = resultSet.getString("HDM_MATCHING_OUTCOME");
+                    String HDM_MATCHING_OUTCOME = resultSet.getString("HDM_REDEFINED_OUTCOME");
                     String HDM_MATCHING_OUTCOME_FULL = resultSet.getString("HDM_MATCHING_OUTCOME_FULL");
 
                     String IS_FILTERED = resultSet.getString("IS_FILTERED");
