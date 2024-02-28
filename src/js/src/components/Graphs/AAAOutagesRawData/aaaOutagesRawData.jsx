@@ -619,6 +619,36 @@ export function AAAOutagesRawData() {
       headerClass: "soemHeaderClass",
       width: widthInPx + 50,
     },
+
+    {
+      field: "symefs_ALARM_EVENT_ID",
+      filter: true,
+      headerName: "SYMEFS Alarm Event ID",
+      headerClass: "symefsHeaderClass",
+      width: widthInPx + 50,
+    },
+    {
+      field: "symefs_ALARM_SYMEFS_NAME",
+      filter: true,
+      headerName: "SYMEFS Alarm SYMEFS Name",
+      headerClass: "symefsHeaderClass",
+      width: widthInPx + 70,
+    },
+    {
+      field: "symefs_ALARM_EVENT_TIME",
+      filter: true,
+      headerName: "SYMEFS Alarm Time",
+      headerClass: "symefsHeaderClass",
+      width: widthInPx + 40,
+    },
+    {
+      field: "symefs_ALARM_VALUE",
+      filter: true,
+      headerName: "SYMEFS Alarm Value",
+      headerClass: "symefsHeaderClass",
+      width: widthInPx + 40,
+    },
+
     {
       field: "hdm_LAST_SNAPSHOT_DATE",
       filter: true,
