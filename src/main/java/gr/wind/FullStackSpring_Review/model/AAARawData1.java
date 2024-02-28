@@ -83,6 +83,12 @@ public class AAARawData1 {
     private final String SOEM_RAISED_ON;
     private final String SOEM_ALARM_TYPE;
     private final String SOEM_PROBABLE_CAUSE;
+
+    private final String SYMEFS_ALARM_EVENT_ID;
+    private final String SYMEFS_ALARM_SYMEFS_NAME;
+    private final String SYMEFS_ALARM_EVENT_TIME;
+    private final String SYMEFS_ALARM_VALUE;
+
     private final String HDM_LAST_SNAPSHOT_DATE;
     private final String HDM_MATCHING_OUTCOME;
     private final String HDM_MATCHING_OUTCOME_FULL;
@@ -139,6 +145,12 @@ public class AAARawData1 {
                        String SOEM_RAISED_ON,
                        String SOEM_ALARM_TYPE,
                        String SOEM_PROBABLE_CAUSE,
+
+                       String SYMEFS_ALARM_EVENT_ID,
+                       String SYMEFS_ALARM_SYMEFS_NAME,
+                       String SYMEFS_ALARM_EVENT_TIME,
+                       String SYMEFS_ALARM_VALUE,
+
                        String HDM_LAST_SNAPSHOT_DATE,
                        String HDM_MATCHING_OUTCOME,
                        String HDM_MATCHING_OUTCOME_FULL,
@@ -223,6 +235,12 @@ public class AAARawData1 {
         this.SOEM_RAISED_ON = SOEM_RAISED_ON;
         this.SOEM_ALARM_TYPE =SOEM_ALARM_TYPE;
         this.SOEM_PROBABLE_CAUSE = SOEM_PROBABLE_CAUSE;
+
+        this.SYMEFS_ALARM_EVENT_ID = SYMEFS_ALARM_EVENT_ID;
+        this.SYMEFS_ALARM_SYMEFS_NAME = SYMEFS_ALARM_SYMEFS_NAME;
+        this.SYMEFS_ALARM_EVENT_TIME = SYMEFS_ALARM_EVENT_TIME;
+        this.SYMEFS_ALARM_VALUE = SYMEFS_ALARM_VALUE;
+
         this.HDM_LAST_SNAPSHOT_DATE = HDM_LAST_SNAPSHOT_DATE;
         this.HDM_MATCHING_OUTCOME = HDM_MATCHING_OUTCOME;
         this.HDM_MATCHING_OUTCOME_FULL = HDM_MATCHING_OUTCOME_FULL;
@@ -232,6 +250,22 @@ public class AAARawData1 {
         this.OUTAGE_TYPE_DESC =OUTAGE_TYPE_DESC;
         this.OUTAGE_TYPE = OUTAGE_TYPE;
 
+    }
+
+    public String getSYMEFS_ALARM_EVENT_ID() {
+        return SYMEFS_ALARM_EVENT_ID;
+    }
+
+    public String getSYMEFS_ALARM_SYMEFS_NAME() {
+        return SYMEFS_ALARM_SYMEFS_NAME;
+    }
+
+    public String getSYMEFS_ALARM_EVENT_TIME() {
+        return SYMEFS_ALARM_EVENT_TIME;
+    }
+
+    public String getSYMEFS_ALARM_VALUE() {
+        return SYMEFS_ALARM_VALUE;
     }
 
     public String getOTHER_CARRIER_SYMEFS() {

@@ -654,6 +654,12 @@ public class RemedyStatsDataAccessService {
                    SOEM_RAISED_ON,
                    SOEM_ALARM_TYPE,
                    SOEM_PROBABLE_CAUSE,
+                   
+                   SYMEFS_ALARM_EVENT_ID,
+                   SYMEFS_ALARM_SYMEFS_NAME,
+                   SYMEFS_ALARM_EVENT_TIME,
+                   SYMEFS_ALARM_VALUE,
+                   
                    HDM_LAST_SNAPSHOT_DATE,
                    HDM_REDEFINED_OUTCOME,
                    HDM_MATCHING_OUTCOME_FULL,
@@ -759,6 +765,12 @@ public class RemedyStatsDataAccessService {
                     String SOEM_RAISED_ON = resultSet.getString("SOEM_RAISED_ON");
                     String SOEM_ALARM_TYPE = resultSet.getString("SOEM_ALARM_TYPE");
                     String SOEM_PROBABLE_CAUSE = resultSet.getString("SOEM_PROBABLE_CAUSE");
+
+                    String SYMEFS_ALARM_EVENT_ID = resultSet.getString("SYMEFS_ALARM_EVENT_ID");
+                    String SYMEFS_ALARM_SYMEFS_NAME = resultSet.getString("SYMEFS_ALARM_SYMEFS_NAME");
+                    String SYMEFS_ALARM_EVENT_TIME = resultSet.getString("SYMEFS_ALARM_EVENT_TIME");
+                    String SYMEFS_ALARM_VALUE = resultSet.getString("SYMEFS_ALARM_VALUE");
+
                     String HDM_LAST_SNAPSHOT_DATE = resultSet.getString("HDM_LAST_SNAPSHOT_DATE");
                     String HDM_MATCHING_OUTCOME = resultSet.getString("HDM_REDEFINED_OUTCOME");
                     String HDM_MATCHING_OUTCOME_FULL = resultSet.getString("HDM_MATCHING_OUTCOME_FULL");
@@ -801,6 +813,12 @@ public class RemedyStatsDataAccessService {
                             SOEM_RAISED_ON,
                             SOEM_ALARM_TYPE,
                             SOEM_PROBABLE_CAUSE,
+
+                            SYMEFS_ALARM_EVENT_ID,
+                            SYMEFS_ALARM_SYMEFS_NAME,
+                            SYMEFS_ALARM_EVENT_TIME,
+                            SYMEFS_ALARM_VALUE,
+
                             HDM_LAST_SNAPSHOT_DATE,
                             HDM_MATCHING_OUTCOME,
                             HDM_MATCHING_OUTCOME_FULL,
