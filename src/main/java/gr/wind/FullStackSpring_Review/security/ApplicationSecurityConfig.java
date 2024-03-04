@@ -17,7 +17,10 @@ import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
 import org.springframework.security.config.http.SessionCreationPolicy;
+import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.crypto.password.PasswordEncoder;
+//import org.springframework.security.ldap.authentication.ad.ActiveDirectoryLdapAuthenticationProvider;
+import org.springframework.security.ldap.authentication.ad.ActiveDirectoryLdapAuthenticationProvider;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
 
 
@@ -37,7 +40,7 @@ public class ApplicationSecurityConfig extends WebSecurityConfigurerAdapter {
 
     @Autowired
     public void configureGlobal(AuthenticationManagerBuilder auth) throws Exception {
-        auth.userDetailsService(applicationUserService);
+//        auth.userDetailsService(applicationUserService);
     }
 
     @Override
@@ -157,16 +160,27 @@ public class ApplicationSecurityConfig extends WebSecurityConfigurerAdapter {
 
 
     @Override
+    @Autowired
     protected void configure(AuthenticationManagerBuilder auth) throws Exception {
+        // Local Database Authentication
         auth.authenticationProvider(daoAuthenticationProvider());
+
+        // LDAP Authentication
+        ActiveDirectoryLdapAuthenticationProvider adProvider =
+                new ActiveDirectoryLdapAuthenticationProvider("nova.gr", "ldap://pirdc01.sys.telestet.gr:389"
+                        , "OU=CNO, OU=End Users, dc=sys, dc=telestet, dc=gr");
+
+        adProvider.setConvertSubErrorCodesToExceptions(true);
+        adProvider.setUseAuthenticationRequestCredentials(true);
+        adProvider.setSearchFilter("(&(objectClass=user)(sAMAccountName={1})(memberOf=CN=Rancid, OU=CNO, OU=End Users, DC=sys, DC=telestet, DC=gr))");
+        auth.authenticationProvider(adProvider);
     }
 
     @Bean
     public DaoAuthenticationProvider daoAuthenticationProvider() {
         DaoAuthenticationProvider provider = new DaoAuthenticationProvider();
         provider.setPasswordEncoder(passwordEncoder);
-        provider.setUserDetailsService(applicationUserService);
+        provider.setUserDetailsService((UserDetailsService) applicationUserService);
         return provider;
     }
-
 }
