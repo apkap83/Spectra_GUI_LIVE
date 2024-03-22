@@ -4,3 +4,4 @@ src/js/node/
 src/js/build
 src/js/package-lock.json
 src/js/yarn.lock
+src/main/resources/
